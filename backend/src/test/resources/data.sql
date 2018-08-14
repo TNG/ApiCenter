@@ -1,0 +1,3 @@
+INSERT INTO SPECIFICATION_ENTITY VALUES ('b6b06513d2594fafb34ba216b3daad6a', '{\"info\": {\"title\": \"Spec1\",  \"version\": \"v1\"}}', 'remoteUrl', 'Spec1', 'v1');
+INSERT INTO SPECIFICATION_ENTITY VALUES ('f67cb0a6c31b424bbfbbab0e163955ca', '{\"info\": {\"title\": \"Spec2\",  \"version\": \"v2\"}}', 'remoteUrl', 'Spec2', 'v2');
+INSERT INTO SPECIFICATION_ENTITY VALUES ('af0502a2741040e490fd3504f67de1ee', '{\"info\": {\"title\": \"Spec3\",  \"version\": \"v3\"}}', 'remoteUrl', 'Spec3', 'v3');

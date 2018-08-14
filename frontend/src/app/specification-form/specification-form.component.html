@@ -1,0 +1,39 @@
+<div class="container top-buffer">
+  <div class="row top-buffer">
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="!manualDisabled"/>
+      Upload file manually ...
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <p>
+        <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json" ngModel
+               (change)="getFile($event)" [attr.disabled]="manualDisabled ? '' : null">
+      </p>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="manualDisabled"/>
+      Load file from URL ...
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <input type="text" title="url" placeholder="Insert URL here ..." [attr.disabled]="!manualDisabled ? '' : null" [(ngModel)]="fileUrl"/>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="submitSpecification()">Upload</button>
+      <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
+    </div>
+  </div>
+</div>
+

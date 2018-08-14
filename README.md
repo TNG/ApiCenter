@@ -28,7 +28,7 @@ To install angular CLI, enter `npm install -g @angular/cli`
 
 ## Running the tests
 
-Running the included tests is simply `./gradlew test` for the backend and `` for the frontend
+Running the included tests is simply `./gradlew test` for the backend and `ng test` for the frontend
 
 ## Code Style & Linting
 
