@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "1.0.0-SNAPSHOT",
   "license": {
     "type": "Apache License Version 2.0, January 2004",
     "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
