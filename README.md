@@ -1,6 +1,12 @@
 # ApiCenter
 
-ApiCenter is a repository for all your API specifications. You can upload new ones and search them so that finding the one you need is easy.
+ApiCenter is a repository for all your OpenAPI specifications. You can upload new ones and search them so that finding the one you need is easy.
+
+## Prerequisites
+
+To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a relational database, for example PostgreSQL.
+
+To install angular CLI, enter `npm install -g @angular/cli`
 
 ## Getting started
 
@@ -9,31 +15,21 @@ ApiCenter consists of a RESTful backend service written in Kotlin and a SPA fron
 ### Backend
 In order to start the backend, clone the repo, navigate to the `backend` folder and start the service with the familiar Spring Boot command:
 ```
-cd /backend
+cd backend/
 ./gradlew bootRun
 ```
 
 ### Frontend
 To start the frontend, clone the repo, navigate to the `frontend` folder and start it with angular CLI:
 ```
-cd /frontend
+cd frontend/
+npm install
 ng serve
 ```
-
-## Prerequisites
-
-To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a relational database, for example PostgreSQL.
-
-To install angular CLI, enter `npm install -g @angular/cli`
 
 ## Running the tests
 
 Running the included tests is simply `./gradlew test` for the backend and `ng test` for the frontend
-
-## Code Style & Linting
-
-## Deployment
-
 
 ## Built with
 - [Gradle](https://gradle.org/)
