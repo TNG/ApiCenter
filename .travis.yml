@@ -2,15 +2,21 @@ matrix:
   include:
     - language: java
       jdk: oraclejdk8
-      script:
+      before_script:
         - cd backend
+      script:
         - ./gradlew clean test
         - ./gradlew clean check
+      after_script:
+        - cd ..
 
     - language: node_js
       node_js: "8"
       before_script:
         - npm install -g @angular/cli
+        - cd frontend
       script:
         - ng lint
         - ng test
+      after_script:
+        - cd ..
