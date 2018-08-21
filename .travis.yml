@@ -13,7 +13,7 @@ matrix:
     - language: node_js
       node_js: "8"
       before_script:
-        - npm install -g @angular/cli
+        - npm install -g @angular/cli@1.7.4
         - cd frontend
       script:
         - ng lint
