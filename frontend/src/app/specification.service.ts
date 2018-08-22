@@ -6,6 +6,7 @@ import {SpecificationFile} from './models/specificationfile';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import {throwError} from 'rxjs/index';
 
 @Injectable()
 export class SpecificationService {
@@ -16,33 +17,33 @@ export class SpecificationService {
   }
 
   public getSpecifications(): Observable<Specification[]> {
-    return this.http.get(this.specificationsUrl)
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+    return this.http.get<Specification[]>(this.specificationsUrl)
+      .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public getSpecification(specificationId: string) {
-    return this.http.get(this.specificationsUrl + '/' + specificationId)
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+    return this.http.get<Specification>(this.specificationsUrl + '/' + specificationId)
+      .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public createSpecification(specificationFile: SpecificationFile): Observable<Specification> {
-    return this.http.post(this.specificationsUrl, specificationFile)
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+    return this.http.post<Specification>(this.specificationsUrl, specificationFile)
+      .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public updateSpecification(specificationFile: SpecificationFile, specificationId: string): Observable<Specification> {
-    return this.http.put(this.specificationsUrl + '/' + specificationId, specificationFile)
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+    return this.http.put<Specification>(this.specificationsUrl + '/' + specificationId, specificationFile)
+      .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public deleteSpecification(specificationId: string): Observable<Specification> {
-    return this.http.delete(this.specificationsUrl + '/' + specificationId)
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+    return this.http.delete<Specification>(this.specificationsUrl + '/' + specificationId)
+      .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public synchronizeSpecification(specificationId: string): Observable<Specification> {
-    return this.http.post(this.specificationsUrl + '/' + specificationId + '/synchronize', '')
-      .catch((error: any) => Observable.throw(error || 'Server error'));
+    return this.http.post<Specification>(this.specificationsUrl + '/' + specificationId + '/synchronize', '')
+      .catch((error: any) => throwError(error || 'Server error'));
   }
 
 }
