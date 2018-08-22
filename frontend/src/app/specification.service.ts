@@ -16,32 +16,32 @@ export class SpecificationService {
   }
 
   public getSpecifications(): Observable<Specification[]> {
-    return this.http.get(this.specificationsUrl)
+    return this.http.get<Specification[]>(this.specificationsUrl)
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
   public getSpecification(specificationId: string) {
-    return this.http.get(this.specificationsUrl + '/' + specificationId)
+    return this.http.get<Specification>(this.specificationsUrl + '/' + specificationId)
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
   public createSpecification(specificationFile: SpecificationFile): Observable<Specification> {
-    return this.http.post(this.specificationsUrl, specificationFile)
+    return this.http.post<Specification>(this.specificationsUrl, specificationFile)
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
   public updateSpecification(specificationFile: SpecificationFile, specificationId: string): Observable<Specification> {
-    return this.http.put(this.specificationsUrl + '/' + specificationId, specificationFile)
+    return this.http.put<Specification>(this.specificationsUrl + '/' + specificationId, specificationFile)
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
   public deleteSpecification(specificationId: string): Observable<Specification> {
-    return this.http.delete(this.specificationsUrl + '/' + specificationId)
+    return this.http.delete<Specification>(this.specificationsUrl + '/' + specificationId)
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
   public synchronizeSpecification(specificationId: string): Observable<Specification> {
-    return this.http.post(this.specificationsUrl + '/' + specificationId + '/synchronize', '')
+    return this.http.post<Specification>(this.specificationsUrl + '/' + specificationId + '/synchronize', '')
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 

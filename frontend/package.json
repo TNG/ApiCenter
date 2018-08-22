@@ -31,6 +31,8 @@
     "npm": "^6.0.1",
     "open-iconic": "^1.1.1",
     "rxjs": "^6.2.2",
+    "rxjs-compat": "^6.2.2",
+    "stream": "0.0.2",
     "swagger-ui": "^3.17.0",
     "zone.js": "^0.8.26"
   },
