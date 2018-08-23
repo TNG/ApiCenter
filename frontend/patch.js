@@ -1,3 +1,7 @@
+/**
+ * This patch is needed in order to resolve issues caused by webpack after the upgrade to Angular 6
+ */
+
 const fs = require('fs');
 const f = 'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/browser.js';
 
