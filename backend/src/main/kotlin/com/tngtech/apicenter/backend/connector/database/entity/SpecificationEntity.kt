@@ -2,6 +2,8 @@ package com.tngtech.apicenter.backend.connector.database.entity
 
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
+import org.hibernate.search.annotations.Field
+import org.hibernate.search.annotations.Indexed
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -9,11 +11,12 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
+@Indexed
 data class SpecificationEntity(
     @Id @GeneratedValue val id: UUID,
-    val title: String,
-    val version: String,
-    @Column(columnDefinition = "TEXT") val content: String,
+    @Field val title: String,
+    @Field val version: String,
+    @Field @Column(columnDefinition = "TEXT") val content: String,
     val remoteAddress: String?
 ) {
 

@@ -1,10 +1,12 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
+import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationMapper
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
+import org.hibernate.search.jpa.Search
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -17,13 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
+import javax.persistence.EntityManagerFactory
 
 @RestController
 @RequestMapping("/specifications")
 class SpecificationController @Autowired constructor(
     private val specificationHandler: SpecificationHandler,
     private val synchronizationService: SynchronizationService,
-    private val specificationMapper: SpecificationMapper
+    private val specificationMapper: SpecificationMapper,
+    private val entityManagerFactory: EntityManagerFactory
 ) {
 
     @PostMapping
@@ -68,5 +72,21 @@ class SpecificationController @Autowired constructor(
     @PostMapping("/{specificationId}/synchronize")
     fun synchronizeSpecification(@PathVariable specificationId: UUID) {
         synchronizationService.synchronize(specificationId)
+    }
+
+    @GetMapping("/search/{searchString}")
+    fun searchSpecification(@PathVariable searchString: String) {
+        val entityManager = entityManagerFactory.createEntityManager()
+        val fullTextEntityManager = Search.getFullTextEntityManager(entityManager)
+
+        val specificationQueryBuilder = fullTextEntityManager.searchFactory.buildQueryBuilder().forEntity(SpecificationEntity::class.java).get()
+        val specificationQuery = specificationQueryBuilder.keyword().onFields("title", "version", "content").matching(searchString).createQuery()
+
+        val hibernateQuery = fullTextEntityManager.createFullTextQuery(specificationQuery, SpecificationEntity::class.java)
+
+        val resultList = hibernateQuery.resultList
+
+        entityManager.transaction.commit()
+        entityManager.close()
     }
 }
