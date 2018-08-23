@@ -13,14 +13,17 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.UUID
+import javax.persistence.EntityManager
 
 @RunWith(MockitoJUnitRunner::class)
 internal class SpecificationDatabaseServiceUnitTest {
 
     private val specificationRepository: SpecificationRepository = mock()
 
+    private val entityManager: EntityManager = mock()
+
     private val specificationDatabaseService: SpecificationDatabaseService =
-        SpecificationDatabaseService(specificationRepository)
+        SpecificationDatabaseService(specificationRepository, entityManager)
 
     @Test
     fun save_shouldSaveObjects() {
