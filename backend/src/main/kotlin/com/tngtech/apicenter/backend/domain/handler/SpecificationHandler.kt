@@ -20,4 +20,6 @@ class SpecificationHandler @Autowired constructor(private val specificationPersi
     fun delete(id: UUID) = specificationPersistenceService.delete(id)
 
     fun exists(id: UUID) = specificationPersistenceService.exists(id)
+
+    fun search(searchString: String) = specificationPersistenceService.search(searchString)
 }

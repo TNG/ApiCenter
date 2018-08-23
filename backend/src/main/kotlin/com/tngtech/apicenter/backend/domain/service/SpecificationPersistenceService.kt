@@ -9,4 +9,5 @@ interface SpecificationPersistenceService {
     fun findOne(id: UUID): Specification?
     fun delete(id: UUID)
     fun exists(id: UUID): Boolean
+    fun search(searchString: String): List<Specification>
 }
