@@ -11,7 +11,6 @@ import {Router} from "@angular/router";
 })
 export class SpecificationSearchComponent implements OnInit {
   specifications: Specification[] = [];
-  selectedSpecification: Specification[];
 
   constructor(private specificationService: SpecificationService, private router: Router) {
   }
