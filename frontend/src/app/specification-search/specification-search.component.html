@@ -1,6 +1,7 @@
 <ng-select [items]="specifications"
            bindLabel="title"
            (keyup)="loadSpecifications($event)"
-           [ngStyle]="{ 'width': '200px' }"
+           [ngStyle]="{ 'width': '250px' }"
            [searchFn]="customSearch"
+           (change)="navigateToSpecification($event)"
            placeholder="Search ..."></ng-select>

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Specification} from "../models/specification";
 import {SpecificationService} from "../specification.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-specification-search',
@@ -12,7 +13,7 @@ export class SpecificationSearchComponent implements OnInit {
   specifications: Specification[] = [];
   selectedSpecification: Specification[];
 
-  constructor(private specificationService: SpecificationService) {
+  constructor(private specificationService: SpecificationService, private router: Router) {
   }
 
   ngOnInit() {
@@ -20,6 +21,10 @@ export class SpecificationSearchComponent implements OnInit {
 
   public customSearch(term: string, item: any): boolean {
     return true;
+  }
+
+  public navigateToSpecification(specification: Specification) {
+    this.router.navigate(['specifications', specification.id]);
   }
 
   private loadSpecifications(event: Event) {
