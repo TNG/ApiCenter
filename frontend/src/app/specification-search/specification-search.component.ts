@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Specification} from "../models/specification";
-import {SpecificationService} from "../specification.service";
-import {Router} from "@angular/router";
+import {Specification} from '../models/specification';
+import {SpecificationService} from '../specification.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-specification-search',
