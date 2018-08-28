@@ -11,6 +11,8 @@ import { SpecificationComponent } from './specification/specification.component'
 import { SpecificationOverviewComponent } from './specification-overview/specification-overview.component';
 import { SpecificationFormComponent } from './specification-form/specification-form.component';
 import { HeaderComponent } from './header/header.component';
+import {NgSelectModule} from "@ng-select/ng-select";
+import { SpecificationSearchComponent } from './specification-search/specification-search.component';
 
 const appRoutes: Routes = [
   { path:  '', component: SpecificationOverviewComponent },
@@ -26,7 +28,8 @@ const appRoutes: Routes = [
     SpecificationComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
-    HeaderComponent
+    HeaderComponent,
+    SpecificationSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes
     ),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

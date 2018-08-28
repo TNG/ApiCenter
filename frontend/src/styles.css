@@ -1,5 +1,6 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~open-iconic/font/css/open-iconic-bootstrap.min.css';
 @import '~swagger-ui/dist/swagger-ui.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 .top-buffer { margin-top:20px; }
