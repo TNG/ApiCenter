@@ -13,12 +13,16 @@ import { SpecificationFormComponent } from './specification-form/specification-f
 import { HeaderComponent } from './header/header.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import { SpecificationSearchComponent } from './specification-search/specification-search.component';
+import { SpecificationSearchDetailComponent } from './specification-search-detail/specification-search-detail.component';
+import {HighlightSearchResultPipe} from "./pipes/highlight-search-result.pipe";
+import {TrimSearchResultPipe} from "./pipes/trim-search-result.pipe";
 
 const appRoutes: Routes = [
   { path:  '', component: SpecificationOverviewComponent },
   { path: 'specifications/:id', component: SpecificationComponent },
   { path: 'specifications/form/add', component: SpecificationFormComponent },
-  { path: 'specifications/form/edit/:id', component: SpecificationFormComponent }
+  { path: 'specifications/form/edit/:id', component: SpecificationFormComponent },
+  { path: 'search', component: SpecificationSearchDetailComponent }
 ];
 
 
@@ -29,7 +33,10 @@ const appRoutes: Routes = [
     SpecificationOverviewComponent,
     SpecificationFormComponent,
     HeaderComponent,
-    SpecificationSearchComponent
+    SpecificationSearchComponent,
+    SpecificationSearchDetailComponent,
+    HighlightSearchResultPipe,
+    TrimSearchResultPipe
   ],
   imports: [
     BrowserModule,

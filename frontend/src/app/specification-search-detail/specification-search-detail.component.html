@@ -1,0 +1,15 @@
+<div class="container top-buffer">
+  <div class="row">
+    <div class="col">
+      <input type="search" class="form-control" placeholder="Search ..." (keyup)="searchSpecifications($event)" [(ngModel)]="searchString">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div *ngFor="let specification of specifications">
+        {{ specification.title }} <br>
+        <div [innerHtml]="specification.content | highlightSearchResult:searchString | trimSearchResult:searchString"></div>
+      </div>
+    </div>
+  </div>
+</div>
