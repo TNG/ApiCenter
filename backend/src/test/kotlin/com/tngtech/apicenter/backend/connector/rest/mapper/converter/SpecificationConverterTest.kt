@@ -14,7 +14,7 @@ class SpecificationConverterTest {
 
     companion object {
         const val SWAGGER_SPECIFICATION =
-            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\"}}"
+            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val SWAGGER_REMOTE = "https://swagger.com/remote/file.json"
     }
 
@@ -43,6 +43,7 @@ class SpecificationConverterTest {
         val expectedSpecification = Specification(
             specification.id,
             "Swagger Petstore",
+            "Description",
             Version("1.0.0"),
             SWAGGER_SPECIFICATION,
             ""
@@ -75,6 +76,7 @@ class SpecificationConverterTest {
         val expectedSpecification = Specification(
             specification.id,
             "Swagger Petstore",
+            "Description",
             Version("1.0.0"),
             SWAGGER_SPECIFICATION,
             SWAGGER_REMOTE
