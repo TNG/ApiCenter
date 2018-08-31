@@ -19,6 +19,7 @@ internal class SpecificationEntityUnitTest {
         val specification = Specification(
             UUID.fromString(SPEC_UUID),
             "Spec",
+            "Description",
             Version("1.0.0"),
             JSON_CONTENT,
             null
@@ -30,6 +31,7 @@ internal class SpecificationEntityUnitTest {
             SpecificationEntity(
                 UUID.fromString(SPEC_UUID),
                 "Spec",
+                "Description",
                 "1.0.0",
                 JSON_CONTENT,
                 null

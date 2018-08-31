@@ -48,16 +48,23 @@ class SpecificationDataService @Autowired constructor(
     fun readTitle(json: String): String {
         try {
             return JsonPath.read<String>(json, "$.info.title")
-        } catch (exc: PathNotFoundException) {
-            throw IllegalArgumentException("No title given in content.")
+        } catch (exception: PathNotFoundException) {
+            throw IllegalArgumentException("No title given in content.", exception)
         }
     }
 
     fun readVersion(json: String): String {
         try {
             return JsonPath.read<String>(json, "$.info.version")
-        } catch (exc: PathNotFoundException) {
-            throw IllegalArgumentException("No version given in content.")
+        } catch (exception: PathNotFoundException) {
+            throw IllegalArgumentException("No version given in content.", exception)
         }
     }
+
+    fun readDescription(json: String): String? =
+        try {
+            JsonPath.read<String>(json, "$.info.description")
+        } catch (exception: PathNotFoundException) {
+            null
+        }
 }

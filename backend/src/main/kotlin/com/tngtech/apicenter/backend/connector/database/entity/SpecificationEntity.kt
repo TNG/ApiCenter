@@ -15,6 +15,7 @@ import javax.persistence.Id
 data class SpecificationEntity(
     @Id @GeneratedValue val id: UUID,
     @Field val title: String,
+    @Field @Column(columnDefinition = "TEXT") val description: String?,
     @Field val version: String,
     @Field @Column(columnDefinition = "TEXT") val content: String,
     val remoteAddress: String?
@@ -25,6 +26,7 @@ data class SpecificationEntity(
             SpecificationEntity(
                 specification.id,
                 specification.title,
+                specification.description,
                 specification.version.version,
                 specification.content,
                 specification.remoteAddress
@@ -34,6 +36,7 @@ data class SpecificationEntity(
     fun toDomain(): Specification = Specification(
         this.id,
         this.title,
+        this.description,
         Version(this.version),
         this.content,
         this.remoteAddress
