@@ -19,10 +19,12 @@ class SpecificationDataServiceTest {
 
     companion object {
         const val SWAGGER_SPECIFICATION =
-            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\"}}"
-        const val SWAGGER_SPECIFICATION_NOTITLE = "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\"}}"
-        const val SWAGGER_SPECIFICATION_NOVERSION =
+            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\": \"My Description\"}}"
+        const val SWAGGER_SPECIFICATION_WITHOUT_TITLE = "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\"}}"
+        const val SWAGGER_SPECIFICATION_WITHOUT_VERSION =
             "{\"swagger\": \"2.0\", \"info\": {\"title\": \"Swagger Petstore\"}}"
+        const val SWAGGER_SPECIFICATION_WITHOUT_DESCRIPTION =
+            "{\"swagger\": \"2.0\", \"info\": {\"title\": \"Swagger Petstore\",\"version\": \"1.0.0\"}}"
         const val YAML_SPECIFICATION = "openapi: \"3.0.0\"\r\ninfo:\r\n  version: 1.0.0\r\n  title: Swagger Petstore"
     }
 
@@ -44,17 +46,27 @@ class SpecificationDataServiceTest {
     }
 
     @Test
+    fun readDescription_shouldReturnDescription() {
+        assertThat(specificationDataService.readDescription(SWAGGER_SPECIFICATION)).isEqualTo("My Description")
+    }
+
+    @Test
     fun readTitle_shouldFailWhenNoTitleIsGiven() {
-        assertThatThrownBy { specificationDataService.readTitle(SWAGGER_SPECIFICATION_NOTITLE) }.isInstanceOf(
+        assertThatThrownBy { specificationDataService.readTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
             IllegalArgumentException::class.java
         ).hasMessage("No title given in content.")
     }
 
     @Test
     fun readVersion_shouldFailWhenNoVersionIsGiven() {
-        assertThatThrownBy { specificationDataService.readVersion(SWAGGER_SPECIFICATION_NOVERSION) }.isInstanceOf(
+        assertThatThrownBy { specificationDataService.readVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
             IllegalArgumentException::class.java
         ).hasMessage("No version given in content.")
+    }
+
+    @Test
+    fun readDescription_shouldReturnNullWhenNoDescriptionIsGiven() {
+        assertThat(specificationDataService.readDescription(SWAGGER_SPECIFICATION_WITHOUT_DESCRIPTION)).isNull()
     }
 
     @Test

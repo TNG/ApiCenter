@@ -23,9 +23,9 @@ class SynchronizationServiceTest {
     companion object {
         const val SPECIFICATION_ID = "ff9da045-05f7-4f3d-9801-da609086935c"
         const val SWAGGER_SPECIFICATION =
-            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\"}}"
+            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\", \"description\": \"Description\"}}"
         const val UPDATED_SWAGGER_SPECIFICATION =
-            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"2.0.0\",\"title\": \"Swagger Petstore 2\"}}"
+            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"2.0.0\",\"title\": \"Swagger Petstore 2\", \"description\": \"Updated Description\"}}"
         const val REMOTE_ADDRESS = "http://testapi.com/testapi.json"
     }
 
@@ -34,6 +34,7 @@ class SynchronizationServiceTest {
         val specification = Specification(
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore",
+            "Description",
             Version("1.0.0"),
             SWAGGER_SPECIFICATION,
             REMOTE_ADDRESS
@@ -41,6 +42,7 @@ class SynchronizationServiceTest {
         val updatedSpecification = Specification(
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore 2",
+            "Description",
             Version("2.0.0"),
             UPDATED_SWAGGER_SPECIFICATION,
             REMOTE_ADDRESS
@@ -53,6 +55,7 @@ class SynchronizationServiceTest {
         )
         given(specificationDataService.readTitle(UPDATED_SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore 2")
         given(specificationDataService.readVersion(UPDATED_SWAGGER_SPECIFICATION)).willReturn("2.0.0")
+        given(specificationDataService.readDescription(UPDATED_SWAGGER_SPECIFICATION)).willReturn("Description")
 
         synchronizationService.synchronize(UUID.fromString(SPECIFICATION_ID))
 

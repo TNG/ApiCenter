@@ -27,6 +27,7 @@ internal class SpecificationDatabaseServiceUnitTest {
         val specification = Specification(
             UUID.fromString("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
+            "Description",
             Version("1.0.0"),
             "{\"json\": \"true\"}",
             "http://swaggerpetstore.com/docs"
@@ -35,6 +36,7 @@ internal class SpecificationDatabaseServiceUnitTest {
         val specificationEntity = SpecificationEntity(
             UUID.fromString("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
+            "Description",
             "1.0.0",
             "{\"json\": \"true\"}",
             "http://swaggerpetstore.com/docs"

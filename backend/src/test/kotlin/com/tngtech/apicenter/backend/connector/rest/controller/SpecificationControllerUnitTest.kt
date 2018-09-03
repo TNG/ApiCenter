@@ -17,7 +17,7 @@ internal class SpecificationControllerUnitTest {
 
     companion object {
         const val SWAGGER_SPECIFICATION =
-            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\"}}"
+            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val UUID_STRING = "65d8491f-e602-40fc-a595-45e75f690df1"
     }
 
@@ -42,6 +42,7 @@ internal class SpecificationControllerUnitTest {
         val specification = Specification(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
+            "Description",
             Version("1.0.0"),
             SWAGGER_SPECIFICATION,
             null
@@ -49,6 +50,7 @@ internal class SpecificationControllerUnitTest {
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
+            "Description",
             "1.0.0",
             SWAGGER_SPECIFICATION,
             null
@@ -73,6 +75,7 @@ internal class SpecificationControllerUnitTest {
         val specification = Specification(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
+            "Description",
             Version("1.0.0"),
             SWAGGER_SPECIFICATION,
             null
@@ -80,6 +83,7 @@ internal class SpecificationControllerUnitTest {
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
+            "Description",
             "1.0.0",
             SWAGGER_SPECIFICATION,
             null
@@ -96,6 +100,7 @@ internal class SpecificationControllerUnitTest {
             SpecificationDto(
                 UUID.fromString(UUID_STRING),
                 "Swagger Petstore",
+                "Description",
                 "1.0.0",
                 SWAGGER_SPECIFICATION,
                 null
@@ -110,6 +115,7 @@ internal class SpecificationControllerUnitTest {
         val specification = Specification(
             uuid,
             "Test",
+            "Description",
             Version("v2"),
             SWAGGER_SPECIFICATION,
             "http://swaggerpetstore.com/docs"
@@ -117,6 +123,7 @@ internal class SpecificationControllerUnitTest {
         val specificationDto = SpecificationDto(
             uuid,
             "Test",
+            "Description",
             "v2",
             SWAGGER_SPECIFICATION,
             "http://swaggerpetstore.com/docs"
@@ -129,6 +136,7 @@ internal class SpecificationControllerUnitTest {
                 Specification(
                     uuid,
                     "Test",
+                    "Description",
                     Version("v2"),
                     SWAGGER_SPECIFICATION,
                     "http://swaggerpetstore.com/docs"
@@ -139,6 +147,7 @@ internal class SpecificationControllerUnitTest {
         assertThat(specificationController.findAllSpecifications()).containsOnly(
             SpecificationDto(
                 uuid, "Test",
+                "Description",
                 "v2",
                 SWAGGER_SPECIFICATION,
                 "http://swaggerpetstore.com/docs"
