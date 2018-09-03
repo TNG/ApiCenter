@@ -14,8 +14,9 @@ import { HeaderComponent } from './header/header.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import { SpecificationSearchComponent } from './specification-search/specification-search.component';
 import { SpecificationSearchDetailComponent } from './specification-search-detail/specification-search-detail.component';
-import {HighlightSearchResultPipe} from "./pipes/highlight-search-result.pipe";
-import {TrimSearchResultPipe} from "./pipes/trim-search-result.pipe";
+import {HighlightSearchResultPipe} from './pipes/highlight-search-result.pipe';
+import {TrimSearchResultPipe} from './pipes/trim-search-result.pipe';
+import {FormatSearchResultPipe} from './pipes/format-search-result-pipe';
 
 const appRoutes: Routes = [
   { path:  '', component: SpecificationOverviewComponent },
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
     SpecificationSearchComponent,
     SpecificationSearchDetailComponent,
     HighlightSearchResultPipe,
-    TrimSearchResultPipe
+    TrimSearchResultPipe,
+    FormatSearchResultPipe
   ],
   imports: [
     BrowserModule,

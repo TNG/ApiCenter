@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Specification} from "../models/specification";
-import {SpecificationService} from "../specification.service";
+import {Specification} from '../models/specification';
+import {SpecificationService} from '../specification.service';
 
 @Component({
   selector: 'app-specification-search-detail',
@@ -19,7 +19,7 @@ export class SpecificationSearchDetailComponent implements OnInit {
   }
 
   public searchSpecifications(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       this.specificationService.searchSpecifications(this.searchString).subscribe((data: Specification[]) => this.specifications = data);
     }
   }

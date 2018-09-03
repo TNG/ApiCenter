@@ -11,8 +11,8 @@ describe('SpecificationService', () => {
   let specificationService: SpecificationService;
   const mockedHttpClient = mock(HttpClient);
   const httpClient = instance(mockedHttpClient);
-  const specifications = [new Specification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', '1.0', null),
-    new Specification('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', '1.0', 'http://address.com/test.json')];
+  const specifications = [new Specification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', 'Decription', '1.0', 'Content', null),
+    new Specification('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', 'Description', '1.0', 'Content', 'http://address.com/test.json')];
   const swagger_content = '{\'swagger\': \'2.0\', \'info\': {\'version\': \'1.0.0\',\'title\': \'Swagger Petstore\'}}';
   const specificationFile = new SpecificationFile(swagger_content, null);
 
