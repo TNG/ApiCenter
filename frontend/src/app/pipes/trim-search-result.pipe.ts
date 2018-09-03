@@ -8,13 +8,13 @@ export class TrimSearchResultPipe implements PipeTransform {
 
     const startingPositions = this.getAllStartingPositions(value, searchString);
 
-    for (let i = 0; i <= startingPositions.length; i++) {
+    for (let i = 0; i < startingPositions.length; i++) {
       const startingPosition = startingPositions[i];
 
       const cutFrom = startingPosition > 40 ? startingPosition - 40 : 0;
       const cutTo = startingPosition + searchString.length + 40;
 
-      returnString += value.substring(cutFrom, cutTo) + ' ... ';
+      returnString += value.substring(cutFrom, cutTo) + '...';
     }
 
     return returnString;
