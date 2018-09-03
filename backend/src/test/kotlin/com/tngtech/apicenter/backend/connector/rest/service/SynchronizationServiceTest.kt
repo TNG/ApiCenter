@@ -25,7 +25,7 @@ class SynchronizationServiceTest {
         const val SWAGGER_SPECIFICATION =
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\", \"description\": \"Description\"}}"
         const val UPDATED_SWAGGER_SPECIFICATION =
-            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"2.0.0\",\"title\": \"Swagger Petstore 2\", \"description\": \"Description\"}}"
+            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"2.0.0\",\"title\": \"Swagger Petstore 2\", \"description\": \"Updated Description\"}}"
         const val REMOTE_ADDRESS = "http://testapi.com/testapi.json"
     }
 
