@@ -15,7 +15,7 @@ import {SpecificationSearchComponent} from './specification-search/specification
 import {SpecificationSearchDetailComponent} from './specification-search-detail/specification-search-detail.component';
 import {HighlightSearchResultPipe} from './pipes/highlight-search-result.pipe';
 import {TrimSearchResultPipe} from './pipes/trim-search-result.pipe';
-import {FormatSearchResultPipe} from "./pipes/format-search-result.pipe";
+import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent},
