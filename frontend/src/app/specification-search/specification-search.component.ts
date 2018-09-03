@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Specification} from '../models/specification';
 import {SpecificationService} from '../specification.service';
 import {Router} from '@angular/router';
 
@@ -10,7 +9,7 @@ import {Router} from '@angular/router';
   providers: [SpecificationService]
 })
 export class SpecificationSearchComponent implements OnInit {
-  specifications: Specification[] = [];
+  searchString: string;
 
   constructor(private specificationService: SpecificationService, private router: Router) {
   }
@@ -18,19 +17,12 @@ export class SpecificationSearchComponent implements OnInit {
   ngOnInit() {
   }
 
-  public customSearch(term: string, item: any): boolean {
-    return true;
+  public searchForString(event) {
+    if (event.keyCode === 13) {
+      this.router.navigate(['search', this.searchString]);
+      this.searchString = '';
+    }
   }
 
-  public navigateToSpecification(specification: Specification) {
-    this.router.navigate(['specifications', specification.id]);
-  }
-
-  private loadSpecifications(event: Event) {
-    const searchString = (<HTMLInputElement>event.target).value;
-
-    this.specificationService.searchSpecifications(searchString)
-      .subscribe((data: Specification[]) => { this.specifications = data; console.log(data); });
-  }
 
 }

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Specification} from '../models/specification';
 import {SpecificationService} from '../specification.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-specification-search-detail',
@@ -12,10 +13,15 @@ export class SpecificationSearchDetailComponent implements OnInit {
   specifications: Specification[];
   searchString: string;
 
-  constructor(private specificationService: SpecificationService) {
+  constructor(private specificationService: SpecificationService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe(params => {
+      this.specificationService.searchSpecifications(params['searchString'])
+        .subscribe((data: Specification[]) => this.specifications = data);
+      this.searchString = params['searchString'];
+    });
   }
 
   public searchSpecifications(event) {

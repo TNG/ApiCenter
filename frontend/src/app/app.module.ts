@@ -23,7 +23,8 @@ const appRoutes: Routes = [
   { path: 'specifications/:id', component: SpecificationComponent },
   { path: 'specifications/form/add', component: SpecificationFormComponent },
   { path: 'specifications/form/edit/:id', component: SpecificationFormComponent },
-  { path: 'search', component: SpecificationSearchDetailComponent }
+  { path: 'search', component: SpecificationSearchDetailComponent },
+  { path: 'search/:searchString', component: SpecificationSearchDetailComponent }
 ];
 
 

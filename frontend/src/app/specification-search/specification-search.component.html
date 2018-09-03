@@ -1,7 +1,1 @@
-<ng-select [items]="specifications"
-           bindLabel="title"
-           (keyup)="loadSpecifications($event)"
-           [ngStyle]="{ 'width': '250px' }"
-           [searchFn]="customSearch"
-           (change)="navigateToSpecification($event)"
-           placeholder="Search ..."></ng-select>
+<input type="search" class="form-control" [(ngModel)]="searchString" placeholder="Search..." (keyup)="searchForString($event)">
