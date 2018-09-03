@@ -9,7 +9,7 @@ describe('SpecificationOverviewComponent', () => {
   let specificationOverviewComponent: SpecificationOverviewComponent;
   const mockedSpecificationService = mock(SpecificationService);
   const specificationService = instance(mockedSpecificationService);
-  const specification = new Specification('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', '1.0', null);
+  const specification = new Specification('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', '1.0', 'Content', null);
 
   beforeEach(() => {
     specificationOverviewComponent = new SpecificationOverviewComponent(specificationService);

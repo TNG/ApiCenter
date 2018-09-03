@@ -69,4 +69,8 @@ class SpecificationController @Autowired constructor(
     fun synchronizeSpecification(@PathVariable specificationId: UUID) {
         synchronizationService.synchronize(specificationId)
     }
+
+    @GetMapping("/search/{searchString}")
+    fun searchSpecification(@PathVariable searchString: String): List<SpecificationDto> =
+        specificationHandler.search(searchString).map { spec -> specificationMapper.fromDomain(spec) }
 }

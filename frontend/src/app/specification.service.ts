@@ -46,4 +46,9 @@ export class SpecificationService {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
+  public searchSpecifications(searchString: string): Observable<Specification[]> {
+    return this.http.get<Specification[]>(this.specificationsUrl + '/search/' + searchString)
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
+
 }

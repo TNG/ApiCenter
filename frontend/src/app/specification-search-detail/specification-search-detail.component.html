@@ -1,0 +1,16 @@
+<div class="container top-buffer">
+  <div class="row">
+    <div class="col">
+      <input type="search" class="form-control" placeholder="Search ..." (keyup)="searchSpecifications($event)" [(ngModel)]="searchString">
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <div *ngFor="let specification of specifications">
+        <div><p class="lead"><a [routerLink]="['/specifications', specification.id]" routerLinkActive="active">{{ specification.title }}</a></p></div>
+        <div><p class="small">{{ specification.description != null && specification.description.length > 100 ? (specification.description | slice:0:100) + ' ...' : specification.description }}</p></div>
+        <div [innerHtml]="specification.content | highlightSearchResult:searchString | trimSearchResult:searchString | formatSearchResult"></div>
+      </div>
+    </div>
+  </div>
+</div>
