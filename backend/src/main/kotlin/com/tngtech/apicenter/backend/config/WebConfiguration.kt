@@ -35,7 +35,6 @@ class WebConfiguration {
     private fun apiMetadata() = ApiInfoBuilder()
         .title("ApiCenter REST API")
         .description("REST API for ApiCenter - a repository for all your OpenAPI specifications")
-        .version("1.0.0")
         .license("Apache License Version 2.0, January 2004")
         .build()
 }
