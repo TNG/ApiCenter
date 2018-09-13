@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.spi.DocumentationType
@@ -28,5 +29,12 @@ class WebConfiguration {
         .select()
         .apis(RequestHandlerSelectors.any())
         .paths(PathSelectors.any())
+        .build()
+        .apiInfo(apiMetadata())
+
+    private fun apiMetadata() = ApiInfoBuilder()
+        .title("ApiCenter REST API")
+        .description("REST API for ApiCenter - a repository for all your OpenAPI specifications")
+        .license("Apache License Version 2.0, January 2004")
         .build()
 }
