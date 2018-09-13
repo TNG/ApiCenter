@@ -9,5 +9,5 @@ import java.util.UUID
 data class SpecificationFileDto @JsonCreator constructor(
     @ApiModelProperty("The content of a file to be uploaded - either this or fileUrl has to be set.") val fileContent: String?,
     @ApiModelProperty("The url of a remote file to be loaded - either this or fileContent has to be set.") val fileUrl: String? = "",
-    @ApiModelProperty("The uuid of an already existing specification (optional)") val id: UUID? = null
+    @ApiModelProperty(value = "The uuid of an already existing specification (optional)", required = false) val id: UUID? = null
 )
