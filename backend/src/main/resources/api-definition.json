@@ -37,9 +37,6 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "403": {
             "description": "Forbidden"
           },
@@ -78,9 +75,6 @@
             "schema": {
               "$ref": "#/definitions/SpecificationDto"
             }
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -121,9 +115,6 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "403": {
             "description": "Forbidden"
           },
@@ -160,9 +151,6 @@
             "schema": {
               "$ref": "#/definitions/SpecificationDto"
             }
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -213,9 +201,6 @@
           "201": {
             "description": "Created"
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "403": {
             "description": "Forbidden"
           },
@@ -250,9 +235,6 @@
           },
           "204": {
             "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -290,9 +272,6 @@
           },
           "201": {
             "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
