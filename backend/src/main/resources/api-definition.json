@@ -30,10 +30,14 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SpecificationDto"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecificationDto"
+                  }
+                }
               }
             }
           },
@@ -62,18 +66,28 @@
           {
             "in": "body",
             "name": "specificationFileDto",
-            "description": "specificationFileDto",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/SpecificationFileDto"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/RemoteSpecificationFileDto"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalSpecificationFileDto"
+                }
+              ]
             }
           }
         ],
         "responses": {
           "201": {
             "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/SpecificationDto"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecificationDto"
+                }
+              }
             }
           },
           "403": {
@@ -108,10 +122,14 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SpecificationDto"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecificationDto"
+                  }
+                }
               }
             }
           },
@@ -148,8 +166,12 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SpecificationDto"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecificationDto"
+                }
+              }
             }
           },
           "403": {
@@ -180,7 +202,14 @@
             "description": "specificationFileDto",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/SpecificationFileDto"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LocalSpecificationFileDto"
+                },
+                {
+                  "$ref": "#/components/schemas/RemoteSpecificationFileDto"
+                }
+              ]
             }
           },
           {
@@ -194,8 +223,12 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SpecificationDto"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecificationDto"
+                }
+              }
             }
           },
           "201": {
@@ -284,51 +317,74 @@
       }
     }
   },
-  "definitions": {
-    "SpecificationDto": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string"
+  "components": {
+    "schemas": {
+      "SpecificationDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "remoteAddress": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
         },
-        "description": {
-          "type": "string"
+        "title": "SpecificationDto"
+      },
+      "SpecificationFileDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The uuid of an already existing specification",
+            "required": false
+          }
         },
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "remoteAddress": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
+        "title": "SpecificationFileDto",
+        "description": "Represents an OpenAPI-File"
+      },
+      "RemoteSpecificationFileDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SpecificationFileDto"
+          }
+        ],
+        "properties": {
+          "fileUrl": {
+            "type": "string",
+            "description": "The url of a remote file to be loaded.",
+            "required": true
+          }
         }
       },
-      "title": "SpecificationDto"
-    },
-    "SpecificationFileDto": {
-      "type": "object",
-      "properties": {
-        "fileContent": {
-          "type": "string",
-          "description": "The content of a file to be uploaded - either this or fileUrl has to be set."
-        },
-        "fileUrl": {
-          "type": "string",
-          "description": "The url of a remote file to be loaded - either this or fileContent has to be set."
-        },
-        "id": {
-          "type": "string",
-          "format": "uuid",
-          "description": "The uuid of an already existing specification (optional)"
+      "LocalSpecificationFileDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SpecificationFileDto"
+          }
+        ],
+        "properties": {
+          "fileContent": {
+            "type": "string",
+            "description": "The content of a file to be uploaded.",
+            "required": true
+          }
         }
-      },
-      "title": "SpecificationFileDto",
-      "description": "Represents an OpenAPI-File"
+      }
     }
   }
 }
