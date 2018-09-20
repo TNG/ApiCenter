@@ -6,6 +6,8 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -26,7 +28,7 @@ internal class SpecificationControllerIntegrationTest {
 
     @Test
     fun findAllSpecifications_shouldReturnAllSpecifications() {
-        mockMvc.perform(get("/specifications"))
+        mockMvc.perform(get("/specifications").with(user("user")))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$[0].title", equalTo("Spec1")))
@@ -41,9 +43,11 @@ internal class SpecificationControllerIntegrationTest {
     fun uploadSpecification_shouldCreateSpecification() {
         mockMvc.perform(
             post("/specifications")
+                .with(user("user"))
+                .with(csrf())
                 .contentType("application/json")
                 .content(
-                            """
+                    """
                             | {
                             |   "fileContent": "{\"info\": {\"title\": \"Spec\",\"version\": \"1.0\"}}"
                             | }
@@ -59,6 +63,8 @@ internal class SpecificationControllerIntegrationTest {
     fun uploadSpecification_shouldCreateSpecificationFromYaml() {
         mockMvc.perform(
             post("/specifications")
+                .with(user("user"))
+                .with(csrf())
                 .contentType("application/json")
                 .content(
                     """
@@ -77,9 +83,11 @@ internal class SpecificationControllerIntegrationTest {
     fun updateSpecification_shouldUpdateSpecification() {
         mockMvc.perform(
             put("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+                .with(user("user"))
+                .with(csrf())
                 .contentType("application/json")
                 .content(
-                            """
+                    """
                             | {
                             |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
                             |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"1.1\"}}"
@@ -92,7 +100,7 @@ internal class SpecificationControllerIntegrationTest {
             .andExpect(jsonPath("$.version", equalTo("1.1")))
 
         mockMvc.perform(
-            get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+            get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user"))
         )
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
             .andExpect(jsonPath("$.version", equalTo("1.1")))
@@ -102,6 +110,8 @@ internal class SpecificationControllerIntegrationTest {
     fun deleteSpecification_shouldDeleteSpecification() {
         mockMvc.perform(
             delete("/specifications/af0502a2-7410-40e4-90fd-3504f67de1ee")
+                .with(user("user"))
+                .with(csrf())
         )
             .andExpect(status().isOk)
     }
