@@ -16,5 +16,8 @@ class UserDatabaseService constructor(
         userRepository.save(userEntityMapper.fromDomain(user))
     }
 
+    override fun findByOrigin(origin: String, externalId: String) =
+        userRepository.findByOriginAndExternalId(origin, externalId)
+
     override fun exists(origin: String, externalId: String) = userRepository.checkExistenceByOrigin(origin, externalId)
 }
