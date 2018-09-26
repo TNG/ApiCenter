@@ -9,6 +9,8 @@ import com.atlassian.crowd.integration.springsecurity.user.CrowdUserDetailsServi
 import com.atlassian.crowd.service.client.ClientPropertiesImpl
 import com.atlassian.crowd.service.client.ClientResourceLocator
 import com.tngtech.apicenter.backend.connector.rest.security.CrowdAuthenticationProvider
+import com.tngtech.apicenter.backend.domain.handler.UserHandler
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,11 +21,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.session.HttpSessionEventPublisher
 
-
-
 @EnableWebSecurity
 @Configuration
-class SecurityCrowdConfiguration : WebSecurityConfigurerAdapter() {
+class SecurityCrowdConfiguration @Autowired constructor(private val userHandler: UserHandler) :
+    WebSecurityConfigurerAdapter() {
 
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity
@@ -75,7 +76,7 @@ class SecurityCrowdConfiguration : WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    fun crowdAuthenticationProvider() = CrowdAuthenticationProvider(crowdClient())
+    fun crowdAuthenticationProvider() = CrowdAuthenticationProvider(crowdClient(), userHandler)
 
     @Bean
     override fun authenticationManagerBean() = super.authenticationManagerBean()
