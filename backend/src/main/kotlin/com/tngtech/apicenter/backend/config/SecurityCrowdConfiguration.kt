@@ -8,7 +8,7 @@ import com.atlassian.crowd.integration.springsecurity.user.CrowdUserDetailsServi
 import com.atlassian.crowd.integration.springsecurity.user.CrowdUserDetailsServiceImpl
 import com.atlassian.crowd.service.client.ClientPropertiesImpl
 import com.atlassian.crowd.service.client.ClientResourceLocator
-import com.tngtech.apicenter.backend.security.CrowdAuthenticationProvider
+import com.tngtech.apicenter.backend.connector.rest.security.CrowdAuthenticationProvider
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
