@@ -1,4 +1,4 @@
-package com.tngtech.apicenter.backend.security
+package com.tngtech.apicenter.backend.connector.rest.security
 
 import com.atlassian.crowd.service.client.CrowdClient
 import org.springframework.beans.factory.annotation.Autowired
