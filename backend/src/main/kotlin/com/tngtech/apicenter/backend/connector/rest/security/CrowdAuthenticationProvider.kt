@@ -19,7 +19,7 @@ class CrowdAuthenticationProvider @Autowired constructor(
             val user = crowdClient.authenticateUser(authentication.name, authentication.credentials.toString())
             val searchUser = User(UUID.randomUUID(), user.name, user.emailAddress, "crowd", user.externalId)
 
-            val storedUser = if (!userHandler.checkExistenceByOrigin(searchUser)) {
+            val storedUser = if (userHandler.checkExistenceByOrigin(searchUser)) {
                 userHandler.findByOrigin(searchUser)
             } else {
                 searchUser
