@@ -1,6 +1,8 @@
 package com.tngtech.apicenter.backend.connector.rest.security
 
 import com.atlassian.crowd.service.client.CrowdClient
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.tngtech.apicenter.backend.domain.entity.User
 import com.tngtech.apicenter.backend.domain.handler.UserHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,9 +35,9 @@ class CrowdAuthenticationProvider @Autowired constructor(
 
             userHandler.store(userToStore)
 
-            return UsernamePasswordAuthenticationToken(user, authentication.credentials)
+            return UsernamePasswordAuthenticationToken(user, null)
         } catch (exception: Exception) {
-            return null;
+            return null
         }
     }
 
