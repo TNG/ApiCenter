@@ -8,14 +8,12 @@ import com.atlassian.crowd.integration.springsecurity.user.CrowdUserDetailsServi
 import com.atlassian.crowd.integration.springsecurity.user.CrowdUserDetailsServiceImpl
 import com.atlassian.crowd.service.client.ClientPropertiesImpl
 import com.atlassian.crowd.service.client.ClientResourceLocator
-import com.tngtech.apicenter.backend.connector.rest.security.CrowdAuthenticationProvider
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthorizationFilter
 import com.tngtech.apicenter.backend.domain.handler.UserHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -39,10 +37,6 @@ class SecurityCrowdConfiguration @Autowired constructor(private val userHandler:
             .and()
             .addFilter(JwtAuthorizationFilter(authenticationManager()))
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    }
-
-    override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.authenticationProvider(crowdAuthenticationProvider())
     }
 
     @Bean
@@ -79,9 +73,6 @@ class SecurityCrowdConfiguration @Autowired constructor(private val userHandler:
         cuds.setCrowdClient(crowdClient());
         return cuds;
     }
-
-    @Bean
-    fun crowdAuthenticationProvider() = CrowdAuthenticationProvider(crowdClient(), userHandler)
 
     @Bean
     override fun authenticationManagerBean() = super.authenticationManagerBean()
