@@ -9,6 +9,7 @@ import com.atlassian.crowd.integration.springsecurity.user.CrowdUserDetailsServi
 import com.atlassian.crowd.service.client.ClientPropertiesImpl
 import com.atlassian.crowd.service.client.ClientResourceLocator
 import com.tngtech.apicenter.backend.connector.rest.security.CrowdAuthenticationProvider
+import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthorizationFilter
 import com.tngtech.apicenter.backend.domain.handler.UserHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.session.HttpSessionEventPublisher
 
@@ -34,6 +36,9 @@ class SecurityCrowdConfiguration @Autowired constructor(private val userHandler:
             .and()
             .authorizeRequests()
             .anyRequest().authenticated()
+            .and()
+            .addFilter(JwtAuthorizationFilter(authenticationManager()))
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {

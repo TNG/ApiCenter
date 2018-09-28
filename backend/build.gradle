@@ -59,6 +59,7 @@ dependencies {
     compile "net.rakugakibox.spring.boot:orika-spring-boot-starter:1.8.0"
     compile "org.hibernate:hibernate-search-orm:5.10.3.Final"
     compile "com.atlassian.crowd:crowd-integration-springsecurity:3.0.1"
+    compile "com.auth0:java-jwt:3.4.0"
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
     testCompile "org.springframework.security:spring-security-test:5.0.8.RELEASE"
