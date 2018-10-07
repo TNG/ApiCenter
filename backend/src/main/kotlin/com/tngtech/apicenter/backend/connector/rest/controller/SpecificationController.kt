@@ -2,7 +2,7 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
-import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationMapper
+import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,23 +23,23 @@ import java.util.UUID
 class SpecificationController @Autowired constructor(
     private val specificationHandler: SpecificationHandler,
     private val synchronizationService: SynchronizationService,
-    private val specificationMapper: SpecificationMapper
+    private val specificationDtoMapper: SpecificationDtoMapper
 ) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun uploadSpecification(@RequestBody specificationFileDto: SpecificationFileDto): SpecificationDto {
-        val specification = specificationMapper.toDomain(specificationFileDto)
+        val specification = specificationDtoMapper.toDomain(specificationFileDto)
 
         specificationHandler.store(specification)
 
-        return specificationMapper.fromDomain(specification)
+        return specificationDtoMapper.fromDomain(specification)
     }
 
     @PutMapping("/{specificationId}")
     fun updateSpecification(@RequestBody specificationFileDto: SpecificationFileDto, @PathVariable specificationId: String): SpecificationDto {
 
-        val specification = specificationMapper.toDomain(
+        val specification = specificationDtoMapper.toDomain(
             SpecificationFileDto(
                 specificationFileDto.fileContent,
                 specificationFileDto.fileUrl,
@@ -49,16 +49,16 @@ class SpecificationController @Autowired constructor(
 
         specificationHandler.store(specification)
 
-        return specificationMapper.fromDomain(specification)
+        return specificationDtoMapper.fromDomain(specification)
     }
 
     @GetMapping
     fun findAllSpecifications(): List<SpecificationDto> =
-        specificationHandler.findAll().map { spec -> specificationMapper.fromDomain(spec) }
+        specificationHandler.findAll().map { spec -> specificationDtoMapper.fromDomain(spec) }
 
     @GetMapping("/{specificationId}")
     fun findSpecification(@PathVariable specificationId: UUID): SpecificationDto =
-        specificationMapper.fromDomain(specificationHandler.findOne(specificationId)!!)
+        specificationDtoMapper.fromDomain(specificationHandler.findOne(specificationId)!!)
 
     @DeleteMapping("/{specificationId}")
     fun deleteSpecification(@PathVariable specificationId: UUID) {
@@ -72,5 +72,5 @@ class SpecificationController @Autowired constructor(
 
     @GetMapping("/search/{searchString}")
     fun searchSpecification(@PathVariable searchString: String): List<SpecificationDto> =
-        specificationHandler.search(searchString).map { spec -> specificationMapper.fromDomain(spec) }
+        specificationHandler.search(searchString).map { spec -> specificationDtoMapper.fromDomain(spec) }
 }

@@ -6,7 +6,6 @@ data class Specification(
     val id: UUID,
     val title: String,
     val description: String?,
-    val version: Version,
-    val content: String,
+    val versions: List<Version>,
     val remoteAddress: String?
 )
