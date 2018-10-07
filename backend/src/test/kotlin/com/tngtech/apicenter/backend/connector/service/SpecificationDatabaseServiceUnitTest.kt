@@ -7,6 +7,8 @@ import com.tngtech.apicenter.backend.connector.database.service.SpecificationDat
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.connector.database.entity.VersionEntity
+import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,8 +24,12 @@ internal class SpecificationDatabaseServiceUnitTest {
 
     private val entityManager: EntityManager = mock()
 
+    private val specificationEntityMapper: SpecificationEntityMapper = mock()
+
     private val specificationDatabaseService: SpecificationDatabaseService =
-        SpecificationDatabaseService(specificationRepository, entityManager)
+        SpecificationDatabaseService(specificationRepository, entityManager, specificationEntityMapper)
+
+    private val versionId = "5aa40ba9-7e26-44de-81ec-f545d1f178aa"
 
     @Test
     fun save_shouldSaveObjects() {
@@ -31,8 +37,7 @@ internal class SpecificationDatabaseServiceUnitTest {
             UUID.fromString("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
             "Description",
-            Version("1.0.0"),
-            "{\"json\": \"true\"}",
+            listOf(Version(UUID.fromString(versionId), "1.0.0", "{\"json\": \"true\"}")),
             "http://swaggerpetstore.com/docs"
         )
 
@@ -40,10 +45,11 @@ internal class SpecificationDatabaseServiceUnitTest {
             UUID.fromString("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
             "Description",
-            "1.0.0",
-            "{\"json\": \"true\"}",
+            listOf(VersionEntity(UUID.fromString(versionId), null,"1.0.0", "{\"json\": \"true\"}")),
             "http://swaggerpetstore.com/docs"
         )
+
+        given(specificationEntityMapper.fromDomain(specification)).willReturn(specificationEntity)
 
         specificationDatabaseService.save(specification)
         verify(specificationRepository).save(specificationEntity)

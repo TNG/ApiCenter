@@ -2,7 +2,7 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
-import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationMapper
+import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import io.swagger.annotations.Api
@@ -26,25 +26,25 @@ import java.util.UUID
 class SpecificationController @Autowired constructor(
     private val specificationHandler: SpecificationHandler,
     private val synchronizationService: SynchronizationService,
-    private val specificationMapper: SpecificationMapper
+    private val specificationDtoMapper: SpecificationDtoMapper
 ) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Upload a new specification, or define a remote specification by its url")
     fun uploadSpecification(@RequestBody specificationFileDto: SpecificationFileDto): SpecificationDto {
-        val specification = specificationMapper.toDomain(specificationFileDto)
+        val specification = specificationDtoMapper.toDomain(specificationFileDto)
 
         specificationHandler.store(specification)
 
-        return specificationMapper.fromDomain(specification)
+        return specificationDtoMapper.fromDomain(specification)
     }
 
     @PutMapping("/{specificationId}")
     @ApiOperation("Update an existing specification")
     fun updateSpecification(@RequestBody specificationFileDto: SpecificationFileDto, @PathVariable specificationId: String): SpecificationDto {
 
-        val specification = specificationMapper.toDomain(
+        val specification = specificationDtoMapper.toDomain(
             SpecificationFileDto(
                 specificationFileDto.fileContent,
                 specificationFileDto.fileUrl,
@@ -54,18 +54,18 @@ class SpecificationController @Autowired constructor(
 
         specificationHandler.store(specification)
 
-        return specificationMapper.fromDomain(specification)
+        return specificationDtoMapper.fromDomain(specification)
     }
 
     @GetMapping
     @ApiOperation("List all existing specifications")
     fun findAllSpecifications(): List<SpecificationDto> =
-        specificationHandler.findAll().map { spec -> specificationMapper.fromDomain(spec) }
+        specificationHandler.findAll().map { spec -> specificationDtoMapper.fromDomain(spec) }
 
     @GetMapping("/{specificationId}")
     @ApiOperation("Find a specific specification by id")
     fun findSpecification(@PathVariable specificationId: UUID): SpecificationDto =
-        specificationMapper.fromDomain(specificationHandler.findOne(specificationId)!!)
+        specificationDtoMapper.fromDomain(specificationHandler.findOne(specificationId)!!)
 
     @DeleteMapping("/{specificationId}")
     @ApiOperation("Delete a specification by id")
@@ -82,5 +82,5 @@ class SpecificationController @Autowired constructor(
     @GetMapping("/search/{searchString}")
     @ApiOperation("Search for specifications by a search string")
     fun searchSpecification(@PathVariable searchString: String): List<SpecificationDto> =
-        specificationHandler.search(searchString).map { spec -> specificationMapper.fromDomain(spec) }
+        specificationHandler.search(searchString).map { spec -> specificationDtoMapper.fromDomain(spec) }
 }
