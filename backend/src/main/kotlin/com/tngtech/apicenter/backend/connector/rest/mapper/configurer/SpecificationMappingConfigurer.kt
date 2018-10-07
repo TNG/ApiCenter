@@ -14,7 +14,6 @@ class SpecificationMappingConfigurer constructor(private val specificationConver
 
     override fun configure(orikaMapperFactory: MapperFactory) {
         orikaMapperFactory.classMap(Specification::class.java, SpecificationDto::class.java)
-            .field("version.version", "version")
             .byDefault()
             .register()
 

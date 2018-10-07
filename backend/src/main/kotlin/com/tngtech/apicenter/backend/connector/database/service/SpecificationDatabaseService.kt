@@ -1,6 +1,7 @@
 package com.tngtech.apicenter.backend.connector.database.service
 
 import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
+import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
@@ -13,17 +14,32 @@ import javax.transaction.Transactional
 @Service
 class SpecificationDatabaseService constructor(
     private val specificationRepository: SpecificationRepository,
-    private val entityManager: EntityManager
+    private val entityManager: EntityManager,
+    private val specificationEntityMapper: SpecificationEntityMapper
 ) : SpecificationPersistenceService {
 
     override fun save(specification: Specification) {
-        specificationRepository.save(SpecificationEntity.fromDomain(specification))
+        val specificationEntity = specificationEntityMapper.fromDomain(specification)
+
+        if (specificationRepository.existsByTitle(specificationEntity.title)) {
+            val existingEntity = specificationRepository.findByTitle(specificationEntity.title)
+
+            val versions = existingEntity.versions + specificationEntity.versions
+            val newEntity = SpecificationEntity(existingEntity.id, existingEntity.title, existingEntity.description, versions, existingEntity.remoteAddress)
+            newEntity.versions.map { versionEntity -> versionEntity.specification = newEntity }
+
+            specificationRepository.save(newEntity)
+        } else {
+            specificationEntity.versions.map { versionEntity -> versionEntity.specification = specificationEntity }
+
+            specificationRepository.save(specificationEntity)
+        }
     }
 
-    override fun findAll(): List<Specification> = specificationRepository.findAll().map { spec -> spec.toDomain() }
+    override fun findAll(): List<Specification> = specificationRepository.findAll().map { spec -> specificationEntityMapper.toDomain(spec) }
 
     override fun findOne(id: UUID): Specification? =
-        specificationRepository.findById(id).map { spec -> spec.toDomain() }.get()
+        specificationRepository.findById(id).map { spec -> specificationEntityMapper.toDomain(spec) }.get()
 
     override fun delete(id: UUID) = specificationRepository.deleteById(id)
 
@@ -43,6 +59,6 @@ class SpecificationDatabaseService constructor(
         val hibernateQuery =
             fullTextEntityManager.createFullTextQuery(specificationQuery, SpecificationEntity::class.java)
 
-        return hibernateQuery.resultList.map { it -> it as SpecificationEntity }.map { it -> it.toDomain() }
+        return hibernateQuery.resultList.map { it -> it as SpecificationEntity }.map { it -> specificationEntityMapper.toDomain(it) }
     }
 }

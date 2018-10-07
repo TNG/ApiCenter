@@ -6,7 +6,6 @@ data class SpecificationDto(
     val id: UUID,
     val title: String,
     val description: String?,
-    val version: String,
-    val content: String,
+    val versions: List<VersionDto>,
     val remoteAddress: String?
 )
