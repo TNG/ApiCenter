@@ -76,6 +76,31 @@ internal class SpecificationControllerIntegrationTest {
     }
 
     @Test
+    fun uploadSpecification_shouldCreateNewVersion() {
+        mockMvc.perform(
+            post("/specifications")
+                .contentType("application/json")
+                .content(
+                    """
+                        | {
+                        |   "fileContent": "{\"info\": {\"title\": \"Spec1\",\"version\": \"v2\"}}"
+                        | }
+                    """.trimMargin()
+                )
+        )
+            .andExpect(status().isCreated)
+            .andExpect(jsonPath("$.title", equalTo("Spec1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
+
+        mockMvc.perform(
+            get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+        )
+            .andExpect(jsonPath("$.title", equalTo("Spec1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("v1")))
+            .andExpect(jsonPath("$.versions[1].version", equalTo("v2")))
+    }
+
+    @Test
     fun updateSpecification_shouldUpdateSpecification() {
         mockMvc.perform(
             put("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
