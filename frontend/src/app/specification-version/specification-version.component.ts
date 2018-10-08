@@ -6,17 +6,17 @@ import * as SwaggerUI from 'swagger-ui';
 
 @Component({
   selector: 'app-specification',
-  templateUrl: './specification.component.html',
-  styleUrls: ['./specification.component.css']
+  templateUrl: './specification-version.component.html',
+  styleUrls: ['./specification-version.component.css']
 })
-export class SpecificationComponent implements OnInit {
+export class SpecificationVersionComponent implements OnInit {
   specification;
 
   constructor(private route: ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit() {
     this.specification = this.route.params.subscribe(params => {
-      this.http.get(environment.apiUrl + '/specifications/' + params['id']).subscribe((data: any[]) => {
+      this.http.get(environment.apiUrl + '/versions/' + params['id']).subscribe((data: any[]) => {
         this.specification = data;
         this.displaySwaggerUi();
       });
