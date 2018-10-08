@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
-import {VersionService} from "../version.service";
+import {VersionService} from '../version.service';
 
 @Component({
   selector: 'app-specification-overview',
