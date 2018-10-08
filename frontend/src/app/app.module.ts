@@ -7,7 +7,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule, Routes} from '@angular/router';
-import {SpecificationComponent} from './specification/specification.component';
+import {SpecificationVersionComponent} from './specification-version/specification-version.component';
 import {SpecificationOverviewComponent} from './specification-overview/specification-overview.component';
 import {SpecificationFormComponent} from './specification-form/specification-form.component';
 import {HeaderComponent} from './header/header.component';
@@ -19,7 +19,7 @@ import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent},
-  {path: 'specifications/:id', component: SpecificationComponent},
+  {path: 'specifications/versions/:id', component: SpecificationVersionComponent},
   {path: 'specifications/form/add', component: SpecificationFormComponent},
   {path: 'specifications/form/edit/:id', component: SpecificationFormComponent},
   {path: 'search', component: SpecificationSearchDetailComponent},
@@ -30,7 +30,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SpecificationComponent,
+    SpecificationVersionComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
     HeaderComponent,
