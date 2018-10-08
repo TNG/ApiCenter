@@ -51,7 +51,7 @@ describe('SpecificationService', () => {
     });
   });
 
-  it('should delete specification', () => {
+  it('should deleteSpecification specification', () => {
     when(mockedHttpClient.delete('http://localhost:8080/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6'))
       .thenReturn(from([]));
 

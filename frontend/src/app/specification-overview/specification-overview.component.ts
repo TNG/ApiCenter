@@ -1,29 +1,40 @@
 import {Component, OnInit} from '@angular/core';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
+import {VersionService} from "../version.service";
 
 @Component({
   selector: 'app-specification-overview',
   templateUrl: './specification-overview.component.html',
   styleUrls: ['./specification-overview.component.css'],
-  providers: [SpecificationService]
+  providers: [SpecificationService, VersionService]
 })
 export class SpecificationOverviewComponent implements OnInit {
   specifications: Specification[];
   error: String;
   expanded: String[] = [];
 
-  constructor(private specificationService: SpecificationService) {
+  constructor(private specificationService: SpecificationService, private versionService: VersionService) {
   }
 
   ngOnInit(): void {
     this.getSpecifications();
   }
 
-  public async delete(specification) {
+  public async deleteSpecification(specification) {
     if (confirm('Are you sure that you want to delete "' + specification.title + '"?')) {
       this.specificationService.deleteSpecification(specification.id)
         .subscribe(event => this.getSpecifications());
+    }
+  }
+
+  public async deleteVersion(version) {
+    if (confirm('Are you sure that you want to delete version "' + version.version + '"?')) {
+      this.versionService.deleteVersion(version.id).subscribe(event => {
+          this.getSpecifications();
+          this.expanded = [];
+        }
+      );
     }
   }
 
