@@ -20,10 +20,12 @@
           <tr class="clickable" data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"
               (click)="switchExpanded(specification)">
             <td>
-              <span class="oi oi-chevron-right"
-                    *ngIf="specification.versions.length > 1 && !expanded.includes(specification.id)"></span>
-              <span class="oi oi-chevron-bottom"
-                    *ngIf="specification.versions.length > 1 && expanded.includes(specification.id)"></span>
+              <span class="oi oi-chevron-right clickable"
+                    *ngIf="specification.versions.length > 1 && !expanded.includes(specification.id)"
+                    data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
+              <span class="oi oi-chevron-bottom clickable"
+                    *ngIf="specification.versions.length > 1 && expanded.includes(specification.id)"
+                    data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
             </td>
             <td><a [routerLink]="['specifications', specification.id]" routerLinkActive="active">{{ specification.title
               }}</a></td>
