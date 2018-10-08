@@ -11,6 +11,7 @@ import {Specification} from '../models/specification';
 export class SpecificationOverviewComponent implements OnInit {
   specifications: Specification[];
   error: String;
+  expanded: String[] = [];
 
   constructor(private specificationService: SpecificationService) {
   }
@@ -29,6 +30,14 @@ export class SpecificationOverviewComponent implements OnInit {
   public async synchronize(specification) {
     return this.specificationService.synchronizeSpecification(specification.id)
       .subscribe(event => this.getSpecifications());
+  }
+
+  public async switchExpanded(specification) {
+    if (this.expanded.includes(specification.id)) {
+      this.expanded.splice(this.expanded.indexOf(specification.id), 1);
+    } else {
+      this.expanded.push(specification.id);
+    }
   }
 
   private async getSpecifications() {

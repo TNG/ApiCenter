@@ -5,14 +5,18 @@ import {Specification} from './models/specification';
 import {from} from 'rxjs/observable/from';
 import 'rxjs/add/operator/catch';
 import {SpecificationFile} from './models/specificationfile';
+import {Version} from './models/version';
 
 describe('SpecificationService', () => {
 
   let specificationService: SpecificationService;
   const mockedHttpClient = mock(HttpClient);
   const httpClient = instance(mockedHttpClient);
-  const specifications = [new Specification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', 'Decription', '1.0', 'Content', null),
-    new Specification('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', 'Description', '1.0', 'Content', 'http://address.com/test.json')];
+  const firstVersions = [new Version('0bb3274f-4d8b-405d-8148-4288bab65289', '1.0', 'Content')];
+  const secondVersions = [new Version('6ede06dc-aaf4-4114-ab21-7b85d4bb8ccd', 'v1', 'Content'),
+    new Version('e33656c3-edff-47b4-8a58-357d2bfa8e46', 'v2', 'Content')];
+  const specifications = [new Specification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', 'Decription', firstVersions, null),
+    new Specification('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', 'Description', secondVersions, 'http://address.com/test.json')];
   const swagger_content = '{\'swagger\': \'2.0\', \'info\': {\'version\': \'1.0.0\',\'title\': \'Swagger Petstore\'}}';
   const specificationFile = new SpecificationFile(swagger_content, null);
 
