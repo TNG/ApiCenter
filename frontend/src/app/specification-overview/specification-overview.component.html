@@ -20,30 +20,28 @@
           <tr class="clickable" data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"
               (click)="switchExpanded(specification)">
             <td>
-              <span class="oi oi-chevron-right clickable"
-                    *ngIf="specification.versions.length > 1 && !expanded.includes(specification.id)"
-                    data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
-              <span class="oi oi-chevron-bottom clickable"
-                    *ngIf="specification.versions.length > 1 && expanded.includes(specification.id)"
-                    data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
+              <span class="oi oi-chevron-right"
+                    *ngIf="specification.versions.length > 1 && !expanded.includes(specification.id)"></span>
+              <span class="oi oi-chevron-bottom"
+                    *ngIf="specification.versions.length > 1 && expanded.includes(specification.id)"></span>
             </td>
-            <td><a [routerLink]="['specifications/versions', specification.versions[0].id]" routerLinkActive="active">{{ specification.title
+            <td><a [routerLink]="['specifications', specification.id]" routerLinkActive="active">{{ specification.title
               }}</a></td>
             <td>{{ specification.versions[0].version }}</td>
             <td>
               <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
                       (click)="synchronize(specification)"></button>
               <button class="btn oi oi-pencil" [routerLink]="['specifications/form/edit', specification.id]"></button>
-              <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
+              <button class="btn oi oi-trash" (click)="delete(specification)"></button>
             </td>
           </tr>
           </tbody>
           <tbody [attr.id]="'versions-' + specification.id" class="collapse" *ngIf="specification.versions.length > 1">
           <tr *ngFor="let version of specification.versions">
             <td></td>
-            <td><a [routerLink]="['specifications/versions', version.id]" routerLinkActive="active">{{ specification.title }}</a></td>
+            <td>{{ specification.title }}</td>
             <td>{{ version.version }}</td>
-            <td><button class="btn oi oi-trash" (click)="deleteVersion(version)"></button></td>
+            <td></td>
           </tr>
           </tbody>
         </ng-container>
