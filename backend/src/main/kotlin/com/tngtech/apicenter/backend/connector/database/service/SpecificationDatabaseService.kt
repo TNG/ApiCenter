@@ -53,7 +53,7 @@ class SpecificationDatabaseService constructor(
         val specificationQueryBuilder =
             fullTextEntityManager.searchFactory.buildQueryBuilder().forEntity(SpecificationEntity::class.java).get()
         val specificationQuery =
-            specificationQueryBuilder.keyword().onFields("title", "description", "version", "content").matching(searchString)
+            specificationQueryBuilder.keyword().onFields("title", "description", "versions.content").matching(searchString)
                 .createQuery()
 
         val hibernateQuery =
