@@ -10,4 +10,6 @@ class VersionHandler constructor(private val versionPersistenceService: VersionP
 
     fun findOne(id: UUID) = versionPersistenceService.findOne(id)
 
+    fun delete(id: UUID) = versionPersistenceService.delete(id)
+
 }
