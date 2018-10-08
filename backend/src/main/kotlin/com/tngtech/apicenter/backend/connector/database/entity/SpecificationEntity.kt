@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.connector.database.entity
 
 import org.hibernate.search.annotations.Field
 import org.hibernate.search.annotations.Indexed
+import org.hibernate.search.annotations.IndexedEmbedded
 import java.util.UUID
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -16,6 +17,9 @@ data class SpecificationEntity(
     @Id @GeneratedValue val id: UUID,
     @Field val title: String,
     @Field @Column(columnDefinition = "TEXT") val description: String?,
-    @OneToMany(mappedBy = "specification", cascade = [CascadeType.ALL]) val versions: List<VersionEntity>,
+    @IndexedEmbedded @OneToMany(
+        mappedBy = "specification",
+        cascade = [CascadeType.ALL]
+    ) val versions: List<VersionEntity>,
     val remoteAddress: String?
 )
