@@ -1,0 +1,390 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "REST API for ApiCenter - a repository for all your OpenAPI specifications",
+    "version": "1.0.0",
+    "title": "ApiCenter REST API",
+    "license": {
+      "name": "Apache License Version 2.0, January 2004"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "specification-controller",
+      "description": "Operations to create, update and maintain specifications"
+    }
+  ],
+  "paths": {
+    "/specifications": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "List all existing specifications",
+        "operationId": "findAllSpecificationsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecificationDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Upload a new specification, or define a remote specification by its url",
+        "operationId": "uploadSpecificationUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "specificationFileDto",
+            "required": true,
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/RemoteSpecificationFileDto"
+                },
+                {
+                  "$ref": "#/components/schemas/LocalSpecificationFileDto"
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecificationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/specifications/search/{searchString}": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Search for specifications by a search string",
+        "operationId": "searchSpecificationUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "path",
+            "description": "searchString",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecificationDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/specifications/{specificationId}": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Find a specific specification by id",
+        "operationId": "findSpecificationUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "specificationId",
+            "in": "path",
+            "description": "specificationId",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecificationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Update an existing specification",
+        "operationId": "updateSpecificationUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "specificationFileDto",
+            "description": "specificationFileDto",
+            "required": true,
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LocalSpecificationFileDto"
+                },
+                {
+                  "$ref": "#/components/schemas/RemoteSpecificationFileDto"
+                }
+              ]
+            }
+          },
+          {
+            "name": "specificationId",
+            "in": "path",
+            "description": "specificationId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecificationDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Delete a specification by id",
+        "operationId": "deleteSpecificationUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "specificationId",
+            "in": "path",
+            "description": "specificationId",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/specifications/{specificationId}/synchronize": {
+      "post": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Synchronize an existing specification with its remote source",
+        "operationId": "synchronizeSpecificationUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "specificationId",
+            "in": "path",
+            "description": "specificationId",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SpecificationDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "remoteAddress": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "title": "SpecificationDto"
+      },
+      "SpecificationFileDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The uuid of an already existing specification",
+            "required": false
+          }
+        },
+        "title": "SpecificationFileDto",
+        "description": "Represents an OpenAPI-File"
+      },
+      "RemoteSpecificationFileDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SpecificationFileDto"
+          }
+        ],
+        "properties": {
+          "fileUrl": {
+            "type": "string",
+            "description": "The url of a remote file to be loaded.",
+            "required": true
+          }
+        }
+      },
+      "LocalSpecificationFileDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SpecificationFileDto"
+          }
+        ],
+        "properties": {
+          "fileContent": {
+            "type": "string",
+            "description": "The content of a file to be uploaded.",
+            "required": true
+          }
+        }
+      }
+    }
+  }
+}
