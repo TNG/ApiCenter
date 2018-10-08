@@ -34,7 +34,7 @@
               <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
                       (click)="synchronize(specification)"></button>
               <button class="btn oi oi-pencil" [routerLink]="['specifications/form/edit', specification.id]"></button>
-              <button class="btn oi oi-trash" (click)="delete(specification)"></button>
+              <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
             </td>
           </tr>
           </tbody>
@@ -43,7 +43,7 @@
             <td></td>
             <td><a [routerLink]="['specifications/versions', version.id]" routerLinkActive="active">{{ specification.title }}</a></td>
             <td>{{ version.version }}</td>
-            <td></td>
+            <td><button class="btn oi oi-trash" (click)="deleteVersion(version)"></button></td>
           </tr>
           </tbody>
         </ng-container>
