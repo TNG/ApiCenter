@@ -5,4 +5,5 @@ import java.util.UUID
 
 interface VersionPersistenceService {
     fun findOne(id: UUID): Version
+    fun delete(id: UUID)
 }
