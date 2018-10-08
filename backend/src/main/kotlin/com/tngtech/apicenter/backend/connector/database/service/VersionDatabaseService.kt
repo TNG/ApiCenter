@@ -15,4 +15,8 @@ class VersionDatabaseService constructor(
 
     override fun findOne(id: UUID): Version =
         versionRepository.findById(id).map { version -> versionEntityMapper.toDomain(version) }.get()
+
+    override fun delete(id: UUID) {
+        versionRepository.deleteById(id)
+    }
 }
