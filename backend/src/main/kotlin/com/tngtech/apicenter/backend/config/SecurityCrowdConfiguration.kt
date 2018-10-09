@@ -22,6 +22,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.session.HttpSessionEventPublisher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 
 @EnableWebSecurity
 @Configuration
@@ -30,6 +33,8 @@ class SecurityCrowdConfiguration @Autowired constructor(private val userHandler:
 
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity
+            .cors()
+            .and()
             .csrf().disable()
             .authorizeRequests()
             .antMatchers("/sessions").permitAll()
