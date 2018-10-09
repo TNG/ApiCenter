@@ -12,7 +12,5 @@ data class JwtAuthenticationToken(val userId: String, val token: String) : Abstr
 
     override fun getCredentials() = "N/A"
 
-    override fun getPrincipal(): String = name
-
-    override fun getName() = principal
+    override fun getPrincipal() = null
 }
