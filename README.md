@@ -14,6 +14,26 @@ To install angular CLI, enter `npm install -g @angular/cli`
 
 ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo.
 
+### Prerequisites
+#### Atlassian Crowd
+ApiCenter currently requires Atlassian Crowd as an authentication provider. In order to make this work, you need to [add ApiCenter
+as an external application in Atlassian Crowd](https://confluence.atlassian.com/crowd/adding-an-application-18579591.html#AddinganApplication-add) and configure
+the following files within ApiCenter:
+
+- `backend/src/main/resources/crowd.properties`
+```
+application.name=### Set the name of the application as specified in the Atlassian Crowd Console ###
+application.password=### Set the password of the application as specified in the Atlassian Crowd Console ###
+crowd.server.url=### Set the URL to the Atlassian Crowd Server service-endpoint, e.g. http://localhost:8095/crowd/services/ ###
+```
+
+- `backend/src/main/resources/application.properties`
+```
+jwt.secret=### Define a secret that is used to sign JWTs ###
+```
+
+We plan to add OAuth 2 support shortly.
+
 ### Backend
 In order to start the backend, clone the repo, navigate to the `backend` folder and start the service with the familiar Spring Boot command:
 ```
