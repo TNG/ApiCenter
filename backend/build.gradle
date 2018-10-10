@@ -31,8 +31,6 @@ plugins {
 group 'com.tngtech.apicenter'
 version '1.0.0-SNAPSHOT'
 
-
-
 bootJar {
     manifest {
         attributes 'License': 'Apache License Version 2.0, January 2004'
@@ -67,4 +65,25 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+}
+
+sourceSets {
+    integrationTest {
+        kotlin {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/kotlin')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
 }

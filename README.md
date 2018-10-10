@@ -31,7 +31,11 @@ ng serve
 
 ## Running the tests
 
-Running the included tests is simply `./gradlew test` for the backend and `ng test` for the frontend
+### Backend
+Running the backend tests is `./gradlew test` for all Unit-Tests and `./gradlew integrationTest` for all Integration-Tests.
+
+### Frontend
+Running all frontend tests is simply `ng test`.
 
 ## Built with
 - [Gradle](https://gradle.org/)
