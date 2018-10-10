@@ -8,7 +8,7 @@ describe('SessionService', () => {
   let sessionService: SessionService;
   const mockedHttpClient = mock(HttpClient);
   const httpClient = instance(mockedHttpClient);
-  const token = new SessionToken('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9');
+  const token = new SessionToken('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9', 'username');
   const loginReq = { username: 'username', password: 'password' };
 
   beforeEach(() => {
