@@ -9,7 +9,7 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JwtAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenticationFilter(authManager) {
+class JwtAuthorizationFilter(authManager: AuthenticationManager, private val jwtSecuritySecret: String) : BasicAuthenticationFilter(authManager) {
 
     override fun doFilterInternal(
         req: HttpServletRequest,
@@ -23,7 +23,7 @@ class JwtAuthorizationFilter(authManager: AuthenticationManager) : BasicAuthenti
             return
         }
 
-        val user = JWT.require(Algorithm.HMAC512("ApiCenterSecuritySecret".toByteArray()))
+        val user = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
             .build()
             .verify(header.replace("Bearer ", ""))
             .subject
