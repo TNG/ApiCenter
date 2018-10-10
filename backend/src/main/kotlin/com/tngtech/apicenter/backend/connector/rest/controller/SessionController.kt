@@ -6,6 +6,7 @@ import com.tngtech.apicenter.backend.connector.rest.dto.LoginDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SessionDto
 import com.tngtech.apicenter.backend.domain.handler.SessionHandler
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/sessions")
 class SessionController @Autowired constructor(private val sessionHandler: SessionHandler) {
 
+    @Value("\${jwt.secret}")
+    private lateinit var jwtSecuritySecret: String
+
     @PostMapping
     fun login(@RequestBody loginDto: LoginDto): ResponseEntity<SessionDto> {
         val user = sessionHandler.authenticate(loginDto.username, loginDto.password)
@@ -24,7 +28,7 @@ class SessionController @Autowired constructor(private val sessionHandler: Sessi
 
         val jwt = JWT.create()
             .withSubject(user.username)
-            .sign(Algorithm.HMAC512("ApiCenterSecuritySecret".toByteArray()))
+            .sign(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
 
         return ResponseEntity.ok(SessionDto("Bearer $jwt", user.username))
     }

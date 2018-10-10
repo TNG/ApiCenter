@@ -12,6 +12,7 @@ import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationPr
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthorizationFilter
 import com.tngtech.apicenter.backend.domain.handler.UserHandler
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -31,6 +32,9 @@ import org.springframework.web.filter.CorsFilter
 class SecurityCrowdConfiguration @Autowired constructor(private val userHandler: UserHandler) :
     WebSecurityConfigurerAdapter() {
 
+    @Value("\${jwt.secret}")
+    private lateinit var jwtSecuritySecret: String;
+
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity
             .cors()
@@ -42,7 +46,7 @@ class SecurityCrowdConfiguration @Autowired constructor(private val userHandler:
             .authorizeRequests()
             .anyRequest().authenticated()
             .and()
-            .addFilter(JwtAuthorizationFilter(authenticationManager()))
+            .addFilter(JwtAuthorizationFilter(authenticationManager(), jwtSecuritySecret))
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
