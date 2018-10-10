@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginEvent} from '../login.event';
+import {Router} from '@angular/router';
+import {SessionToken} from '../models/sessiontoken';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +12,7 @@ export class HeaderComponent implements OnInit {
   username: string;
 
 
-  constructor(private loginEvent: LoginEvent) {
+  constructor(private loginEvent: LoginEvent, private router: Router) {
   }
 
   ngOnInit() {
@@ -21,6 +23,15 @@ export class HeaderComponent implements OnInit {
     }
 
     this.loginEvent.getValue().subscribe((token) => this.username = token.username);
+  }
+
+  public logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+
+    this.loginEvent.changeValue(new SessionToken('', ''));
+
+    this.router.navigate(['/login']);
   }
 
 }
