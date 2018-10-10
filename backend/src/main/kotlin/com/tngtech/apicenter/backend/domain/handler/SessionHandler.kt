@@ -25,7 +25,7 @@ class SessionHandler constructor(
             storedUser
         }
 
-        userHandler.store(userToStore)
+        if (userHandler.checkExistenceByOrigin(searchUser)) userHandler.store(userToStore)
 
         return userToStore
     }
