@@ -17,8 +17,9 @@ import {HighlightSearchResultPipe} from './pipes/highlight-search-result.pipe';
 import {TrimSearchResultPipe} from './pipes/trim-search-result.pipe';
 import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
 import { LoginComponent } from './login/login.component';
-import {AuthenticationGuard} from "./guards/authentication.guard";
-import {TokenInterceptor} from "./interceptors/token.interceptor";
+import {AuthenticationGuard} from './guards/authentication.guard';
+import {TokenInterceptor} from './interceptors/token.interceptor';
+import {LoginEvent} from './login.event';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
   ],
   providers: [
     AuthenticationGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    LoginEvent
   ],
   bootstrap: [AppComponent]
 })
