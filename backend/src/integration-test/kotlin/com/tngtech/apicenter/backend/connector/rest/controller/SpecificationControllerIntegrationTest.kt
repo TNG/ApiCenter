@@ -65,13 +65,13 @@ internal class SpecificationControllerIntegrationTest {
                 .content(
                     """
                             | {
-                            |   "fileContent": "openapi: \"3.0.0\"\r\ninfo:\r\n  version: \"1.0\"\r\n  title: Spec"
+                            |   "fileContent": "openapi: \"3.0.0\"\r\ninfo:\r\n  version: \"1.0\"\r\n  title: YamlSpec"
                             | }
                             """.trimMargin()
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.title", equalTo("Spec")))
+            .andExpect(jsonPath("$.title", equalTo("YamlSpec")))
             .andExpect(jsonPath("$.versions[0].version", equalTo("1.0")))
     }
 
@@ -109,20 +109,20 @@ internal class SpecificationControllerIntegrationTest {
                             """
                             | {
                             |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
-                            |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"v1\"}}"
+                            |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"vX\"}}"
                             | }
                             """.trimMargin()
                 )
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("v1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
 
         mockMvc.perform(
             get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
         )
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("v1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
     }
 
     @Test
