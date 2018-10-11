@@ -6,7 +6,7 @@ import {SpecificationFile} from './models/specificationfile';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import {throwError} from 'rxjs/index';
+import {throwError} from "rxjs";
 
 @Injectable()
 export class SpecificationService {

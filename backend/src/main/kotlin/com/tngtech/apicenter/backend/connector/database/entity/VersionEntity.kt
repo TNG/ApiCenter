@@ -11,9 +11,16 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.ManyToOne
 import javax.persistence.PrePersist
+import javax.persistence.Table
+import javax.persistence.UniqueConstraint
 
 @Entity
 @Indexed
+@Table(
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["version", "specification_id"])
+    ]
+)
 data class VersionEntity(
     @Id @GeneratedValue val id: UUID,
     @ContainedIn @ManyToOne var specification: SpecificationEntity?,

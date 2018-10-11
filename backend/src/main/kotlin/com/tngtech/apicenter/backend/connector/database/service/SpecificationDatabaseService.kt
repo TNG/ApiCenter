@@ -7,6 +7,9 @@ import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.hibernate.search.jpa.Search
 import org.springframework.stereotype.Service
+import java.lang.Exception
+import java.lang.IllegalArgumentException
+import java.sql.SQLException
 import java.util.UUID
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
@@ -26,13 +29,10 @@ class SpecificationDatabaseService constructor(
 
             val versions = existingEntity.versions + specificationEntity.versions
             val newEntity = SpecificationEntity(existingEntity.id, existingEntity.title, existingEntity.description, versions, existingEntity.remoteAddress)
-            newEntity.versions.map { versionEntity -> versionEntity.specification = newEntity }
 
-            specificationRepository.save(newEntity)
+            mapAndStoreEntity(newEntity)
         } else {
-            specificationEntity.versions.map { versionEntity -> versionEntity.specification = specificationEntity }
-
-            specificationRepository.save(specificationEntity)
+            mapAndStoreEntity(specificationEntity)
         }
     }
 
@@ -60,5 +60,15 @@ class SpecificationDatabaseService constructor(
             fullTextEntityManager.createFullTextQuery(specificationQuery, SpecificationEntity::class.java)
 
         return hibernateQuery.resultList.map { it -> it as SpecificationEntity }.map { it -> specificationEntityMapper.toDomain(it) }
+    }
+
+    private fun mapAndStoreEntity(specificationEntity: SpecificationEntity) {
+        specificationEntity.versions.map { versionEntity -> versionEntity.specification = specificationEntity }
+
+        try {
+            specificationRepository.save(specificationEntity)
+        } catch (sqlException: Exception) {
+            throw IllegalArgumentException("This version already exists for specification ${specificationEntity.title}.", sqlException)
+        }
     }
 }
