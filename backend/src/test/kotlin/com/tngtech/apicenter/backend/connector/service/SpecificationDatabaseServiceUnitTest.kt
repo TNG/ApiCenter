@@ -45,7 +45,7 @@ internal class SpecificationDatabaseServiceUnitTest {
             UUID.fromString("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
             "Description",
-            listOf(VersionEntity(UUID.fromString(versionId), null,"1.0.0", "{\"json\": \"true\"}")),
+            listOf(VersionEntity(UUID.fromString(versionId), null,"1.0.0", "{\"json\": \"true\"}", null)),
             "http://swaggerpetstore.com/docs"
         )
 

@@ -96,8 +96,8 @@ internal class SpecificationControllerIntegrationTest {
             get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
         )
             .andExpect(jsonPath("$.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("v1")))
-            .andExpect(jsonPath("$.versions[1].version", equalTo("v2")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
+            .andExpect(jsonPath("$.versions[1].version", equalTo("v1")))
     }
 
     @Test
