@@ -26,12 +26,11 @@ plugins {
     id "org.springframework.boot" version "2.0.4.RELEASE"
     id "com.github.ben-manes.versions" version "0.20.0"
     id "com.diffplug.gradle.spotless" version "3.14.0"
+    id "info.solidsoft.pitest" version "1.3.0"
 }
 
 group 'com.tngtech.apicenter'
 version '1.0.0-SNAPSHOT'
-
-
 
 bootJar {
     manifest {
@@ -67,4 +66,25 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+}
+
+sourceSets {
+    integrationTest {
+        kotlin {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/kotlin')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
 }
