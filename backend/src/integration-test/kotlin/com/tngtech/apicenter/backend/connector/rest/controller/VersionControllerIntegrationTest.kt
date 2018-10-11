@@ -29,7 +29,7 @@ class VersionControllerIntegrationTest {
 
     @Test
     fun deleteVersion_shouldDeleteVersion() {
-        mockMvc.perform(delete("/specifications/af0502a2-7410-40e4-90fd-3504f67de1ee/versions/1.1"))
+        mockMvc.perform(delete("/specifications/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/versions/v2"))
             .andExpect(status().isOk)
     }
 }
