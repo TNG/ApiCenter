@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {Specification} from "./models/specification";
-import {Observable, throwError} from "rxjs";
-import {Version} from "./models/version";
+import {environment} from '../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {Specification} from './models/specification';
+import {Observable, throwError} from 'rxjs';
+import {Version} from './models/version';
 
 @Injectable()
 export class VersionService {

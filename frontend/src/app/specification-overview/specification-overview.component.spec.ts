@@ -4,7 +4,7 @@ import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
 import {from} from 'rxjs/observable/from';
 import {Version} from '../models/version';
-import {VersionService} from "../version.service";
+import {VersionService} from '../version.service';
 
 describe('SpecificationOverviewComponent', () => {
 
