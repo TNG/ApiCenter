@@ -1,10 +1,8 @@
 export class Version {
-  id: string;
   version: string;
   content: string;
 
-  constructor(id: string, version: string, content: string) {
-    this.id = id;
+  constructor(version: string, content: string) {
     this.version = version;
     this.content = content;
   }

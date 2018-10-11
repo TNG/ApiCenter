@@ -19,7 +19,7 @@ import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent},
-  {path: 'specifications/versions/:id', component: SpecificationVersionComponent},
+  {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent},
   {path: 'specifications/form/add', component: SpecificationFormComponent},
   {path: 'specifications/form/edit/:id', component: SpecificationFormComponent},
   {path: 'search', component: SpecificationSearchDetailComponent},

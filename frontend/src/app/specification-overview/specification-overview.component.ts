@@ -28,9 +28,9 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  public async deleteVersion(version) {
+  public async deleteVersion(specification, version) {
     if (confirm('Are you sure that you want to delete version "' + version.version + '"?')) {
-      this.versionService.deleteVersion(version.id).subscribe(event => {
+      this.versionService.deleteVersion(specification.id, version.version).subscribe(event => {
           this.getSpecifications();
           this.expanded = [];
         }

@@ -13,7 +13,7 @@ describe('SpecificationOverviewComponent', () => {
   const specificationService = instance(mockedSpecificationService);
   const mockedVersionService = mock(VersionService);
   const versionService = instance(mockedVersionService);
-  const versions = [new Version('0bb3274f-4d8b-405d-8148-4288bab65289', '1.0', 'Content')];
+  const versions = [new Version('1.0', 'Content')];
   const specification = new Specification('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', versions, null);
 
   beforeEach(() => {

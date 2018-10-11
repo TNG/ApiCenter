@@ -8,17 +8,17 @@ import {Version} from './models/version';
 @Injectable()
 export class VersionService {
 
-  private versionUrl = environment.apiUrl + '/versions';
+  private versionUrl = environment.apiUrl + '/specifications';
 
   constructor(private http: HttpClient) { }
 
-  public getVersion(versionId: string) {
-    return this.http.get<Version>(this.versionUrl + '/' + versionId)
+  public getVersion(specificationId: string, version: string) {
+    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public deleteVersion(versionId: string): Observable<Version> {
-    return this.http.delete<Version>(this.versionUrl + '/' + versionId)
+  public deleteVersion(specificationId: string, version: string): Observable<Version> {
+    return this.http.delete<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 }

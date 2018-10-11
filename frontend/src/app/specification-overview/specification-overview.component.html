@@ -27,7 +27,7 @@
                     *ngIf="specification.versions.length > 1 && expanded.includes(specification.id)"
                     data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
             </td>
-            <td><a [routerLink]="['specifications/versions', specification.versions[0].id]" routerLinkActive="active">{{ specification.title
+            <td><a [routerLink]="['specifications/', specification.id, specification.versions[0].version]" routerLinkActive="active">{{ specification.title
               }}</a></td>
             <td>{{ specification.versions[0].version }}</td>
             <td>
@@ -41,9 +41,9 @@
           <tbody [attr.id]="'versions-' + specification.id" class="collapse" *ngIf="specification.versions.length > 1">
           <tr *ngFor="let version of specification.versions">
             <td></td>
-            <td><a [routerLink]="['specifications/versions', version.id]" routerLinkActive="active">{{ specification.title }}</a></td>
+            <td><a [routerLink]="['specifications/', specification.id, version.version]" routerLinkActive="active">{{ specification.title }}</a></td>
             <td>{{ version.version }}</td>
-            <td><button class="btn oi oi-trash" (click)="deleteVersion(version)"></button></td>
+            <td><button class="btn oi oi-trash" (click)="deleteVersion(specification, version)"></button></td>
           </tr>
           </tbody>
         </ng-container>
