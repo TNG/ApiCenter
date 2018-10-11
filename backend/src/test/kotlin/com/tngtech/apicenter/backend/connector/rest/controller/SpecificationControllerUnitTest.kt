@@ -44,14 +44,14 @@ internal class SpecificationControllerUnitTest {
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(Version(UUID.fromString(UUID_STRING), "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(VersionDto(UUID.fromString(UUID_STRING), "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
 
@@ -75,14 +75,14 @@ internal class SpecificationControllerUnitTest {
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(Version(UUID.fromString(UUID_STRING), "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(VersionDto(UUID.fromString(UUID_STRING), "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
 
@@ -98,7 +98,7 @@ internal class SpecificationControllerUnitTest {
                 UUID.fromString(UUID_STRING),
                 "Swagger Petstore",
                 "Description",
-                listOf(VersionDto(UUID.fromString(UUID_STRING), "1.0.0", SWAGGER_SPECIFICATION)),
+                listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
                 null
             )
         )
@@ -112,14 +112,14 @@ internal class SpecificationControllerUnitTest {
             uuid,
             "Test",
             "Description",
-            listOf(Version(UUID.fromString(UUID_STRING), "v2", SWAGGER_SPECIFICATION)),
+            listOf(Version("v2", SWAGGER_SPECIFICATION)),
             "http://swaggerpetstore.com/docs"
         )
         val specificationDto = SpecificationDto(
             uuid,
             "Test",
             "Description",
-            listOf(VersionDto(UUID.fromString(UUID_STRING), "v2", SWAGGER_SPECIFICATION)),
+            listOf(VersionDto("v2", SWAGGER_SPECIFICATION)),
             "http://swaggerpetstore.com/docs"
         )
 
@@ -131,7 +131,7 @@ internal class SpecificationControllerUnitTest {
                     uuid,
                     "Test",
                     "Description",
-                    listOf(Version(UUID.fromString(UUID_STRING), "v2", SWAGGER_SPECIFICATION)),
+                    listOf(Version("v2", SWAGGER_SPECIFICATION)),
                     "http://swaggerpetstore.com/docs"
                 )
             )
@@ -141,7 +141,7 @@ internal class SpecificationControllerUnitTest {
             SpecificationDto(
                 uuid, "Test",
                 "Description",
-                listOf(VersionDto(UUID.fromString(UUID_STRING), "v2", SWAGGER_SPECIFICATION)),
+                listOf(VersionDto("v2", SWAGGER_SPECIFICATION)),
                 "http://swaggerpetstore.com/docs"
             )
         )

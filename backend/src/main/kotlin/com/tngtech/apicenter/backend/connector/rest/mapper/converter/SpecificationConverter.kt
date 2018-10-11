@@ -36,7 +36,7 @@ class SpecificationConverter constructor(
             uuid,
             specificationDataService.readTitle(content),
             specificationDataService.readDescription(content),
-            listOf(Version(UUID.randomUUID(), specificationDataService.readVersion(content), content)),
+            listOf(Version(specificationDataService.readVersion(content), content)),
             specificationFileDto.fileUrl
         )
     }

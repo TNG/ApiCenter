@@ -36,14 +36,14 @@ class SynchronizationServiceTest {
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore",
             "Description",
-            listOf(Version(UUID.fromString(VERSION_ID), "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             REMOTE_ADDRESS
         )
         val updatedSpecification = Specification(
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore 2",
             "Description",
-            listOf(Version(UUID.fromString(VERSION_ID), "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             REMOTE_ADDRESS
         )
 

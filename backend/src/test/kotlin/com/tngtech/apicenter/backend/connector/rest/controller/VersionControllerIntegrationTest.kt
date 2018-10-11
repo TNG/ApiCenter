@@ -23,14 +23,13 @@ class VersionControllerIntegrationTest {
 
     @Test
     fun findOneVersion_shouldReturnVersion() {
-        mockMvc.perform(get("/versions/ec8938e6-d5dd-4378-afbe-91b46e431e3c"))
+        mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1"))
             .andExpect(jsonPath("$.version", equalTo("v1")))
-            .andExpect(jsonPath("$.id", equalTo("ec8938e6-d5dd-4378-afbe-91b46e431e3c")))
     }
 
     @Test
     fun deleteVersion_shouldDeleteVersion() {
-        mockMvc.perform(delete("/versions/852676cf-c19d-4ab7-a176-0b019e0f9cb2"))
+        mockMvc.perform(delete("/specifications/af0502a2-7410-40e4-90fd-3504f67de1ee/versions/1.1"))
             .andExpect(status().isOk)
     }
 }

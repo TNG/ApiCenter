@@ -25,7 +25,7 @@ class SynchronizationService constructor(
         val versions = if (specification.versions.find { version -> version.version == versionString } != null) {
             specification.versions
         } else {
-            specification.versions + Version(UUID.randomUUID(), versionString, content)
+            specification.versions + Version(versionString, content)
         }
 
         val newSpecification = Specification(

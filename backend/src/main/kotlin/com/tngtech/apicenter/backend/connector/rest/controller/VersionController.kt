@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/versions")
 class VersionController constructor(private val versionHandler: VersionHandler, private val versionDtoMapper: VersionDtoMapper) {
 
-    @GetMapping("/{versionId}")
-    fun findVersion(@PathVariable versionId: UUID): VersionDto = versionDtoMapper.fromDomain(versionHandler.findOne(versionId))
+    @GetMapping("/specifications/{specificationId}/versions/{version}")
+    fun findVersion(@PathVariable specificationId: UUID, @PathVariable version: String): VersionDto = versionDtoMapper.fromDomain(versionHandler.findOne(specificationId, version))
 
-    @DeleteMapping("/{versionId}")
-    fun deleteVersion(@PathVariable versionId: UUID) {
-        versionHandler.delete(versionId)
+    @DeleteMapping("/specifications/{specificationId}/versions/{version}")
+    fun deleteVersion(@PathVariable specificationId: UUID, @PathVariable version: String) {
+        versionHandler.delete(specificationId, version)
     }
 }

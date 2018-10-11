@@ -8,8 +8,8 @@ import java.util.UUID
 @Component
 class VersionHandler constructor(private val versionPersistenceService: VersionPersistenceService) {
 
-    fun findOne(id: UUID) = versionPersistenceService.findOne(id)
+    fun findOne(specificationId: UUID, version: String) = versionPersistenceService.findOne(specificationId, version)
 
-    fun delete(id: UUID) = versionPersistenceService.delete(id)
+    fun delete(specificationId: UUID, version: String) = versionPersistenceService.delete(specificationId, version)
 
 }

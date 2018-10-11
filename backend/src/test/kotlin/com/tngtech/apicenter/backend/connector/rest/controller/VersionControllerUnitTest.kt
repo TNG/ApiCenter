@@ -19,25 +19,25 @@ internal class VersionControllerUnitTest {
 
     private val versionController = VersionController(versionHandler, versionDtoMapper)
 
-    private val versionId = "7de07d27-eedb-4290-881a-6a402a81dd0f"
+    private val specificationId = UUID.fromString("7de07d27-eedb-4290-881a-6a402a81dd0f")
 
-    private val version = Version(UUID.fromString(versionId), "1.0", "Content")
+    private val version = Version("1.0", "Content")
 
-    private val versionDto = VersionDto(UUID.fromString(versionId), "1.0", "Content")
+    private val versionDto = VersionDto("1.0", "Content")
 
     @Test
     fun findOne_shouldReturnVersionDto() {
-        given(versionHandler.findOne(UUID.fromString(versionId))).willReturn(version)
+        given(versionHandler.findOne(specificationId, "1.0")).willReturn(version)
         given(versionDtoMapper.fromDomain(version)).willReturn(versionDto)
 
-        assertThat(versionController.findVersion(UUID.fromString(versionId))).isEqualTo(versionDto)
+        assertThat(versionController.findVersion(specificationId, "1.0")).isEqualTo(versionDto)
     }
 
     @Test
     fun delete_shouldDeleteVersion() {
-        versionController.deleteVersion(UUID.fromString(versionId))
+        versionController.deleteVersion(specificationId, "1.0")
 
-        verify(versionHandler).delete(UUID.fromString(versionId))
+        verify(versionHandler).delete(specificationId, "1.0")
     }
 
 }

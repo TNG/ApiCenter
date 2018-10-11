@@ -1,6 +1,7 @@
 package com.tngtech.apicenter.backend.connector.database.mapper.converter
 
 import com.tngtech.apicenter.backend.connector.database.entity.VersionEntity
+import com.tngtech.apicenter.backend.connector.database.entity.VersionId
 import com.tngtech.apicenter.backend.domain.entity.Version
 import ma.glasnost.orika.CustomConverter
 import ma.glasnost.orika.MappingContext
@@ -14,5 +15,5 @@ class VersionConverter : CustomConverter<Version, VersionEntity>() {
         source: Version,
         destinationType: Type<out VersionEntity>,
         mappingContext: MappingContext
-    ): VersionEntity = VersionEntity(source.id, null, source.version, source.content, null)
+    ): VersionEntity = VersionEntity(VersionId(null, source.version), source.content, null, null)
 }

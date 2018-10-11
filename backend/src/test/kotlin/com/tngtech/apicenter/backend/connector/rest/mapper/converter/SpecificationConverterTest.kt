@@ -46,7 +46,7 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            listOf(Version(specification.versions[0].id, "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             ""
         )
 
@@ -77,7 +77,7 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            listOf(Version(specification.versions[0].id, "1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             SWAGGER_REMOTE
         )
 
