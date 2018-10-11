@@ -10,6 +10,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.OneToMany
+import javax.persistence.OrderBy
 
 @Entity
 @Indexed
@@ -20,6 +21,6 @@ data class SpecificationEntity(
     @IndexedEmbedded @OneToMany(
         mappedBy = "specification",
         cascade = [CascadeType.ALL]
-    ) val versions: List<VersionEntity>,
+    ) @OrderBy("created DESC") val versions: List<VersionEntity>,
     val remoteAddress: String?
 )
