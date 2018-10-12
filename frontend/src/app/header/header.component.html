@@ -1,10 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <span class="navbar-brand mb-0 h1">ApiCenter</span>
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-light">
+  <span class="navbar-brand">ApiCenter</span>
 
-  <ul class="navbar-nav">
+  <ul class="navbar-nav mr-auto" *ngIf="username">
     <li class="nav-item"><a routerLink="/">Home</a></li>
   </ul>
-  <div class="form-inline my-2 my-lg-0 ml-auto">
-    <app-specification-search></app-specification-search>
+  <div class="form-inline my-2 my-lg-0">
+    <div class="mr-sm-2" *ngIf="username">
+      <app-specification-search></app-specification-search>
+    </div>
+    <div class="dropdown my-2 my-sm-0" *ngIf="username">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+        <span class="oi oi-person"></span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <button class="dropdown-item" type="button">{{ username }}</button>
+        <button class="dropdown-item" type="button" (click)="logout()">Logout</button>
+      </div>
+    </div>
   </div>
 </nav>

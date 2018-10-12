@@ -13,6 +13,7 @@ class WebConfiguration {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(corsRegistry: CorsRegistry) {
                 corsRegistry.addMapping("/**").allowedOrigins("*").allowedMethods("*")
+                    .allowedHeaders("*")
             }
         }
     }

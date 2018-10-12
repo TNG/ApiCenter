@@ -6,9 +6,30 @@ ApiCenter is a repository for all your OpenAPI specifications. You can upload ne
 
 ## Prerequisites
 
-To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a relational database, for example PostgreSQL.
+### General
+
+To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a relational database, for example PostgreSQL. It provides an in-memory database if not configured otherwise.
 
 To install angular CLI, enter `npm install -g @angular/cli`
+
+### Atlassian Crowd
+ApiCenter currently requires Atlassian Crowd as an authentication provider. In order to make this work, you need to [add ApiCenter
+as an external application in Atlassian Crowd](https://confluence.atlassian.com/crowd/adding-an-application-18579591.html#AddinganApplication-add) and configure
+the following files within ApiCenter:
+
+- `backend/src/main/resources/crowd.properties`
+```
+application.name=### Set the name of the application as specified in the Atlassian Crowd Console ###
+application.password=### Set the password of the application as specified in the Atlassian Crowd Console ###
+crowd.server.url=### Set the URL to the Atlassian Crowd Server service-endpoint, e.g. http://localhost:8095/crowd/services/ ###
+```
+
+- `backend/src/main/resources/application.properties`
+```
+jwt.secret=### Define a secret that is used to sign JWTs ###
+```
+
+We plan to add OAuth 2 support shortly.
 
 ## Getting started
 

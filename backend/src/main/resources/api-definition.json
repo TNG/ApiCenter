@@ -27,6 +27,16 @@
         "produces": [
           "*/*"
         ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -77,6 +87,14 @@
                 }
               ]
             }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -117,6 +135,14 @@
             "description": "searchString",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -161,6 +187,14 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -218,6 +252,14 @@
             "description": "specificationId",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -260,6 +302,14 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -297,6 +347,14 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -314,6 +372,43 @@
           }
         },
         "deprecated": false
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": [
+          "session-controller"
+        ],
+        "summary": "Create a new session to log in to the service",
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "description": "The user credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created - the user was successfully logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - the credentials of the user were rejected."
+          }
+        }
       }
     }
   },
@@ -382,6 +477,34 @@
             "type": "string",
             "description": "The content of a file to be uploaded.",
             "required": true
+          }
+        }
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The username of the user.",
+            "required": true
+          },
+          "password": {
+            "type": "string",
+            "description": "The password of the user.",
+            "required: true"
+          }
+        }
+      },
+      "SessionDto": {
+        "type": "string",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "The JWT that can be used to authenticate user requests."
+          },
+          "username": {
+            "type": "string",
+            "description": "The username of the logged in user."
           }
         }
       }

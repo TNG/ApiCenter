@@ -3,8 +3,8 @@ import {NgModule} from '@angular/core';
 
 
 import {AppComponent} from './app.component';
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule, Routes} from '@angular/router';
 import {SpecificationVersionComponent} from './specification-version/specification-version.component';
@@ -16,14 +16,19 @@ import {SpecificationSearchDetailComponent} from './specification-search-detail/
 import {HighlightSearchResultPipe} from './pipes/highlight-search-result.pipe';
 import {TrimSearchResultPipe} from './pipes/trim-search-result.pipe';
 import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
+import { LoginComponent } from './login/login.component';
+import {AuthenticationGuard} from './guards/authentication.guard';
+import {TokenInterceptor} from './interceptors/token.interceptor';
+import {LoginEvent} from './login.event';
 
 const appRoutes: Routes = [
-  {path: '', component: SpecificationOverviewComponent},
-  {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent},
-  {path: 'specifications/form/add', component: SpecificationFormComponent},
-  {path: 'specifications/form/edit/:id', component: SpecificationFormComponent},
-  {path: 'search', component: SpecificationSearchDetailComponent},
-  {path: 'search/:searchString', component: SpecificationSearchDetailComponent}
+  {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/form/add', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/form/edit/:id', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
+  {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
+  {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
+  {path: 'login', component: LoginComponent}
 ];
 
 
@@ -38,18 +43,24 @@ const appRoutes: Routes = [
     SpecificationSearchDetailComponent,
     HighlightSearchResultPipe,
     TrimSearchResultPipe,
-    FormatSearchResultPipe
+    FormatSearchResultPipe,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(
       appRoutes
     ),
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    AuthenticationGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    LoginEvent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
