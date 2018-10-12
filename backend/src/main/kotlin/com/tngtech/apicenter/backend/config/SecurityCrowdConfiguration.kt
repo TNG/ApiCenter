@@ -9,46 +9,16 @@ import com.atlassian.crowd.integration.springsecurity.user.CrowdUserDetailsServi
 import com.atlassian.crowd.service.client.ClientPropertiesImpl
 import com.atlassian.crowd.service.client.ClientResourceLocator
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
-import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthorizationFilter
-import com.tngtech.apicenter.backend.domain.handler.UserHandler
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.session.HttpSessionEventPublisher
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.web.filter.CorsFilter
 
-@EnableWebSecurity
 @Configuration
-class SecurityCrowdConfiguration @Autowired constructor(private val userHandler: UserHandler) :
-    WebSecurityConfigurerAdapter() {
-
-    @Value("\${jwt.secret}")
-    private lateinit var jwtSecuritySecret: String;
-
-    override fun configure(httpSecurity: HttpSecurity) {
-        httpSecurity
-            .cors()
-            .and()
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/sessions").permitAll()
-            .and()
-            .authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .addFilter(JwtAuthorizationFilter(authenticationManager(), jwtSecuritySecret))
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    }
+class SecurityCrowdConfiguration : WebSecurityConfigurerAdapter() {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.authenticationProvider(jwtAuthenticationProvider())
