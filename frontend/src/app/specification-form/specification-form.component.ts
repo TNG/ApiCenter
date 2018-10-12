@@ -21,10 +21,12 @@ export class SpecificationFormComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.specificationService.getSpecification(params['id']).subscribe((specification: Specification) => {
-        this.manualDisabled = specification.remoteAddress != null;
-        this.fileUrl = specification.remoteAddress;
-      });
+      if (params['id']) {
+        this.specificationService.getSpecification(params['id']).subscribe((specification: Specification) => {
+          this.manualDisabled = specification.remoteAddress != null;
+          this.fileUrl = specification.remoteAddress;
+        });
+      }
     });
   }
 
