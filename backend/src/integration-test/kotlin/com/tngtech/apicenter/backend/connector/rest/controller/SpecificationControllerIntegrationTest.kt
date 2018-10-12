@@ -85,6 +85,8 @@ internal class SpecificationControllerIntegrationTest {
     fun uploadSpecification_shouldCreateNewVersion() {
         mockMvc.perform(
             post("/specifications")
+                .with(user("user"))
+                .with(csrf())
                 .contentType("application/json")
                 .content(
                     """
@@ -100,6 +102,8 @@ internal class SpecificationControllerIntegrationTest {
 
         mockMvc.perform(
             get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+                .with(user("user"))
+                .with(csrf())
         )
             .andExpect(jsonPath("$.title", equalTo("Spec1")))
             .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
