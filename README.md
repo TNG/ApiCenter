@@ -6,16 +6,13 @@ ApiCenter is a repository for all your OpenAPI specifications. You can upload ne
 
 ## Prerequisites
 
-To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a relational database, for example PostgreSQL.
+### General
+
+To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a relational database, for example PostgreSQL. It provides an in-memory database if not configured otherwise.
 
 To install angular CLI, enter `npm install -g @angular/cli`
 
-## Getting started
-
-ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo.
-
-### Prerequisites
-#### Atlassian Crowd
+### Atlassian Crowd
 ApiCenter currently requires Atlassian Crowd as an authentication provider. In order to make this work, you need to [add ApiCenter
 as an external application in Atlassian Crowd](https://confluence.atlassian.com/crowd/adding-an-application-18579591.html#AddinganApplication-add) and configure
 the following files within ApiCenter:
@@ -33,6 +30,10 @@ jwt.secret=### Define a secret that is used to sign JWTs ###
 ```
 
 We plan to add OAuth 2 support shortly.
+
+## Getting started
+
+ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo.
 
 ### Backend
 In order to start the backend, clone the repo, navigate to the `backend` folder and start the service with the familiar Spring Boot command:
