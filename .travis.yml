@@ -6,6 +6,7 @@ matrix:
         - cd backend
       script:
         - ./gradlew clean test
+        - ./gradlew clean integrationTest
         - ./gradlew clean check
       after_script:
         - cd ..
