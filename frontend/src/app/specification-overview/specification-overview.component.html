@@ -1,7 +1,7 @@
 <div class="container top-buffer">
   <div class="row">
     <div class="col">
-      <button class="btn btn-primary" routerLink="specifications/form/add"><span class="oi oi-plus"></span></button>
+      <button class="btn btn-primary" routerLink="add-specifications"><span class="oi oi-plus"></span></button>
     </div>
   </div>
   <div class="row top-buffer">
@@ -33,7 +33,7 @@
             <td>
               <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
                       (click)="synchronize(specification)"></button>
-              <button class="btn oi oi-pencil" [routerLink]="['specifications/form/edit', specification.id]"></button>
+              <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
               <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
             </td>
           </tr>
