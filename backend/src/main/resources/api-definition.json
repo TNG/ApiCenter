@@ -374,6 +374,94 @@
         "deprecated": false
       }
     },
+    "/specifications/{specificationId}/versions/{version}": {
+      "get": {
+        "tags": [
+          "version-controller"
+        ],
+        "summary": "Retrieve a specific version of a specification.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "specificationId",
+            "in": "path",
+            "description": "The ID of the specification for which the version should be fetched.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "description": "The version that should be fetched",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/VersionDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "version-controller"
+        ],
+        "summary": "Delete a specific version of a specification.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "specificationId",
+            "in": "path",
+            "description": "The ID of the specification for which the version should be deleted.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "description": "The version that should be deleted",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/sessions": {
       "post": {
         "tags": [
@@ -417,9 +505,6 @@
       "SpecificationDto": {
         "type": "object",
         "properties": {
-          "content": {
-            "type": "string"
-          },
           "description": {
             "type": "string"
           },
@@ -433,8 +518,11 @@
           "title": {
             "type": "string"
           },
-          "version": {
-            "type": "string"
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VersionDto"
+            }
           }
         },
         "title": "SpecificationDto"
@@ -477,6 +565,17 @@
             "type": "string",
             "description": "The content of a file to be uploaded.",
             "required": true
+          }
+        }
+      },
+      "VersionDto": {
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of this version"
           }
         }
       },
