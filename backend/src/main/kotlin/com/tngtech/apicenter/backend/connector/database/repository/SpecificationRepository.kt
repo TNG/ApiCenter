@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface SpecificationRepository : CrudRepository<SpecificationEntity, UUID>
+interface SpecificationRepository : CrudRepository<SpecificationEntity, UUID> {
+
+    fun existsByTitle(title: String): Boolean
+    fun findByTitle(title: String): SpecificationEntity
+}

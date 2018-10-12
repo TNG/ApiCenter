@@ -1,3 +1,3 @@
 package com.tngtech.apicenter.backend.domain.entity
 
-data class Version(val version: String)
+data class Version(val version: String, val content: String)

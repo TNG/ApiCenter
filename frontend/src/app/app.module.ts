@@ -7,7 +7,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule, Routes} from '@angular/router';
-import {SpecificationComponent} from './specification/specification.component';
+import {SpecificationVersionComponent} from './specification-version/specification-version.component';
 import {SpecificationOverviewComponent} from './specification-overview/specification-overview.component';
 import {SpecificationFormComponent} from './specification-form/specification-form.component';
 import {HeaderComponent} from './header/header.component';
@@ -22,12 +22,12 @@ import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
 
 const appRoutes: Routes = [
-  {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
-  {path: 'specifications/:id', component: SpecificationComponent, canActivate: [AuthenticationGuard]},
-  {path: 'specifications/form/add', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
-  {path: 'specifications/form/edit/:id', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
-  {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
-  {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
+  {path: '', component: SpecificationOverviewComponent},
+  {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent},
+  {path: 'specifications/form/add', component: SpecificationFormComponent},
+  {path: 'specifications/form/edit/:id', component: SpecificationFormComponent},
+  {path: 'search', component: SpecificationSearchDetailComponent},
+  {path: 'search/:searchString', component: SpecificationSearchDetailComponent},
   {path: 'login', component: LoginComponent}
 ];
 
@@ -35,7 +35,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SpecificationComponent,
+    SpecificationVersionComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
     HeaderComponent,
