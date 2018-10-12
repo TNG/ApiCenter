@@ -22,12 +22,12 @@ import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
 
 const appRoutes: Routes = [
-  {path: '', component: SpecificationOverviewComponent},
-  {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent},
-  {path: 'specifications/form/add', component: SpecificationFormComponent},
-  {path: 'specifications/form/edit/:id', component: SpecificationFormComponent},
-  {path: 'search', component: SpecificationSearchDetailComponent},
-  {path: 'search/:searchString', component: SpecificationSearchDetailComponent},
+  {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/form/add', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/form/edit/:id', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
+  {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
+  {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'login', component: LoginComponent}
 ];
 
