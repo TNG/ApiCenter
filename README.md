@@ -51,7 +51,19 @@ ng serve
 
 ## Running the tests
 
-Running the included tests is simply `./gradlew test` for the backend and `ng test` for the frontend
+### Backend
+Running the backend tests is `./gradlew test` for all Unit-Tests and `./gradlew integrationTest` for all Integration-Tests.
+
+### Frontend
+Running all frontend tests is simply `ng test`.
+
+## Mutation Testing
+In order to keep the quality of our tests high, we regularly execute mutation testing tools on our code for quality assurance. 
+Sadly, the automatic support of reporting tools is not sophisticated enough yet, so we rely on manual execution and monitoring. 
+If you want to execute the tools yourself in order to determine the mutation score (maybe for pull requests), execute the following commands:
+
+- Mutation testing in the backend with [pitest](http://pitest.org/): `./gradlew pitest`
+- Mutation testing in the frontend with [Stryker](https://stryker-mutator.io/): `stryker run` (make sure that you have the Striker CLI installed, otherwise run: `npm install -g stryker-cli`)
 
 ## Built with
 - [Gradle](https://gradle.org/)
