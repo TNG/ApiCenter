@@ -30,11 +30,13 @@ internal class SpecificationControllerIntegrationTest {
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$[0].title", equalTo("Spec1")))
-            .andExpect(jsonPath("$[0].version", equalTo("v1")))
+            .andExpect(jsonPath("$[0].versions[0].version", equalTo("v1")))
             .andExpect(jsonPath("$[1].title", equalTo("Spec2")))
-            .andExpect(jsonPath("$[1].version", equalTo("v2")))
+            .andExpect(jsonPath("$[1].versions[0].version", equalTo("v1")))
+            .andExpect(jsonPath("$[1].versions[1].version", equalTo("v2")))
             .andExpect(jsonPath("$[2].title", equalTo("Spec3")))
-            .andExpect(jsonPath("$[2].version", equalTo("v3")))
+            .andExpect(jsonPath("$[2].versions[0].version", equalTo("1.0")))
+            .andExpect(jsonPath("$[2].versions[1].version", equalTo("1.1")))
     }
 
     @Test
@@ -52,7 +54,7 @@ internal class SpecificationControllerIntegrationTest {
         )
             .andExpect(status().isCreated)
             .andExpect(jsonPath("$.title", equalTo("Spec")))
-            .andExpect(jsonPath("$.version", equalTo("1.0")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("1.0")))
     }
 
     @Test
@@ -63,14 +65,39 @@ internal class SpecificationControllerIntegrationTest {
                 .content(
                     """
                             | {
-                            |   "fileContent": "openapi: \"3.0.0\"\r\ninfo:\r\n  version: \"1.0\"\r\n  title: Spec"
+                            |   "fileContent": "openapi: \"3.0.0\"\r\ninfo:\r\n  version: \"1.0\"\r\n  title: YamlSpec"
                             | }
                             """.trimMargin()
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.title", equalTo("Spec")))
-            .andExpect(jsonPath("$.version", equalTo("1.0")))
+            .andExpect(jsonPath("$.title", equalTo("YamlSpec")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("1.0")))
+    }
+
+    @Test
+    fun uploadSpecification_shouldCreateNewVersion() {
+        mockMvc.perform(
+            post("/specifications")
+                .contentType("application/json")
+                .content(
+                    """
+                        | {
+                        |   "fileContent": "{\"info\": {\"title\": \"Spec1\",\"version\": \"v2\"}}"
+                        | }
+                    """.trimMargin()
+                )
+        )
+            .andExpect(status().isCreated)
+            .andExpect(jsonPath("$.title", equalTo("Spec1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
+
+        mockMvc.perform(
+            get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+        )
+            .andExpect(jsonPath("$.title", equalTo("Spec1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
+            .andExpect(jsonPath("$.versions[1].version", equalTo("v1")))
     }
 
     @Test
@@ -82,20 +109,20 @@ internal class SpecificationControllerIntegrationTest {
                             """
                             | {
                             |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
-                            |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"1.1\"}}"
+                            |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"vX\"}}"
                             | }
                             """.trimMargin()
                 )
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.version", equalTo("1.1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
 
         mockMvc.perform(
             get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
         )
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.version", equalTo("1.1")))
+            .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
     }
 
     @Test

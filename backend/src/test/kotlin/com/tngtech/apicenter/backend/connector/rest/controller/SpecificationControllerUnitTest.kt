@@ -2,13 +2,14 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
-import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationMapper
+import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.UUID
@@ -25,13 +26,13 @@ internal class SpecificationControllerUnitTest {
 
     private val synchronizationService: SynchronizationService = mock()
 
-    private val specificationMapper: SpecificationMapper = mock()
+    private val specificationDtoMapper: SpecificationDtoMapper = mock()
 
     private val specificationController: SpecificationController =
         SpecificationController(
             specificationHandler,
             synchronizationService,
-            specificationMapper
+            specificationDtoMapper
         )
 
     @Test
@@ -43,21 +44,19 @@ internal class SpecificationControllerUnitTest {
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            Version("1.0.0"),
-            SWAGGER_SPECIFICATION,
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            "1.0.0",
-            SWAGGER_SPECIFICATION,
+            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
 
-        given(specificationMapper.toDomain(specificationFileDto)).willReturn(specification)
-        given(specificationMapper.fromDomain(specification)).willReturn(specificationDto)
+        given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
+        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
         val returnedSpecificationDto = specificationController.uploadSpecification(specificationFileDto)
 
@@ -76,21 +75,19 @@ internal class SpecificationControllerUnitTest {
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            Version("1.0.0"),
-            SWAGGER_SPECIFICATION,
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            "1.0.0",
-            SWAGGER_SPECIFICATION,
+            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
             null
         )
 
-        given(specificationMapper.toDomain(specificationFileDto)).willReturn(specification)
-        given(specificationMapper.fromDomain(specification)).willReturn(specificationDto)
+        given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
+        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
         val returnedSpecificationDto = specificationController.updateSpecification(specificationFileDto,
             UUID_STRING
@@ -101,8 +98,7 @@ internal class SpecificationControllerUnitTest {
                 UUID.fromString(UUID_STRING),
                 "Swagger Petstore",
                 "Description",
-                "1.0.0",
-                SWAGGER_SPECIFICATION,
+                listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
                 null
             )
         )
@@ -116,20 +112,18 @@ internal class SpecificationControllerUnitTest {
             uuid,
             "Test",
             "Description",
-            Version("v2"),
-            SWAGGER_SPECIFICATION,
+            listOf(Version("v2", SWAGGER_SPECIFICATION)),
             "http://swaggerpetstore.com/docs"
         )
         val specificationDto = SpecificationDto(
             uuid,
             "Test",
             "Description",
-            "v2",
-            SWAGGER_SPECIFICATION,
+            listOf(VersionDto("v2", SWAGGER_SPECIFICATION)),
             "http://swaggerpetstore.com/docs"
         )
 
-        given(specificationMapper.fromDomain(specification)).willReturn(specificationDto)
+        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
         given(specificationHandler.findAll()).willReturn(
             arrayListOf(
@@ -137,8 +131,7 @@ internal class SpecificationControllerUnitTest {
                     uuid,
                     "Test",
                     "Description",
-                    Version("v2"),
-                    SWAGGER_SPECIFICATION,
+                    listOf(Version("v2", SWAGGER_SPECIFICATION)),
                     "http://swaggerpetstore.com/docs"
                 )
             )
@@ -148,8 +141,7 @@ internal class SpecificationControllerUnitTest {
             SpecificationDto(
                 uuid, "Test",
                 "Description",
-                "v2",
-                SWAGGER_SPECIFICATION,
+                listOf(VersionDto("v2", SWAGGER_SPECIFICATION)),
                 "http://swaggerpetstore.com/docs"
             )
         )

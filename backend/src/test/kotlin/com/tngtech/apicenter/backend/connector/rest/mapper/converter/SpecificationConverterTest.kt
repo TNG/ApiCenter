@@ -9,6 +9,7 @@ import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import java.util.UUID
 
 class SpecificationConverterTest {
 
@@ -16,6 +17,7 @@ class SpecificationConverterTest {
         const val SWAGGER_SPECIFICATION =
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val SWAGGER_REMOTE = "https://swagger.com/remote/file.json"
+        const val UUID_STRING = "5aa40ba9-7e26-44de-81ec-f545d1f178aa"
     }
 
     private val specificationDataService: SpecificationDataService = mock()
@@ -44,15 +46,13 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            Version("1.0.0"),
-            SWAGGER_SPECIFICATION,
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             ""
         )
 
         assertThat(specification.id).isEqualTo(expectedSpecification.id)
         assertThat(specification.title).isEqualTo(expectedSpecification.title)
-        assertThat(specification.version).isEqualTo(expectedSpecification.version)
-        assertThat(specification.content).isEqualTo(expectedSpecification.content)
+        assertThat(specification.versions).isEqualTo(expectedSpecification.versions)
         assertThat(specification.remoteAddress).isEqualTo(expectedSpecification.remoteAddress)
     }
 
@@ -77,15 +77,13 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            Version("1.0.0"),
-            SWAGGER_SPECIFICATION,
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
             SWAGGER_REMOTE
         )
 
         assertThat(specification.id).isEqualTo(expectedSpecification.id)
         assertThat(specification.title).isEqualTo(expectedSpecification.title)
-        assertThat(specification.version).isEqualTo(expectedSpecification.version)
-        assertThat(specification.content).isEqualTo(expectedSpecification.content)
+        assertThat(specification.versions).isEqualTo(expectedSpecification.versions)
         assertThat(specification.remoteAddress).isEqualTo(expectedSpecification.remoteAddress)
     }
 }

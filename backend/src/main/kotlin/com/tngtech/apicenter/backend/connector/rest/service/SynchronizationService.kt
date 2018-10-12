@@ -20,13 +20,19 @@ class SynchronizationService constructor(
 
         val fileContent = specificationFileService.retrieveFile(remoteAddress)
         val content = specificationDataService.parseFileContent(fileContent)
+        val versionString = specificationDataService.readVersion(content)
+
+        val versions = if (specification.versions.find { version -> version.version == versionString } != null) {
+            specification.versions
+        } else {
+            specification.versions + Version(versionString, content)
+        }
 
         val newSpecification = Specification(
             specification.id,
             specificationDataService.readTitle(content),
             specificationDataService.readDescription(content),
-            Version(specificationDataService.readVersion(content)),
-            content,
+            versions,
             specification.remoteAddress
         )
 
