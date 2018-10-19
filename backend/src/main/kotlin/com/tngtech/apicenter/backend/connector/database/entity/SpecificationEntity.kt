@@ -7,7 +7,6 @@ import java.util.UUID
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.OrderBy
@@ -15,7 +14,7 @@ import javax.persistence.OrderBy
 @Entity
 @Indexed
 data class SpecificationEntity(
-    @Id @GeneratedValue val id: UUID,
+    @Id val id: UUID,
     @Field val title: String,
     @Field @Column(columnDefinition = "TEXT") val description: String?,
     @IndexedEmbedded @OneToMany(
