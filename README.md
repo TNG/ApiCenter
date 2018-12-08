@@ -73,7 +73,7 @@ If you want to execute the tools yourself in order to determine the mutation sco
 - [Angular](https://angular.io/)
 
 ## Contributing
-See CONTRIBUTING.md
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Versioning
 ApiCenter uses [semantic versioning](https://semver.org/). You can expect breakage if the major version changes.
