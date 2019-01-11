@@ -51,29 +51,29 @@ export class SpecificationOverviewComponent implements OnInit {
     // As the JSON specification versions are already available in the browser memory,
     // we do not need to involve the backend server to download one
 
-    // Should the JSON be in human-readable format/'pretty-printed'?
-    const parsedVersion = JSON.parse(version.content)
-    const versionStringified = JSON.stringify(parsedVersion, null, 2)
+    // // Should the JSON be in human-readable format/'pretty-printed'?
+    // const parsedVersion = JSON.parse(version.content)
+    // const versionStringified = JSON.stringify(parsedVersion, null, 2)
 
-    // For compatibility reasons the file download does not use the data URI scheme
-    const anchor = window.document.createElement('a');
-    anchor.href = window.URL.createObjectURL(new Blob([versionStringified], {type: 'application/json'}));
-    // version.content cannot be passed directly to the blob, as it has double quotes escaped
+    // // For compatibility reasons the file download does not use the data URI scheme
+    // const anchor = window.document.createElement('a');
+    // anchor.href = window.URL.createObjectURL(new Blob([versionStringified], {type: 'application/json'}));
+    // // version.content cannot be passed directly to the blob, as it has double quotes escaped
 
-    // Construct a filename
-    const fileName = (parsedVersion.info.title + '_v' + parsedVersion.info.version).replace(/[^a-z0-9\.]/gi, '_') + '.json'
-    // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    anchor.download = fileName;
+    // // Construct a filename
+    // const fileName = (parsedVersion.info.title + '_v' + parsedVersion.info.version).replace(/[^a-z0-9\.]/gi, '_') + '.json'
+    // // Make it filename safe by replacing any non-alphanumeric character with an underscore
+    // anchor.download = fileName;
 
-    // Append anchor to body.
-    document.body.appendChild(anchor);
-    anchor.click();
+    // // Append anchor to body.
+    // document.body.appendChild(anchor);
+    // anchor.click();
 
-    // Remove anchor from body
-    document.body.removeChild(anchor);
+    // // Remove anchor from body
+    // document.body.removeChild(anchor);
 
     // Using the server
-    // I don't think I need to subscribe, because the list of specifications will not change with a download operation (?)
+    // I don't think I need to subscribe to getSpecifications, because the list of specifications will not change with a download operation (?)
     this.versionService.downloadVersion(specification.id, version.version)
   }
 

@@ -12,10 +12,10 @@ export class VersionService {
 
   constructor(private http: HttpClient) { }
 
-  // public getVersion(specificationId: string, version: string) {
-  //   return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
-  //     .catch((error: any) => throwError(error || 'Server error'));
-  // }
+  public getVersion(specificationId: string, version: string) {
+    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
 
   public deleteVersion(specificationId: string, version: string): Observable<Version> {
     return this.http.delete<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
@@ -25,7 +25,7 @@ export class VersionService {
   public downloadVersion(specificationId: string, version: string) {
     // Not sure what the correct type is
     console.log("download", specificationId, version)
-    return this.http.get(this.versionUrl + '/' + specificationId + '/versions/' + version, {responseType: 'text'})
+    return this.http.get(environment.apiUrl + '/static/' + specificationId + '/versions/' + version, {responseType: 'text'})
       .subscribe(response => {
         console.log(response)
       })
