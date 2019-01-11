@@ -28,14 +28,22 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  public async downloadSpecification(specification) {
+  // Find a way to avoid the code duplication between these functions
+  public async downloadJSONSpecification(specification) {
     // Download the latest version of this specification
     const firstVersion = specification.versions[0];
     if (firstVersion !== undefined) {
-      this.downloadVersion(specification, firstVersion)
+      this.downloadJSONVersion(specification, firstVersion)
     }
   }
   
+  public async downloadYMLSpecification(specification) {
+    // Download the latest version of this specification
+    const firstVersion = specification.versions[0];
+    if (firstVersion !== undefined) {
+      this.downloadYMLVersion(specification, firstVersion)
+    }
+  }
 
   public async deleteVersion(specification, version) {
     if (confirm('Are you sure that you want to delete version "' + version.version + '"?')) {
@@ -47,34 +55,30 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  public async downloadVersion(specification, version) {
+  public async downloadJSONVersion(specification, version) {
+    const fileName = this.createDownloadFileName(specification, version);
+
     // As the JSON specification versions are already available in the browser memory,
     // we do not need to involve the backend server to download one
 
-    // // Should the JSON be in human-readable format/'pretty-printed'?
-    // const parsedVersion = JSON.parse(version.content)
-    // const versionStringified = JSON.stringify(parsedVersion, null, 2)
+    // JSON will be in human-readable format / 'pretty-printed'
+    const content = JSON.stringify(JSON.parse(version.content), null, 2);
+    this.doDownload(content, fileName + '.json', 'application/json');
+  }
 
-    // // For compatibility reasons the file download does not use the data URI scheme
-    // const anchor = window.document.createElement('a');
-    // anchor.href = window.URL.createObjectURL(new Blob([versionStringified], {type: 'application/json'}));
-    // // version.content cannot be passed directly to the blob, as it has double quotes escaped
+  public async downloadYMLVersion(specification, version) {
+    const fileName = this.createDownloadFileName(specification, version);
 
-    // // Construct a filename
-    // const fileName = (parsedVersion.info.title + '_v' + parsedVersion.info.version).replace(/[^a-z0-9\.]/gi, '_') + '.json'
-    // // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    // anchor.download = fileName;
-
-    // // Append anchor to body.
-    // document.body.appendChild(anchor);
-    // anchor.click();
-
-    // // Remove anchor from body
-    // document.body.removeChild(anchor);
-
-    // Using the server
-    // I don't think I need to subscribe to getSpecifications, because the list of specifications will not change with a download operation (?)
+    // I don't think I need to call getSpecifications in the subscription, because the list of specifications will not change with a download operation (?)
     this.versionService.downloadVersion(specification.id, version.version)
+      .subscribe(content => {
+        this.doDownload(content, fileName + '.yml', 'application/yaml');
+      })
+  }
+
+  private createDownloadFileName(specification, version) {
+    // Make it filename safe by replacing any non-alphanumeric character with an underscore
+    return (specification.title + '_v' + version.version).replace(/[^a-z0-9\.]/gi, '_');
   }
 
   public async synchronize(specification) {
@@ -92,5 +96,21 @@ export class SpecificationOverviewComponent implements OnInit {
 
   private async getSpecifications() {
     this.specificationService.getSpecifications().subscribe((data: Specification[]) => this.specifications = data);
+  }
+
+  private doDownload(contents: string, fileName: string, type: string) {
+    // For compatibility reasons the file download does not use the data URI scheme
+    const anchor = window.document.createElement('a');
+    anchor.href = window.URL.createObjectURL(new Blob([contents], {type}));
+    // version.content cannot be passed directly to the blob, as it has double quotes escaped
+
+    anchor.download = fileName;
+
+    // Append anchor to body.
+    document.body.appendChild(anchor);
+    anchor.click();
+
+    // Remove anchor from body
+    document.body.removeChild(anchor);
   }
 }

@@ -26,8 +26,5 @@ export class VersionService {
     // Not sure what the correct type is
     console.log("download", specificationId, version)
     return this.http.get(environment.apiUrl + '/static/' + specificationId + '/versions/' + version, {responseType: 'text'})
-      .subscribe(response => {
-        console.log(response)
-      })
   }
 }
