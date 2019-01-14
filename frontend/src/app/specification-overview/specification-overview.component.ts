@@ -17,6 +17,12 @@ export class SpecificationOverviewComponent implements OnInit {
   constructor(private specificationService: SpecificationService, private versionService: VersionService) {
   }
 
+  private downloadVersion = {
+    // Avoids code duplication in this.downloadSpecification
+    json: this.downloadJSONVersion,
+    yml: this.downloadYMLVersion,
+  };
+
   ngOnInit(): void {
     this.getSpecifications();
   }
@@ -38,17 +44,11 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-
-  private downloadVersion = {
-    json: this.downloadJSONVersion,
-    yml: this.downloadYMLVersion,
-  };
-
   public async downloadSpecification(specification, fileType: string) {
     // Download the latest version of this specification
     const firstVersion = specification.versions[0];
     if (firstVersion !== undefined) {
-      this.downloadVersion[fileType](specification, firstVersion)
+      this.downloadVersion[fileType](specification, firstVersion);
     }
   }
 
@@ -65,13 +65,12 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public async downloadYMLVersion(specification, version) {
     const fileName = this.createDownloadFileName(specification, version);
-
     // I don't think I need to call getSpecifications in the subscribe callback,
     // because the list of specifications will not change with a download operation (?)
     this.versionService.downloadVersion(specification.id, version.version)
       .subscribe(content => {
         this.doDownload(content, fileName + '.yml', 'application/yaml');
-      })
+      });
   }
 
   private createDownloadFileName(specification, version) {

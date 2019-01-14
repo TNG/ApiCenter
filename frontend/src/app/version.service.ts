@@ -23,6 +23,6 @@ export class VersionService {
   }
 
   public downloadVersion(specificationId: string, version: string) {
-    return this.http.get(environment.apiUrl + '/static/' + specificationId + '/versions/' + version, {responseType: 'text'})
+    return this.http.get(environment.apiUrl + '/static/' + specificationId + '/versions/' + version, {responseType: 'text'});
   }
 }
