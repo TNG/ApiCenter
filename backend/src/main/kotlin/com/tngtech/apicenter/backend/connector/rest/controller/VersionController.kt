@@ -21,20 +21,19 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 class VersionController constructor(private val versionHandler: VersionHandler, private val versionDtoMapper: VersionDtoMapper) {
+
     @GetMapping("/specifications/{specificationId}/versions/{version}")
     fun findVersion(@PathVariable specificationId: UUID, @PathVariable version: String): VersionDto = versionDtoMapper.fromDomain(versionHandler.findOne(specificationId, version))
 
 
     @GetMapping("/static/{specificationId}/versions/{version}")
     fun downloadVersion(@PathVariable specificationId: UUID, @PathVariable version: String, response: HttpServletResponse) {
-        logger.info("Download version called")
-        // For now, this function returns a static response, just to test the routing
-        // The following lines may come in handy later
         val foundVersion = versionHandler.findOne(specificationId, version)
         
         val jsonNodeTree: JsonNode = ObjectMapper().readTree(foundVersion.content);
         val jsonAsYaml: String = YAMLMapper().writeValueAsString(jsonNodeTree);
-        // Needs error handling in case the conversion fails
+        // Because the backend will refuse to upload a malformatted API,
+        // This convertion is always expected to succeed
         
         // Write the API content to the reponse
         response.setContentType("text/yaml")
@@ -47,7 +46,6 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
 
     @DeleteMapping("/specifications/{specificationId}/versions/{version}")
     fun deleteVersion(@PathVariable specificationId: UUID, @PathVariable version: String) {
-        logger.info("Delete version called")
         versionHandler.delete(specificationId, version)
     }
 }

@@ -27,6 +27,7 @@ export class SpecificationOverviewComponent implements OnInit {
         .subscribe(event => this.getSpecifications());
     }
   }
+
   public async deleteVersion(specification, version) {
     if (confirm('Are you sure that you want to delete version "' + version.version + '"?')) {
       this.versionService.deleteVersion(specification.id, version.version).subscribe(event => {
@@ -65,7 +66,8 @@ export class SpecificationOverviewComponent implements OnInit {
   public async downloadYMLVersion(specification, version) {
     const fileName = this.createDownloadFileName(specification, version);
 
-    // I don't think I need to call getSpecifications in the subscription, because the list of specifications will not change with a download operation (?)
+    // I don't think I need to call getSpecifications in the subscribe callback,
+    // because the list of specifications will not change with a download operation (?)
     this.versionService.downloadVersion(specification.id, version.version)
       .subscribe(content => {
         this.doDownload(content, fileName + '.yml', 'application/yaml');

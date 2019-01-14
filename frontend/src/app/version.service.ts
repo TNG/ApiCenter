@@ -23,8 +23,6 @@ export class VersionService {
   }
 
   public downloadVersion(specificationId: string, version: string) {
-    // Not sure what the correct type is
-    console.log("download", specificationId, version)
     return this.http.get(environment.apiUrl + '/static/' + specificationId + '/versions/' + version, {responseType: 'text'})
   }
 }
