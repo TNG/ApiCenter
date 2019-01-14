@@ -34,8 +34,8 @@
               <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
                       (click)="synchronize(specification)"></button>
               <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
-              <button class="btn oi oi-data-transfer-download" (click)="downloadJSONSpecification(specification)"></button>
-              <button class="btn oi oi-data-transfer-download" (click)="downloadYMLSpecification(specification)"></button>
+              <button class="btn oi oi-data-transfer-download" (click)="downloadSpecification(specification, 'json')"></button>
+              <button class="btn oi oi-data-transfer-download" (click)="downloadSpecification(specification, 'yml')"></button>
               <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
             </td>
           </tr>

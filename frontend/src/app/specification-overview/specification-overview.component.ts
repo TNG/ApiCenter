@@ -27,24 +27,6 @@ export class SpecificationOverviewComponent implements OnInit {
         .subscribe(event => this.getSpecifications());
     }
   }
-
-  // Find a way to avoid the code duplication between these functions
-  public async downloadJSONSpecification(specification) {
-    // Download the latest version of this specification
-    const firstVersion = specification.versions[0];
-    if (firstVersion !== undefined) {
-      this.downloadJSONVersion(specification, firstVersion)
-    }
-  }
-  
-  public async downloadYMLSpecification(specification) {
-    // Download the latest version of this specification
-    const firstVersion = specification.versions[0];
-    if (firstVersion !== undefined) {
-      this.downloadYMLVersion(specification, firstVersion)
-    }
-  }
-
   public async deleteVersion(specification, version) {
     if (confirm('Are you sure that you want to delete version "' + version.version + '"?')) {
       this.versionService.deleteVersion(specification.id, version.version).subscribe(event => {
@@ -52,6 +34,20 @@ export class SpecificationOverviewComponent implements OnInit {
           this.expanded = [];
         }
       );
+    }
+  }
+
+
+  private downloadVersion = {
+    json: this.downloadJSONVersion,
+    yml: this.downloadYMLVersion,
+  };
+
+  public async downloadSpecification(specification, fileType: string) {
+    // Download the latest version of this specification
+    const firstVersion = specification.versions[0];
+    if (firstVersion !== undefined) {
+      this.downloadVersion[fileType](specification, firstVersion)
     }
   }
 
