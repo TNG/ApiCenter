@@ -63,6 +63,8 @@ dependencies {
     testCompile "org.springframework.security:spring-security-test:5.0.8.RELEASE"
     testCompile "org.assertj:assertj-core:3.11.1"
     testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC2"
+
+    implementation project(':frontend')
 }
 
 compileKotlin {
@@ -92,3 +94,11 @@ task integrationTest(type: Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
     outputs.upToDateWhen { false }
 }
+
+task('copyFrontendDist', type: Copy) {
+    println 'Copying Angular frontend build files to static directory'
+    from(file('../frontend/dist'))
+    into(file('src/main/resources/public'))
+}
+
+tasks.findByName('processResources').dependsOn('copyFrontendDist')
