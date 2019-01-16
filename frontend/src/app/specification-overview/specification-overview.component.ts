@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
+import {Version} from '../models/version';
 import {VersionService} from '../version.service';
 
+/* tslint:disable:member-ordering */
 @Component({
   selector: 'app-specification-overview',
   templateUrl: './specification-overview.component.html',
@@ -16,12 +18,6 @@ export class SpecificationOverviewComponent implements OnInit {
 
   constructor(private specificationService: SpecificationService, private versionService: VersionService) {
   }
-
-  private downloadVersion = {
-    // Avoids code duplication in this.downloadSpecification
-    json: this.downloadJSONVersion,
-    yml: this.downloadYMLVersion,
-  };
 
   ngOnInit(): void {
     this.getSpecifications();
@@ -44,39 +40,37 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  public async downloadSpecification(specification, fileType: string) {
-    // Download the latest version of this specification
-    const firstVersion = specification.versions[0];
-    if (firstVersion !== undefined) {
-      this.downloadVersion[fileType](specification, firstVersion);
+  public async downloadSpecification(specification: Specification, fileType: string) {
+    const latestVersion = specification.versions[0];
+    if (latestVersion !== undefined) {
+      this.downloadVersion[fileType](specification, latestVersion);
     }
   }
 
-  public async downloadJSONVersion(specification, version) {
+  private createDownloadFileName(specification: Specification, version: Version) {
+    // Make it filename safe by replacing any non-alphanumeric character with an underscore
+    return (specification.title + '_v' + version.version).replace(/[^a-z0-9\.]/gi, '_');
+  }
+
+  public downloadJSONVersion = async (specification: Specification, version: Version) => {
     const fileName = this.createDownloadFileName(specification, version);
-
-    // As the JSON specification versions are already available in the browser memory,
-    // we do not need to involve the backend server to download one
-
-    // JSON will be in human-readable format / 'pretty-printed'
     const content = JSON.stringify(JSON.parse(version.content), null, 2);
     this.doDownload(content, fileName + '.json', 'application/json');
   }
 
-  public async downloadYMLVersion(specification, version) {
+  public downloadYAMLVersion = async (specification: Specification, version: Version) => {
     const fileName = this.createDownloadFileName(specification, version);
-    // I don't think I need to call getSpecifications in the subscribe callback,
-    // because the list of specifications will not change with a download operation (?)
-    this.versionService.downloadVersion(specification.id, version.version)
-      .subscribe(content => {
-        this.doDownload(content, fileName + '.yml', 'application/yaml');
+    this.versionService.getYAMLVersion(specification.id, version.version)
+      .subscribe(event => {
+        this.doDownload(event.content, fileName + '.yml', 'application/yaml');
       });
   }
 
-  private createDownloadFileName(specification, version) {
-    // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    return (specification.title + '_v' + version.version).replace(/[^a-z0-9\.]/gi, '_');
-  }
+  downloadVersion = {
+    // Avoids code duplication in this.downloadSpecification
+    json: this.downloadJSONVersion,
+    yml: this.downloadYAMLVersion,
+  };
 
   public async synchronize(specification) {
     return this.specificationService.synchronizeSpecification(specification.id)
@@ -102,12 +96,8 @@ export class SpecificationOverviewComponent implements OnInit {
     // version.content cannot be passed directly to the blob, as it has double quotes escaped
 
     anchor.download = fileName;
-
-    // Append anchor to body.
     document.body.appendChild(anchor);
     anchor.click();
-
-    // Remove anchor from body
     document.body.removeChild(anchor);
   }
 }
