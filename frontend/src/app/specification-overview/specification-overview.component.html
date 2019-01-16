@@ -35,7 +35,7 @@
                       (click)="synchronize(specification)"></button>
               <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
               <button class="btn oi oi-data-transfer-download" title="Download as JSON" (click)="downloadSpecification(specification, 'json')"></button>
-              <button class="btn oi oi-data-transfer-download" title="Download as YML" (click)="downloadSpecification(specification, 'yml')"></button>
+              <button class="btn oi oi-data-transfer-download" title="Download as YAML" (click)="downloadSpecification(specification, 'yml')"></button>
               <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
             </td>
           </tr>
@@ -47,7 +47,7 @@
             <td>{{ version.version }}</td>
             <td>
               <button class="btn oi oi-data-transfer-download" title="Download as JSON" (click)="downloadJSONVersion(specification, version)"></button>
-              <button class="btn oi oi-data-transfer-download" title="Download as YML" (click)="downloadYMLVersion(specification, version)"></button>
+              <button class="btn oi oi-data-transfer-download" title="Download as YAML" (click)="downloadYAMLVersion(specification, version)"></button>
               <button class="btn oi oi-trash" (click)="deleteVersion(specification, version)"></button>
             </td>
           </tr>
