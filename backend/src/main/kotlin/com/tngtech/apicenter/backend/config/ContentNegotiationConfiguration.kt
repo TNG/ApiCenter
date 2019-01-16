@@ -6,11 +6,11 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.http.MediaType
 
 @Configuration
-class WebConfig : WebMvcConfigurerAdapter() {
+class WebConfig : WebMvcConfigurer {
 
   override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer) {
     configurer.
