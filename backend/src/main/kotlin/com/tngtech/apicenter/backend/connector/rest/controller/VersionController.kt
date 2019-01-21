@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.MediaType
 import java.util.UUID
 import javax.servlet.http.HttpServletResponse
 import mu.KotlinLogging
@@ -29,16 +30,18 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
         produces = ["application/json", "application/yml"],
         headers = ["Accept=application/json", "Accept=application/yml"],
         method = [RequestMethod.GET])
-    fun findVersion(@PathVariable specificationId: UUID, @PathVariable version: String, @RequestHeader("Accept") accept: String): VersionDto {
+    fun findVersion(@PathVariable specificationId: UUID,
+                    @PathVariable version: String,
+                    @RequestHeader(value="Accept", defaultValue=MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): VersionDto {
+        // i.e. The integration test and unit test require the default specified in two different ways
         val foundVersion = versionHandler.findOne(specificationId, version)
         if (accept == "application/yml") {
-            logger.info("YAML requested")
-            val jsonNodeTree: JsonNode = ObjectMapper().readTree(foundVersion.content)
-            val jsonAsYaml: String = YAMLMapper().writeValueAsString(jsonNodeTree)
-            logger.info(jsonAsYaml)
+            logger.info("Specification $specificationId version $version requested as YAML")
+            val jsonNodeTree = ObjectMapper().readTree(foundVersion.content)
+            val jsonAsYaml = YAMLMapper().writeValueAsString(jsonNodeTree)
             return versionDtoMapper.fromDomain(Version(foundVersion.version, jsonAsYaml))
         } else {
-            logger.info("JSON requested")
+            logger.info("Specification $specificationId version $version requested as JSON")
             return versionDtoMapper.fromDomain(foundVersion)
         }
     }
