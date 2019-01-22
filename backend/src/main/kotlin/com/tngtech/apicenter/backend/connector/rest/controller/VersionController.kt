@@ -22,20 +22,24 @@ import javax.servlet.http.HttpServletResponse
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
+private const val MEDIA_TYPE_YAML = "application/yml"
 
 @RestController
 class VersionController constructor(private val versionHandler: VersionHandler, private val versionDtoMapper: VersionDtoMapper) {
 
     @RequestMapping("/specifications/{specificationId}/versions/{version}",
-        produces = ["application/json", "application/yml"],
-        headers = ["Accept=application/json", "Accept=application/yml"],
-        method = [RequestMethod.GET])
+            produces = [MediaType.APPLICATION_JSON_VALUE,
+                        MEDIA_TYPE_YAML],
+            headers =  ["Accept=" + MediaType.APPLICATION_JSON_VALUE,
+                        "Accept=" + MEDIA_TYPE_YAML],
+            method =   [RequestMethod.GET])
     fun findVersion(@PathVariable specificationId: UUID,
                     @PathVariable version: String,
-                    @RequestHeader(value="Accept", defaultValue=MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): VersionDto {
+                    @RequestHeader(value = "Accept",
+                                   defaultValue = MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): VersionDto {
         // i.e. The integration test and unit test require the default specified in two different ways
         val foundVersion = versionHandler.findOne(specificationId, version)
-        if (accept == "application/yml") {
+        if (accept == MEDIA_TYPE_YAML) {
             logger.info("Specification $specificationId version $version requested as YAML")
             val jsonNodeTree = ObjectMapper().readTree(foundVersion.content)
             val jsonAsYaml = YAMLMapper().writeValueAsString(jsonNodeTree)
