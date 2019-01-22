@@ -16,6 +16,9 @@ export class SpecificationOverviewComponent implements OnInit {
   error: String;
   expanded: String[] = [];
 
+  downloadFileFormatOptions: String[] = ["json", "yaml"];
+  selectedFormat: String = this.downloadFileFormatOptions[0];
+
   constructor(private specificationService: SpecificationService, private versionService: VersionService) {
   }
 
@@ -66,10 +69,10 @@ export class SpecificationOverviewComponent implements OnInit {
       });
   }
 
-  downloadVersion = {
+  public downloadVersion = {
     // Avoids code duplication in this.downloadSpecification
     json: this.downloadJSONVersion,
-    yml: this.downloadYAMLVersion,
+    yaml: this.downloadYAMLVersion,
   };
 
   public async synchronize(specification) {
