@@ -16,7 +16,7 @@ export class SpecificationOverviewComponent implements OnInit {
   error: String;
   expanded: String[] = [];
 
-  downloadFileFormatOptions: String[] = ["json", "yaml"];
+  downloadFileFormatOptions: String[] = ['json', 'yaml'];
   selectedFormat: String = this.downloadFileFormatOptions[0];
 
   constructor(private specificationService: SpecificationService, private versionService: VersionService) {
