@@ -55,7 +55,7 @@
             <td><a [routerLink]="['specifications/', specification.id, version.version]" routerLinkActive="active">{{ specification.title }}</a></td>
             <td>{{ version.version }}</td>
             <td>
-              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadVersion[selectedFormat](specification, version)"></button>
+              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadVersion(selectedFormat, specification, version)"></button>
               <button class="btn oi oi-trash" (click)="deleteVersion(specification, version)"></button>
             </td>
           </tr>

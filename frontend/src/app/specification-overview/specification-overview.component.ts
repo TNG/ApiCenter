@@ -4,7 +4,6 @@ import {Specification} from '../models/specification';
 import {Version} from '../models/version';
 import {VersionService} from '../version.service';
 
-/* tslint:disable:member-ordering */
 @Component({
   selector: 'app-specification-overview',
   templateUrl: './specification-overview.component.html',
@@ -46,22 +45,25 @@ export class SpecificationOverviewComponent implements OnInit {
   public async downloadSpecification(specification: Specification, fileType: string) {
     const latestVersion = specification.versions[0];
     if (latestVersion !== undefined) {
-      this.downloadVersion[fileType](specification, latestVersion);
+      this.downloadVersion(fileType, specification, latestVersion);
     }
   }
 
-  private createDownloadFileName(specification: Specification, version: Version) {
-    // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    return (specification.title + '_v' + version.version).replace(/[^a-z0-9\.]/gi, '_');
+  public downloadVersion(filetype: String, spec: Specification, version: Version) {
+    if (filetype === 'json') {
+      return this.downloadJSONVersion(spec, version);
+    } else if (filetype === 'yaml') {
+      return this.downloadYAMLVersion(spec, version);
+    }
   }
 
-  public downloadJSONVersion = async (specification: Specification, version: Version) => {
+  public downloadJSONVersion(specification: Specification, version: Version) {
     const fileName = this.createDownloadFileName(specification, version);
     const content = JSON.stringify(JSON.parse(version.content), null, 2);
     this.doDownload(content, fileName + '.json', 'application/json');
   }
 
-  public downloadYAMLVersion = async (specification: Specification, version: Version) => {
+  public downloadYAMLVersion(specification: Specification, version: Version) {
     const fileName = this.createDownloadFileName(specification, version);
     this.versionService.getYAMLVersion(specification.id, version.version)
       .subscribe(event => {
@@ -69,11 +71,22 @@ export class SpecificationOverviewComponent implements OnInit {
       });
   }
 
-  public downloadVersion = {
-    // Avoids code duplication in this.downloadSpecification
-    json: this.downloadJSONVersion,
-    yaml: this.downloadYAMLVersion,
-  };
+  private doDownload(contents: string, fileName: string, type: string) {
+    // For compatibility reasons the file download does not use the data URI scheme
+    const anchor = window.document.createElement('a');
+    anchor.href = window.URL.createObjectURL(new Blob([contents], {type}));
+    // version.content cannot be passed directly to the blob, as it has double quotes escaped
+
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  }
+
+  private createDownloadFileName(specification: Specification, version: Version) {
+    // Make it filename safe by replacing any non-alphanumeric character with an underscore
+    return (specification.title + '_v' + version.version).replace(/[^a-z0-9\.]/gi, '_');
+  }
 
   public async synchronize(specification) {
     return this.specificationService.synchronizeSpecification(specification.id)
@@ -90,17 +103,5 @@ export class SpecificationOverviewComponent implements OnInit {
 
   private async getSpecifications() {
     this.specificationService.getSpecifications().subscribe((data: Specification[]) => this.specifications = data);
-  }
-
-  private doDownload(contents: string, fileName: string, type: string) {
-    // For compatibility reasons the file download does not use the data URI scheme
-    const anchor = window.document.createElement('a');
-    anchor.href = window.URL.createObjectURL(new Blob([contents], {type}));
-    // version.content cannot be passed directly to the blob, as it has double quotes escaped
-
-    anchor.download = fileName;
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
   }
 }
