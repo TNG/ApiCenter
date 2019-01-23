@@ -38,6 +38,20 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Database entities
+backend/com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
+
+# Single-deploy additional Gradle directories
+frontend/.gradle
+.gradle/
+
+# Angular build directories
+frontend/build/
+backend/src/main/resources
+
+# Kotlin libraries
+lib/
+
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
