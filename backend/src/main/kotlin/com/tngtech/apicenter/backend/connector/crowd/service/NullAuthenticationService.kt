@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
 
-class CrowdAuthenticationService constructor(private val crowdClient: CrowdClient) : ExternalAuthenticationService {
+class NullAuthenticationService : ExternalAuthenticationService {
 
     override fun authenticate(username: String, password: String): User? {
         try {
-            val user = crowdClient.authenticateUser(username, password)
-            return User(UUID.randomUUID(), user.name, user.emailAddress, "crowd", user.externalId)
+            return User(UUID.randomUUID(), username, "", "null", "null")
         } catch (exception: Exception) {
             return null
         }
