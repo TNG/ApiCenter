@@ -12,8 +12,18 @@ To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a 
 
 To install angular CLI, enter `npm install -g @angular/cli`
 
-### Atlassian Crowd
-ApiCenter currently requires Atlassian Crowd as an authentication provider. In order to make this work, you need to [add ApiCenter
+### User Authentication
+
+Currently ApiCenter can use Atlassian Crowd as an authentication provider, or disregard user authentication entirely for those who want to try the service without setting up Crowd (in this case, any user can log in with any username, the password field is simply ignored).
+
+In `backend/src/main/resources/application.properties`, this is configured by the line:
+```
+auth.service=null
+```
+Writing `auth.service=crowd` configures ApiCenter to use Atlassian crowd. Any other string will remove user authentication.
+
+#### Atlassian Crowd
+To use Atlassian Crowd as an authentication provider, [add ApiCenter
 as an external application in Atlassian Crowd](https://confluence.atlassian.com/crowd/adding-an-application-18579591.html#AddinganApplication-add) and configure
 the following files within ApiCenter:
 
