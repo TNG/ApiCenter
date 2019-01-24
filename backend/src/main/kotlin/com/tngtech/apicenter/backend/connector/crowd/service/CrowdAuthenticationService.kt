@@ -4,10 +4,13 @@ import com.atlassian.crowd.service.client.CrowdClient
 import com.tngtech.apicenter.backend.domain.entity.User
 import com.tngtech.apicenter.backend.domain.service.ExternalAuthenticationService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import java.util.UUID
 
-class CrowdAuthenticationService constructor(private val crowdClient: CrowdClient) : ExternalAuthenticationService {
+@Service
+@ConditionalOnProperty(name = ["auth.service"], havingValue = "crowd")
+class CrowdAuthenticationService @Autowired constructor(private val crowdClient: CrowdClient) : ExternalAuthenticationService {
 
     override fun authenticate(username: String, password: String): User? {
         try {

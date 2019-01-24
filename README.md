@@ -18,9 +18,9 @@ Currently ApiCenter can use Atlassian Crowd as an authentication provider, or di
 
 In `backend/src/main/resources/application.properties`, this is configured by the line:
 ```
-auth.service=none
+auth.service=crowd
 ```
-Writing `auth.service=crowd` configures ApiCenter to use Atlassian crowd. Any other string will remove user authentication.
+Writing `auth.service=none`, or deleting the line (not specifying an authentication service), will remove user authentication.
 
 #### Atlassian Crowd
 To use Atlassian Crowd as an authentication provider, [add ApiCenter
