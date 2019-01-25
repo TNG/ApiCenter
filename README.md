@@ -43,7 +43,9 @@ We plan to add OAuth 2 support shortly.
 
 ## Getting started
 
-ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo. There are two ways to run ApiCenter: one combines the tasks of the frontend and backend together, for simplicity; the other requires two terminal sessions, however has advantages for developers.
+ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo. There are two ways to run ApiCenter: usually you would run the tasks of the frontend and backend together, for simplicity.
+
+The other way runs frontend and backend separately, and requires two terminal sessions. However this has advantages for a developer of the project, which are explained further down.
 
 For both, ensure that the authentication service is running.
 ### Combined
