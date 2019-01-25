@@ -46,6 +46,8 @@ export class SpecificationOverviewComponent implements OnInit {
     const latestVersion = specification.versions[0];
     if (latestVersion !== undefined) {
       this.downloadVersion(fileType, specification, latestVersion);
+    } else {
+      this.error = 'Download failed';
     }
   }
 

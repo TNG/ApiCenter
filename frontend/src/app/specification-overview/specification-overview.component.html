@@ -1,4 +1,9 @@
 <div class="container top-buffer">
+  <div class="row top-buffer">
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <button class="btn btn-primary" routerLink="add-specifications"><span class="oi oi-plus"></span></button>
