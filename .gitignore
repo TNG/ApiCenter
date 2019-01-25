@@ -38,9 +38,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-# Database entities
-backend/com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
-
 # Single-deploy additional Gradle directories
 frontend/.gradle
 .gradle/
@@ -65,3 +62,7 @@ lib/
 
 
 # End of https://www.gitignore.io/api/intellij
+
+### Gradle ###
+**/.gradle
+**/build/

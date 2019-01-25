@@ -86,3 +86,6 @@ gradle-app.setting
 *.cfe
 *.cfs
 *.si
+
+# In memory database, if nothing else is configured
+com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
