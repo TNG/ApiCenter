@@ -10,7 +10,6 @@ class WebConfig : WebMvcConfigurer {
 
   override fun configureContentNegotiation(configurer: ContentNegotiationConfigurer) {
     configurer.
-            parameterName("mediaType").
             ignoreAcceptHeader(true).
             defaultContentType(MediaType.APPLICATION_JSON).
             mediaType("yml", MediaType.valueOf("application/yml")).
