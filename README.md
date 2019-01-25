@@ -43,30 +43,50 @@ We plan to add OAuth 2 support shortly.
 
 ## Getting started
 
-ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo.
+ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo. There are two ways to run ApiCenter: usually you would run the tasks of the frontend and backend together, for simplicity.
 
-### Backend
-In order to start the backend, clone the repo, navigate to the `backend` folder and start the service with the familiar Spring Boot command:
+The other way runs frontend and backend separately, and requires two terminal sessions. However this has advantages for a developer of the project, which are explained further down.
+
+For both, ensure that the authentication service is running.
+### Combined
+From the project root directory, run:
 ```
-cd backend/
-./gradlew bootRun
+./gradlew :monoBuild
+```
+The `:monoBuild` task is composed of three subtasks, which can be independently invoked if needed:
+- `:frontend:buildClientDev` runs Angular's build command, producing the output files in the default location `frontend/dist`.
+- `:frontend:copyFrontendFiles` copies these files into a directory in `backend` from which Spring will serve static resources.
+- `:backend:bootRun` will compile and run the backend.
+
+The service is available from `localhost:8080` (Spring boot's default port).
+
+### Separate
+
+The combined command is simpler to run, however has disadvantages to developers, who are likely to make modifications to the source files. Any change to frontend or backend requires re-running `bootRun`, which recompiles both projects. The in-memory database used by the backend will be reset.
+
+For the frontend, this is unnecessary. When developing in Angular, `ng serve` will handily watch for changes to the source files, and the live development site will auto-update to reflect them.
+
+Also, since the frontend build task depends on `npm install`, every run of `:frontend:buildClientDev` will do `npm`'s somewhat time consuming and unskippable package audit. Without this task, `npm i` can run independently of `ng serve` (or `ng build`).
+
+#### Backend
+To start the backend, from the project root directory, run:
+```
+./gradlew :backend:bootRun
 ```
 
-### Frontend
-To start the frontend, clone the repo, navigate to the `frontend` folder and start it with angular CLI:
+#### Frontend
+To start the frontend, from the project root directory, run:
 ```
-cd frontend/
-npm install
-ng serve
+./gradlew :frontend:ngServe
 ```
-
+The service is available from `localhost:4200` (Angular's default port).
 ## Running the tests
 
 ### Backend
 Running the backend tests is `./gradlew test` for all Unit-Tests and `./gradlew integrationTest` for all Integration-Tests.
 
 ### Frontend
-Running all frontend tests is simply `ng test`.
+Running all frontend tests is simply `ng test`, however ensure you are within the `frontend` directory.
 
 ## Mutation Testing
 In order to keep the quality of our tests high, we regularly execute mutation testing tools on our code for quality assurance. 

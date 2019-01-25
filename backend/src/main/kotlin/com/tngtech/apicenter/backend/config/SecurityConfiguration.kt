@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -25,12 +26,22 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
             .csrf().disable()
             .authorizeRequests()
             .antMatchers("/sessions").permitAll()
-            .and()
-            .authorizeRequests()
+
+            .antMatchers("/").permitAll()
+            .antMatchers("/3rdpartylicenses.txt").permitAll()
+            .antMatchers("/favicon.ico").permitAll()
+            .antMatchers("/index.html").permitAll()
+            .antMatchers("/*.js*").permitAll()
+            .antMatchers("/open-iconic.*").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilter(JwtAuthorizationFilter(authenticationManager(), jwtSecuritySecret))
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
+    @Throws(Exception::class)
+    override fun configure(web: WebSecurity) {
+        web.ignoring().antMatchers("/resources/**")
+    }
 }
+
