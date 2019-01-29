@@ -4,3 +4,6 @@ task monoBuild {
 }
 
 tasks.getByPath(':backend:bootRun').mustRunAfter(':frontend:copyFrontendFiles')
+
+task stage(dependsOn: [':backend:build', ':frontend:buildClientDev', ':frontend:copyFrontendFiles'])
+tasks.getByPath(':backend:build').mustRunAfter(':frontend:copyFrontendFiles')
