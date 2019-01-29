@@ -10,7 +10,7 @@ node {
 
 task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
   description = 'Compiles Angular assets'
-  args = ['run', 'build', '--prod=false']
+  args = ['run', 'build', '-c=mono'] // overrides the environment, which makes requests to window.location.origin
 }
 
 task copyFrontendFiles(type: Copy) {
@@ -23,5 +23,5 @@ copyFrontendFiles.mustRunAfter(buildClientDev)
 
 task ngServe(type: NpmTask, dependsOn: 'npmInstall') {
   description = 'Compiles, serves and watches Angular assets'
-  args = ['run', 'start']
+  args = ['run', 'start'] // uses the default environment, which makes requests to localhost:8080
 }
