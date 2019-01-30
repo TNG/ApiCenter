@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar backend/build/libs/backend-1.0.0-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -jar backend/build/libs/backend-1.0.0-SNAPSHOT.jar --spring.config.location=classpath:/heroku.properties
