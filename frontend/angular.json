@@ -46,11 +46,11 @@
                 }
               ]
             },
-            "mono": {
+            "localhost": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.mono.ts"
+                  "with": "src/environments/environment.localhost.ts"
                 }
               ]
             }
@@ -59,14 +59,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "frontend:build"
+            "browserTarget": "frontend:build",
           },
           "configurations": {
             "production": {
-              "browserTarget": "frontend:build:production"
+              "browserTarget": "frontend:build:production",
             },
-            "mono": {
-
+            "localhost": {
+              "browserTarget": "frontend:build:localhost"
             }
           }
         },
@@ -83,6 +83,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "environment": "localhost",
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
@@ -94,6 +95,16 @@
               "src/assets",
               "src/favicon.ico"
             ]
+          },
+          "configurations": {
+            "localhost": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.localhost.ts"
+                }
+              ]
+            }
           }
         },
         "lint": {
