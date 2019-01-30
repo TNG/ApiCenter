@@ -59,11 +59,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "frontend:build",
+            "browserTarget": "frontend:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "frontend:build:production",
+              "browserTarget": "frontend:build:production"
             },
             "localhost": {
               "browserTarget": "frontend:build:localhost"
