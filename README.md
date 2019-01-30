@@ -4,17 +4,65 @@
 
 ApiCenter is a repository for all your OpenAPI specifications. You can upload new ones and search them so that finding the one you need is easy.
 
-## Prerequisites
+## How to use
 
-### General
+### Deploy to cloud (heroku)
 
-To run ApiCenter, you need `gradle` and angular CLI. The backend itself needs a relational database, for example PostgreSQL. It provides an in-memory database if not configured otherwise.
+ApiCenter is configured for deployment to [heroku](https://dashboard.heroku.com/). To create your own heroku deploy of ApiCenter: Clone the repository, create a heroku account, and download the heroku CLI [here](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
 
-To install angular CLI, enter `npm install -g @angular/cli`
+Then in a terminal window (in your IDE, for example), log in to your heroku account with `heroku login`, and create an app with `heroku create`.
+
+A small amount of configuration is done through the heroku web interface / dashboard.
+ - Under the "Resources" tab, add a PostgreSQL database to your app.
+ - Under the "Settings" tab, choose a [JWT](https://jwt.io/) secret in the "Config Vars" table.
+
+Deploy your repository to heroku. This just requires pushing to the master branch of the new git remote, `heroku`. (Heroku will only build its master branch. Any other branch can be renamed like so: `git push heroku my-branch:master`)
+
+Any changes you make, once pushed to `heroku`, will be visible on the public website.
+
+### Deploy locally
+
+ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo.
+
+To run ApiCenter locally, you need `gradle` and angular CLI. The backend can use a relational database, for example PostgreSQL, or will provide an in-memory database otherwise. (To install angular CLI, enter `npm install -g @angular/cli`)
+
+There are two ways to run ApiCenter: usually you would run the tasks of the frontend and backend together, for simplicity. The other way runs frontend and backend separately, and requires two terminal sessions. However this has advantages for a developer of the project, which are explained further down.
+
+#### Combined
+From the project root directory, run:
+```
+./gradlew :monoBuild
+```
+The `:monoBuild` task is composed of three subtasks, which can be independently invoked if needed:
+- `:frontend:buildClientDev` runs Angular's build command, producing the output files in the default location `frontend/dist`.
+- `:frontend:copyFrontendFiles` copies these files into a directory in `backend` from which Spring will serve static resources.
+- `:backend:bootRun` will compile and run the backend.
+
+The service is available from `localhost:8080` (Spring boot's default port).
+
+#### Separate
+
+The combined command is simpler to run, however has disadvantages to developers, who are likely to make modifications to the source files. Any change to frontend or backend requires re-running `bootRun`, which recompiles both projects. The in-memory database used by the backend will be reset.
+
+For the frontend, this is unnecessary. When developing in Angular, `ng serve` will handily watch for changes to the source files, and the live development site will auto-update to reflect them.
+
+Also, since the frontend build task depends on `npm install`, every run of `:frontend:buildClientDev` will do `npm`'s somewhat time consuming and unskippable package audit. Without this task, `npm i` can run independently of `ng serve` (or `ng build`).
+
+To start the backend, from the project root directory, run:
+```
+./gradlew :backend:bootRun
+```
+
+To start the frontend, from the project root directory, run:
+```
+cd frontend/
+ng serve -c=localhost
+```
+The service is available from `localhost:4200` (Angular's default port).
 
 ### User Authentication
 
-Currently ApiCenter can use Atlassian Crowd as an authentication provider, or disregard user authentication entirely for those who want to try the service without setting up Crowd (in this case, any user can log in with any username, the password field is simply ignored).
+Currently ApiCenter can use Atlassian Crowd as an authentication provider, or disregard user authentication entirely (the default) for those who want to try the service without setting up Crowd. In this case, any user can log in with any username, the password field is simply ignored.
 
 In `backend/src/main/resources/application.properties`, this is configured by the line:
 ```
@@ -41,52 +89,11 @@ jwt.secret=### Define a secret that is used to sign JWTs ###
 
 We plan to add OAuth 2 support shortly.
 
-## Getting started
-
-ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo. There are two ways to run ApiCenter: usually you would run the tasks of the frontend and backend together, for simplicity.
-
-The other way runs frontend and backend separately, and requires two terminal sessions. However this has advantages for a developer of the project, which are explained further down.
-
-For both, ensure that the authentication service is running.
-### Combined
-From the project root directory, run:
-```
-./gradlew :monoBuild
-```
-The `:monoBuild` task is composed of three subtasks, which can be independently invoked if needed:
-- `:frontend:buildClientDev` runs Angular's build command, producing the output files in the default location `frontend/dist`.
-- `:frontend:copyFrontendFiles` copies these files into a directory in `backend` from which Spring will serve static resources.
-- `:backend:bootRun` will compile and run the backend.
-
-The service is available from `localhost:8080` (Spring boot's default port).
-
-### Separate
-
-The combined command is simpler to run, however has disadvantages to developers, who are likely to make modifications to the source files. Any change to frontend or backend requires re-running `bootRun`, which recompiles both projects. The in-memory database used by the backend will be reset.
-
-For the frontend, this is unnecessary. When developing in Angular, `ng serve` will handily watch for changes to the source files, and the live development site will auto-update to reflect them.
-
-Also, since the frontend build task depends on `npm install`, every run of `:frontend:buildClientDev` will do `npm`'s somewhat time consuming and unskippable package audit. Without this task, `npm i` can run independently of `ng serve` (or `ng build`).
-
-#### Backend
-To start the backend, from the project root directory, run:
-```
-./gradlew :backend:bootRun
-```
-
-#### Frontend
-To start the frontend, from the project root directory, run:
-```
-./gradlew :frontend:ngServe
-```
-The service is available from `localhost:4200` (Angular's default port).
 ## Running the tests
 
-### Backend
 Running the backend tests is `./gradlew test` for all Unit-Tests and `./gradlew integrationTest` for all Integration-Tests.
 
-### Frontend
-Running all frontend tests is simply `ng test`, however ensure you are within the `frontend` directory.
+Running all frontend tests is `ng test -c=localhost`, however ensure you are within the `frontend` directory.
 
 ## Mutation Testing
 In order to keep the quality of our tests high, we regularly execute mutation testing tools on our code for quality assurance. 
