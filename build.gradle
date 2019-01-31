@@ -1,0 +1,6 @@
+task monoBuild {
+    description = 'Deploy backend and frontend together'
+    dependsOn(':frontend:buildClientDev', ':frontend:copyFrontendFiles', ':backend:bootRun')
+}
+
+tasks.getByPath(':backend:bootRun').mustRunAfter(':frontend:copyFrontendFiles')

@@ -87,5 +87,12 @@ gradle-app.setting
 *.cfs
 *.si
 
+# Frontend static files
+src/main/resources/public/*.js*
+src/main/resources/public/index.html
+src/main/resources/public/3rdpartylicenses.txt
+src/main/resources/public/favicon.ico
+src/main/resources/public/open-iconic.*
+
 # In memory database, if nothing else is configured
-com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
+com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity/

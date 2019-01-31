@@ -10,6 +10,7 @@ import com.atlassian.crowd.service.client.ClientPropertiesImpl
 import com.atlassian.crowd.service.client.ClientResourceLocator
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -18,6 +19,7 @@ import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.session.HttpSessionEventPublisher
 
 @Configuration
+@ConditionalOnProperty(name = ["auth.service"], havingValue = "crowd")
 class SecurityCrowdConfiguration : WebSecurityConfigurerAdapter() {
 
     override fun configure(auth: AuthenticationManagerBuilder) {

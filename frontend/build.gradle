@@ -1,0 +1,27 @@
+plugins {
+  id "com.moowork.node" version "1.2.0"
+}
+
+node {
+  version = '10.15.0'
+  npmVersion = '6.7.0'
+  download = true
+}
+
+task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
+  description = 'Compiles Angular assets'
+  args = ['run', 'build', '--prod=false']
+}
+
+task copyFrontendFiles(type: Copy) {
+  description = 'Copy Angular assets into Spring resources directory'
+  from 'dist'
+  into '../backend/src/main/resources/public'
+}
+
+copyFrontendFiles.mustRunAfter(buildClientDev)
+
+task ngServe(type: NpmTask, dependsOn: 'npmInstall') {
+  description = 'Compiles, serves and watches Angular assets'
+  args = ['run', 'start']
+}
