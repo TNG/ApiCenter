@@ -20,7 +20,7 @@ import { LoginComponent } from './login/login.component';
 import {AuthenticationGuard} from './guards/authentication.guard';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
-import {MarkdownModule} from "ngx-markdown";
+import {MarkdownModule} from 'ngx-markdown';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
