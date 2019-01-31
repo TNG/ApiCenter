@@ -20,6 +20,7 @@ import { LoginComponent } from './login/login.component';
 import {AuthenticationGuard} from './guards/authentication.guard';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
+import {MarkdownModule} from "ngx-markdown";
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
@@ -54,7 +55,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes
     ),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    MarkdownModule.forRoot()
   ],
   providers: [
     AuthenticationGuard,
