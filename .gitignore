@@ -38,17 +38,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-# Single-deploy additional Gradle directories
-frontend/.gradle
-.gradle/
-
-# Angular build directories
-frontend/build/
-backend/src/main/resources
-
-# Kotlin libraries
-lib/
-
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
