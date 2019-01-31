@@ -6,20 +6,6 @@ ApiCenter is a repository for all your OpenAPI specifications. You can upload ne
 
 ## How to use
 
-### Deploy to cloud (heroku)
-
-ApiCenter is configured for deployment to [heroku](https://dashboard.heroku.com/). To create your own heroku deploy of ApiCenter: Clone the repository, create a heroku account, and download the heroku CLI [here](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
-
-Then in a terminal window (in your IDE, for example), log in to your heroku account with `heroku login`, and create an app with `heroku create`.
-
-A small amount of configuration is done through the heroku web interface / dashboard.
- - Under the "Resources" tab, add a PostgreSQL database to your app.
- - Under the "Settings" tab, choose a [JWT](https://jwt.io/) secret in the "Config Vars" table.
-
-Deploy your repository to heroku. This just requires pushing to the master branch of the new git remote, `heroku`. (Heroku will only build its master branch. Any other branch can be renamed like so: `git push heroku my-branch:master`)
-
-Any changes you make, once pushed to `heroku`, will be visible on the public website.
-
 ### Deploy locally
 
 ApiCenter consists of a RESTful backend service written in Kotlin and a SPA frontend in Angular. Both are contained in this git repo.
@@ -88,6 +74,20 @@ jwt.secret=### Define a secret that is used to sign JWTs ###
 ```
 
 We plan to add OAuth 2 support shortly.
+
+### Deploy to cloud (heroku)
+
+ApiCenter is configured for deployment to [heroku](https://dashboard.heroku.com/). To create your own heroku deploy of ApiCenter: Clone the repository, create a heroku account, and download the heroku CLI [here](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
+
+Then in a terminal window (in your IDE, for example), log in to your heroku account with `heroku login`, and create an app with `heroku create`.
+
+A small amount of configuration is done through the heroku web interface / dashboard.
+ - Under the "Resources" tab, add a PostgreSQL database to your app.
+ - Under the "Settings" tab, choose a [JWT](https://jwt.io/) secret in the "Config Vars" table.
+
+Deploy your repository to heroku. This just requires pushing to the master branch of the new git remote, `heroku`. (Heroku will only build its master branch. Any other branch can be renamed like so: `git push heroku my-branch:master`)
+
+Any changes you make, once pushed to `heroku`, will be visible on the public website.
 
 ## Running the tests
 
