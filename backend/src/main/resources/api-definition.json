@@ -399,6 +399,14 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
