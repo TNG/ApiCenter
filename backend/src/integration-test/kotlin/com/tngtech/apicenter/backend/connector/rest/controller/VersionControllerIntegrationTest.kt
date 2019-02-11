@@ -32,6 +32,15 @@ class VersionControllerIntegrationTest {
     }
 
     @Test
+    fun findOneVersion_shouldReturnVersionWithAcceptHeader() {
+        mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
+                .header("Accept", "application/json")
+                .with(user("user"))
+                .with(csrf()))
+                .andExpect(jsonPath("$.version", equalTo("v1")))
+    }
+
+    @Test
     fun deleteVersion_shouldDeleteVersion() {
         mockMvc.perform(delete("/specifications/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/versions/v2")
             .with(user("user"))

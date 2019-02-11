@@ -1,8 +1,23 @@
 <div class="container top-buffer">
+  <div class="row top-buffer">
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <button class="btn btn-primary" routerLink="add-specifications"><span class="oi oi-plus"></span></button>
     </div>
+
+    <div class="col">
+      <span>Download specifications as: </span>
+    <select type="string"
+            [(ngModel)]="selectedFormat"
+            id="download-file-format">
+      <option *ngFor="let format of downloadFileFormatOptions" [ngValue]="format">{{format.toUpperCase()}}</option>
+    </select>
+    </div>
+
   </div>
   <div class="row top-buffer">
     <div class="col">
@@ -33,8 +48,9 @@
             <td>
               <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
                       (click)="synchronize(specification)"></button>
-              <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
+              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadSpecification(specification, selectedFormat)"></button>
               <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
+              <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
             </td>
           </tr>
           </tbody>
@@ -43,7 +59,10 @@
             <td></td>
             <td><a [routerLink]="['specifications/', specification.id, version.version]" routerLinkActive="active">{{ specification.title }}</a></td>
             <td>{{ version.version }}</td>
-            <td><button class="btn oi oi-trash" (click)="deleteVersion(specification, version)"></button></td>
+            <td>
+              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadVersion(selectedFormat, specification, version)"></button>
+              <button class="btn oi oi-trash" (click)="deleteVersion(specification, version)"></button>
+            </td>
           </tr>
           </tbody>
         </ng-container>
