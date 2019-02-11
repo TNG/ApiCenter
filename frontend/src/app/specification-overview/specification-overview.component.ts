@@ -67,7 +67,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public downloadYAMLVersion(specification: Specification, version: Version) {
     const fileName = this.createDownloadFileName(specification, version);
-    this.versionService.getYAMLVersion(specification.id, version.version)
+    this.versionService.getYamlVersion(specification.id, version.version)
       .subscribe(event => {
         this.doDownload(event.content, fileName + '.yml', 'application/yaml');
       });
