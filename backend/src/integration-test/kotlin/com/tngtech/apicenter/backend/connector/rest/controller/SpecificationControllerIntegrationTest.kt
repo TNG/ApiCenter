@@ -42,6 +42,26 @@ internal class SpecificationControllerIntegrationTest {
     }
 
     @Test
+    fun findAllSpecifications_requiresAuthentication() {
+        mockMvc.perform(get("/api/1.0/specifications"))
+                .andExpect(status().`is`(403))
+    }
+
+    @Test
+    fun findOneSpecification_shouldGetOne() {
+        mockMvc.perform(get("/api/1.0/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user")))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("title", equalTo("Spec1")))
+    }
+
+    @Test
+    fun findOneSpecification_shouldGracefullyFail() {
+        mockMvc.perform(get("/api/1.0/specifications/af0502a2-7410-40e4-90fd-3504f67de1ef").with(user("user")))
+                .andExpect(status().`is`(404))
+    }
+
+    @Test
     fun uploadSpecification_shouldCreateSpecification() {
         mockMvc.perform(
             post("/api/1.0/specifications")

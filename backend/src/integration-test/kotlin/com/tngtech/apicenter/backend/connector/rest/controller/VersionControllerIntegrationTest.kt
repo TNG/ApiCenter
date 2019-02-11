@@ -49,6 +49,15 @@ class VersionControllerIntegrationTest {
     }
 
     @Test
+    fun findOneVersion_shouldGracefullyFail() {
+        mockMvc.perform(get("/api/1.0/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/42")
+                .with(user("user"))
+                .with(csrf()))
+                .andExpect(status().`is`(404))
+    }
+
+
+    @Test
     fun deleteVersion_shouldDeleteVersion() {
         mockMvc.perform(delete("/api/1.0/specifications/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/v2")
             .with(user("user"))
