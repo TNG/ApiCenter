@@ -38,7 +38,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .antMatchers("/index.html").permitAll()
                 .antMatchers("/*.js*").permitAll()
                 .antMatchers("/open-iconic.*").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilter(JwtAuthorizationFilter(authenticationManager(), jwtSecuritySecret))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
