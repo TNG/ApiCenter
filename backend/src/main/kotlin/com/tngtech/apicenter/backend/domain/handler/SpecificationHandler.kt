@@ -15,7 +15,7 @@ class SpecificationHandler @Autowired constructor(private val specificationPersi
 
     fun findAll() = specificationPersistenceService.findAll()
 
-    fun findOne(id: UUID) = specificationPersistenceService.findOne(id)
+    fun findOne(id: UUID): Specification? = specificationPersistenceService.findOne(id)
 
     fun delete(id: UUID) = specificationPersistenceService.delete(id)
 

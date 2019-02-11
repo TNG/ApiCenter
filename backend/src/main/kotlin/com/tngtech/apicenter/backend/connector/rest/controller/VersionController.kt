@@ -1,7 +1,5 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 
@@ -9,16 +7,9 @@ import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.VersionDtoMapper
 import com.tngtech.apicenter.backend.domain.handler.VersionHandler
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.http.MediaType
 import java.util.UUID
-import javax.servlet.http.HttpServletResponse
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
@@ -27,6 +18,8 @@ private const val MEDIA_TYPE_YAML = "application/yml"
 @RestController
 class VersionController constructor(private val versionHandler: VersionHandler, private val versionDtoMapper: VersionDtoMapper) {
 
+    @GetMapping("/api/1.0/specifications/{specificationId}/{version}")
+    @Throws(HttpNotFoundException::class)
     @RequestMapping("/specifications/{specificationId}/versions/{version}",
             produces = [MediaType.APPLICATION_JSON_VALUE,
                         MEDIA_TYPE_YAML],
@@ -39,7 +32,9 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
                                    defaultValue = MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): VersionDto {
         // i.e. The integration test and unit test require the default specified in two different ways
         val foundVersion = versionHandler.findOne(specificationId, version)
-        if (accept == MEDIA_TYPE_YAML) {
+        if (foundVersion == null) {
+            throw HttpNotFoundException()
+        } else if (accept == MEDIA_TYPE_YAML) {
             logger.info("Specification $specificationId version $version requested as YAML")
             val jsonNodeTree = ObjectMapper().readTree(foundVersion.content)
             val jsonAsYaml = YAMLMapper().writeValueAsString(jsonNodeTree)
@@ -50,7 +45,7 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
         }
     }
 
-    @DeleteMapping("/specifications/{specificationId}/versions/{version}")
+    @DeleteMapping("/api/1.0/specifications/{specificationId}/{version}")
     fun deleteVersion(@PathVariable specificationId: UUID, @PathVariable version: String) {
         versionHandler.delete(specificationId, version)
     }

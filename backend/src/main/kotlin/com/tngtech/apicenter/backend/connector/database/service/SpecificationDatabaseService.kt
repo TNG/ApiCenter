@@ -9,7 +9,6 @@ import org.hibernate.search.jpa.Search
 import org.springframework.stereotype.Service
 import java.lang.Exception
 import java.lang.IllegalArgumentException
-import java.sql.SQLException
 import java.util.UUID
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
@@ -39,7 +38,7 @@ class SpecificationDatabaseService constructor(
     override fun findAll(): List<Specification> = specificationRepository.findAll().map { spec -> specificationEntityMapper.toDomain(spec) }
 
     override fun findOne(id: UUID): Specification? =
-        specificationRepository.findById(id).map { spec -> specificationEntityMapper.toDomain(spec) }.get()
+        specificationRepository.findById(id).orElse(null)?.let { spec -> specificationEntityMapper.toDomain(spec) }
 
     override fun delete(id: UUID) = specificationRepository.deleteById(id)
 
