@@ -25,7 +25,8 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/marked/lib/marked.js"
             ]
           },
           "configurations": {
@@ -45,6 +46,14 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "localhost": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.localhost.ts"
+                }
+              ]
             }
           }
         },
@@ -56,6 +65,9 @@
           "configurations": {
             "production": {
               "browserTarget": "frontend:build:production"
+            },
+            "localhost": {
+              "browserTarget": "frontend:build:localhost"
             }
           }
         },
@@ -72,6 +84,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "environment": "localhost",
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
@@ -83,6 +96,16 @@
               "src/assets",
               "src/favicon.ico"
             ]
+          },
+          "configurations": {
+            "localhost": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.localhost.ts"
+                }
+              ]
+            }
           }
         },
         "lint": {
