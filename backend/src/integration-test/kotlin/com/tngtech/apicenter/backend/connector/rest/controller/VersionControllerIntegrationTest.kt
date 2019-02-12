@@ -31,7 +31,7 @@ class VersionControllerIntegrationTest {
     }
 
     @Test
-    fun findOneVersion_shouldReturnJSON() {
+    fun findOneVersion_shouldReturnJson() {
         mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
                 .header("Accept", "application/json")
                 .with(user("user"))
@@ -40,7 +40,7 @@ class VersionControllerIntegrationTest {
     }
 
     @Test
-    fun findOneVersion_shouldReturnYAML() {
+    fun findOneVersion_shouldReturnYaml() {
         mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
                 .header("Accept", "application/yml")
                 .with(user("user"))
