@@ -12,8 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -32,12 +31,21 @@ class VersionControllerIntegrationTest {
     }
 
     @Test
-    fun findOneVersion_shouldReturnVersionWithAcceptHeader() {
+    fun findOneVersion_shouldReturnJSON() {
         mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
                 .header("Accept", "application/json")
                 .with(user("user"))
                 .with(csrf()))
-                .andExpect(jsonPath("$.version", equalTo("v1")))
+                .andExpect(content().string("{\"version\":\"v1\",\"content\":\"{\\\"info\\\": {\\\"title\\\": \\\"Spec1\\\",  \\\"version\\\": \\\"v1\\\", \\\"description\\\": \\\"Description\\\"}}\"}"))
+    }
+
+    @Test
+    fun findOneVersion_shouldReturnYAML() {
+        mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
+                .header("Accept", "application/yml")
+                .with(user("user"))
+                .with(csrf()))
+                .andExpect(content().string("{\"version\":\"v1\",\"content\":\"---\\ninfo:\\n  title: \\\"Spec1\\\"\\n  version: \\\"v1\\\"\\n  description: \\\"Description\\\"\\n\"}"))
     }
 
     @Test
