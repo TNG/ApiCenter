@@ -25,7 +25,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/1.0/sessions").permitAll()
+                .antMatchers("/api/v1/sessions").permitAll()
 
                 // Angular route permissions
                 // Should be available to unauthenticated users

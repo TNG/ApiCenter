@@ -19,8 +19,6 @@ class WebConfiguration {
 
             override fun addViewControllers(registry: ViewControllerRegistry) {
                 // Redirect to Angular's router
-                // In case you either refresh the page, or want to send a static link to someone
-                // and don't want to get a 403 when running the mono build
                 registry.addViewController("/specifications/*/*").setViewName("forward:/index.html")
                 registry.addViewController("/add-specifications").setViewName("forward:/index.html")
                 registry.addViewController("/edit-specifications/**").setViewName("forward:/index.html")

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("/api/1.0/specifications")
+@RequestMapping("/api/v1/specifications")
 class SpecificationController @Autowired constructor(
     private val specificationHandler: SpecificationHandler,
     private val synchronizationService: SynchronizationService,
@@ -60,11 +60,7 @@ class SpecificationController @Autowired constructor(
     @Throws(HttpNotFoundException::class)
     fun findSpecification(@PathVariable specificationId: UUID): SpecificationDto {
         val specification = specificationHandler.findOne(specificationId)
-
-        if (specification != null) {
-            return specificationDtoMapper.fromDomain(specification)
-        }
-        throw HttpNotFoundException()
+        return specification?.let { specificationDtoMapper.fromDomain(it) } ?: throw HttpNotFoundException()
     }
 
     @DeleteMapping("/{specificationId}")

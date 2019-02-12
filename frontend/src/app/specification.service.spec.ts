@@ -25,7 +25,7 @@ describe('SpecificationService', () => {
   });
 
   it('should return specification', () => {
-    when(mockedHttpClient.get('http://localhost:8080/api/1.0/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6'))
+    when(mockedHttpClient.get('http://localhost:8080/api/v1/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6'))
       .thenReturn(from([specifications[0]]));
 
     specificationService.getSpecification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6').subscribe((data: Specification) => {
@@ -34,7 +34,7 @@ describe('SpecificationService', () => {
   });
 
   it('should create specification', () => {
-    when(mockedHttpClient.post('http://localhost:8080/api/1.0/specifications', specificationFile))
+    when(mockedHttpClient.post('http://localhost:8080/api/v1/specifications', specificationFile))
       .thenReturn(from([specifications[0]]));
 
     specificationService.createSpecification(specificationFile).subscribe((data: Specification) => {
@@ -43,7 +43,7 @@ describe('SpecificationService', () => {
   });
 
   it('should update specification', () => {
-    when(mockedHttpClient.put('http://localhost:8080/api/1.0/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', specificationFile))
+    when(mockedHttpClient.put('http://localhost:8080/api/v1/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', specificationFile))
       .thenReturn(from([specifications[0]]));
 
     specificationService.updateSpecification(specificationFile, 'd2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6').subscribe((data: Specification) => {
@@ -52,21 +52,21 @@ describe('SpecificationService', () => {
   });
 
   it('should deleteSpecification specification', () => {
-    when(mockedHttpClient.delete('http://localhost:8080/api/1.0/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6'))
+    when(mockedHttpClient.delete('http://localhost:8080/api/v1/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6'))
       .thenReturn(from([]));
 
     specificationService.deleteSpecification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6').subscribe(() => {
-      verify(mockedHttpClient.delete('http://localhost:8080/api/1.0/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6')).called();
+      verify(mockedHttpClient.delete('http://localhost:8080/api/v1/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6')).called();
     });
   });
 
   it('should synchronize specification', () => {
-    when(mockedHttpClient.post('http://localhost:8080/api/1.0/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6/synchronize', ''))
+    when(mockedHttpClient.post('http://localhost:8080/api/v1/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6/synchronize', ''))
       .thenReturn(from([]));
 
     specificationService.synchronizeSpecification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6').subscribe(() => {
       verify(mockedHttpClient
-        .post('http://localhost:8080/api/1.0/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6/synchronize', ''))
+        .post('http://localhost:8080/api/v1/specifications/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6/synchronize', ''))
         .called();
     });
   });

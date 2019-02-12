@@ -13,7 +13,7 @@ export class VersionService {
 
   public getYamlVersion(specificationId: string, version: string) {
     const headers = new HttpHeaders({'Accept': 'application/yml'});
-    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version, {headers})
+    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/' + version, {headers})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 

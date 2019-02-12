@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/api/1.0/specifications": {
+    "/api/v1/specifications": {
       "get": {
         "tags": [
           "specification-controller"
@@ -118,7 +118,7 @@
         "deprecated": false
       }
     },
-    "/api/1.0/specifications/search/{searchString}": {
+    "/api/v1/specifications/search/{searchString}": {
       "get": {
         "tags": [
           "specification-controller"
@@ -169,7 +169,7 @@
         "deprecated": false
       }
     },
-    "/api/1.0/specifications/{specificationId}": {
+    "/api/v1/specifications/{specificationId}": {
       "get": {
         "tags": [
           "specification-controller"
@@ -326,7 +326,7 @@
         "deprecated": false
       }
     },
-    "/api/1.0/specifications/{specificationId}/synchronize": {
+    "/api/v1/specifications/{specificationId}/synchronize": {
       "post": {
         "tags": [
           "specification-controller"
@@ -374,7 +374,7 @@
         "deprecated": false
       }
     },
-    "/api/1.0/specifications/{specificationId}/{version}": {
+    "/api/v1/specifications/{specificationId}/{version}": {
       "get": {
         "tags": [
           "version-controller"
@@ -470,7 +470,7 @@
         }
       }
     },
-    "/api/1.0/sessions": {
+    "/api/v1/sessions": {
       "post": {
         "tags": [
           "session-controller"
