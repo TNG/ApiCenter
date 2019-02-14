@@ -4,10 +4,11 @@ import * as ReactDOM from 'react-dom';
 import * as uuid from 'uuid';
 import * as invariant from 'invariant';
 import GraphiQL from 'graphiql';
+import fetch from 'isomorphic-fetch';
 
 @Component({
   selector: 'graphiql',
-  template: '<div style="height: 100vh" [id]="graphiql">Loading...</div>',
+  template: '<div style="height: calc(100vh - 56px)" [id]="graphiql">Loading...</div>',
 })
 
 export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
