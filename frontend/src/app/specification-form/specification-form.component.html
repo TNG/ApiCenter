@@ -6,27 +6,39 @@
   </div>
   <div class="row top-buffer">
     <div class="col">
-      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="!manualDisabled"/>
-      Upload file manually ...
+      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="!remoteUploadSelected"/>
+      Upload a file from your computer
     </div>
   </div>
   <div class="row top-buffer">
     <div class="col">
       <p>
-        <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml" ngModel
-               (change)="getFile($event)" [attr.disabled]="manualDisabled ? '' : null">
+        <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
+               (change)="onLocalFileChange($event)" [attr.disabled]="remoteUploadSelected ? '' : null">
       </p>
     </div>
-  </div>
-  <div class="row top-buffer">
-    <div class="col">
-      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="manualDisabled"/>
-      Load file from URL ...
+    <div class="col" *ngIf="isGraphQLFile">
+      Additionally required fields for GraphQL upload:
+      <div class="row">
+        <input type="text" title="title" placeholder="Title" [(ngModel)]="gqlTitle"/>
+      </div>
+      <div class="row">
+        <input type="text" title="version" placeholder="Version" [(ngModel)]="gqlVersion"/>
+      </div>
+      <div class="row">
+        <input type="text" title="description" placeholder="Description" [(ngModel)]="gqlDescription"/>
+      </div>
     </div>
   </div>
   <div class="row top-buffer">
     <div class="col">
-      <input type="text" title="url" placeholder="Insert URL here ..." [attr.disabled]="!manualDisabled ? '' : null" [(ngModel)]="fileUrl"/>
+      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="remoteUploadSelected"/>
+      Load file from URL
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <input type="text" title="url" placeholder="Insert URL here" [attr.disabled]="!remoteUploadSelected ? '' : null" [(ngModel)]="remoteFileUrl"/>
     </div>
   </div>
   <div class="row top-buffer">
