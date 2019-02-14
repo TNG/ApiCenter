@@ -5,6 +5,7 @@ import * as uuid from 'uuid';
 import * as invariant from 'invariant';
 import GraphiQL from 'graphiql';
 import fetch from 'isomorphic-fetch';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'graphiql',
@@ -25,9 +26,10 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
   }
 
   private graphQLFetcher(graphQLParams) {
-    return fetch(window.location.origin + '/graphql', {
+    return fetch(environment.apiUrl + '/graphql', {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json',
+                 'Authorization': localStorage.getItem('token') },
       body: JSON.stringify(graphQLParams),
     }).then(response => response.json());
   }
