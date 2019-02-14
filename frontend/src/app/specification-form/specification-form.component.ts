@@ -88,7 +88,9 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private createSpecification(fileContent: string, fileUrl: string) {
-    const file = new SpecificationFile(fileContent, fileUrl);
+    const metaData = this.isGraphQLFile?
+      {title: this.gqlTitle, version: this.gqlVersion, description: this.gqlDescription} : null;
+    const file = new SpecificationFile(fileContent, fileUrl, metaData);
 
     this.specificationService.createSpecification(file)
       .subscribe(event => {

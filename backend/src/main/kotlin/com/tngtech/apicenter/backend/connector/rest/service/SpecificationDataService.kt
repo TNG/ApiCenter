@@ -61,10 +61,10 @@ class SpecificationDataService @Autowired constructor(
         }
     }
 
-    fun readDescription(json: String): String? =
+    fun readDescription(json: String): String =
         try {
             JsonPath.read<String>(json, "$.info.description")
         } catch (exception: PathNotFoundException) {
-            null
+            throw IllegalArgumentException("No description given in content.", exception)
         }
 }

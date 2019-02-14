@@ -32,11 +32,15 @@ class SpecificationConverter constructor(
         val content = specificationDataService.parseFileContent(fileContent)
         val uuid = specificationFileDto.id ?: UUID.randomUUID()
 
+        val title = specificationFileDto.metaData?.title?: specificationDataService.readTitle(content)
+        val description = specificationFileDto.metaData?.description?: specificationDataService.readDescription(content)
+        val version = specificationFileDto.metaData?.version?: specificationDataService.readVersion(content)
+
         return Specification(
             uuid,
-            specificationDataService.readTitle(content),
-            specificationDataService.readDescription(content),
-            listOf(Version(specificationDataService.readVersion(content), content)),
+            title,
+            description,
+            listOf(Version(version, content)),
             specificationFileDto.fileUrl
         )
     }
