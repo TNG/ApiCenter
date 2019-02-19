@@ -18,7 +18,7 @@ export class SpecificationVersionComponent implements OnInit {
 
   ngOnInit() {
     this.specification = this.route.params.subscribe(params => {
-      this.http.get(environment.apiUrl + '/specifications/' + params['specificationId'] + '/' + params['version'])
+      this.http.get(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
         .subscribe((data: any[]) => {
           this.specification = data;
           this.displaySwaggerUi();

@@ -374,7 +374,7 @@
         "deprecated": false
       }
     },
-    "/api/v1/specifications/{specificationId}/{version}": {
+    "/api/v1/specifications/{specificationId}/versions/{version}": {
       "get": {
         "tags": [
           "version-controller"

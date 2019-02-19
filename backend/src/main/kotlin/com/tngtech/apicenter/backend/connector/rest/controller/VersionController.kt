@@ -19,7 +19,7 @@ private const val MEDIA_TYPE_YAML = "application/yml"
 class VersionController constructor(private val versionHandler: VersionHandler, private val versionDtoMapper: VersionDtoMapper) {
 
     @Throws(HttpNotFoundException::class)
-    @RequestMapping("/api/v1/specifications/{specificationId}/{version}",
+    @RequestMapping("/api/v1/specifications/{specificationId}/versions/{version}",
             produces = [MediaType.APPLICATION_JSON_VALUE,
                         MEDIA_TYPE_YAML],
             headers =  ["Accept=" + MediaType.APPLICATION_JSON_VALUE,
@@ -44,7 +44,7 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
         }
     }
 
-    @DeleteMapping("/api/v1/specifications/{specificationId}/{version}")
+    @DeleteMapping("/api/v1/specifications/{specificationId}/versions/{version}")
     fun deleteVersion(@PathVariable specificationId: UUID, @PathVariable version: String) {
         versionHandler.delete(specificationId, version)
     }

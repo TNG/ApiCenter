@@ -13,17 +13,17 @@ export class VersionService {
 
   public getYamlVersion(specificationId: string, version: string) {
     const headers = new HttpHeaders({'Accept': 'application/yml'});
-    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/' + version, {headers})
+    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version, {headers})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public getJsonVersion(specificationId: string, version: string) {
-    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/' + version)
+    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public deleteVersion(specificationId: string, version: string): Observable<Version> {
-    return this.http.delete<Version>(this.versionUrl + '/' + specificationId + '/' + version)
+    return this.http.delete<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 }
