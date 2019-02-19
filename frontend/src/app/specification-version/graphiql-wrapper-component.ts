@@ -14,7 +14,7 @@ import {makeExecutableSchema} from 'graphql-tools';
 import {typeDefs} from './schema';
 
 @Component({
-  selector: 'graphiql',
+  selector: 'app-graphiql',
   template: '<div style="height: calc(100vh - 56px)" [id]="graphiql">Loading...</div>',
 })
 
@@ -72,6 +72,6 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
   }
 
   ngOnDestroy() {
-    ReactDOM.unmountComponentAtNode(this.getRootDomNode())
+    ReactDOM.unmountComponentAtNode(this.getRootDomNode());
   }
 }

@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import * as SwaggerUI from 'swagger-ui';
-import {Version} from "../models/version";
+import {Version} from '../models/version';
 
 @Component({
   selector: 'app-specification',

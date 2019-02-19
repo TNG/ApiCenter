@@ -21,7 +21,7 @@ import {AuthenticationGuard} from './guards/authentication.guard';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
 import {MarkdownModule} from 'ngx-markdown';
-import {GraphiQLWrapperComponent} from "./specification-version/graphiql-wrapper-component";
+import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper-component';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},

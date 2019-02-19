@@ -18,7 +18,7 @@ export class SpecificationFormComponent implements OnInit {
   gqlTitle: string;
   gqlVersion: string;
   gqlDescription: string;
-  isGraphQLFile: boolean = false;
+  isGraphQLFile = false;
 
   constructor(private router: Router, private specificationService: SpecificationService, private route: ActivatedRoute) {
   }
@@ -42,7 +42,7 @@ export class SpecificationFormComponent implements OnInit {
   public async submitSpecification(id?: string) {
     const allFieldsPresent: boolean = !!this.gqlTitle && !!this.gqlVersion && !!this.gqlDescription;
     if (this.isGraphQLFile && !allFieldsPresent) {
-      this.error = "All fields required for GraphQL upload";
+      this.error = 'All fields required for GraphQL upload';
       return;
     }
 
@@ -67,7 +67,7 @@ export class SpecificationFormComponent implements OnInit {
 
   private handleLocalFile(id: string) {
     if (!this.specificationFile) {
-      this.error = "No file selected";
+      this.error = 'No file selected';
       return;
     }
 
@@ -88,8 +88,10 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private createSpecification(fileContent: string, fileUrl: string) {
-    const metaData = this.isGraphQLFile?
-      {title: this.gqlTitle, version: this.gqlVersion, description: this.gqlDescription} : null;
+    const metaData = this.isGraphQLFile ?
+      { title: this.gqlTitle,
+        version: this.gqlVersion,
+        description: this.gqlDescription } : null;
     const file = new SpecificationFile(fileContent, fileUrl, metaData);
 
     this.specificationService.createSpecification(file)

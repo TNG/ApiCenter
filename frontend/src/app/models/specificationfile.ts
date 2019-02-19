@@ -1,7 +1,7 @@
 interface SpecificationMetaData {
   title: string;
   version: string;
-  description: string
+  description: string;
 }
 
 export class SpecificationFile {
