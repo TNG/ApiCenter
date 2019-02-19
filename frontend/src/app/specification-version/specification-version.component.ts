@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import * as SwaggerUI from 'swagger-ui';
+import {Version} from "../models/version";
 
 @Component({
   selector: 'app-specification',
@@ -11,15 +12,15 @@ import * as SwaggerUI from 'swagger-ui';
 })
 export class SpecificationVersionComponent implements OnInit {
   error: String;
-  specification;
+  specification: Version;
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {
   }
 
   ngOnInit() {
-    this.specification = this.route.params.subscribe(params => {
-      this.http.get(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
-        .subscribe((data: any[]) => {
+    this.route.params.subscribe(params => {
+      this.http.get<Version>(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
+        .subscribe(data => {
           this.specification = data;
           this.displaySwaggerUi();
         },
