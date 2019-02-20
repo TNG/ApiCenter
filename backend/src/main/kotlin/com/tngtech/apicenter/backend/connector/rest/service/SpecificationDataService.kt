@@ -17,7 +17,7 @@ class SpecificationDataService @Autowired constructor(
     fun parseFileContent(fileContent: String): String = when {
         isJson(fileContent) -> fileContent
         isYaml(fileContent) -> yamlToJson(fileContent)
-        else -> String()
+        else -> fileContent
     }
 
     fun yamlToJson(yaml: String): String {
@@ -26,19 +26,17 @@ class SpecificationDataService @Autowired constructor(
     }
 
     fun isYaml(yaml: String): Boolean {
-        try {
+        return try {
             yamlMapper.readTree(yaml)
-
-            return true
+            true
         } catch (e: IOException) {
-            return false
+            false
         }
     }
 
     fun isJson(json: String): Boolean {
         return try {
             objectMapper.readTree(json)
-
             true
         } catch (e: IOException) {
             false

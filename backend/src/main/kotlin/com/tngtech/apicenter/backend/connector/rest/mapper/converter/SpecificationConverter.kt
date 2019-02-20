@@ -24,17 +24,19 @@ class SpecificationConverter constructor(
         mappingContext: MappingContext?
     ): Specification {
         var fileContent = specificationFileDto.fileContent ?: ""
+        val metaData = specificationFileDto.metaData
+        val isGraphQLFile = metaData != null
 
         if (specificationFileDto.fileUrl != null && specificationFileDto.fileUrl != "") {
             fileContent = specificationFileService.retrieveFile(specificationFileDto.fileUrl)
         }
 
-        val content = specificationDataService.parseFileContent(fileContent)
+        val content = if (isGraphQLFile) fileContent else specificationDataService.parseFileContent(fileContent)
         val uuid = specificationFileDto.id ?: UUID.randomUUID()
 
-        val title = specificationFileDto.metaData?.title?: specificationDataService.readTitle(content)
-        val description = specificationFileDto.metaData?.description?: specificationDataService.readDescription(content)
-        val version = specificationFileDto.metaData?.version?: specificationDataService.readVersion(content)
+        val title = metaData?.title?: specificationDataService.readTitle(content)
+        val description = metaData?.description?: specificationDataService.readDescription(content)
+        val version = metaData?.version?: specificationDataService.readVersion(content)
 
         return Specification(
             uuid,

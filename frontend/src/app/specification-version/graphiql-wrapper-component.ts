@@ -11,7 +11,6 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Version} from '../models/version';
 import {makeExecutableSchema} from 'graphql-tools';
-import {typeDefs} from './schema';
 
 @Component({
   selector: 'app-graphiql',
@@ -32,7 +31,7 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
   }
 
   private isMounted(): boolean {
-    return !!this.graphiql;
+    return !!this.graphiql && !!this.specification;
   }
 
   public graphQLFetcher(graphQLParams) {
@@ -45,6 +44,7 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
 
   protected render() {
     if (this.isMounted()) {
+      const typeDefs = this.specification.content;
       ReactDOM.render(React.createElement(GraphiQL, {
         fetcher: this.graphQLFetcher,
         schema: makeExecutableSchema({typeDefs})
@@ -58,7 +58,7 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
       this.http.get<Version>(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
         .subscribe(data => {
           this.specification = data;
-          console.log(data);
+          this.render();
         });
     });
   }
