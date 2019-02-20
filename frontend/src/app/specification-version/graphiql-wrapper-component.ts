@@ -39,7 +39,9 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(graphQLParams)
-    }).then(response => response.json());
+    }).then(response => response.json())
+      .catch(() => "An error occurred with the network request. " +
+        "(Check the GraphQL service is running, and accepts POST requests)");
   }
 
   protected render() {
