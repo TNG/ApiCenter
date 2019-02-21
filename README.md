@@ -2,7 +2,7 @@
 
 # ApiCenter
 
-ApiCenter is a repository for all your OpenAPI specifications. You can upload new ones and search them so that finding the one you need is easy.
+ApiCenter is a repository for your OpenAPI or GraphQL specifications. Through the web interface you can upload specifications, interact with them through the [SwaggerUI](https://swagger.io/tools/swagger-ui/) / [GraphiQL](https://github.com/graphql/graphiql), and search their contents.
 
 ## How to use
 
