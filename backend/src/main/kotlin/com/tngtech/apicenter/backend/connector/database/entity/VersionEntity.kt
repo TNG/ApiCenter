@@ -24,7 +24,7 @@ import javax.persistence.UniqueConstraint
 data class VersionEntity(
     @EmbeddedId @IndexedEmbedded val versionId: VersionId,
     @Field @Column(columnDefinition = "TEXT") val content: String,
-    @Field val language: APILanguage,
+    @Field @Column(columnDefinition = "TEXT") val language: APILanguage,
     @ContainedIn @ManyToOne @MapsId("specificationId") var specification: SpecificationEntity?,
     var created: Date?
 ) {

@@ -36,7 +36,7 @@ class VersionControllerIntegrationTest {
                 .header("Accept", "application/json")
                 .with(user("user"))
                 .with(csrf()))
-                .andExpect(content().string("{\"version\":\"v1\",\"content\":\"{\\\"info\\\": {\\\"title\\\": \\\"Spec1\\\",  \\\"version\\\": \\\"v1\\\", \\\"description\\\": \\\"Description\\\"}}\"}"))
+                .andExpect(jsonPath("$.content", equalTo("{\"info\": {\"title\": \"Spec1\",  \"version\": \"v1\", \"description\": \"Description\"}}")))
     }
 
     @Test
@@ -45,7 +45,7 @@ class VersionControllerIntegrationTest {
                 .header("Accept", "application/yml")
                 .with(user("user"))
                 .with(csrf()))
-                .andExpect(content().string("{\"version\":\"v1\",\"content\":\"---\\ninfo:\\n  title: \\\"Spec1\\\"\\n  version: \\\"v1\\\"\\n  description: \\\"Description\\\"\\n\"}"))
+                .andExpect(jsonPath("$.content", equalTo("---\ninfo:\n  title: \"Spec1\"\n  version: \"v1\"\n  description: \"Description\"\n")))
     }
 
     @Test
