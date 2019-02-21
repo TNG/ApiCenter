@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.database.entity
 
+import com.tngtech.apicenter.backend.domain.entity.APILanguage
 import org.hibernate.search.annotations.ContainedIn
 import org.hibernate.search.annotations.Field
 import org.hibernate.search.annotations.IndexedEmbedded
@@ -23,6 +24,7 @@ import javax.persistence.UniqueConstraint
 data class VersionEntity(
     @EmbeddedId @IndexedEmbedded val versionId: VersionId,
     @Field @Column(columnDefinition = "TEXT") val content: String,
+    @Field val language: APILanguage,
     @ContainedIn @ManyToOne @MapsId("specificationId") var specification: SpecificationEntity?,
     var created: Date?
 ) {

@@ -21,12 +21,14 @@ import {AuthenticationGuard} from './guards/authentication.guard';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
 import {MarkdownModule} from 'ngx-markdown';
-import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper-component';
+import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper.component';
+import {VersionViewComponent} from './specification-version/version-view.component';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
-  {path: 'specifications/:specificationId/:version', component: GraphiQLWrapperComponent, canActivate: [AuthenticationGuard]},
+  // {path: 'specifications/:specificationId/:version', component: GraphiQLWrapperComponent, canActivate: [AuthenticationGuard]},
   // {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/:specificationId/:version', component: VersionViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'edit-specifications/:id', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
@@ -48,7 +50,8 @@ const appRoutes: Routes = [
     TrimSearchResultPipe,
     FormatSearchResultPipe,
     LoginComponent,
-    GraphiQLWrapperComponent
+    GraphiQLWrapperComponent,
+    VersionViewComponent
   ],
   imports: [
     BrowserModule,

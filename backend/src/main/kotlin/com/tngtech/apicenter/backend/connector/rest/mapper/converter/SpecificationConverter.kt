@@ -3,6 +3,7 @@ package com.tngtech.apicenter.backend.connector.rest.mapper.converter
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationDataService
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationFileService
+import com.tngtech.apicenter.backend.domain.entity.APILanguage
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import ma.glasnost.orika.CustomConverter
@@ -36,13 +37,14 @@ class SpecificationConverter constructor(
 
         val title = metaData?.title?: specificationDataService.readTitle(content)
         val description = metaData?.description?: specificationDataService.readDescription(content)
+        val language = if (isGraphQLFile) APILanguage.GRAPHQL else APILanguage.OPENAPI
         val version = metaData?.version?: specificationDataService.readVersion(content)
 
         return Specification(
             uuid,
             title,
             description,
-            listOf(Version(version, content)),
+            listOf(Version(version, content, language)),
             specificationFileDto.fileUrl
         )
     }

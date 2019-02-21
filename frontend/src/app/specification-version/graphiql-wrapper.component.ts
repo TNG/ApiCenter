@@ -1,27 +1,35 @@
-import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as uuid from 'uuid';
 import * as invariant from 'invariant';
 import GraphiQL from 'graphiql';
 import fetch from 'isomorphic-fetch';
-import {environment} from '../../environments/environment';
 import {GraphQLSchema} from 'graphql';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {Version} from '../models/version';
 import {makeExecutableSchema} from 'graphql-tools';
+import {VersionViewComponent} from './version-view.component';
+import {Version} from '../models/version';
 
 @Component({
   selector: 'app-graphiql',
   template: '<div style="height: calc(100vh - 56px)" [id]="graphiql">Loading...</div>',
 })
 
-export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
-  public graphiql: string;
-  private specification: Version;
+export class GraphiQLWrapperComponent extends VersionViewComponent implements OnDestroy, AfterViewChecked {
+  @Input() specification: Version;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {
+  public graphiql: string;
+
+  constructor(route: ActivatedRoute, http: HttpClient) {
+    super(route, http);
+    this.graphiql = uuid.v1();
   }
 
   protected getRootDomNode() {
@@ -40,8 +48,8 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(graphQLParams)
     }).then(response => response.json())
-      .catch(() => "An error occurred with the network request. " +
-        "(Check the GraphQL service is running, and accepts POST requests)");
+      .catch(() => 'An error occurred with the network request. ' +
+        '(Check the GraphQL service is running, and accepts POST requests)');
   }
 
   protected render() {
@@ -54,22 +62,7 @@ export class GraphiQLWrapperComponent implements OnInit, OnDestroy, OnChanges, A
     }
   }
 
-  ngOnInit() {
-    this.graphiql = uuid.v1();
-    this.route.params.subscribe(params => {
-      this.http.get<Version>(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
-        .subscribe(data => {
-          this.specification = data;
-          this.render();
-        });
-    });
-  }
-
-  ngOnChanges() {
-    this.render();
-  }
-
-  ngAfterViewInit() {
+  ngAfterViewChecked() {
     this.render();
   }
 

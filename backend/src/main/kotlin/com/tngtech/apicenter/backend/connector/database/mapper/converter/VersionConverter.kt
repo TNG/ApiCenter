@@ -15,5 +15,5 @@ class VersionConverter : CustomConverter<Version, VersionEntity>() {
         source: Version,
         destinationType: Type<out VersionEntity>,
         mappingContext: MappingContext
-    ): VersionEntity = VersionEntity(VersionId(null, source.version), source.content, null, null)
+    ): VersionEntity = VersionEntity(VersionId(null, source.version), source.content, source.language, null, null)
 }
