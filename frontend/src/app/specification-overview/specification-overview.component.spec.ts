@@ -3,7 +3,7 @@ import {instance, mock, verify, when} from 'ts-mockito';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
 import {from} from 'rxjs/observable/from';
-import {Version} from '../models/version';
+import {APILanguage, Version} from '../models/version';
 import {VersionService} from '../version.service';
 
 describe('SpecificationOverviewComponent', () => {
@@ -13,7 +13,7 @@ describe('SpecificationOverviewComponent', () => {
   const specificationService = instance(mockedSpecificationService);
   const mockedVersionService = mock(VersionService);
   const versionService = instance(mockedVersionService);
-  const versions = [new Version('1.0', 'Content')];
+  const versions = [new Version('1.0', 'Content', APILanguage.OpenAPI)];
   const specification = new Specification('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', versions, null);
 
   beforeEach(() => {
