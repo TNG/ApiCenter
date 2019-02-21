@@ -7,6 +7,7 @@ import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.domain.entity.APILanguage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.UUID
@@ -46,7 +47,7 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
             ""
         )
 
@@ -77,7 +78,7 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
             SWAGGER_REMOTE
         )
 

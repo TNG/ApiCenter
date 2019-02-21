@@ -12,6 +12,6 @@ data class SpecificationMetaData constructor(
 data class SpecificationFileDto @JsonCreator constructor(
     val fileContent: String?,
     val fileUrl: String? = "",
-    val metaData: SpecificationMetaData?,
+    val metaData: SpecificationMetaData? = null,
     val id: UUID? = null
 )

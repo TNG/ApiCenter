@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.VersionDtoMapper
+import com.tngtech.apicenter.backend.domain.entity.APILanguage
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.handler.VersionHandler
 import org.assertj.core.api.Assertions.assertThat
@@ -21,9 +22,9 @@ internal class VersionControllerUnitTest {
 
     private val specificationId = UUID.fromString("7de07d27-eedb-4290-881a-6a402a81dd0f")
 
-    private val version = Version("1.0", "Content")
+    private val version = Version("1.0", "Content", APILanguage.OPENAPI)
 
-    private val versionDto = VersionDto("1.0", "Content")
+    private val versionDto = VersionDto("1.0", "Content", APILanguage.OPENAPI)
 
     @Test
     fun findOne_shouldReturnVersionDto() {
