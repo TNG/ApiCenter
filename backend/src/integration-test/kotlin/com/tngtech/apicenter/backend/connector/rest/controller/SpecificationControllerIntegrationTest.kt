@@ -28,7 +28,7 @@ internal class SpecificationControllerIntegrationTest {
 
     @Test
     fun findAllSpecifications_shouldReturnAllSpecifications() {
-        mockMvc.perform(get("/specifications").with(user("user")))
+        mockMvc.perform(get("/api/v1/specifications").with(user("user")))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$[0].title", equalTo("Spec1")))
@@ -42,9 +42,29 @@ internal class SpecificationControllerIntegrationTest {
     }
 
     @Test
+    fun findAllSpecifications_requiresAuthentication() {
+        mockMvc.perform(get("/api/v1/specifications"))
+                .andExpect(status().isForbidden)
+    }
+
+    @Test
+    fun findOneSpecification_shouldGetOne() {
+        mockMvc.perform(get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user")))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("title", equalTo("Spec1")))
+    }
+
+    @Test
+    fun findOneSpecification_shouldGracefullyFail() {
+        mockMvc.perform(get("/api/v1/specifications/af0502a2-7410-40e4-90fd-3504f67de1ef").with(user("user")))
+                .andExpect(status().isNotFound)
+    }
+
+    @Test
     fun uploadSpecification_shouldCreateSpecification() {
         mockMvc.perform(
-            post("/specifications")
+            post("/api/v1/specifications")
                 .with(user("user"))
                 .with(csrf())
                 .contentType("application/json")
@@ -64,7 +84,7 @@ internal class SpecificationControllerIntegrationTest {
     @Test
     fun uploadSpecification_shouldCreateSpecificationFromYaml() {
         mockMvc.perform(
-            post("/specifications")
+            post("/api/v1/specifications")
                 .with(user("user"))
                 .with(csrf())
                 .contentType("application/json")
@@ -84,7 +104,7 @@ internal class SpecificationControllerIntegrationTest {
     @Test
     fun uploadSpecification_shouldCreateNewVersion() {
         mockMvc.perform(
-            post("/specifications")
+            post("/api/v1/specifications")
                 .with(user("user"))
                 .with(csrf())
                 .contentType("application/json")
@@ -101,7 +121,7 @@ internal class SpecificationControllerIntegrationTest {
             .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
 
         mockMvc.perform(
-            get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+            get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
                 .with(user("user"))
                 .with(csrf())
         )
@@ -113,7 +133,7 @@ internal class SpecificationControllerIntegrationTest {
     @Test
     fun updateSpecification_shouldUpdateSpecification() {
         mockMvc.perform(
-            put("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+            put("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
                 .with(user("user"))
                 .with(csrf())
                 .contentType("application/json")
@@ -131,7 +151,7 @@ internal class SpecificationControllerIntegrationTest {
             .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
 
         mockMvc.perform(
-            get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user"))
+            get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user"))
         )
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
             .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
@@ -140,7 +160,7 @@ internal class SpecificationControllerIntegrationTest {
     @Test
     fun deleteSpecification_shouldDeleteSpecification() {
         mockMvc.perform(
-            delete("/specifications/af0502a2-7410-40e4-90fd-3504f67de1ee")
+            delete("/api/v1/specifications/af0502a2-7410-40e4-90fd-3504f67de1ee")
                 .with(user("user"))
                 .with(csrf())
         )

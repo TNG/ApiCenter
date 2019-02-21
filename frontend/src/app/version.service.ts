@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Specification} from './models/specification';
 import {Observable, throwError} from 'rxjs';
 import {Version} from './models/version';
 
@@ -12,9 +11,14 @@ export class VersionService {
 
   constructor(private http: HttpClient) { }
 
-  public getYAMLVersion(specificationId: string, version: string) {
+  public getYamlVersion(specificationId: string, version: string) {
     const headers = new HttpHeaders({'Accept': 'application/yml'});
     return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version, {headers})
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
+
+  public getJsonVersion(specificationId: string, version: string) {
+    return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 

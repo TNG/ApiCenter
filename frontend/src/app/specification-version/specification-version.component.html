@@ -1,3 +1,8 @@
 <div class="container">
+  <div class="row top-buffer">
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
   <div id="display-swagger-ui"></div>
 </div>

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/sessions")
+@RequestMapping("/api/v1/sessions")
 class SessionController @Autowired constructor(private val sessionHandler: SessionHandler) {
 
     @Value("\${jwt.secret}")

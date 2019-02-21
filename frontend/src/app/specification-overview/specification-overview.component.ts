@@ -53,21 +53,21 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public downloadVersion(filetype: String, spec: Specification, version: Version) {
     if (filetype === 'json') {
-      return this.downloadJSONVersion(spec, version);
+      return this.downloadJsonVersion(spec, version);
     } else if (filetype === 'yaml') {
-      return this.downloadYAMLVersion(spec, version);
+      return this.downloadYamlVersion(spec, version);
     }
   }
 
-  public downloadJSONVersion(specification: Specification, version: Version) {
+  public downloadJsonVersion(specification: Specification, version: Version) {
     const fileName = this.createDownloadFileName(specification, version);
     const content = JSON.stringify(JSON.parse(version.content), null, 2);
     this.doDownload(content, fileName + '.json', 'application/json');
   }
 
-  public downloadYAMLVersion(specification: Specification, version: Version) {
+  public downloadYamlVersion(specification: Specification, version: Version) {
     const fileName = this.createDownloadFileName(specification, version);
-    this.versionService.getYAMLVersion(specification.id, version.version)
+    this.versionService.getYamlVersion(specification.id, version.version)
       .subscribe(event => {
         this.doDownload(event.content, fileName + '.yml', 'application/yaml');
       });

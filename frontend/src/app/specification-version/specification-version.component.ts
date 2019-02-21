@@ -10,6 +10,7 @@ import * as SwaggerUI from 'swagger-ui';
   styleUrls: ['./specification-version.component.css']
 })
 export class SpecificationVersionComponent implements OnInit {
+  error: String;
   specification;
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {
@@ -21,6 +22,11 @@ export class SpecificationVersionComponent implements OnInit {
         .subscribe((data: any[]) => {
           this.specification = data;
           this.displaySwaggerUi();
+        },
+          err => {
+            if (err.status === 404) {
+              this.error = 'Version not found';
+            }
         });
     });
   }

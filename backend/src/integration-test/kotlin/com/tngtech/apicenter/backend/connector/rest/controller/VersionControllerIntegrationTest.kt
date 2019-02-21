@@ -24,7 +24,7 @@ class VersionControllerIntegrationTest {
 
     @Test
     fun findOneVersion_shouldReturnVersion() {
-        mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
+        mockMvc.perform(get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
             .with(user("user"))
             .with(csrf()))
             .andExpect(jsonPath("$.version", equalTo("v1")))
@@ -32,7 +32,7 @@ class VersionControllerIntegrationTest {
 
     @Test
     fun findOneVersion_shouldReturnJson() {
-        mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
+        mockMvc.perform(get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
                 .header("Accept", "application/json")
                 .with(user("user"))
                 .with(csrf()))
@@ -41,7 +41,7 @@ class VersionControllerIntegrationTest {
 
     @Test
     fun findOneVersion_shouldReturnYaml() {
-        mockMvc.perform(get("/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
+        mockMvc.perform(get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
                 .header("Accept", "application/yml")
                 .with(user("user"))
                 .with(csrf()))
@@ -49,8 +49,17 @@ class VersionControllerIntegrationTest {
     }
 
     @Test
+    fun findOneVersion_shouldGracefullyFail() {
+        mockMvc.perform(get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/42")
+                .with(user("user"))
+                .with(csrf()))
+                .andExpect(status().isNotFound)
+    }
+
+
+    @Test
     fun deleteVersion_shouldDeleteVersion() {
-        mockMvc.perform(delete("/specifications/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/versions/v2")
+        mockMvc.perform(delete("/api/v1/specifications/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/versions/v2")
             .with(user("user"))
             .with(csrf()))
             .andExpect(status().isOk)

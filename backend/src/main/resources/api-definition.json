@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/specifications": {
+    "/api/v1/specifications": {
       "get": {
         "tags": [
           "specification-controller"
@@ -118,7 +118,7 @@
         "deprecated": false
       }
     },
-    "/specifications/search/{searchString}": {
+    "/api/v1/specifications/search/{searchString}": {
       "get": {
         "tags": [
           "specification-controller"
@@ -169,7 +169,7 @@
         "deprecated": false
       }
     },
-    "/specifications/{specificationId}": {
+    "/api/v1/specifications/{specificationId}": {
       "get": {
         "tags": [
           "specification-controller"
@@ -326,7 +326,7 @@
         "deprecated": false
       }
     },
-    "/specifications/{specificationId}/synchronize": {
+    "/api/v1/specifications/{specificationId}/synchronize": {
       "post": {
         "tags": [
           "specification-controller"
@@ -374,7 +374,7 @@
         "deprecated": false
       }
     },
-    "/specifications/{specificationId}/versions/{version}": {
+    "/api/v1/specifications/{specificationId}/versions/{version}": {
       "get": {
         "tags": [
           "version-controller"
@@ -399,6 +399,14 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "JWT to authenticate the user, preceded with the string 'Bearer '",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -462,7 +470,7 @@
         }
       }
     },
-    "/sessions": {
+    "/api/v1/sessions": {
       "post": {
         "tags": [
           "session-controller"
