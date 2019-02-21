@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 @Component({
   selector: 'app-version-view',
   template: '<app-graphiql *ngIf="specification && specification.language.toString() == \'GRAPHQL\'"></app-graphiql>' +
-    '<app-specification *ngIf="specification && specification.language.toString() == \'OPENAPI\'"></app-specification>'
+    '<app-specification [specification]="specification" *ngIf="specification && specification.language.toString() == \'OPENAPI\'"></app-specification>'
 })
 
 export class VersionViewComponent implements OnInit {

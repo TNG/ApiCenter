@@ -23,8 +23,6 @@ import {Version} from '../models/version';
 })
 
 export class GraphiQLWrapperComponent extends VersionViewComponent implements OnDestroy, AfterViewChecked {
-  @Input() specification: Version;
-
   public graphiql: string;
 
   constructor(route: ActivatedRoute, http: HttpClient) {

@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
@@ -11,14 +11,14 @@ import {VersionViewComponent} from './version-view.component';
   templateUrl: './specification-version.component.html',
   styleUrls: ['./specification-version.component.css']
 })
-export class SpecificationVersionComponent extends VersionViewComponent implements AfterViewChecked {
+export class SpecificationVersionComponent extends VersionViewComponent implements OnChanges {
   @Input() specification: Version;
 
   constructor(route: ActivatedRoute, http: HttpClient) {
     super(route, http);
   }
 
-  ngAfterViewChecked() {
+  ngOnChanges() {
     if (this.specification) {
       this.displaySwaggerUi();
     }
