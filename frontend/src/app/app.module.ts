@@ -26,8 +26,6 @@ import {VersionViewComponent} from './specification-version/version-view.compone
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
-  // {path: 'specifications/:specificationId/:version', component: GraphiQLWrapperComponent, canActivate: [AuthenticationGuard]},
-  // {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent, canActivate: [AuthenticationGuard]},
   {path: 'specifications/:specificationId/:version', component: VersionViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'edit-specifications/:id', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
