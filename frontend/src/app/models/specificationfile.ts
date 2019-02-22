@@ -1,4 +1,4 @@
-interface SpecificationMetaData {
+export interface SpecificationMetaData {
   title: string;
   version: string;
   description: string;

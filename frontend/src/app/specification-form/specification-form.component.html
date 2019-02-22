@@ -19,14 +19,10 @@
     </div>
     <div class="col" *ngIf="isGraphQLFile">
       Additionally required fields for GraphQL upload:
-      <div class="row">
-        <input type="text" title="title" placeholder="Title" [(ngModel)]="gqlTitle"/>
-      </div>
-      <div class="row">
-        <input type="text" title="version" placeholder="Version" [(ngModel)]="gqlVersion"/>
-      </div>
-      <div class="row">
-        <input type="text" title="description" placeholder="Description" [(ngModel)]="gqlDescription"/>
+      <div *ngFor="let fieldName of objectKeys(metaData)">
+        <div class="row">
+          <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="metaData[fieldName]"/>
+        </div>
       </div>
       <button (click)="addServerInputField()">Add</button>
       <button (click)="removeServerInputField()">Remove</button>
