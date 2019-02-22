@@ -7,7 +7,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule, Routes} from '@angular/router';
-import {SpecificationVersionComponent} from './specification-version/specification-version.component';
+import {SwaggerUiWrapperComponent} from './specification-version/swagger-ui-wrapper.component';
 import {SpecificationOverviewComponent} from './specification-overview/specification-overview.component';
 import {SpecificationFormComponent} from './specification-form/specification-form.component';
 import {HeaderComponent} from './header/header.component';
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SpecificationVersionComponent,
+    SwaggerUiWrapperComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
     HeaderComponent,

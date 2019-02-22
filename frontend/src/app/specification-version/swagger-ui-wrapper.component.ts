@@ -7,11 +7,11 @@ import {Version} from '../models/version';
 import {VersionViewComponent} from './version-view.component';
 
 @Component({
-  selector: 'app-specification',
-  templateUrl: './specification-version.component.html',
-  styleUrls: ['./specification-version.component.css']
+  selector: 'app-swagger-ui',
+  templateUrl: './swagger-ui-wrapper.component.html',
+  styleUrls: ['./swagger-ui-wrapper.component.css']
 })
-export class SpecificationVersionComponent extends VersionViewComponent implements OnChanges {
+export class SwaggerUiWrapperComponent extends VersionViewComponent implements OnChanges {
   @Input() specification: Version;
 
   constructor(route: ActivatedRoute, http: HttpClient) {
