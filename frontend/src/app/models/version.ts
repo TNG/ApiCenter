@@ -1,6 +1,6 @@
 export enum APILanguage {
-  OpenAPI,
-  GraphQL
+  OpenAPI = 'OPENAPI',
+  GraphQL = 'GRAPHQL',
 }
 
 export class Version {

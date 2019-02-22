@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
-import {Version} from '../models/version';
+import {APILanguage, Version} from '../models/version';
 import {VersionService} from '../version.service';
 
 @Component({
@@ -12,11 +12,11 @@ import {VersionService} from '../version.service';
 })
 export class SpecificationOverviewComponent implements OnInit {
   specifications: Specification[];
-  error: String;
-  expanded: String[] = [];
+  error: string;
+  expanded: string[] = [];
 
-  downloadFileFormatOptions: String[] = ['json', 'yaml'];
-  selectedFormat: String = this.downloadFileFormatOptions[0];
+  downloadFileFormatOptions: string[] = ['json', 'yaml'];
+  selectedFormat: string = this.downloadFileFormatOptions[0];
 
   constructor(private specificationService: SpecificationService, private versionService: VersionService) {
   }
@@ -43,19 +43,32 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   public async downloadSpecification(specification: Specification, fileType: string) {
-    const latestVersion = specification.versions[0];
-    if (latestVersion !== undefined) {
-      this.downloadVersion(fileType, specification, latestVersion);
-    } else {
-      this.error = 'Download failed';
+    this.downloadVersion(fileType, specification, specification.versions[0]);
+  }
+
+  public downloadVersion(fileType: string, spec: Specification, version: Version) {
+    switch (version.language) {
+      case APILanguage.GraphQL:
+        this.versionService.getVersion(spec.id, version.version)
+          .subscribe(event => {
+            const fileName = this.createDownloadFileName(spec, version);
+            this.doDownload(event.content, fileName + '.graphql', 'application/json');
+          });
+        break;
+      case APILanguage.OpenAPI:
+        this.downloadOpenAPIVersion(fileType, spec, version);
+        break;
     }
   }
 
-  public downloadVersion(filetype: String, spec: Specification, version: Version) {
-    if (filetype === 'json') {
-      return this.downloadJsonVersion(spec, version);
-    } else if (filetype === 'yaml') {
-      return this.downloadYamlVersion(spec, version);
+  public downloadOpenAPIVersion(fileType: string, spec: Specification, version: Version) {
+    switch (fileType) {
+      case 'json':
+        this.downloadJsonVersion(spec, version);
+        break;
+      case 'yaml':
+        this.downloadYamlVersion(spec, version);
+        break;
     }
   }
 
