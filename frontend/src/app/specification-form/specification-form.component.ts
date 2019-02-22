@@ -11,7 +11,7 @@ import {Specification} from '../models/specification';
   providers: [SpecificationService]
 })
 export class SpecificationFormComponent implements OnInit {
-  error: String;
+  error: string;
   specificationFile: File;
   remoteUploadSelected = false;
   remoteFileUrl: string;
@@ -19,6 +19,7 @@ export class SpecificationFormComponent implements OnInit {
   gqlVersion: string;
   gqlDescription: string;
   isGraphQLFile = false;
+  servers: string[] = [];
 
   constructor(private router: Router, private specificationService: SpecificationService, private route: ActivatedRoute) {
   }
@@ -111,4 +112,16 @@ export class SpecificationFormComponent implements OnInit {
         error => this.error = error.error.message);
   }
 
+  addServerInputField() {
+    this.servers.push('');
+  }
+
+  removeServerInputField() {
+    this.servers.pop();
+  }
+
+  trackByIndex(index: number) {
+    // Without this, the wrong input element is focused after typing a character
+    return index;
+  }
 }
