@@ -22,7 +22,7 @@ import {Version} from '../models/version';
   template: '<div style="height: calc(100vh - 56px)" [id]="graphiql">Loading...</div>',
 })
 
-export class GraphiQLWrapperComponent extends VersionViewComponent implements OnDestroy, AfterViewChecked {
+export class GraphiQLWrapperComponent extends VersionViewComponent implements AfterViewChecked {
   public graphiql: string;
 
   constructor(route: ActivatedRoute, http: HttpClient) {
@@ -62,9 +62,5 @@ export class GraphiQLWrapperComponent extends VersionViewComponent implements On
 
   ngAfterViewChecked() {
     this.render();
-  }
-
-  ngOnDestroy() {
-    ReactDOM.unmountComponentAtNode(this.getRootDomNode());
   }
 }

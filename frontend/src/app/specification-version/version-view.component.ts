@@ -6,13 +6,12 @@ import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-version-view',
-  template: '<app-graphiql *ngIf="specification && specification.language.toString() == \'GRAPHQL\'"></app-graphiql>' +
-    '<app-swagger-ui [specification]="specification" ' +
-    '*ngIf="specification && specification.language.toString() == \'OPENAPI\'"></app-swagger-ui>'
+  templateUrl: './version-view.component.html',
 })
 
 export class VersionViewComponent implements OnInit {
   @Output() specification: Version;
+  error: string;
 
   constructor(protected route: ActivatedRoute, protected http: HttpClient) {
   }
@@ -22,6 +21,11 @@ export class VersionViewComponent implements OnInit {
       this.http.get<Version>(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
         .subscribe(data => {
           this.specification = data;
+        },
+      err => {
+          if (err.status === 404) {
+            this.error = 'Version not found';
+          }
         });
     });
   }

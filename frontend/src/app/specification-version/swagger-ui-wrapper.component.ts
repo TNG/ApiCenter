@@ -1,6 +1,5 @@
-import {AfterViewChecked, AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import * as SwaggerUI from 'swagger-ui';
 import {Version} from '../models/version';
@@ -8,7 +7,7 @@ import {VersionViewComponent} from './version-view.component';
 
 @Component({
   selector: 'app-swagger-ui',
-  templateUrl: './swagger-ui-wrapper.component.html',
+  template: '<div id="display-swagger-ui"></div>',
   styleUrls: ['./swagger-ui-wrapper.component.css']
 })
 export class SwaggerUiWrapperComponent extends VersionViewComponent implements OnChanges {
