@@ -1,6 +1,6 @@
 package com.tngtech.apicenter.backend.connector.rest.service
 
-import com.tngtech.apicenter.backend.domain.entity.APILanguage
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
@@ -26,7 +26,7 @@ class SynchronizationService constructor(
         val versions = if (specification.versions.find { version -> version.version == versionString } != null) {
             specification.versions
         } else {
-            specification.versions + Version(versionString, content, APILanguage.GRAPHQL)
+            specification.versions + Version(versionString, content, ApiLanguage.GRAPHQL)
         }
 
         val newSpecification = Specification(

@@ -3,7 +3,7 @@ package com.tngtech.apicenter.backend.connector.rest.service
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.tngtech.apicenter.backend.domain.entity.APILanguage
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
@@ -37,14 +37,14 @@ class SynchronizationServiceTest {
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             REMOTE_ADDRESS
         )
         val updatedSpecification = Specification(
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore 2",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             REMOTE_ADDRESS
         )
 

@@ -10,7 +10,7 @@ import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
-import com.tngtech.apicenter.backend.domain.entity.APILanguage
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.UUID
@@ -45,14 +45,14 @@ internal class SpecificationControllerUnitTest {
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             null
         )
 
@@ -77,14 +77,14 @@ internal class SpecificationControllerUnitTest {
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             null
         )
 
@@ -100,7 +100,7 @@ internal class SpecificationControllerUnitTest {
                 UUID.fromString(UUID_STRING),
                 "Swagger Petstore",
                 "Description",
-                listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+                listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
                 null
             )
         )
@@ -114,14 +114,14 @@ internal class SpecificationControllerUnitTest {
             uuid,
             "Test",
             "Description",
-            listOf(Version("v2", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(Version("v2", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             "http://swaggerpetstore.com/docs"
         )
         val specificationDto = SpecificationDto(
             uuid,
             "Test",
             "Description",
-            listOf(VersionDto("v2", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+            listOf(VersionDto("v2", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
             "http://swaggerpetstore.com/docs"
         )
 
@@ -133,7 +133,7 @@ internal class SpecificationControllerUnitTest {
                     uuid,
                     "Test",
                     "Description",
-                    listOf(Version("v2", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+                    listOf(Version("v2", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
                     "http://swaggerpetstore.com/docs"
                 )
             )
@@ -143,7 +143,7 @@ internal class SpecificationControllerUnitTest {
             SpecificationDto(
                 uuid, "Test",
                 "Description",
-                listOf(VersionDto("v2", SWAGGER_SPECIFICATION, APILanguage.OPENAPI)),
+                listOf(VersionDto("v2", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
                 "http://swaggerpetstore.com/docs"
             )
         )

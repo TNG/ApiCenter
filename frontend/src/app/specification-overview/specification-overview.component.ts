@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
-import {APILanguage, Version} from '../models/version';
+import {ApiLanguage, Version} from '../models/version';
 import {VersionService} from '../version.service';
 
 @Component({
@@ -48,20 +48,20 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public downloadVersion(fileType: string, spec: Specification, version: Version) {
     switch (version.language) {
-      case APILanguage.GraphQL:
+      case ApiLanguage.GraphQL:
         this.versionService.getVersion(spec.id, version.version)
           .subscribe(event => {
             const fileName = this.createDownloadFileName(spec, version);
             this.doDownload(event.content, fileName + '.graphql', 'application/json');
           });
         break;
-      case APILanguage.OpenAPI:
-        this.downloadOpenAPIVersion(fileType, spec, version);
+      case ApiLanguage.OpenAPI:
+        this.downloadOpenApiVersion(fileType, spec, version);
         break;
     }
   }
 
-  public downloadOpenAPIVersion(fileType: string, spec: Specification, version: Version) {
+  public downloadOpenApiVersion(fileType: string, spec: Specification, version: Version) {
     switch (fileType) {
       case 'json':
         this.downloadJsonVersion(spec, version);

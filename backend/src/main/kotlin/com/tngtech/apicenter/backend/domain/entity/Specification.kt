@@ -2,7 +2,7 @@ package com.tngtech.apicenter.backend.domain.entity
 
 import java.util.UUID
 
-enum class APILanguage {
+enum class ApiLanguage {
     OPENAPI, GRAPHQL
 }
 

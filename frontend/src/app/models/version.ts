@@ -1,4 +1,4 @@
-export enum APILanguage {
+export enum ApiLanguage {
   OpenAPI = 'OPENAPI',
   GraphQL = 'GRAPHQL',
 }
@@ -6,9 +6,9 @@ export enum APILanguage {
 export class Version {
   version: string;
   content: string;
-  language: APILanguage;
+  language: ApiLanguage;
 
-  constructor(version: string, content: string, language: APILanguage) {
+  constructor(version: string, content: string, language: ApiLanguage) {
     this.version = version;
     this.content = content;
     this.language = language;
