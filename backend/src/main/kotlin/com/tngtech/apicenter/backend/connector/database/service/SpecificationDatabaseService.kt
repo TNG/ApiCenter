@@ -6,7 +6,9 @@ import com.tngtech.apicenter.backend.connector.database.repository.Specification
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.hibernate.search.jpa.Search
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 import java.util.UUID
@@ -67,7 +69,7 @@ class SpecificationDatabaseService constructor(
         try {
             specificationRepository.save(specificationEntity)
         } catch (sqlException: Exception) {
-            throw IllegalArgumentException("This version already exists for specification ${specificationEntity.title}.", sqlException)
+            throw ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "This version already exists for specification ${specificationEntity.title}.", sqlException)
         }
     }
 }

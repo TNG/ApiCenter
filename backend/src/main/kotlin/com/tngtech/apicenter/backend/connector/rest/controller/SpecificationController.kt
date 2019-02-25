@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
@@ -57,10 +58,10 @@ class SpecificationController @Autowired constructor(
         specificationHandler.findAll().map { spec -> specificationDtoMapper.fromDomain(spec) }
 
     @GetMapping("/{specificationId}")
-    @Throws(HttpNotFoundException::class)
     fun findSpecification(@PathVariable specificationId: UUID): SpecificationDto {
         val specification = specificationHandler.findOne(specificationId)
-        return specification?.let { specificationDtoMapper.fromDomain(it) } ?: throw HttpNotFoundException()
+        return specification?.let { specificationDtoMapper.fromDomain(it) } ?:
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Specification not found")
     }
 
     @DeleteMapping("/{specificationId}")

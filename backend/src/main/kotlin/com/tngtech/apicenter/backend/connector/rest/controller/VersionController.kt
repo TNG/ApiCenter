@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.http.MediaType
 import java.util.UUID
 import mu.KotlinLogging
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 
 private val logger = KotlinLogging.logger {}
 private const val MEDIA_TYPE_YAML = "application/yml"
@@ -18,7 +20,6 @@ private const val MEDIA_TYPE_YAML = "application/yml"
 @RestController
 class VersionController constructor(private val versionHandler: VersionHandler, private val versionDtoMapper: VersionDtoMapper) {
 
-    @Throws(HttpNotFoundException::class)
     @RequestMapping("/api/v1/specifications/{specificationId}/versions/{version}",
             produces = [MediaType.APPLICATION_JSON_VALUE,
                         MEDIA_TYPE_YAML],
@@ -32,7 +33,7 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
         // i.e. The integration test and unit test require the default specified in two different ways
         val foundVersion = versionHandler.findOne(specificationId, version)
         if (foundVersion == null) {
-            throw HttpNotFoundException()
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Version not found")
         } else if (accept == MEDIA_TYPE_YAML) {
             logger.info("Specification $specificationId version $version requested as YAML")
             val jsonNodeTree = ObjectMapper().readTree(foundVersion.content)

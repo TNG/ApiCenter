@@ -7,6 +7,7 @@ import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
+import org.springframework.web.server.ResponseStatusException
 import java.io.IOException
 
 class SpecificationDataServiceTest {
@@ -53,15 +54,15 @@ class SpecificationDataServiceTest {
     @Test
     fun readTitle_shouldFailWhenNoTitleIsGiven() {
         assertThatThrownBy { specificationDataService.readTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
-            IllegalArgumentException::class.java
-        ).hasMessage("No title given in content.")
+            ResponseStatusException::class.java
+        ).hasMessageContaining("Specification needs a title")
     }
 
     @Test
     fun readVersion_shouldFailWhenNoVersionIsGiven() {
         assertThatThrownBy { specificationDataService.readVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
-            IllegalArgumentException::class.java
-        ).hasMessage("No version given in content.")
+            ResponseStatusException::class.java
+        ).hasMessageContaining("Specification needs a version")
     }
 
     @Test

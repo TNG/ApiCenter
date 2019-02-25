@@ -5,7 +5,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.io.IOException
 
 @Service
@@ -49,7 +51,7 @@ class SpecificationDataService @Autowired constructor(
         try {
             return JsonPath.read<String>(json, "$.info.title")
         } catch (exception: PathNotFoundException) {
-            throw IllegalArgumentException("No title given in content.", exception)
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Specification needs a title", exception)
         }
     }
 
@@ -57,7 +59,7 @@ class SpecificationDataService @Autowired constructor(
         try {
             return JsonPath.read<String>(json, "$.info.version")
         } catch (exception: PathNotFoundException) {
-            throw IllegalArgumentException("No version given in content.", exception)
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Specification needs a version", exception)
         }
     }
 
