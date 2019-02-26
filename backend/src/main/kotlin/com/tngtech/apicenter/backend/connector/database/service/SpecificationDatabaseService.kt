@@ -6,6 +6,7 @@ import com.tngtech.apicenter.backend.connector.database.repository.Specification
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.hibernate.search.jpa.Search
+import org.hibernate.search.exception.EmptyQueryException
 import org.springframework.stereotype.Service
 import java.lang.Exception
 import java.lang.IllegalArgumentException
@@ -51,14 +52,17 @@ class SpecificationDatabaseService constructor(
 
         val specificationQueryBuilder =
             fullTextEntityManager.searchFactory.buildQueryBuilder().forEntity(SpecificationEntity::class.java).get()
-        val specificationQuery =
-            specificationQueryBuilder.keyword().onFields("title", "description", "versions.content").matching(searchString)
-                .createQuery()
+        return try {
+            val specificationQuery =
+                    specificationQueryBuilder.keyword().onFields("title", "description", "versions.content").matching(searchString)
+                            .createQuery()
+            val hibernateQuery =
+                    fullTextEntityManager.createFullTextQuery(specificationQuery, SpecificationEntity::class.java)
 
-        val hibernateQuery =
-            fullTextEntityManager.createFullTextQuery(specificationQuery, SpecificationEntity::class.java)
-
-        return hibernateQuery.resultList.map { it -> it as SpecificationEntity }.map { it -> specificationEntityMapper.toDomain(it) }
+            hibernateQuery.resultList.map { it -> it as SpecificationEntity }.map { it -> specificationEntityMapper.toDomain(it) }
+        } catch (ex: EmptyQueryException) {
+            listOf()
+        }
     }
 
     private fun mapAndStoreEntity(specificationEntity: SpecificationEntity) {
