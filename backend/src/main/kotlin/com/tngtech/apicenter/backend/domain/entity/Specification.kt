@@ -9,7 +9,7 @@ enum class ApiLanguage {
 data class Specification(
     val id: UUID,
     val title: String,
-    val description: String?,
+    val description: String,
     val versions: List<Version>,
     val remoteAddress: String?
 )

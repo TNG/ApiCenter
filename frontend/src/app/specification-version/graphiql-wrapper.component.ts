@@ -40,21 +40,24 @@ export class GraphiQLWrapperComponent extends VersionViewComponent implements Af
     return !!this.graphiql && !!this.specification;
   }
 
-  public graphQLFetcher(graphQLParams) {
-    return fetch('http://localhost:4000/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(graphQLParams)
-    }).then(response => response.json())
-      .catch(() => 'An error occurred with the network request. ' +
-        '(Check the GraphQL service is running, and accepts POST requests)');
+  public graphQLFetcher(apiEndpoint?: string) {
+    return (graphQLParams) => {
+      return fetch(apiEndpoint ? apiEndpoint : 'http://localhost:4000/graphql', { // As a fallback, use express-graphql's default
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(graphQLParams)
+      }).then(response => response.json())
+        .catch(() => 'An error occurred with the network request. ' +
+          `(Check the GraphQL service at '${apiEndpoint}' is running, and accepts POST requests)`);
+    };
   }
 
   protected render() {
     if (this.isMounted()) {
       const typeDefs = this.specification.content;
+      const apiEndpoint = this.specification.metadata.servers[0]; // For now, just pick the first one
       ReactDOM.render(React.createElement(GraphiQL, {
-        fetcher: this.graphQLFetcher,
+        fetcher: this.graphQLFetcher(apiEndpoint),
         schema: makeExecutableSchema({typeDefs})
       }), this.getRootDomNode());
     }

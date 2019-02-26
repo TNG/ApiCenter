@@ -1,6 +1,7 @@
 package com.tngtech.apicenter.backend.connector.rest.mapper.converter
 
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationDataService
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationFileService
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
@@ -25,8 +26,8 @@ class SpecificationConverter constructor(
         mappingContext: MappingContext?
     ): Specification {
         var fileContent = specificationFileDto.fileContent ?: ""
-        val metaData = specificationFileDto.metaData
-        val isGraphQLFile = metaData != null
+        val dtoMetadata = specificationFileDto.metaData
+        val isGraphQLFile = dtoMetadata != null
 
         if (specificationFileDto.fileUrl != null && specificationFileDto.fileUrl != "") {
             fileContent = specificationFileService.retrieveFile(specificationFileDto.fileUrl)
@@ -35,16 +36,23 @@ class SpecificationConverter constructor(
         val content = if (isGraphQLFile) fileContent else specificationDataService.parseFileContent(fileContent)
         val uuid = specificationFileDto.id ?: UUID.randomUUID()
 
-        val title = metaData?.title?: specificationDataService.readTitle(content)
-        val description = metaData?.description?: specificationDataService.readDescription(content)
-        val language = if (isGraphQLFile) ApiLanguage.GRAPHQL else ApiLanguage.OPENAPI
-        val version = metaData?.version?: specificationDataService.readVersion(content)
+        val title = dtoMetadata?.title?: specificationDataService.readTitle(content)
+        val description = dtoMetadata?.description?: specificationDataService.readDescription(content)
+
+        // If metadata is present, we use it. Otherwise, we build one from reading the content the client sends
+        val metadata = dtoMetadata ?: SpecificationMetaData(
+                title,
+                specificationDataService.readVersion(content),
+                description,
+                ApiLanguage.OPENAPI,
+                servers = null
+        )
 
         return Specification(
             uuid,
             title,
-            description,
-            listOf(Version(version, content, language)),
+            description ?: "",
+            listOf(Version(content, metadata)),
             specificationFileDto.fileUrl
         )
     }

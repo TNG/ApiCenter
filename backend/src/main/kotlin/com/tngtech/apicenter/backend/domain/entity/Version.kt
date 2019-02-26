@@ -1,3 +1,5 @@
 package com.tngtech.apicenter.backend.domain.entity
 
-data class Version(val version: String, val content: String, val language: ApiLanguage)
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+
+data class Version(val content: String, val metadata: SpecificationMetaData)

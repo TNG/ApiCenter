@@ -1,7 +1,11 @@
+import {ApiLanguage} from './version';
+
 export interface SpecificationMetaData {
   title: string;
   version: string;
   description: string;
+  language: ApiLanguage;
+  servers?: string[];
 }
 
 export class SpecificationFile {

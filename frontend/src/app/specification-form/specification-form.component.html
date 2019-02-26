@@ -19,9 +19,9 @@
     </div>
     <div class="col" *ngIf="isGraphQLFile">
       Additionally required fields for GraphQL upload:
-      <div *ngFor="let fieldName of objectKeys(metaData)">
+      <div *ngFor="let fieldName of objectKeys(additionalFields)">
         <div class="row">
-          <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="metaData[fieldName]"/>
+          <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="additionalFields[fieldName]"/>
         </div>
       </div>
       <button (click)="addServerInputField()">Add</button>

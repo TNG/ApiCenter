@@ -42,9 +42,9 @@
                     *ngIf="specification.versions.length > 1 && expanded.includes(specification.id)"
                     data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
             </td>
-            <td><a [routerLink]="['specifications/', specification.id, specification.versions[0].version]" routerLinkActive="active">{{ specification.title
+            <td><a [routerLink]="['specifications/', specification.id, specification.versions[0].metadata.version]" routerLinkActive="active">{{ specification.title
               }}</a></td>
-            <td>{{ specification.versions[0].version }}</td>
+            <td>{{ specification.versions[0].metadata.version }}</td>
             <td>
               <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
                       (click)="synchronize(specification)"></button>
@@ -57,8 +57,8 @@
           <tbody [attr.id]="'versions-' + specification.id" class="collapse" *ngIf="specification.versions.length > 1">
           <tr *ngFor="let version of specification.versions">
             <td></td>
-            <td><a [routerLink]="['specifications/', specification.id, version.version]" routerLinkActive="active">{{ specification.title }}</a></td>
-            <td>{{ version.version }}</td>
+            <td><a [routerLink]="['specifications/', specification.id, version.metadata.version]" routerLinkActive="active">{{ specification.title }}</a></td>
+            <td>{{ version.metadata.version }}</td>
             <td>
               <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadVersion(selectedFormat, specification, version)"></button>
               <button class="btn oi oi-trash" (click)="deleteVersion(specification, version)"></button>

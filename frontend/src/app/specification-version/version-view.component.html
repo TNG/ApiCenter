@@ -3,7 +3,7 @@
     {{ error }}
   </div>
 </div>
-<div class="container" *ngIf="specification && specification.language.toString() == 'OPENAPI'">
+<div class="container" *ngIf="specification && specification.metadata.language.toString() == 'OPENAPI'">
   <app-swagger-ui [specification]="specification"></app-swagger-ui>
 </div>
-<app-graphiql *ngIf="specification && specification.language.toString() == 'GRAPHQL'"></app-graphiql>
+<app-graphiql *ngIf="specification && specification.metadata.language.toString() == 'GRAPHQL'"></app-graphiql>

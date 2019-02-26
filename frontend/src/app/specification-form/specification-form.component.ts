@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SpecificationFile, SpecificationMetaData} from '../models/specificationfile';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
+import {ApiLanguage} from '../models/version';
 
 @Component({
   selector: 'app-specification-form',
@@ -15,9 +16,9 @@ export class SpecificationFormComponent implements OnInit {
   specificationFile: File;
   remoteUploadSelected = false;
   remoteFileUrl: string;
-  metaData: SpecificationMetaData = {title: '', version: '', description: ''};
-  isGraphQLFile = false;
+  additionalFields = {title: '', version: '', description: ''};
   servers: string[] = [];
+  isGraphQLFile = false;
   objectKeys = Object.keys;
 
   constructor(private router: Router, private specificationService: SpecificationService, private route: ActivatedRoute) {
@@ -40,9 +41,9 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   public async submitSpecification(id?: string) {
-    const allFieldsPresent: boolean = !!this.metaData.title && !!this.metaData.version && !!this.metaData.description;
+    const allFieldsPresent: boolean = !!this.additionalFields.title && !!this.additionalFields.version;
     if (this.isGraphQLFile && !allFieldsPresent) {
-      this.error = 'All fields required for GraphQL upload';
+      this.error = 'Title and version are required';
       return;
     }
 
@@ -88,7 +89,8 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private createSpecification(fileContent: string, fileUrl: string) {
-    const metaData = this.isGraphQLFile ? this.metaData : null;
+    const servers = this.servers;
+    const metaData: SpecificationMetaData = this.isGraphQLFile ? {...this.additionalFields, language: ApiLanguage.GraphQL, servers} : null;
     const file = new SpecificationFile(fileContent, fileUrl, metaData);
 
     this.specificationService.createSpecification(file)

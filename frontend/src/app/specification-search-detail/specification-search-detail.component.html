@@ -7,7 +7,7 @@
   <div class="row top-buffer">
     <div class="col">
       <div *ngFor="let specification of specifications">
-        <div><p class="lead"><a [routerLink]="['/specifications', specification.id, specification.versions[0].version]" routerLinkActive="active">{{ specification.title }}</a></p></div>
+        <div><p class="lead"><a [routerLink]="['/specifications', specification.id, specification.versions[0].metadata.version]" routerLinkActive="active">{{ specification.title }}</a></p></div>
         <div><p class="small"><markdown>{{ specification.description != null && specification.description.length > 100 ? (specification.description | slice:0:100) + ' ...' : specification.description }}</markdown></p></div>
       </div>
       <div class="row top-buffer alert alert-danger" *ngIf="specifications.length == 0">

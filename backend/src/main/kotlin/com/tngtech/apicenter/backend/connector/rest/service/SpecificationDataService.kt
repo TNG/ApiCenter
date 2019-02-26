@@ -60,6 +60,7 @@ class SpecificationDataService @Autowired constructor(
     }
 
     fun readDescription(json: String): String? =
+        // Not a required field in the OpenAPI spec
         try {
             JsonPath.read<String>(json, "$.info.description")
         } catch (exception: PathNotFoundException) {

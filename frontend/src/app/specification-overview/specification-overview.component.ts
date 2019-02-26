@@ -33,8 +33,8 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   public async deleteVersion(specification, version) {
-    if (confirm('Are you sure that you want to delete version "' + version.version + '"?')) {
-      this.versionService.deleteVersion(specification.id, version.version).subscribe(event => {
+    if (confirm('Are you sure that you want to delete version "' + version.metadata.version + '"?')) {
+      this.versionService.deleteVersion(specification.id, version.metadata.version).subscribe(event => {
           this.getSpecifications();
           this.expanded = [];
         }
@@ -47,9 +47,9 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   public downloadVersion(fileType: string, spec: Specification, version: Version) {
-    switch (version.language) {
+    switch (version.metadata.language) {
       case ApiLanguage.GraphQL:
-        this.versionService.getVersion(spec.id, version.version)
+        this.versionService.getVersion(spec.id, version.metadata.version)
           .subscribe(event => {
             const fileName = this.createDownloadFileName(spec, version);
             this.doDownload(event.content, fileName + '.graphql', 'application/json');
@@ -80,7 +80,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public downloadYamlVersion(specification: Specification, version: Version) {
     const fileName = this.createDownloadFileName(specification, version);
-    this.versionService.getYamlVersion(specification.id, version.version)
+    this.versionService.getYamlVersion(specification.id, version.metadata.version)
       .subscribe(event => {
         this.doDownload(event.content, fileName + '.yml', 'application/yaml');
       });
@@ -100,7 +100,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   private createDownloadFileName(specification: Specification, version: Version) {
     // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    return (specification.title + '_v' + version.version).replace(/[^a-z0-9\.]/gi, '_');
+    return (specification.title + '_v' + version.metadata.version).replace(/[^a-z0-9\.]/gi, '_');
   }
 
   public async synchronize(specification) {
