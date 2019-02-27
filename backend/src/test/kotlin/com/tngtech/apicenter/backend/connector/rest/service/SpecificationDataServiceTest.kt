@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.tngtech.apicenter.backend.config.SpecificationParseFailureException
+import com.tngtech.apicenter.backend.config.SpecificationParseException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
@@ -54,14 +54,14 @@ class SpecificationDataServiceTest {
     @Test
     fun readTitle_shouldFailWhenNoTitleIsGiven() {
         assertThatThrownBy { specificationDataService.readTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
-            SpecificationParseFailureException::class.java
+            SpecificationParseException::class.java
         )
     }
 
     @Test
     fun readVersion_shouldFailWhenNoVersionIsGiven() {
         assertThatThrownBy { specificationDataService.readVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
-            SpecificationParseFailureException::class.java
+            SpecificationParseException::class.java
         )
     }
 

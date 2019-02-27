@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
-import com.tngtech.apicenter.backend.config.SpecificationParseFailureException
+import com.tngtech.apicenter.backend.config.SpecificationParseException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
@@ -49,9 +49,9 @@ class SpecificationDataService @Autowired constructor(
         try {
             return JsonPath.read<String>(json, "$.info.title")
         } catch (exception: PathNotFoundException) {
-            throw SpecificationParseFailureException("Specification needs a title in the info section")
+            throw SpecificationParseException("Specification needs a title in the info section")
         } catch (exception: IllegalArgumentException) {
-            throw SpecificationParseFailureException("Specification could not be parsed as JSON")
+            throw SpecificationParseException("Specification could not be parsed as JSON")
         }
     }
 
@@ -59,9 +59,9 @@ class SpecificationDataService @Autowired constructor(
         try {
             return JsonPath.read<String>(json, "$.info.version")
         } catch (exception: PathNotFoundException) {
-            throw SpecificationParseFailureException("Specification needs a version")
+            throw SpecificationParseException("Specification needs a version")
         } catch (exception: IllegalArgumentException) {
-            throw SpecificationParseFailureException("Specification could not be parsed as JSON")
+            throw SpecificationParseException("Specification could not be parsed as JSON")
         }
     }
 

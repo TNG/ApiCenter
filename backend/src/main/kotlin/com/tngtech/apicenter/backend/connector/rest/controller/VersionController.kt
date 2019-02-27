@@ -32,7 +32,7 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
         // i.e. The integration test and unit test require the default specified in two different ways
         val foundVersion = versionHandler.findOne(specificationId, version)
         if (foundVersion == null) {
-            throw SpecificationNotFoundException()
+            throw SpecificationNotFoundException(specificationId, version)
         } else if (accept == MEDIA_TYPE_YAML) {
             logger.info("Specification $specificationId version $version requested as YAML")
             val jsonNodeTree = ObjectMapper().readTree(foundVersion.content)

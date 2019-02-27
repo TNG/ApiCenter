@@ -62,7 +62,7 @@ class SpecificationController @Autowired constructor(
     fun findSpecification(@PathVariable specificationId: UUID): SpecificationDto {
         val specification = specificationHandler.findOne(specificationId)
         return specification?.let { specificationDtoMapper.fromDomain(it) } ?:
-            throw SpecificationNotFoundException()
+            throw SpecificationNotFoundException(specificationId)
     }
 
     @DeleteMapping("/{specificationId}")

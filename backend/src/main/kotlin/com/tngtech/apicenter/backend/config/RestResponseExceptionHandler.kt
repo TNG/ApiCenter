@@ -6,12 +6,25 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import java.time.Instant
 import java.time.format.DateTimeFormatter
+import mu.KotlinLogging
+import java.util.*
+
+private val logger = KotlinLogging.logger {  }
+class SpecificationNotFoundException(val specificationId: UUID, val version: String? = "") : RuntimeException()
+class SpecificationParseException(val msg: String) : RuntimeException()
+class VersionAlreadyExistsException(val specificationTitle: String) : RuntimeException()
+
+data class ErrorMessage(
+        val message: String,
+        val timestamp: String = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+)
 
 @ControllerAdvice
-class RestResponseExceptionHandler() {
+class RestResponseExceptionHandler {
 
     @ExceptionHandler(SpecificationNotFoundException::class)
-    fun handleNotFound(): ResponseEntity<ErrorMessage> {
+    fun handleNotFound(exc: SpecificationNotFoundException): ResponseEntity<ErrorMessage> {
+        logger.info("Specification ${exc.specificationId} ${exc.version} not found")
         return ResponseEntity(
                 ErrorMessage("Specification not found"),
                 null,
@@ -19,8 +32,8 @@ class RestResponseExceptionHandler() {
         )
     }
 
-    @ExceptionHandler(SpecificationParseFailureException::class)
-    fun handleBadRequest(exc: SpecificationParseFailureException): ResponseEntity<ErrorMessage> {
+    @ExceptionHandler(SpecificationParseException::class)
+    fun handleBadRequest(exc: SpecificationParseException): ResponseEntity<ErrorMessage> {
         return ResponseEntity(
                 ErrorMessage(exc.msg),
                 null,
@@ -33,16 +46,8 @@ class RestResponseExceptionHandler() {
         return ResponseEntity(
                 ErrorMessage("A specification with the same version already exists for ${exc.specificationTitle}"),
                 null,
-                HttpStatus.UNPROCESSABLE_ENTITY
+                HttpStatus.CONFLICT
         )
     }
 }
 
-class SpecificationNotFoundException : RuntimeException()
-class SpecificationParseFailureException(val msg: String) : RuntimeException()
-class VersionAlreadyExistsException(val specificationTitle: String) : RuntimeException()
-
-data class ErrorMessage(
-        val message: String,
-        val timestamp: String = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
-)
