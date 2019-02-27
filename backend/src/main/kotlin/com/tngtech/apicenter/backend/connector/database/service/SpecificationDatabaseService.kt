@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.database.service
 
+import com.tngtech.apicenter.backend.config.VersionAlreadyExistsException
 import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
 import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository
@@ -8,11 +9,10 @@ import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceServ
 import org.hibernate.search.jpa.Search
 import org.hibernate.search.exception.EmptyQueryException
 import org.springframework.stereotype.Service
-import java.lang.Exception
-import java.lang.IllegalArgumentException
 import java.util.UUID
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
+import org.springframework.dao.DataIntegrityViolationException
 
 @Service
 class SpecificationDatabaseService constructor(
@@ -70,8 +70,8 @@ class SpecificationDatabaseService constructor(
 
         try {
             specificationRepository.save(specificationEntity)
-        } catch (sqlException: Exception) {
-            throw IllegalArgumentException("This version already exists for specification ${specificationEntity.title}.", sqlException)
+        } catch (sqlException: DataIntegrityViolationException) {
+            throw VersionAlreadyExistsException(specificationEntity.title)
         }
     }
 }
