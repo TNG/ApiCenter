@@ -3,6 +3,7 @@ package com.tngtech.apicenter.backend.connector.rest.service
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
@@ -31,20 +32,22 @@ class SynchronizationServiceTest {
         const val REMOTE_ADDRESS = "http://testapi.com/testapi.json"
     }
 
+    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, listOf())
+
     @Test
     fun synchronize_shouldStoreAdaptedSpecification() {
         val specification = Specification(
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
+            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             REMOTE_ADDRESS
         )
         val updatedSpecification = Specification(
             UUID.fromString(SPECIFICATION_ID),
             "Swagger Petstore 2",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION, ApiLanguage.OPENAPI)),
+            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             REMOTE_ADDRESS
         )
 

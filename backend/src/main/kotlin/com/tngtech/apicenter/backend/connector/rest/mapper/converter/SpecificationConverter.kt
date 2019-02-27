@@ -36,22 +36,19 @@ class SpecificationConverter constructor(
         val content = if (isGraphQLFile) fileContent else specificationDataService.parseFileContent(fileContent)
         val uuid = specificationFileDto.id ?: UUID.randomUUID()
 
-        val title = dtoMetadata?.title?: specificationDataService.readTitle(content)
-        val description = dtoMetadata?.description?: specificationDataService.readDescription(content)
-
         // If metadata is present, we use it. Otherwise, we build one from reading the content the client sends
         val metadata = dtoMetadata ?: SpecificationMetaData(
-                title,
-                specificationDataService.readVersion(content),
-                description,
-                ApiLanguage.OPENAPI,
-                servers = null
+            specificationDataService.readTitle(content),
+            specificationDataService.readVersion(content),
+            specificationDataService.readDescription(content),
+            ApiLanguage.OPENAPI,
+            listOf()
         )
 
         return Specification(
             uuid,
-            title,
-            description ?: "",
+            metadata.title,
+            metadata.description ?: "",
             listOf(Version(content, metadata)),
             specificationFileDto.fileUrl
         )

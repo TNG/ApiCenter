@@ -27,7 +27,7 @@ class VersionControllerIntegrationTest {
         mockMvc.perform(get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a/versions/v1")
             .with(user("user"))
             .with(csrf()))
-            .andExpect(jsonPath("$.version", equalTo("v1")))
+            .andExpect(jsonPath("$.metadata.version", equalTo("v1")))
     }
 
     @Test
