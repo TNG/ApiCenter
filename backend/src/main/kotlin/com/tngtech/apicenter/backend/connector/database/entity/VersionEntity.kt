@@ -23,7 +23,7 @@ data class VersionEntity(
         @Field @Column(columnDefinition = "TEXT") val title: String,
         @Field @Column(columnDefinition = "TEXT") val description: String?,
         @Field @Column(columnDefinition = "TEXT") val language: ApiLanguage,
-        @Field @Column(columnDefinition = "TEXT") val server: String?,
+        @Field @Column(columnDefinition = "TEXT") val endpointUrl: String?,
         @ContainedIn @ManyToOne @MapsId("specificationId") var specification: SpecificationEntity?,
         var created: Date?
 ) {

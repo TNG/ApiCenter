@@ -17,7 +17,7 @@ export class SpecificationFormComponent implements OnInit {
   remoteUploadSelected = false;
   remoteFileUrl: string;
   additionalFields = {title: '', version: '', description: ''};
-  server = '';
+  endpointUrl = '';
   isGraphQLFile = false;
   objectKeys = Object.keys;
 
@@ -89,8 +89,9 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private createSpecification(fileContent: string, fileUrl: string) {
-    const server = this.server;
-    const metaData: SpecificationMetaData = this.isGraphQLFile ? {...this.additionalFields, language: ApiLanguage.GraphQL, server} : null;
+    const endpointUrl = this.endpointUrl;
+    const metaData: SpecificationMetaData = this.isGraphQLFile ?
+      {...this.additionalFields, language: ApiLanguage.GraphQL, endpointUrl} : null;
     const file = new SpecificationFile(fileContent, fileUrl, metaData);
 
     this.specificationService.createSpecification(file)

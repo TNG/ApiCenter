@@ -20,7 +20,7 @@ class VersionMappingConfigurer constructor(private val versionConverter: Version
             .field("title", "metadata.title")
             .field("description", "metadata.description")
             .field("language", "metadata.language")
-            .field("server", "metadata.server")
+            .field("endpointUrl", "metadata.endpointUrl")
             .register()
     }
 }

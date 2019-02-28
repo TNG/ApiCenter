@@ -59,7 +59,7 @@ export class GraphiQLWrapperComponent extends VersionViewComponent implements Af
   protected render() {
     if (this.isMounted()) {
       const typeDefs = this.specification.content;
-      const apiEndpoint = this.specification.metadata.server;
+      const apiEndpoint = this.specification.metadata.endpointUrl;
       ReactDOM.render(React.createElement(GraphiQL, {
         fetcher: this.graphQLFetcher(apiEndpoint),
         schema: makeExecutableSchema({typeDefs})

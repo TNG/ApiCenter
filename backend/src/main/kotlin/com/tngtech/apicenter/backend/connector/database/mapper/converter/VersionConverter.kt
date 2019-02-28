@@ -4,7 +4,6 @@ import com.tngtech.apicenter.backend.connector.database.entity.VersionEntity
 import com.tngtech.apicenter.backend.connector.database.entity.VersionId
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.domain.entity.Version
-import ma.glasnost.orika.CustomConverter
 import ma.glasnost.orika.MappingContext
 import ma.glasnost.orika.converter.BidirectionalConverter
 import ma.glasnost.orika.metadata.Type
@@ -21,7 +20,7 @@ class VersionConverter : BidirectionalConverter<Version, VersionEntity>() {
                     source.versionId.version,
                     source.description,
                     source.language,
-                    source.server
+                    source.endpointUrl
             )
         )
     }
@@ -34,7 +33,7 @@ class VersionConverter : BidirectionalConverter<Version, VersionEntity>() {
                         source.metadata.title,
                         source.metadata.description,
                         source.metadata.language,
-                        source.metadata.server,
+                        source.metadata.endpointUrl,
                         null,
                         null)
     }
