@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
-import com.tngtech.apicenter.backend.config.SpecificationParseException
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException

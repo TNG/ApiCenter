@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.tngtech.apicenter.backend.config.SpecificationParseException
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test

@@ -1,5 +1,8 @@
 package com.tngtech.apicenter.backend.config
 
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
+import com.tngtech.apicenter.backend.domain.exceptions.VersionAlreadyExistsException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -7,12 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import mu.KotlinLogging
-import java.util.UUID
 
 private val logger = KotlinLogging.logger {  }
-class SpecificationNotFoundException(val specificationId: UUID, val version: String? = "") : RuntimeException()
-class SpecificationParseException(val userMessage: String) : RuntimeException()
-class VersionAlreadyExistsException(val specificationTitle: String) : RuntimeException()
 
 data class ErrorMessage(
         val httpReasonPhrase: String,

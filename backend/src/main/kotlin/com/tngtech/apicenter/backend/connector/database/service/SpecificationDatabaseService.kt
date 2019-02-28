@@ -1,6 +1,6 @@
 package com.tngtech.apicenter.backend.connector.database.service
 
-import com.tngtech.apicenter.backend.config.VersionAlreadyExistsException
+import com.tngtech.apicenter.backend.domain.exceptions.VersionAlreadyExistsException
 import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
 import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository

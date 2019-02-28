@@ -1,6 +1,6 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
-import com.tngtech.apicenter.backend.config.SpecificationNotFoundException
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
