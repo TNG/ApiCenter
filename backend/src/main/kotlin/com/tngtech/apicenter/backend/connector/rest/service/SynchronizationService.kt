@@ -34,7 +34,7 @@ class SynchronizationService constructor(
         val newSpecification = Specification(
             specification.id,
             specificationDataService.readTitle(content),
-            specificationDataService.readDescription(content) ?: "",
+            specificationDataService.readDescription(content),
             versions,
             specification.remoteAddress
         )

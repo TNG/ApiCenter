@@ -32,7 +32,7 @@ class VersionConverter : BidirectionalConverter<Version, VersionEntity>() {
                         source.metadata.version),
                         source.content,
                         source.metadata.title,
-                        source.metadata.description ?: "",
+                        source.metadata.description,
                         source.metadata.language,
                         source.metadata.servers?.let { servers: List<String> -> servers.joinToString() }.orEmpty(),
                         null,

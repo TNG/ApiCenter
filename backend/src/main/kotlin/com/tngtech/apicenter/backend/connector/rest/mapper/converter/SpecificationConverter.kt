@@ -48,7 +48,7 @@ class SpecificationConverter constructor(
         return Specification(
             uuid,
             metadata.title,
-            metadata.description ?: "",
+            metadata.description,
             listOf(Version(content, metadata)),
             specificationFileDto.fileUrl
         )
