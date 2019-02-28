@@ -18,7 +18,7 @@ describe('SpecificationOverviewComponent', () => {
     version: '1.0.0',
     description: 'Description',
     language: ApiLanguage.OpenAPI,
-    servers: [],
+    server: null,
   })];
   const specification = new Specification('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', versions, null);
 

@@ -32,7 +32,7 @@ class SynchronizationServiceTest {
         const val REMOTE_ADDRESS = "http://testapi.com/testapi.json"
     }
 
-    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, listOf())
+    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     @Test
     fun synchronize_shouldStoreAdaptedSpecification() {

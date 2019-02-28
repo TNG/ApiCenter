@@ -5,7 +5,7 @@ export interface SpecificationMetaData {
   version: string;
   description: string;
   language: ApiLanguage;
-  servers?: string[];
+  server: string;
 }
 
 export class SpecificationFile {

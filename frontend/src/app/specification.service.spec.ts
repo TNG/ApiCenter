@@ -17,7 +17,7 @@ describe('SpecificationService', () => {
     version: '1.0.0',
     description: 'Description',
     language: ApiLanguage.OpenAPI,
-    servers: [],
+    server: null,
   };
 
   const firstVersions = [new Version('Content', {...metadataStub, title: 'API 1'})];

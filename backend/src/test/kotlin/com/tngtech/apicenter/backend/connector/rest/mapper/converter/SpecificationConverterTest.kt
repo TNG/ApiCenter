@@ -20,7 +20,7 @@ class SpecificationConverterTest {
         const val SWAGGER_REMOTE = "https://swagger.com/remote/file.json"
         const val UUID_STRING = "5aa40ba9-7e26-44de-81ec-f545d1f178aa"
     }
-    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, listOf())
+    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     private val specificationDataService: SpecificationDataService = mock()
 

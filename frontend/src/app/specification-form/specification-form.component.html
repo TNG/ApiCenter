@@ -24,14 +24,10 @@
           <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="additionalFields[fieldName]"/>
         </div>
       </div>
-      <button (click)="addServerInputField()">Add</button>
-      <button (click)="removeServerInputField()">Remove</button>
-      <p>API endpoints:</p>
-      <ul>
-        <li *ngFor="let server of servers; let i = index; trackBy: trackByIndex;">
-          <input type="text" placeholder="Enter server URL" [(ngModel)]="servers[i]" />
-        </li>
-      </ul>
+      <p>API endpoint:</p>
+      <div class="row">
+        <input type="text" placeholder="URL" [(ngModel)]="server"/>
+      </div>
     </div>
   </div>
   <div class="row top-buffer">

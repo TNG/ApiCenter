@@ -42,7 +42,7 @@ class SpecificationConverter constructor(
             specificationDataService.readVersion(content),
             specificationDataService.readDescription(content),
             ApiLanguage.OPENAPI,
-            listOf()
+            null
         )
 
         return Specification(

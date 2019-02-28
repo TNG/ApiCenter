@@ -23,7 +23,7 @@ internal class VersionControllerUnitTest {
 
     private val specificationId = UUID.fromString("7de07d27-eedb-4290-881a-6a402a81dd0f")
 
-    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, listOf())
+    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     private val version = Version("Content", metadata)
 

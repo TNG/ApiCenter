@@ -17,7 +17,7 @@ export class SpecificationFormComponent implements OnInit {
   remoteUploadSelected = false;
   remoteFileUrl: string;
   additionalFields = {title: '', version: '', description: ''};
-  servers: string[] = [];
+  server = '';
   isGraphQLFile = false;
   objectKeys = Object.keys;
 
@@ -89,8 +89,8 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private createSpecification(fileContent: string, fileUrl: string) {
-    const servers = this.servers;
-    const metaData: SpecificationMetaData = this.isGraphQLFile ? {...this.additionalFields, language: ApiLanguage.GraphQL, servers} : null;
+    const server = this.server;
+    const metaData: SpecificationMetaData = this.isGraphQLFile ? {...this.additionalFields, language: ApiLanguage.GraphQL, server} : null;
     const file = new SpecificationFile(fileContent, fileUrl, metaData);
 
     this.specificationService.createSpecification(file)
@@ -108,18 +108,5 @@ export class SpecificationFormComponent implements OnInit {
           this.router.navigateByUrl('/');
         },
         error => this.error = error.error.message);
-  }
-
-  addServerInputField() {
-    this.servers.push('');
-  }
-
-  removeServerInputField() {
-    this.servers.pop();
-  }
-
-  trackByIndex(index: number) {
-    // Without this, the wrong input element is focused after typing a character
-    return index;
   }
 }

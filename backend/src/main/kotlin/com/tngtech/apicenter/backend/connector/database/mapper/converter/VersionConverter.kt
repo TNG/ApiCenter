@@ -21,7 +21,7 @@ class VersionConverter : BidirectionalConverter<Version, VersionEntity>() {
                     source.versionId.version,
                     source.description,
                     source.language,
-                    source.servers.split(',')
+                    source.server
             )
         )
     }
@@ -34,7 +34,7 @@ class VersionConverter : BidirectionalConverter<Version, VersionEntity>() {
                         source.metadata.title,
                         source.metadata.description,
                         source.metadata.language,
-                        source.metadata.servers?.let { servers: List<String> -> servers.joinToString() }.orEmpty(),
+                        source.metadata.server,
                         null,
                         null)
     }

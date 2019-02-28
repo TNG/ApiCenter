@@ -9,7 +9,7 @@ data class SpecificationMetaData constructor(
     val version: String,
     val description: String?,
     val language: ApiLanguage,
-    val servers: List<String>? = null
+    val server: String? = null
 )
 
 data class SpecificationFileDto @JsonCreator constructor(
