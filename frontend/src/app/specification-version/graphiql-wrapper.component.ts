@@ -16,6 +16,7 @@ import {HttpClient} from '@angular/common/http';
 import {makeExecutableSchema} from 'graphql-tools';
 import {VersionViewComponent} from './version-view.component';
 import {Version} from '../models/version';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-graphiql',
@@ -42,9 +43,12 @@ export class GraphiQLWrapperComponent extends VersionViewComponent implements Af
 
   public graphQLFetcher(apiEndpoint?: string) {
     return (graphQLParams) => {
-      return fetch(apiEndpoint ? apiEndpoint : 'http://localhost:4000/graphql', { // As a fallback, use express-graphql's default
+      return fetch(apiEndpoint ? apiEndpoint : environment.apiUrl + '/graphql', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        },
         body: JSON.stringify(graphQLParams)
       }).then(response => response.json())
         .catch(() => 'An error occurred with the network request. ' +
