@@ -37,7 +37,7 @@ class AclManagerServiceIntegrationTest {
     fun addPermission_shouldGrantAccess() {
         val resource = DomainObject(0)
         val sid = PrincipalSid("user")
-//        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isFalse()
+        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isFalse()
         aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.READ)
         assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isTrue()
     }

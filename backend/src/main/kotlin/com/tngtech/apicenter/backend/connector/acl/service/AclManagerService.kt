@@ -3,11 +3,10 @@ package com.tngtech.apicenter.backend.connector.acl.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.security.acls.domain.ObjectIdentityImpl
-import org.springframework.security.acls.domain.PrincipalSid
 import org.springframework.security.acls.model.*
 import org.springframework.transaction.TransactionStatus
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.AbstractPlatformTransactionManager
+import org.springframework.transaction.support.TransactionCallback
 import java.io.Serializable
 import org.springframework.transaction.support.TransactionCallbackWithoutResult
 import org.springframework.transaction.support.TransactionTemplate
@@ -23,9 +22,7 @@ class AclManagerService @Autowired constructor(private val aclService: MutableAc
                                                private val transactionManager: AbstractPlatformTransactionManager) : AclManager {
 
     override fun <T> addPermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission) {
-        val template = TransactionTemplate(transactionManager)
-
-        template.execute(object : TransactionCallbackWithoutResult() {
+        TransactionTemplate(transactionManager).execute(object : TransactionCallbackWithoutResult() {
             override fun doInTransactionWithoutResult(status: TransactionStatus) {
                 val identity = ObjectIdentityImpl(domainClass, id)
                 val acl = getOrCreateAcl(identity)
@@ -43,10 +40,17 @@ class AclManagerService @Autowired constructor(private val aclService: MutableAc
         }
     }
 
-    @Transactional
     override fun <T> hasPermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission): Boolean {
-        val identity = ObjectIdentityImpl(domainClass, id)
-        val acl = getOrCreateAcl(identity)
-        return acl.isGranted(listOf(permission), listOf(sid), false)
+        return TransactionTemplate(transactionManager).execute(object : TransactionCallback<Boolean> {
+            override fun doInTransaction(status: TransactionStatus): Boolean {
+                val identity = ObjectIdentityImpl(domainClass, id)
+                val acl = getOrCreateAcl(identity)
+                return try {
+                    acl.isGranted(listOf(permission), listOf(sid), false)
+                } catch (e: NotFoundException) {
+                    false
+                }
+            }
+        }) ?: false
     }
 }
