@@ -19,8 +19,4 @@ class Configuration {
     @Bean
     fun yamlMapper() = YAMLMapper()
 
-    @Bean
-    fun cacheManager(): CacheManager {
-        return NoOpCacheManager()
-    }
 }
