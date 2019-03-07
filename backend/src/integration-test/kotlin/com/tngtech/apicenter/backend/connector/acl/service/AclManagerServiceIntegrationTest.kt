@@ -7,12 +7,10 @@ import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.security.acls.domain.BasePermission
 import org.springframework.security.acls.domain.PrincipalSid
 import org.springframework.security.acls.model.MutableAclService
 import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.transaction.support.AbstractPlatformTransactionManager
 
 data class DomainObject(val id: Int)
@@ -40,5 +38,15 @@ class AclManagerServiceIntegrationTest {
         assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isFalse()
         aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.READ)
         assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isTrue()
+    }
+
+    @Test
+    fun removePermission_shouldDenyAccess() {
+        val resource = DomainObject(1)
+        val sid = PrincipalSid("user")
+        aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
+        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isTrue()
+        aclManagerService.removePermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
+        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isFalse()
     }
 }

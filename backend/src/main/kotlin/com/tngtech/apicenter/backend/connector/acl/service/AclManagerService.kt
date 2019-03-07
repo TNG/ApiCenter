@@ -10,10 +10,12 @@ import org.springframework.transaction.support.TransactionCallback
 import java.io.Serializable
 import org.springframework.transaction.support.TransactionCallbackWithoutResult
 import org.springframework.transaction.support.TransactionTemplate
+import org.springframework.security.acls.model.MutableAcl
+import org.springframework.security.acls.model.ObjectIdentity
 
 interface AclManager {
     fun <T> addPermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission)
-//    fun <T> removePermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission)
+    fun <T> removePermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission)
     fun <T> hasPermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission): Boolean
 }
 
@@ -52,5 +54,22 @@ class AclManagerService @Autowired constructor(private val aclService: MutableAc
                 }
             }
         }) ?: false
+    }
+
+    override fun <T> removePermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission) {
+        TransactionTemplate(transactionManager).execute(object : TransactionCallbackWithoutResult() {
+            override fun doInTransactionWithoutResult(status: TransactionStatus) {
+                val identity = ObjectIdentityImpl(domainClass, id)
+                val acl = aclService.readAclById(identity) as MutableAcl
+
+                for (i in 0 until acl.entries.size) {
+                    if (acl.entries[i].sid == sid && acl.entries[i].permission == permission) {
+                        acl.deleteAce(i)
+                    }
+                }
+
+                aclService.updateAcl(acl)
+            }
+        })
     }
 }
