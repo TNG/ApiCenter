@@ -60,15 +60,19 @@ class AclManagerService @Autowired constructor(private val aclService: MutableAc
         TransactionTemplate(transactionManager).execute(object : TransactionCallbackWithoutResult() {
             override fun doInTransactionWithoutResult(status: TransactionStatus) {
                 val identity = ObjectIdentityImpl(domainClass, id)
-                val acl = aclService.readAclById(identity) as MutableAcl
-
-                for (i in 0 until acl.entries.size) {
-                    if (acl.entries[i].sid == sid && acl.entries[i].permission == permission) {
-                        acl.deleteAce(i)
+                try {
+                    val acl = aclService.readAclById(identity) as MutableAcl
+                    for (i in 0 until acl.entries.size) {
+                        if (acl.entries[i].sid == sid && acl.entries[i].permission == permission) {
+                            acl.deleteAce(i)
+                        }
                     }
+                    aclService.updateAcl(acl)
+                } catch (exc: NotFoundException) {
+                    // Trying to remove a permission that had never been granted, nothing to do
+                    return
                 }
 
-                aclService.updateAcl(acl)
             }
         })
     }

@@ -49,4 +49,14 @@ class AclManagerServiceIntegrationTest {
         aclManagerService.removePermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
         assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isFalse()
     }
+
+    @Test
+    fun removePermission_isIdempotent() {
+        val resource = DomainObject(1)
+        val sid = PrincipalSid("user")
+        aclManagerService.removePermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
+        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isFalse()
+        aclManagerService.removePermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
+        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isFalse()
+    }
 }
