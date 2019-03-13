@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.AbstractPlatformTransactionManager
 
 @Configuration
 class AclConfiguration {
@@ -25,7 +26,7 @@ class AclConfiguration {
     @Bean
     fun transactionManager(
             dataSource: DataSource
-    ): PlatformTransactionManager {
+    ): AbstractPlatformTransactionManager {
         return DataSourceTransactionManager(dataSource)
     }
 
