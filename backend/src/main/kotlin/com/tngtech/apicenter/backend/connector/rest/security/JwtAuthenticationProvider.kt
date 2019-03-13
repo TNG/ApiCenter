@@ -24,5 +24,12 @@ class JwtAuthenticationProvider : AuthenticationProvider {
         return if (user != null) JwtAuthenticationToken(user, token) else null
     }
 
+    fun extractUsername(authorizationHeader: String): String {
+        return JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
+                .build()
+                .verify(authorizationHeader.replace("Bearer ", ""))
+                .subject
+    }
+
     override fun supports(authentication: Class<*>?) = true
 }
