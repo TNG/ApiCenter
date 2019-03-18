@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.acls.domain.BasePermission
 import org.springframework.security.acls.domain.PrincipalSid
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -59,16 +60,16 @@ class AclInterceptor : HandlerInterceptorAdapter() {
             handler: Any): Boolean {
         val header = request.getHeader("Authorization")
         val username = jwtAuthenticationProvider.extractUsername(header)
+        val sid = PrincipalSid(username)
+        logger.info(SecurityContextHolder.getContext().authentication.toString())
 
         val pathVariables = AntPathMatcher("/")
                 .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/versions/{version}", request.servletPath)
-        val specificationId = pathVariables["specificationId"] as UUID
-        val version = pathVariables["version"] ?: ""
+        val specificationId = UUID.fromString(pathVariables["specificationId"])
 
-        val sid = PrincipalSid(username)
         return when (request.method) {
-            "GET" ->                    permissionManager.hasPermission(specificationId, version, sid, BasePermission.READ)
-            "POST", "PUT", "DELETE" ->  permissionManager.hasPermission(specificationId, version, sid, BasePermission.WRITE)
+            "GET" ->                    permissionManager.hasPermission(specificationId, sid, BasePermission.READ)
+            "POST", "PUT", "DELETE" ->  permissionManager.hasPermission(specificationId, sid, BasePermission.WRITE)
             else -> false
         }
     }
