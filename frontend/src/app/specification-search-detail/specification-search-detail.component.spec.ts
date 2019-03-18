@@ -4,7 +4,7 @@ import {instance, mock, verify, when} from 'ts-mockito';
 import {ActivatedRoute} from '@angular/router';
 import {Specification} from '../models/specification';
 import {from} from 'rxjs/index';
-import {Version} from '../models/version';
+import {ApiLanguage, Version} from '../models/version';
 
 describe('SpecificationSearchDetailComponent', () => {
   let specificationSearchDetailComponent: SpecificationSearchDetailComponent;
@@ -12,7 +12,13 @@ describe('SpecificationSearchDetailComponent', () => {
   const specificationService = instance(mockedSpecificationService);
   const mockedActivatedRoute = mock(ActivatedRoute);
   const activatedRoute = instance(mockedActivatedRoute);
-  const versions = [new Version('1.0', 'Content')];
+  const versions = [new Version('Content', {
+    title: 'Test',
+    version: '1.0',
+    description: 'Description',
+    language: ApiLanguage.OpenAPI,
+    endpointUrl: null,
+  })];
   const specifications = [new Specification('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', versions, null)];
 
   beforeEach(() => {

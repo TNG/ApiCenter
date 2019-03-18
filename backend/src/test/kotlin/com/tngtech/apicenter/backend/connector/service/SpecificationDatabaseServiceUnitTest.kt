@@ -10,6 +10,8 @@ import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.connector.database.entity.VersionEntity
 import com.tngtech.apicenter.backend.connector.database.entity.VersionId
 import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,7 +40,7 @@ internal class SpecificationDatabaseServiceUnitTest {
             UUID.fromString("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
             "Description",
-            listOf(Version("1.0.0", "{\"json\": \"true\"}")),
+            listOf(Version("{\"json\": \"true\"}", SpecificationMetaData("Spec", "1.0.0", "Description", ApiLanguage.OPENAPI, null))),
             "http://swaggerpetstore.com/docs"
         )
 
@@ -46,7 +48,7 @@ internal class SpecificationDatabaseServiceUnitTest {
             UUID.fromString("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
             "Description",
-            listOf(VersionEntity(VersionId(null, "1.0.0"), "{\"json\": \"true\"}", null, null)),
+            listOf(VersionEntity(VersionId(null, "1.0.0"), "{\"json\": \"true\"}", "Spec", "Description", ApiLanguage.OPENAPI, "", null, null)),
             "http://swaggerpetstore.com/docs"
         )
 

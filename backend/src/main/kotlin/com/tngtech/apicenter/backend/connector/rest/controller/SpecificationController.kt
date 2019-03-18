@@ -43,6 +43,7 @@ class SpecificationController @Autowired constructor(
             SpecificationFileDto(
                 specificationFileDto.fileContent,
                 specificationFileDto.fileUrl,
+                specificationFileDto.metaData,
                 UUID.fromString(specificationId)
             )
         )

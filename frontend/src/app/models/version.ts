@@ -1,9 +1,16 @@
-export class Version {
-  version: string;
-  content: string;
+import {SpecificationMetaData} from './specificationfile';
 
-  constructor(version: string, content: string) {
-    this.version = version;
+export enum ApiLanguage {
+  OpenAPI = 'OPENAPI',
+  GraphQL = 'GRAPHQL',
+}
+
+export class Version {
+  content: string;
+  metadata: SpecificationMetaData;
+
+  constructor(content: string, metadata: SpecificationMetaData) {
     this.content = content;
+    this.metadata = metadata;
   }
 }

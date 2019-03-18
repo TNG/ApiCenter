@@ -7,7 +7,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule, Routes} from '@angular/router';
-import {SpecificationVersionComponent} from './specification-version/specification-version.component';
+import {SwaggerUiWrapperComponent} from './specification-version/swagger-ui-wrapper.component';
 import {SpecificationOverviewComponent} from './specification-overview/specification-overview.component';
 import {SpecificationFormComponent} from './specification-form/specification-form.component';
 import {HeaderComponent} from './header/header.component';
@@ -21,10 +21,12 @@ import {AuthenticationGuard} from './guards/authentication.guard';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
 import {MarkdownModule} from 'ngx-markdown';
+import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper.component';
+import {VersionViewComponent} from './specification-version/version-view.component';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
-  {path: 'specifications/:specificationId/:version', component: SpecificationVersionComponent, canActivate: [AuthenticationGuard]},
+  {path: 'specifications/:specificationId/:version', component: VersionViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'edit-specifications/:id', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
@@ -36,7 +38,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SpecificationVersionComponent,
+    SwaggerUiWrapperComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
     HeaderComponent,
@@ -45,7 +47,9 @@ const appRoutes: Routes = [
     HighlightSearchResultPipe,
     TrimSearchResultPipe,
     FormatSearchResultPipe,
-    LoginComponent
+    LoginComponent,
+    GraphiQLWrapperComponent,
+    VersionViewComponent
   ],
   imports: [
     BrowserModule,

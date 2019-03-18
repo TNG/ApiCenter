@@ -17,7 +17,7 @@ export class VersionService {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public getJsonVersion(specificationId: string, version: string) {
+  public getVersion(specificationId: string, version: string) {
     return this.http.get<Version>(this.versionUrl + '/' + specificationId + '/versions/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }

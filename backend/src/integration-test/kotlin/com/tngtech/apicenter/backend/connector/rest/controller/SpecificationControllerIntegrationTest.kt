@@ -32,13 +32,13 @@ internal class SpecificationControllerIntegrationTest {
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$[0].title", equalTo("Spec1")))
-            .andExpect(jsonPath("$[0].versions[0].version", equalTo("v1")))
+            .andExpect(jsonPath("$[0].versions[0].metadata.version", equalTo("v1")))
             .andExpect(jsonPath("$[1].title", equalTo("Spec2")))
-            .andExpect(jsonPath("$[1].versions[0].version", equalTo("v1")))
-            .andExpect(jsonPath("$[1].versions[1].version", equalTo("v2")))
+            .andExpect(jsonPath("$[1].versions[0].metadata.version", equalTo("v1")))
+            .andExpect(jsonPath("$[1].versions[1].metadata.version", equalTo("v2")))
             .andExpect(jsonPath("$[2].title", equalTo("Spec3")))
-            .andExpect(jsonPath("$[2].versions[0].version", equalTo("1.0")))
-            .andExpect(jsonPath("$[2].versions[1].version", equalTo("1.1")))
+            .andExpect(jsonPath("$[2].versions[0].metadata.version", equalTo("1.0")))
+            .andExpect(jsonPath("$[2].versions[1].metadata.version", equalTo("1.1")))
     }
 
     @Test
@@ -78,7 +78,7 @@ internal class SpecificationControllerIntegrationTest {
         )
             .andExpect(status().isCreated)
             .andExpect(jsonPath("$.title", equalTo("Spec")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("1.0")))
+            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("1.0")))
     }
 
     @Test
@@ -98,7 +98,7 @@ internal class SpecificationControllerIntegrationTest {
         )
             .andExpect(status().isCreated)
             .andExpect(jsonPath("$.title", equalTo("YamlSpec")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("1.0")))
+            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("1.0")))
     }
 
     @Test
@@ -118,7 +118,7 @@ internal class SpecificationControllerIntegrationTest {
         )
             .andExpect(status().isCreated)
             .andExpect(jsonPath("$.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
+            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("v2")))
 
         mockMvc.perform(
             get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
@@ -126,8 +126,8 @@ internal class SpecificationControllerIntegrationTest {
                 .with(csrf())
         )
             .andExpect(jsonPath("$.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("v2")))
-            .andExpect(jsonPath("$.versions[1].version", equalTo("v1")))
+            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("v2")))
+            .andExpect(jsonPath("$.versions[1].metadata.version", equalTo("v1")))
     }
 
     @Test
@@ -148,13 +148,13 @@ internal class SpecificationControllerIntegrationTest {
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
+            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("vX")))
 
         mockMvc.perform(
             get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user"))
         )
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.versions[0].version", equalTo("vX")))
+            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("vX")))
     }
 
     @Test

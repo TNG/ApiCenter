@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
-import {Version} from '../models/version';
+import {ApiLanguage, Version} from '../models/version';
 import {VersionService} from '../version.service';
 
 @Component({
@@ -12,11 +12,11 @@ import {VersionService} from '../version.service';
 })
 export class SpecificationOverviewComponent implements OnInit {
   specifications: Specification[];
-  error: String;
-  expanded: String[] = [];
+  error: string;
+  expanded: string[] = [];
 
-  downloadFileFormatOptions: String[] = ['json', 'yaml'];
-  selectedFormat: String = this.downloadFileFormatOptions[0];
+  downloadFileFormatOptions: string[] = ['json', 'yaml'];
+  selectedFormat: string = this.downloadFileFormatOptions[0];
 
   constructor(private specificationService: SpecificationService, private versionService: VersionService) {
   }
@@ -33,8 +33,8 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   public async deleteVersion(specification, version) {
-    if (confirm('Are you sure that you want to delete version "' + version.version + '"?')) {
-      this.versionService.deleteVersion(specification.id, version.version).subscribe(event => {
+    if (confirm('Are you sure that you want to delete version "' + version.metadata.version + '"?')) {
+      this.versionService.deleteVersion(specification.id, version.metadata.version).subscribe(event => {
           this.getSpecifications();
           this.expanded = [];
         }
@@ -43,19 +43,32 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   public async downloadSpecification(specification: Specification, fileType: string) {
-    const latestVersion = specification.versions[0];
-    if (latestVersion !== undefined) {
-      this.downloadVersion(fileType, specification, latestVersion);
-    } else {
-      this.error = 'Download failed';
+    this.downloadVersion(fileType, specification, specification.versions[0]);
+  }
+
+  public downloadVersion(fileType: string, spec: Specification, version: Version) {
+    switch (version.metadata.language) {
+      case ApiLanguage.GraphQL:
+        this.versionService.getVersion(spec.id, version.metadata.version)
+          .subscribe(event => {
+            const fileName = this.createDownloadFileName(spec, version);
+            this.doDownload(event.content, fileName + '.graphql', 'application/json');
+          });
+        break;
+      case ApiLanguage.OpenAPI:
+        this.downloadOpenApiVersion(fileType, spec, version);
+        break;
     }
   }
 
-  public downloadVersion(filetype: String, spec: Specification, version: Version) {
-    if (filetype === 'json') {
-      return this.downloadJsonVersion(spec, version);
-    } else if (filetype === 'yaml') {
-      return this.downloadYamlVersion(spec, version);
+  public downloadOpenApiVersion(fileType: string, spec: Specification, version: Version) {
+    switch (fileType) {
+      case 'json':
+        this.downloadJsonVersion(spec, version);
+        break;
+      case 'yaml':
+        this.downloadYamlVersion(spec, version);
+        break;
     }
   }
 
@@ -67,7 +80,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public downloadYamlVersion(specification: Specification, version: Version) {
     const fileName = this.createDownloadFileName(specification, version);
-    this.versionService.getYamlVersion(specification.id, version.version)
+    this.versionService.getYamlVersion(specification.id, version.metadata.version)
       .subscribe(event => {
         this.doDownload(event.content, fileName + '.yml', 'application/yaml');
       });
@@ -87,7 +100,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   private createDownloadFileName(specification: Specification, version: Version) {
     // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    return (specification.title + '_v' + version.version).replace(/[^a-z0-9\.]/gi, '_');
+    return (specification.title + '_v' + version.metadata.version).replace(/[^a-z0-9\.]/gi, '_');
   }
 
   public async synchronize(specification) {

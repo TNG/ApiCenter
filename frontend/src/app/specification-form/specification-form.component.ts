@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SpecificationFile} from '../models/specificationfile';
+import {SpecificationFile, SpecificationMetaData} from '../models/specificationfile';
 import {SpecificationService} from '../specification.service';
 import {Specification} from '../models/specification';
+import {ApiLanguage} from '../models/version';
 
 @Component({
   selector: 'app-specification-form',
@@ -11,10 +12,14 @@ import {Specification} from '../models/specification';
   providers: [SpecificationService]
 })
 export class SpecificationFormComponent implements OnInit {
-  error: String;
+  error: string;
   specificationFile: File;
-  manualDisabled = false;
-  fileUrl: string;
+  remoteUploadSelected = false;
+  remoteFileUrl: string;
+  additionalFields = {title: '', version: '', description: ''};
+  endpointUrl = '';
+  isGraphQLFile = false;
+  objectKeys = Object.keys;
 
   constructor(private router: Router, private specificationService: SpecificationService, private route: ActivatedRoute) {
   }
@@ -23,57 +28,71 @@ export class SpecificationFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.specificationService.getSpecification(params['id']).subscribe((specification: Specification) => {
-          this.manualDisabled = specification.remoteAddress != null;
-          this.fileUrl = specification.remoteAddress;
+          this.remoteUploadSelected = specification.remoteAddress != null;
+          this.remoteFileUrl = specification.remoteAddress;
         });
       }
     });
   }
 
-  public getFile(event) {
+  public onLocalFileChange(event) {
     this.specificationFile = event.target.files[0];
+    this.isGraphQLFile = /.*\.graphql/.test(this.specificationFile.name);
   }
 
   public async submitSpecification(id?: string) {
-    if (this.manualDisabled) {
+    const allFieldsPresent: boolean = !!this.additionalFields.title && !!this.additionalFields.version;
+    if (this.isGraphQLFile && !allFieldsPresent) {
+      this.error = 'Title and version are required';
+      return;
+    }
+
+    if (this.remoteUploadSelected) {
       this.handleRemoteFile(id);
     } else {
-      this.handleFile(id);
+      this.handleLocalFile(id);
     }
   }
 
   public changeTypeRadio() {
-    this.manualDisabled = !this.manualDisabled;
+    this.remoteUploadSelected = !this.remoteUploadSelected;
   }
 
   private handleRemoteFile(id: string) {
     if (!id) {
-      this.createFile(null, this.fileUrl);
+      this.createSpecification(null, this.remoteFileUrl);
     } else {
-      this.updateFile(null, this.fileUrl, id);
+      this.updateSpecification(null, this.remoteFileUrl, id);
     }
   }
 
-  private handleFile(id: string) {
-    const reader = new FileReader();
+  private handleLocalFile(id: string) {
+    if (!this.specificationFile) {
+      this.error = 'No file selected';
+      return;
+    }
 
+    const reader = new FileReader();
     const me = this;
 
     reader.onload = function () {
       const text = reader.result;
 
       if (!id) {
-        me.createFile(text, null);
+        me.createSpecification(text, null);
       } else {
-        me.updateFile(text, null, id);
+        me.updateSpecification(text, null, id);
       }
     };
 
     reader.readAsText(this.specificationFile);
   }
 
-  private createFile(fileContent: string, fileUrl: string) {
-    const file = new SpecificationFile(fileContent, fileUrl);
+  private createSpecification(fileContent: string, fileUrl: string) {
+    const endpointUrl = this.endpointUrl;
+    const metaData: SpecificationMetaData = this.isGraphQLFile ?
+      {...this.additionalFields, language: ApiLanguage.GraphQL, endpointUrl} : null;
+    const file = new SpecificationFile(fileContent, fileUrl, metaData);
 
     this.specificationService.createSpecification(file)
       .subscribe(event => {
@@ -82,7 +101,7 @@ export class SpecificationFormComponent implements OnInit {
         error => this.error = error.error.message);
   }
 
-  private updateFile(fileContent: string, fileUrl: string, specificationId: string) {
+  private updateSpecification(fileContent: string, fileUrl: string, specificationId: string) {
     const file = new SpecificationFile(fileContent, fileUrl);
 
     this.specificationService.updateSpecification(file, specificationId)
@@ -91,5 +110,4 @@ export class SpecificationFormComponent implements OnInit {
         },
         error => this.error = error.error.message);
   }
-
 }

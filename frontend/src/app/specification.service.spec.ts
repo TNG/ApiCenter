@@ -5,18 +5,32 @@ import {Specification} from './models/specification';
 import {from} from 'rxjs/observable/from';
 import 'rxjs/add/operator/catch';
 import {SpecificationFile} from './models/specificationfile';
-import {Version} from './models/version';
+import {ApiLanguage, Version} from './models/version';
 
 describe('SpecificationService', () => {
 
   let specificationService: SpecificationService;
   const mockedHttpClient = mock(HttpClient);
   const httpClient = instance(mockedHttpClient);
-  const firstVersions = [new Version('1.0', 'Content')];
-  const secondVersions = [new Version('v1', 'Content'),
-    new Version('v2', 'Content')];
-  const specifications = [new Specification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', 'Description', firstVersions, null),
-    new Specification('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', 'Description', secondVersions, 'http://address.com/test.json')];
+
+  const metadataStub = {
+    version: '1.0.0',
+    description: 'Description',
+    language: ApiLanguage.OpenAPI,
+    endpointUrl: null,
+  };
+
+  const firstVersions = [new Version('Content', {...metadataStub, title: 'API 1'})];
+  const secondVersions = [
+    new Version('Content', {...metadataStub, title: 'API 2', version: 'v1'}),
+    new Version('Content', {...metadataStub, title: 'API 2', version: 'v2'}),
+  ];
+
+  const specifications = [
+    new Specification('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', 'Description', firstVersions, null),
+    new Specification('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', 'Description', secondVersions, 'http://address.com/test.json')
+  ];
+
   const swagger_content = '{\'swagger\': \'2.0\', \'info\': {\'version\': \'1.0.0\',\'title\': \'Swagger Petstore\'}}';
   const specificationFile = new SpecificationFile(swagger_content, null);
 

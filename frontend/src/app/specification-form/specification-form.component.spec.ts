@@ -22,16 +22,16 @@ describe('SpecificationFormComponent', () => {
   });
 
   it('should change enabled form parts', () => {
-    expect(specificationFormComponent.manualDisabled).toBe(false);
+    expect(specificationFormComponent.remoteUploadSelected).toBe(false);
     specificationFormComponent.changeTypeRadio();
-    expect(specificationFormComponent.manualDisabled).toBe(true);
+    expect(specificationFormComponent.remoteUploadSelected).toBe(true);
   });
 
   it('should create remote specification', () => {
     when(mockedSpecificationService.createSpecification(anyOfClass(SpecificationFile))).thenReturn(from([]));
 
-    specificationFormComponent.manualDisabled = true;
-    specificationFormComponent.fileUrl = 'https://testurl.com/file.json';
+    specificationFormComponent.remoteUploadSelected = true;
+    specificationFormComponent.remoteFileUrl = 'https://testurl.com/file.json';
     specificationFormComponent.submitSpecification(null).then(() => {
       verify(mockedSpecificationService.createSpecification(anyOfClass(SpecificationFile))).called();
     });
@@ -41,8 +41,8 @@ describe('SpecificationFormComponent', () => {
     when(mockedSpecificationService.updateSpecification(anyOfClass(SpecificationFile), 'baa15785-58cd-4e54-9f29-fcbad8962208'))
       .thenReturn(from([]));
 
-    specificationFormComponent.manualDisabled = true;
-    specificationFormComponent.fileUrl = 'https://testurl.com/file.json';
+    specificationFormComponent.remoteUploadSelected = true;
+    specificationFormComponent.remoteFileUrl = 'https://testurl.com/file.json';
     specificationFormComponent.submitSpecification('baa15785-58cd-4e54-9f29-fcbad8962208').then(() => {
       verify(mockedSpecificationService.updateSpecification(anyOfClass(SpecificationFile), 'baa15785-58cd-4e54-9f29-fcbad8962208'))
         .called();

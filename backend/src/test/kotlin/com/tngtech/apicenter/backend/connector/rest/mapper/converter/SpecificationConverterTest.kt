@@ -7,9 +7,10 @@ import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.UUID
 
 class SpecificationConverterTest {
 
@@ -19,6 +20,7 @@ class SpecificationConverterTest {
         const val SWAGGER_REMOTE = "https://swagger.com/remote/file.json"
         const val UUID_STRING = "5aa40ba9-7e26-44de-81ec-f545d1f178aa"
     }
+    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     private val specificationDataService: SpecificationDataService = mock()
 
@@ -39,6 +41,7 @@ class SpecificationConverterTest {
         )
         given(specificationDataService.readTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
         given(specificationDataService.readVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
+        given(specificationDataService.readDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
 
         val specification = specificationConverter.convert(specificationFileDto, null, null)
 
@@ -46,7 +49,7 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             ""
         )
 
@@ -70,6 +73,7 @@ class SpecificationConverterTest {
         )
         given(specificationDataService.readTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
         given(specificationDataService.readVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
+        given(specificationDataService.readDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
 
         val specification = specificationConverter.convert(specificationFileDto, null, null)
 
@@ -77,7 +81,7 @@ class SpecificationConverterTest {
             specification.id,
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             SWAGGER_REMOTE
         )
 

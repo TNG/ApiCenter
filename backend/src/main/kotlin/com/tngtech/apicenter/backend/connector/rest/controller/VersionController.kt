@@ -37,7 +37,7 @@ class VersionController constructor(private val versionHandler: VersionHandler, 
             logger.info("Specification $specificationId version $version requested as YAML")
             val jsonNodeTree = ObjectMapper().readTree(foundVersion.content)
             val jsonAsYaml = YAMLMapper().writeValueAsString(jsonNodeTree)
-            return versionDtoMapper.fromDomain(Version(foundVersion.version, jsonAsYaml))
+            return versionDtoMapper.fromDomain(Version(jsonAsYaml, foundVersion.metadata))
         } else {
             logger.info("Specification $specificationId version $version requested as JSON")
             return versionDtoMapper.fromDomain(foundVersion)

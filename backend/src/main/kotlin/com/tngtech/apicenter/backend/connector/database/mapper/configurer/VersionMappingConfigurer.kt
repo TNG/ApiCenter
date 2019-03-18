@@ -15,8 +15,12 @@ class VersionMappingConfigurer constructor(private val versionConverter: Version
         orikaMapperFactory.converterFactory.registerConverter(versionConverter)
 
         orikaMapperFactory.classMap(VersionEntity::class.java, Version::class.java)
-            .field("versionId.version", "version")
+            .field("versionId.version", "metadata.version")
             .field("content", "content")
+            .field("title", "metadata.title")
+            .field("description", "metadata.description")
+            .field("language", "metadata.language")
+            .field("endpointUrl", "metadata.endpointUrl")
             .register()
     }
 }

@@ -9,7 +9,9 @@ import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.UUID
@@ -21,6 +23,7 @@ internal class SpecificationControllerUnitTest {
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val UUID_STRING = "65d8491f-e602-40fc-a595-45e75f690df1"
     }
+    val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     private val specificationHandler: SpecificationHandler = mock()
 
@@ -44,14 +47,14 @@ internal class SpecificationControllerUnitTest {
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
             null
         )
 
@@ -69,20 +72,21 @@ internal class SpecificationControllerUnitTest {
             SpecificationFileDto(
                 SWAGGER_SPECIFICATION,
                 null,
+                null,
                 UUID.fromString(UUID_STRING)
             )
         val specification = Specification(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(Version("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             null
         )
         val specificationDto = SpecificationDto(
             UUID.fromString(UUID_STRING),
             "Swagger Petstore",
             "Description",
-            listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
+            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
             null
         )
 
@@ -98,7 +102,7 @@ internal class SpecificationControllerUnitTest {
                 UUID.fromString(UUID_STRING),
                 "Swagger Petstore",
                 "Description",
-                listOf(VersionDto("1.0.0", SWAGGER_SPECIFICATION)),
+                listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
                 null
             )
         )
@@ -112,14 +116,14 @@ internal class SpecificationControllerUnitTest {
             uuid,
             "Test",
             "Description",
-            listOf(Version("v2", SWAGGER_SPECIFICATION)),
+            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             "http://swaggerpetstore.com/docs"
         )
         val specificationDto = SpecificationDto(
             uuid,
             "Test",
             "Description",
-            listOf(VersionDto("v2", SWAGGER_SPECIFICATION)),
+            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
             "http://swaggerpetstore.com/docs"
         )
 
@@ -131,7 +135,7 @@ internal class SpecificationControllerUnitTest {
                     uuid,
                     "Test",
                     "Description",
-                    listOf(Version("v2", SWAGGER_SPECIFICATION)),
+                    listOf(Version(SWAGGER_SPECIFICATION, metadata)),
                     "http://swaggerpetstore.com/docs"
                 )
             )
@@ -141,7 +145,7 @@ internal class SpecificationControllerUnitTest {
             SpecificationDto(
                 uuid, "Test",
                 "Description",
-                listOf(VersionDto("v2", SWAGGER_SPECIFICATION)),
+                listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
                 "http://swaggerpetstore.com/docs"
             )
         )
