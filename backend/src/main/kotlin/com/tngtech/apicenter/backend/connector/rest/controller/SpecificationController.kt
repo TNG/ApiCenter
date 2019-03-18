@@ -1,23 +1,32 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
+import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissionManager
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
+import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationToken
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
-import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedSpecificationIdException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.springframework.security.acls.domain.BasePermission
+import org.springframework.security.acls.domain.PrincipalSid
+import org.springframework.security.core.context.SecurityContextHolder
+import java.lang.Long.parseLong
+import java.lang.NumberFormatException
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/specifications")
 class SpecificationController @Autowired constructor(
     private val specificationPersistenceService: SpecificationPersistenceService,
     private val synchronizationService: SynchronizationService,
-    private val specificationDtoMapper: SpecificationDtoMapper
+    private val specificationDtoMapper: SpecificationDtoMapper,
+    private val specificationPermissionManager: SpecificationPermissionManager
 ) {
 
     @PostMapping
@@ -26,6 +35,11 @@ class SpecificationController @Autowired constructor(
         val specification = specificationDtoMapper.toDomain(specificationFileDto)
 
         specificationPersistenceService.save(specification)
+        val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
+        val id = specificationFileDto.id ?: UUID.randomUUID().toString()
+        val asLong = try { parseLong(id) } catch (exc: NumberFormatException) { throw GiveUpOnAclException() }
+        specificationPermissionManager.addPermission(asLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.READ)
+        specificationPermissionManager.addPermission(asLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.WRITE)
 
         return specificationDtoMapper.fromDomain(specification)
     }
