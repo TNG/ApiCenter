@@ -19,7 +19,7 @@ data class ErrorMessage(
         val timestamp: String = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
 )
 
-fun responseBuilder(userMessage: String, status: HttpStatus): ResponseEntity<ErrorMessage> {
+fun responseFactory(userMessage: String, status: HttpStatus): ResponseEntity<ErrorMessage> {
     return ResponseEntity(
         ErrorMessage(status.reasonPhrase, userMessage),
         null,
@@ -31,18 +31,17 @@ fun responseBuilder(userMessage: String, status: HttpStatus): ResponseEntity<Err
 class RestResponseExceptionHandler {
 
     @ExceptionHandler(SpecificationNotFoundException::class)
-    fun handleNotFound(exc: SpecificationNotFoundException): ResponseEntity<ErrorMessage> {
-        val detailedMessage = "Specification ${exc.specificationId} ${exc.version} not found"
-        logger.info(detailedMessage, exc)
-        return responseBuilder("Specification not found", HttpStatus.NOT_FOUND)
+    fun handleNotFound(exception: SpecificationNotFoundException): ResponseEntity<ErrorMessage> {
+        logger.info("Specification ${exception.specificationId} ${exception.version} not found", exception)
+        return responseFactory("Specification not found", HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(SpecificationParseException::class)
-    fun handleBadRequest(exc: SpecificationParseException) =
-            responseBuilder(exc.userMessage, HttpStatus.BAD_REQUEST)
+    fun handleBadRequest(exception: SpecificationParseException) =
+            responseFactory(exception.userMessage, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(VersionAlreadyExistsException::class)
-    fun handleVersionAlreadyExists(exc: VersionAlreadyExistsException) =
-            responseBuilder("A specification with the same version already exists for ${exc.specificationTitle}", HttpStatus.CONFLICT)
+    fun handleVersionAlreadyExists(exception: VersionAlreadyExistsException) =
+            responseFactory("A specification with the same version already exists for ${exception.specificationTitle}", HttpStatus.CONFLICT)
 }
 
