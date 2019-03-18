@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
+import java.lang.IllegalArgumentException
 
 @Service
 class SpecificationDataService @Autowired constructor(
@@ -47,7 +49,9 @@ class SpecificationDataService @Autowired constructor(
         try {
             return JsonPath.read<String>(json, "$.info.title")
         } catch (exception: PathNotFoundException) {
-            throw IllegalArgumentException("No title given in content.", exception)
+            throw SpecificationParseException("Specification needs a title in the info section")
+        } catch (exception: IllegalArgumentException) {
+            throw SpecificationParseException("Specification could not be parsed as JSON")
         }
     }
 
@@ -55,7 +59,9 @@ class SpecificationDataService @Autowired constructor(
         try {
             return JsonPath.read<String>(json, "$.info.version")
         } catch (exception: PathNotFoundException) {
-            throw IllegalArgumentException("No version given in content.", exception)
+            throw SpecificationParseException("Specification needs a version")
+        } catch (exception: IllegalArgumentException) {
+            throw SpecificationParseException("Specification could not be parsed as JSON")
         }
     }
 

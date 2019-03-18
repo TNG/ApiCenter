@@ -98,7 +98,7 @@ export class SpecificationFormComponent implements OnInit {
       .subscribe(event => {
           this.router.navigateByUrl('/');
         },
-        error => this.error = error.error.message);
+        error => this.error = error.error.userMessage);
   }
 
   private updateSpecification(fileContent: string, fileUrl: string, specificationId: string) {
@@ -108,6 +108,6 @@ export class SpecificationFormComponent implements OnInit {
       .subscribe(event => {
           this.router.navigateByUrl('/');
         },
-        error => this.error = error.error.message);
+        error => this.error = error.error.userMessage);
   }
 }

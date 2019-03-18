@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
@@ -53,15 +54,15 @@ class SpecificationDataServiceTest {
     @Test
     fun readTitle_shouldFailWhenNoTitleIsGiven() {
         assertThatThrownBy { specificationDataService.readTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
-            IllegalArgumentException::class.java
-        ).hasMessage("No title given in content.")
+            SpecificationParseException::class.java
+        )
     }
 
     @Test
     fun readVersion_shouldFailWhenNoVersionIsGiven() {
         assertThatThrownBy { specificationDataService.readVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
-            IllegalArgumentException::class.java
-        ).hasMessage("No version given in content.")
+            SpecificationParseException::class.java
+        )
     }
 
     @Test

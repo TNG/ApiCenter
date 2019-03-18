@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
@@ -58,10 +59,10 @@ class SpecificationController @Autowired constructor(
         specificationHandler.findAll().map { spec -> specificationDtoMapper.fromDomain(spec) }
 
     @GetMapping("/{specificationId}")
-    @Throws(HttpNotFoundException::class)
     fun findSpecification(@PathVariable specificationId: UUID): SpecificationDto {
         val specification = specificationHandler.findOne(specificationId)
-        return specification?.let { specificationDtoMapper.fromDomain(it) } ?: throw HttpNotFoundException()
+        return specification?.let { specificationDtoMapper.fromDomain(it) } ?:
+            throw SpecificationNotFoundException(specificationId)
     }
 
     @DeleteMapping("/{specificationId}")
