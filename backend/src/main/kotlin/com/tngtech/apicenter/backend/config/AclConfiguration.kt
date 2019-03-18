@@ -17,7 +17,6 @@ import javax.sql.DataSource
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.AbstractPlatformTransactionManager
 
 @Configuration
@@ -36,7 +35,7 @@ class AclConfiguration {
                 .create()
                 .username("user")
                 .password("pwd")
-                .url("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1")
+                .url("jdbc:h2:~/myData;AUTO_SERVER=TRUE")
                 .driverClassName("org.h2.Driver")
                 .build()
         val template = JdbcTemplate(dataSource)
@@ -99,7 +98,9 @@ class AclConfiguration {
             lookupStrategy: BasicLookupStrategy,
             aclCache: SpringCacheBasedAclCache
     ): JdbcMutableAclService {
-        return JdbcMutableAclService(dataSource, lookupStrategy, aclCache)
+        val service =  JdbcMutableAclService(dataSource, lookupStrategy, aclCache)
+        service.setAclClassIdSupported(true)
+        return service
     }
 
     @Bean
@@ -109,7 +110,9 @@ class AclConfiguration {
             aclAuthorizationStrategy: AclAuthorizationStrategy,
             defaultPermissionGrantingStrategy: DefaultPermissionGrantingStrategy
     ): BasicLookupStrategy {
-        return BasicLookupStrategy(dataSource, aclCache, aclAuthorizationStrategy, defaultPermissionGrantingStrategy)
+        val strategy = BasicLookupStrategy(dataSource, aclCache, aclAuthorizationStrategy, defaultPermissionGrantingStrategy)
+        strategy.setAclClassIdSupported(true)
+        return strategy
     }
 
     @Bean
