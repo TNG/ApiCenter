@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.rest.security
 
+import org.springframework.security.acls.domain.PrincipalSid
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
@@ -12,5 +13,5 @@ data class JwtAuthenticationToken(val userId: String, val token: String) : Abstr
 
     override fun getCredentials() = "N/A"
 
-    override fun getPrincipal() = null
+    override fun getPrincipal() = PrincipalSid(userId)
 }
