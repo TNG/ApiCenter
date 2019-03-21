@@ -3,11 +3,11 @@ package com.tngtech.apicenter.backend.connector.database.repository
 import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import java.util.UUID
+import java.util.*
 
 @Repository
-interface SpecificationRepository : CrudRepository<SpecificationEntity, UUID> {
+interface SpecificationRepository : CrudRepository<SpecificationEntity, String> {
 
-    fun existsByTitle(title: String): Boolean
-    fun findByTitle(title: String): SpecificationEntity
+    override fun existsById(id: String): Boolean
+    override fun findById(id: String): Optional<SpecificationEntity>
 }

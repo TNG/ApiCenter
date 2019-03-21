@@ -1,18 +1,18 @@
 package com.tngtech.apicenter.backend.connector.database.service
 
-import com.tngtech.apicenter.backend.domain.exceptions.VersionAlreadyExistsException
 import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
 import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository
 import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.exceptions.VersionAlreadyExistsException
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
-import org.hibernate.search.jpa.Search
 import org.hibernate.search.exception.EmptyQueryException
+import org.hibernate.search.jpa.Search
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
-import org.springframework.dao.DataIntegrityViolationException
 
 @Service
 class SpecificationDatabaseService constructor(
@@ -24,26 +24,23 @@ class SpecificationDatabaseService constructor(
     override fun save(specification: Specification) {
         val specificationEntity = specificationEntityMapper.fromDomain(specification)
 
-        if (specificationRepository.existsByTitle(specificationEntity.title)) {
-            val existingEntity = specificationRepository.findByTitle(specificationEntity.title)
-
+        val entityToStore = specificationRepository.findById(specificationEntity.id).map {
+            existingEntity ->
             val versions = existingEntity.versions + specificationEntity.versions
-            val newEntity = SpecificationEntity(existingEntity.id, existingEntity.title, existingEntity.description, versions, existingEntity.remoteAddress)
+            SpecificationEntity(existingEntity.id, existingEntity.title, existingEntity.description, versions, existingEntity.remoteAddress)
+        }.orElse(specificationEntity)
 
-            mapAndStoreEntity(newEntity)
-        } else {
-            mapAndStoreEntity(specificationEntity)
-        }
+        mapAndStoreEntity(entityToStore)
     }
 
     override fun findAll(): List<Specification> = specificationRepository.findAll().map { spec -> specificationEntityMapper.toDomain(spec) }
 
-    override fun findOne(id: UUID): Specification? =
+    override fun findOne(id: String): Specification? =
         specificationRepository.findById(id).orElse(null)?.let { spec -> specificationEntityMapper.toDomain(spec) }
 
-    override fun delete(id: UUID) = specificationRepository.deleteById(id)
+    override fun delete(id: String) = specificationRepository.deleteById(id)
 
-    override fun exists(id: UUID): Boolean =
+    override fun exists(id: String): Boolean =
         specificationRepository.existsById(id)
 
     @Transactional
