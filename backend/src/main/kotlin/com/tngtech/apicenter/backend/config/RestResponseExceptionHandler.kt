@@ -1,15 +1,13 @@
 package com.tngtech.apicenter.backend.config
 
-import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
-import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
-import com.tngtech.apicenter.backend.domain.exceptions.VersionAlreadyExistsException
+import com.tngtech.apicenter.backend.domain.exceptions.*
+import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import java.time.Instant
 import java.time.format.DateTimeFormatter
-import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {  }
 
@@ -43,5 +41,15 @@ class RestResponseExceptionHandler {
     @ExceptionHandler(VersionAlreadyExistsException::class)
     fun handleVersionAlreadyExists(exception: VersionAlreadyExistsException) =
             responseFactory("A specification with the same version already exists for ${exception.specificationTitle}", HttpStatus.CONFLICT)
+
+    @ExceptionHandler(UnacceptableUserDefinedApiId::class)
+    fun handleUnacceptableId(exception: UnacceptableUserDefinedApiId) =
+            responseFactory("The API ID supplied (${exception.userDefinedId}) should only contain numbers, " +
+                    "A-Z characters, underscores and hyphens", HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(SpecificationUploadUrlMismatch::class)
+    fun handleUnacceptableId(exception: SpecificationUploadUrlMismatch) =
+            responseFactory("The API ID used in the upload URL (${exception.urlPathId}) " +
+                    "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
 }
 
