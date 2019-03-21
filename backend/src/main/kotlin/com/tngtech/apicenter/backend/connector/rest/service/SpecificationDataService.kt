@@ -8,7 +8,6 @@ import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseExcepti
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
-import java.lang.IllegalArgumentException
 
 @Service
 class SpecificationDataService @Autowired constructor(
@@ -69,6 +68,13 @@ class SpecificationDataService @Autowired constructor(
         // Not a required field in the OpenAPI spec
         try {
             JsonPath.read<String>(json, "$.info.description")
+        } catch (exception: PathNotFoundException) {
+            null
+        }
+
+    fun readId(json: String): String? =
+        try {
+            JsonPath.read<String>(json, "$.info.x-api-id")
         } catch (exception: PathNotFoundException) {
             null
         }

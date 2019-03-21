@@ -7,11 +7,13 @@ import com.tngtech.apicenter.backend.connector.rest.service.SpecificationFileSer
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationUploadUrlMismatch
+import com.tngtech.apicenter.backend.domain.exceptions.UnacceptableUserDefinedApiId
 import ma.glasnost.orika.CustomConverter
 import ma.glasnost.orika.MappingContext
 import ma.glasnost.orika.metadata.Type
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class SpecificationConverter constructor(
@@ -34,7 +36,19 @@ class SpecificationConverter constructor(
         }
 
         val content = if (isGraphQLFile) fileContent else specificationDataService.parseFileContent(fileContent)
-        val uuid = specificationFileDto.id ?: UUID.randomUUID()
+
+        val userDefinedId = specificationDataService.readId(content)
+        val urlPathId = specificationFileDto.id
+
+        if (userDefinedId?.let { userId -> !isAcceptable(userId) } ?: run { false } ) {
+            throw UnacceptableUserDefinedApiId(userDefinedId!!)
+        }
+
+        if (userDefinedId?.let { userId -> urlPathId?.let { urlId -> urlId != userId } } ?: run { false } ) {
+            throw SpecificationUploadUrlMismatch(userDefinedId!!, urlPathId!!)
+        }
+
+        val uuid = userDefinedId ?: urlPathId ?: UUID.randomUUID().toString()
 
         // If metadata is present, we use it. Otherwise, we build one from reading the content the client sends
         val metadata = dtoMetadata ?: SpecificationMetaData(
@@ -52,5 +66,15 @@ class SpecificationConverter constructor(
             listOf(Version(content, metadata)),
             specificationFileDto.fileUrl
         )
+    }
+
+    private fun isAcceptable(userId: String): Boolean {
+        // This is quite conservative.
+        // An 'unacceptable' ID for this purpose is one that cannot be subsequently retrieved from the repository
+        //   because the ID in the browser URI path does not match the ID in the specification
+        // Some characters are escaped automatically, eg. '/' (http://localhost:4200/specifications/unique%2Fidentifier/0.1.8)
+        // Some special characters (äöü§) are not, but still result in the same problem
+        //   perhaps these are escaped at a different pipeline stage of URI processing
+        return userId.matches("^[\\w_\\-]+$".toRegex())
     }
 }

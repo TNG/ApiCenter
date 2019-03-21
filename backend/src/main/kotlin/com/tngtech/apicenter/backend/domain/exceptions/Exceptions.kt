@@ -1,7 +1,7 @@
 package com.tngtech.apicenter.backend.domain.exceptions
 
-import java.util.UUID
-
-class SpecificationNotFoundException(val specificationId: UUID, val version: String? = "") : RuntimeException()
+class SpecificationNotFoundException(val specificationId: String, val version: String? = "") : RuntimeException()
 class SpecificationParseException(val userMessage: String) : RuntimeException()
 class VersionAlreadyExistsException(val specificationTitle: String) : RuntimeException()
+class UnacceptableUserDefinedApiId(val userDefinedId: String): RuntimeException()
+class SpecificationUploadUrlMismatch(val userDefinedId: String, val urlPathId: String): RuntimeException()
