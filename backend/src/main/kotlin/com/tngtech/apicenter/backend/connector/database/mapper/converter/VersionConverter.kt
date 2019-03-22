@@ -35,6 +35,7 @@ class VersionConverter : BidirectionalConverter<Version, VersionEntity>() {
                         source.metadata.language,
                         source.metadata.endpointUrl,
                         null,
-                        null)
+                        null
+        )
     }
 }

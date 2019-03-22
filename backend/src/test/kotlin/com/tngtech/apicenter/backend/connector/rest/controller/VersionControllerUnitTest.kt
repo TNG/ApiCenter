@@ -11,7 +11,6 @@ import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.VersionPersistenceService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.UUID
 
 internal class VersionControllerUnitTest {
 
@@ -21,7 +20,7 @@ internal class VersionControllerUnitTest {
 
     private val versionController = VersionController(versionPersistenceService, versionDtoMapper)
 
-    private val specificationId = UUID.fromString("7de07d27-eedb-4290-881a-6a402a81dd0f")
+    private val specificationId = "7de07d27-eedb-4290-881a-6a402a81dd0f"
 
     private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 

@@ -6,7 +6,6 @@ import com.tngtech.apicenter.backend.connector.database.repository.VersionReposi
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.VersionPersistenceService
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class VersionDatabaseService constructor(
@@ -14,12 +13,12 @@ class VersionDatabaseService constructor(
     private val versionEntityMapper: VersionEntityMapper
 ) : VersionPersistenceService {
 
-    override fun findOne(specificationId: UUID, versionTitle: String): Version? {
+    override fun findOne(specificationId: String, versionTitle: String): Version? {
         return versionRepository.findById(VersionId(specificationId, versionTitle)).orElse(null)?.let { version -> versionEntityMapper.toDomain(version) }
     }
 
 
-    override fun delete(specificationId: UUID, versionTitle: String) {
+    override fun delete(specificationId: String, versionTitle: String) {
         versionRepository.deleteById(VersionId(specificationId, versionTitle))
     }
 }

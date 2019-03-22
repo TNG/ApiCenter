@@ -6,7 +6,6 @@ import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class SynchronizationService constructor(
@@ -15,7 +14,7 @@ class SynchronizationService constructor(
     private val specificationDataService: SpecificationDataService
 ) {
 
-    fun synchronize(specificationId: UUID) {
+    fun synchronize(specificationId: String) {
         val specification = specificationPersistenceService.findOne(specificationId)!!
 
         val remoteAddress = specification.remoteAddress ?: ""

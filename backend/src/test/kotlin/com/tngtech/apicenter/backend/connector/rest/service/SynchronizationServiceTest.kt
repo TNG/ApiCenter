@@ -9,7 +9,6 @@ import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.junit.Test
-import java.util.UUID
 
 class SynchronizationServiceTest {
 
@@ -37,21 +36,21 @@ class SynchronizationServiceTest {
     @Test
     fun synchronize_shouldStoreAdaptedSpecification() {
         val specification = Specification(
-            UUID.fromString(SPECIFICATION_ID),
+            SPECIFICATION_ID,
             "Swagger Petstore",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             REMOTE_ADDRESS
         )
         val updatedSpecification = Specification(
-            UUID.fromString(SPECIFICATION_ID),
+            SPECIFICATION_ID,
             "Swagger Petstore 2",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             REMOTE_ADDRESS
         )
 
-        given(specificationPersistenceService.findOne(UUID.fromString(SPECIFICATION_ID))).willReturn(specification)
+        given(specificationPersistenceService.findOne(SPECIFICATION_ID)).willReturn(specification)
         given(specificationFileService.retrieveFile(REMOTE_ADDRESS)).willReturn(UPDATED_SWAGGER_SPECIFICATION)
         given(specificationDataService.parseFileContent(UPDATED_SWAGGER_SPECIFICATION)).willReturn(
             UPDATED_SWAGGER_SPECIFICATION
@@ -60,7 +59,7 @@ class SynchronizationServiceTest {
         given(specificationDataService.readVersion(UPDATED_SWAGGER_SPECIFICATION)).willReturn("1.0.0")
         given(specificationDataService.readDescription(UPDATED_SWAGGER_SPECIFICATION)).willReturn("Description")
 
-        synchronizationService.synchronize(UUID.fromString(SPECIFICATION_ID))
+        synchronizationService.synchronize(SPECIFICATION_ID)
 
         verify(specificationPersistenceService).save(updatedSpecification)
     }
