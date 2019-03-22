@@ -10,13 +10,8 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -111,7 +106,7 @@ internal class SpecificationControllerIntegrationTest {
                 .content(
                     """
                         | {
-                        |   "fileContent": "{\"info\": {\"title\": \"Spec1\",\"version\": \"v2\"}}"
+                        |   "fileContent": "{\"info\": {\"title\": \"Spec1\",\"version\": \"v2\",\"x-api-id\": \"unique-identifier\"}}"
                         | }
                     """.trimMargin()
                 )
@@ -121,13 +116,15 @@ internal class SpecificationControllerIntegrationTest {
             .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("v2")))
 
         mockMvc.perform(
-            get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+            get("/api/v1/specifications/unique-identifier")
                 .with(user("user"))
                 .with(csrf())
         )
             .andExpect(jsonPath("$.title", equalTo("Spec1")))
             .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("v2")))
+            .andExpect(jsonPath("$.versions[0].metadata.title", equalTo("Spec1")))
             .andExpect(jsonPath("$.versions[1].metadata.version", equalTo("v1")))
+            .andExpect(jsonPath("$.versions[1].metadata.title", equalTo("Spec4")))
     }
 
     @Test
@@ -155,6 +152,43 @@ internal class SpecificationControllerIntegrationTest {
         )
             .andExpect(jsonPath("$.title", equalTo("NewSpec")))
             .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("vX")))
+    }
+
+    @Test
+    fun updateSpecification_shouldRejectIdMismatchInXApiId() {
+        mockMvc.perform(
+                put("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | {
+                            |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"vX\", \"x-api-id\": \"does-not-match\"}}"
+                            | }
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun updateSpecification_shouldRejectIdMismatchInDto() {
+        mockMvc.perform(
+                put("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | {
+                            |   "id": "mismatch",
+                            |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"vX\"}}"
+                            | }
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isBadRequest)
     }
 
     @Test
