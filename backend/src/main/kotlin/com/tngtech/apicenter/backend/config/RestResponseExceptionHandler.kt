@@ -48,7 +48,7 @@ class RestResponseExceptionHandler {
                     "A-Z characters, underscores and hyphens", HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(SpecificationUploadUrlMismatch::class)
-    fun handleUnacceptableId(exception: SpecificationUploadUrlMismatch) =
+    fun handleUrlMismatch(exception: SpecificationUploadUrlMismatch) =
             responseFactory("The API ID used in the upload URL (${exception.urlPathId}) " +
                     "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
 }
