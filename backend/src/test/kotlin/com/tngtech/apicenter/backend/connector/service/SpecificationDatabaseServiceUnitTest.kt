@@ -10,6 +10,7 @@ import com.tngtech.apicenter.backend.connector.database.repository.Specification
 import com.tngtech.apicenter.backend.connector.database.service.SpecificationDatabaseService
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import org.assertj.core.api.Assertions.assertThat
@@ -37,7 +38,7 @@ internal class SpecificationDatabaseServiceUnitTest {
     @Test
     fun save_shouldSaveObjects() {
         val specification = Specification(
-            "e33dc111-3dd6-40f4-9c54-a64f6b10ab49",
+            ServiceId("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
             "Description",
             listOf(Version("{\"json\": \"true\"}", SpecificationMetaData("Spec", "1.0.0", "Description", ApiLanguage.OPENAPI, null))),
@@ -66,20 +67,20 @@ internal class SpecificationDatabaseServiceUnitTest {
 
     @Test
     fun delete_shouldDeleteObject() {
-        val uuid = UUID.randomUUID().toString()
+        val uuid = ServiceId(UUID.randomUUID().toString())
 
         specificationDatabaseService.delete(uuid)
-        verify(specificationRepository).deleteById(uuid)
+        verify(specificationRepository).deleteById(uuid.id)
     }
 
     @Test
     fun exists_shouldCheckForExistence() {
-        val uuid = "e33dc111-3dd6-40f4-9c54-a64f6b10ab49"
+        val uuid = ServiceId("e33dc111-3dd6-40f4-9c54-a64f6b10ab49")
 
-        given(specificationRepository.existsById(uuid)).willReturn(true)
+        given(specificationRepository.existsById(uuid.id)).willReturn(true)
 
         assertThat(specificationDatabaseService.exists(uuid)).isTrue()
 
-        verify(specificationRepository).existsById(uuid)
+        verify(specificationRepository).existsById(uuid.id)
     }
 }

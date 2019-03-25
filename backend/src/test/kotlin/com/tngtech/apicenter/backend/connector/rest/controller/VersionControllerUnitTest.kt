@@ -7,6 +7,7 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.VersionDtoMapper
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.VersionPersistenceService
 import org.assertj.core.api.Assertions.assertThat
@@ -30,7 +31,7 @@ internal class VersionControllerUnitTest {
 
     @Test
     fun findOne_shouldReturnVersionDto() {
-        given(versionPersistenceService.findOne(specificationId, "1.0")).willReturn(version)
+        given(versionPersistenceService.findOne(ServiceId(specificationId), "1.0")).willReturn(version)
         given(versionDtoMapper.fromDomain(version)).willReturn(versionDto)
 
         assertThat(versionController.findVersion(specificationId, "1.0")).isEqualTo(versionDto)
@@ -40,7 +41,7 @@ internal class VersionControllerUnitTest {
     fun delete_shouldDeleteVersion() {
         versionController.deleteVersion(specificationId, "1.0")
 
-        verify(versionPersistenceService).delete(specificationId, "1.0")
+        verify(versionPersistenceService).delete(ServiceId(specificationId), "1.0")
     }
 
 }

@@ -9,6 +9,7 @@ import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
@@ -44,7 +45,7 @@ internal class SpecificationControllerUnitTest {
             SpecificationFileDto(SWAGGER_SPECIFICATION)
 
         val specification = Specification(
-            UUID_STRING,
+            ServiceId(UUID_STRING),
             "Swagger Petstore",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
@@ -76,7 +77,7 @@ internal class SpecificationControllerUnitTest {
                 UUID_STRING
             )
         val specification = Specification(
-            UUID_STRING,
+            ServiceId(UUID_STRING),
             "Swagger Petstore",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
@@ -113,7 +114,7 @@ internal class SpecificationControllerUnitTest {
         val uuid = UUID.randomUUID().toString()
 
         val specification = Specification(
-            uuid,
+            ServiceId(uuid),
             "Test",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
@@ -132,7 +133,7 @@ internal class SpecificationControllerUnitTest {
         given(specificationPersistenceService.findAll()).willReturn(
             arrayListOf(
                 Specification(
-                    uuid,
+                    ServiceId(uuid),
                     "Test",
                     "Description",
                     listOf(Version(SWAGGER_SPECIFICATION, metadata)),

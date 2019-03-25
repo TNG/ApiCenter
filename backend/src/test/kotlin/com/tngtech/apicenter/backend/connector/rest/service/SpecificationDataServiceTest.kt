@@ -38,36 +38,36 @@ class SpecificationDataServiceTest {
 
     @Test
     fun readTitle_shouldReturnTitle() {
-        assertThat(specificationDataService.readTitle(SWAGGER_SPECIFICATION)).isEqualTo("Swagger Petstore")
+        assertThat(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).isEqualTo("Swagger Petstore")
     }
 
     @Test
     fun readVersion_shouldReturnVersion() {
-        assertThat(specificationDataService.readVersion(SWAGGER_SPECIFICATION)).isEqualTo("1.0.0")
+        assertThat(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).isEqualTo("1.0.0")
     }
 
     @Test
     fun readDescription_shouldReturnDescription() {
-        assertThat(specificationDataService.readDescription(SWAGGER_SPECIFICATION)).isEqualTo("My Description")
+        assertThat(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).isEqualTo("My Description")
     }
 
     @Test
     fun readTitle_shouldFailWhenNoTitleIsGiven() {
-        assertThatThrownBy { specificationDataService.readTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
+        assertThatThrownBy { specificationDataService.extractTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
             SpecificationParseException::class.java
         )
     }
 
     @Test
     fun readVersion_shouldFailWhenNoVersionIsGiven() {
-        assertThatThrownBy { specificationDataService.readVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
+        assertThatThrownBy { specificationDataService.extractVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
             SpecificationParseException::class.java
         )
     }
 
     @Test
     fun readDescription_shouldReturnNullWhenNoDescriptionIsGiven() {
-        assertThat(specificationDataService.readDescription(SWAGGER_SPECIFICATION_WITHOUT_DESCRIPTION)).isNull()
+        assertThat(specificationDataService.extractDescription(SWAGGER_SPECIFICATION_WITHOUT_DESCRIPTION)).isNull()
     }
 
     @Test

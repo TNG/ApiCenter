@@ -7,6 +7,7 @@ import com.tngtech.apicenter.backend.connector.rest.mapper.VersionDtoMapper
 import com.tngtech.apicenter.backend.domain.service.VersionPersistenceService
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.MediaType
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import mu.KotlinLogging
@@ -28,23 +29,23 @@ class VersionController constructor(private val versionPersistenceService: Versi
                     @RequestHeader(value = "Accept",
                                    defaultValue = MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): VersionDto {
         // i.e. The integration test and unit test require the default specified in two different ways
-        val foundVersion = versionPersistenceService.findOne(specificationId, version) ?: throw SpecificationNotFoundException(specificationId, version)
+        val foundVersion = versionPersistenceService.findOne(ServiceId(specificationId), version)
+                ?: throw SpecificationNotFoundException(specificationId, version)
+        return versionDtoMapper.fromDomain(convertVersion(accept, foundVersion))
+    }
 
-        val convertedVersion = if (accept == MEDIA_TYPE_YAML) {
-            logger.info("Specification $specificationId version $version requested as YAML")
+    private fun convertVersion(accept: String, foundVersion: Version): Version {
+        return if (accept == MEDIA_TYPE_YAML) {
             val jsonNodeTree = ObjectMapper().readTree(foundVersion.content)
             val jsonAsYaml = YAMLMapper().writeValueAsString(jsonNodeTree)
             Version(jsonAsYaml, foundVersion.metadata)
         } else {
-            logger.info("Specification $specificationId version $version requested as JSON")
             foundVersion
         }
-
-        return versionDtoMapper.fromDomain(convertedVersion)
     }
 
     @DeleteMapping("/api/v1/specifications/{specificationId}/versions/{version}")
     fun deleteVersion(@PathVariable specificationId: String, @PathVariable version: String) {
-        versionPersistenceService.delete(specificationId, version)
+        versionPersistenceService.delete(ServiceId(specificationId), version)
     }
 }

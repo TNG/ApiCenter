@@ -6,7 +6,8 @@ import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMappe
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
-import com.tngtech.apicenter.backend.domain.exceptions.SpecificationUploadUrlMismatch
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.exceptions.MismatchedSpecificationIdException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -29,15 +30,9 @@ class SpecificationController @Autowired constructor(
         return specificationDtoMapper.fromDomain(specification)
     }
 
-    @PutMapping("/{urlPathId}")
-    fun updateSpecification(@RequestBody specificationFileDto: SpecificationFileDto, @PathVariable urlPathId: String): SpecificationDto {
-
-        val specificationId = specificationFileDto.id?.let {
-            userId -> if (userId == urlPathId) urlPathId
-                      else throw SpecificationUploadUrlMismatch(userId, urlPathId)
-        } ?: run {
-            urlPathId
-        }
+    @PutMapping("/{specificationIdFromPath}")
+    fun updateSpecification(@RequestBody specificationFileDto: SpecificationFileDto, @PathVariable specificationIdFromPath: String): SpecificationDto {
+        val specificationId = getConsistentId(specificationFileDto, specificationIdFromPath)
 
         val specification = specificationDtoMapper.toDomain(
             SpecificationFileDto(
@@ -53,25 +48,34 @@ class SpecificationController @Autowired constructor(
         return specificationDtoMapper.fromDomain(specification)
     }
 
+    private fun getConsistentId(specificationFileDto: SpecificationFileDto, specificationIdFromPath: String): String {
+        return specificationFileDto.id?.let {
+            idFromFile -> if (idFromFile == specificationIdFromPath) specificationIdFromPath
+                      else throw MismatchedSpecificationIdException(idFromFile, specificationIdFromPath)
+        } ?: run {
+            specificationIdFromPath
+        }
+    }
+
     @GetMapping
     fun findAllSpecifications(): List<SpecificationDto> =
         specificationPersistenceService.findAll().map { spec -> specificationDtoMapper.fromDomain(spec) }
 
     @GetMapping("/{specificationId}")
     fun findSpecification(@PathVariable specificationId: String): SpecificationDto {
-        val specification = specificationPersistenceService.findOne(specificationId)
+        val specification = specificationPersistenceService.findOne(ServiceId(specificationId))
         return specification?.let { specificationDtoMapper.fromDomain(it) } ?:
             throw SpecificationNotFoundException(specificationId)
     }
 
     @DeleteMapping("/{specificationId}")
     fun deleteSpecification(@PathVariable specificationId: String) {
-        specificationPersistenceService.delete(specificationId)
+        specificationPersistenceService.delete(ServiceId(specificationId))
     }
 
     @PostMapping("/{specificationId}/synchronize")
     fun synchronizeSpecification(@PathVariable specificationId: String) {
-        synchronizationService.synchronize(specificationId)
+        synchronizationService.synchronize(ServiceId(specificationId))
     }
 
     @GetMapping("/search/{searchString}")

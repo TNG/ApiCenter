@@ -39,9 +39,9 @@ class SpecificationConverterTest {
         given(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).willReturn(
             SWAGGER_SPECIFICATION
         )
-        given(specificationDataService.readTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
-        given(specificationDataService.readVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
-        given(specificationDataService.readDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
+        given(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
+        given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
+        given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
 
         val specification = specificationConverter.convert(specificationFileDto, null, null)
 
@@ -71,9 +71,9 @@ class SpecificationConverterTest {
         given(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).willReturn(
             SWAGGER_SPECIFICATION
         )
-        given(specificationDataService.readTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
-        given(specificationDataService.readVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
-        given(specificationDataService.readDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
+        given(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
+        given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
+        given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
 
         val specification = specificationConverter.convert(specificationFileDto, null, null)
 

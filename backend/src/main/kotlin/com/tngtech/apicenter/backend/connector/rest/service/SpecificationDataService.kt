@@ -44,7 +44,7 @@ class SpecificationDataService @Autowired constructor(
         }
     }
 
-    fun readTitle(json: String): String {
+    fun extractTitle(json: String): String {
         try {
             return JsonPath.read<String>(json, "$.info.title")
         } catch (exception: PathNotFoundException) {
@@ -54,7 +54,7 @@ class SpecificationDataService @Autowired constructor(
         }
     }
 
-    fun readVersion(json: String): String {
+    fun extractVersion(json: String): String {
         try {
             return JsonPath.read<String>(json, "$.info.version")
         } catch (exception: PathNotFoundException) {
@@ -64,15 +64,14 @@ class SpecificationDataService @Autowired constructor(
         }
     }
 
-    fun readDescription(json: String): String? =
-        // Not a required field in the OpenAPI spec
+    fun extractDescription(json: String): String? =
         try {
             JsonPath.read<String>(json, "$.info.description")
         } catch (exception: PathNotFoundException) {
             null
         }
 
-    fun readId(json: String): String? =
+    fun extractId(json: String): String? =
         try {
             JsonPath.read<String>(json, "$.info.x-api-id")
         } catch (exception: PathNotFoundException) {

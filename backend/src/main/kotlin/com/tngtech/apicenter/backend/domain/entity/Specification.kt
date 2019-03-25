@@ -5,7 +5,7 @@ enum class ApiLanguage {
 }
 
 data class Specification(
-    val id: String,
+    val id: ServiceId,
     val title: String,
     val description: String?,
     val versions: List<Version>,

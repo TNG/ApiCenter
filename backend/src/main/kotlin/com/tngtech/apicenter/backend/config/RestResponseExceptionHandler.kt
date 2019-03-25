@@ -42,13 +42,13 @@ class RestResponseExceptionHandler {
     fun handleVersionAlreadyExists(exception: VersionAlreadyExistsException) =
             responseFactory("A specification with the same version already exists for ${exception.specificationTitle}", HttpStatus.CONFLICT)
 
-    @ExceptionHandler(UnacceptableUserDefinedApiId::class)
-    fun handleUnacceptableId(exception: UnacceptableUserDefinedApiId) =
+    @ExceptionHandler(InvalidSpecificationIdException::class)
+    fun handleUnacceptableId(exception: InvalidSpecificationIdException) =
             responseFactory("The API ID supplied (${exception.userDefinedId}) should only contain numbers, " +
                     "A-Z characters, underscores and hyphens", HttpStatus.BAD_REQUEST)
 
-    @ExceptionHandler(SpecificationUploadUrlMismatch::class)
-    fun handleUrlMismatch(exception: SpecificationUploadUrlMismatch) =
+    @ExceptionHandler(MismatchedSpecificationIdException::class)
+    fun handleServiceIdMismatch(exception: MismatchedSpecificationIdException) =
             responseFactory("The API ID used in the upload URL (${exception.urlPathId}) " +
                     "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
 }
