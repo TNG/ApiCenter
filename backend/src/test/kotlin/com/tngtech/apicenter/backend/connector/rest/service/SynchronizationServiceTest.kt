@@ -7,20 +7,20 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.junit.Test
 import java.util.UUID
 
 class SynchronizationServiceTest {
 
-    private val specificationHandler: SpecificationHandler = mock()
+    private val specificationPersistenceService: SpecificationPersistenceService = mock()
 
     private val specificationFileService: SpecificationFileService = mock()
 
     private val specificationDataService: SpecificationDataService = mock()
 
     private val synchronizationService =
-        SynchronizationService(specificationHandler, specificationFileService, specificationDataService)
+        SynchronizationService(specificationPersistenceService, specificationFileService, specificationDataService)
 
     companion object {
         const val SPECIFICATION_ID = "ff9da045-05f7-4f3d-9801-da609086935c"
@@ -51,7 +51,7 @@ class SynchronizationServiceTest {
             REMOTE_ADDRESS
         )
 
-        given(specificationHandler.findOne(UUID.fromString(SPECIFICATION_ID))).willReturn(specification)
+        given(specificationPersistenceService.findOne(UUID.fromString(SPECIFICATION_ID))).willReturn(specification)
         given(specificationFileService.retrieveFile(REMOTE_ADDRESS)).willReturn(UPDATED_SWAGGER_SPECIFICATION)
         given(specificationDataService.parseFileContent(UPDATED_SWAGGER_SPECIFICATION)).willReturn(
             UPDATED_SWAGGER_SPECIFICATION
@@ -62,6 +62,6 @@ class SynchronizationServiceTest {
 
         synchronizationService.synchronize(UUID.fromString(SPECIFICATION_ID))
 
-        verify(specificationHandler).store(updatedSpecification)
+        verify(specificationPersistenceService).save(updatedSpecification)
     }
 }

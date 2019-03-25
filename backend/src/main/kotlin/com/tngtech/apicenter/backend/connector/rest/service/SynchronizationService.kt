@@ -4,19 +4,19 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
 class SynchronizationService constructor(
-    private val specificationHandler: SpecificationHandler,
+    private val specificationPersistenceService: SpecificationPersistenceService,
     private val specificationFileService: SpecificationFileService,
     private val specificationDataService: SpecificationDataService
 ) {
 
     fun synchronize(specificationId: UUID) {
-        val specification = specificationHandler.findOne(specificationId)!!
+        val specification = specificationPersistenceService.findOne(specificationId)!!
 
         val remoteAddress = specification.remoteAddress ?: ""
 
@@ -39,6 +39,6 @@ class SynchronizationService constructor(
             specification.remoteAddress
         )
 
-        specificationHandler.store(newSpecification)
+        specificationPersistenceService.save(newSpecification)
     }
 }

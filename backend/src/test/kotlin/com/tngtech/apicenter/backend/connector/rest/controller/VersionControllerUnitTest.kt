@@ -8,18 +8,18 @@ import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.VersionDtoMapper
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.handler.VersionHandler
+import com.tngtech.apicenter.backend.domain.service.VersionPersistenceService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.UUID
 
 internal class VersionControllerUnitTest {
 
-    private val versionHandler: VersionHandler = mock()
+    private val versionPersistenceService: VersionPersistenceService = mock()
 
     private val versionDtoMapper: VersionDtoMapper = mock()
 
-    private val versionController = VersionController(versionHandler, versionDtoMapper)
+    private val versionController = VersionController(versionPersistenceService, versionDtoMapper)
 
     private val specificationId = UUID.fromString("7de07d27-eedb-4290-881a-6a402a81dd0f")
 
@@ -31,7 +31,7 @@ internal class VersionControllerUnitTest {
 
     @Test
     fun findOne_shouldReturnVersionDto() {
-        given(versionHandler.findOne(specificationId, "1.0")).willReturn(version)
+        given(versionPersistenceService.findOne(specificationId, "1.0")).willReturn(version)
         given(versionDtoMapper.fromDomain(version)).willReturn(versionDto)
 
         assertThat(versionController.findVersion(specificationId, "1.0")).isEqualTo(versionDto)
@@ -41,7 +41,7 @@ internal class VersionControllerUnitTest {
     fun delete_shouldDeleteVersion() {
         versionController.deleteVersion(specificationId, "1.0")
 
-        verify(versionHandler).delete(specificationId, "1.0")
+        verify(versionPersistenceService).delete(specificationId, "1.0")
     }
 
 }
