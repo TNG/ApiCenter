@@ -13,7 +13,5 @@ class GraphQLController {
             code = HttpStatus.NOT_FOUND,
             reason = "No graphql API endpoint was specified for this specification. Add an API URL to use GraphiQL"
     )
-    fun graphqlErrorMessage() {
-        // TODO: Once @ControllerAdvice is merged, replace with a domain exception
-    }
+    fun noGraphQLEndpointSpecifiedHandler() {}
 }
