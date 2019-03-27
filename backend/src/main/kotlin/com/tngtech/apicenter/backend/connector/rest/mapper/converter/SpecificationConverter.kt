@@ -9,7 +9,6 @@ import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedSpecificationIdException
-import com.tngtech.apicenter.backend.domain.exceptions.InvalidSpecificationIdException
 import ma.glasnost.orika.CustomConverter
 import ma.glasnost.orika.MappingContext
 import ma.glasnost.orika.metadata.Type
@@ -33,7 +32,7 @@ class SpecificationConverter constructor(
         val parsedFileContent = if (specificationFileDto.metaData != null) fileContent
                                 else specificationDataService.parseFileContent(fileContent)
 
-        val metadata = specificationFileDto.metaData ?: metadataFactory(parsedFileContent)
+        val metadata = specificationFileDto.metaData ?: makeSpecificationMetaData(parsedFileContent)
 
         val idFromUpload = specificationDataService.extractId(parsedFileContent)
         val idFromPath = specificationFileDto.id
@@ -63,7 +62,7 @@ class SpecificationConverter constructor(
         return ServiceId(idFromUpload ?: idFromPath ?: UUID.randomUUID().toString())
     }
 
-    private fun metadataFactory(fileContent: String): SpecificationMetaData {
+    private fun makeSpecificationMetaData(fileContent: String): SpecificationMetaData {
         return SpecificationMetaData(
             specificationDataService.extractTitle(fileContent),
             specificationDataService.extractVersion(fileContent),
