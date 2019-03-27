@@ -49,12 +49,11 @@ class SpecificationController @Autowired constructor(
     }
 
     private fun getConsistentId(specificationFileDto: SpecificationFileDto, specificationIdFromPath: String): String {
-        return specificationFileDto.id?.let {
-            idFromFile -> if (idFromFile == specificationIdFromPath) specificationIdFromPath
-                      else throw MismatchedSpecificationIdException(idFromFile, specificationIdFromPath)
-        } ?: run {
-            specificationIdFromPath
+        specificationFileDto.id?.let {
+            idFromFile -> if (idFromFile != specificationIdFromPath)
+                throw MismatchedSpecificationIdException(idFromFile, specificationIdFromPath)
         }
+        return specificationIdFromPath
     }
 
     @GetMapping
