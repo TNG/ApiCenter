@@ -6,12 +6,12 @@ import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMappe
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.UUID
@@ -25,7 +25,7 @@ internal class SpecificationControllerUnitTest {
     }
     val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
-    private val specificationHandler: SpecificationHandler = mock()
+    private val specificationPersistenceService: SpecificationPersistenceService = mock()
 
     private val synchronizationService: SynchronizationService = mock()
 
@@ -33,7 +33,7 @@ internal class SpecificationControllerUnitTest {
 
     private val specificationController: SpecificationController =
         SpecificationController(
-            specificationHandler,
+            specificationPersistenceService,
             synchronizationService,
             specificationDtoMapper
         )
@@ -129,7 +129,7 @@ internal class SpecificationControllerUnitTest {
 
         given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
-        given(specificationHandler.findAll()).willReturn(
+        given(specificationPersistenceService.findAll()).willReturn(
             arrayListOf(
                 Specification(
                     uuid,
