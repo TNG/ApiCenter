@@ -1,20 +1,21 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
-import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
-import com.tngtech.apicenter.backend.domain.entity.Specification
-import com.tngtech.apicenter.backend.domain.entity.Version
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
+import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
+import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.UUID
+import java.util.*
 
 internal class SpecificationControllerUnitTest {
 
@@ -44,14 +45,14 @@ internal class SpecificationControllerUnitTest {
             SpecificationFileDto(SWAGGER_SPECIFICATION)
 
         val specification = Specification(
-            UUID.fromString(UUID_STRING),
+            ServiceId(UUID_STRING),
             "Swagger Petstore",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             null
         )
         val specificationDto = SpecificationDto(
-            UUID.fromString(UUID_STRING),
+            UUID_STRING,
             "Swagger Petstore",
             "Description",
             listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
@@ -73,17 +74,17 @@ internal class SpecificationControllerUnitTest {
                 SWAGGER_SPECIFICATION,
                 null,
                 null,
-                UUID.fromString(UUID_STRING)
+                UUID_STRING
             )
         val specification = Specification(
-            UUID.fromString(UUID_STRING),
+            ServiceId(UUID_STRING),
             "Swagger Petstore",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             null
         )
         val specificationDto = SpecificationDto(
-            UUID.fromString(UUID_STRING),
+            UUID_STRING,
             "Swagger Petstore",
             "Description",
             listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
@@ -99,7 +100,7 @@ internal class SpecificationControllerUnitTest {
 
         assertThat(returnedSpecificationDto).isEqualTo(
             SpecificationDto(
-                UUID.fromString(UUID_STRING),
+                UUID_STRING,
                 "Swagger Petstore",
                 "Description",
                 listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
@@ -110,10 +111,10 @@ internal class SpecificationControllerUnitTest {
 
     @Test
     fun findAllSpecifications_shouldReturnSpecifications() {
-        val uuid = UUID.randomUUID()
+        val uuid = UUID.randomUUID().toString()
 
         val specification = Specification(
-            uuid,
+            ServiceId(uuid),
             "Test",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
@@ -132,7 +133,7 @@ internal class SpecificationControllerUnitTest {
         given(specificationPersistenceService.findAll()).willReturn(
             arrayListOf(
                 Specification(
-                    uuid,
+                    ServiceId(uuid),
                     "Test",
                     "Description",
                     listOf(Version(SWAGGER_SPECIFICATION, metadata)),

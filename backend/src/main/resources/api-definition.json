@@ -185,8 +185,7 @@
             "in": "path",
             "description": "specificationId",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           {
             "in": "header",
@@ -300,8 +299,7 @@
             "in": "path",
             "description": "specificationId",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           {
             "in": "header",
@@ -345,8 +343,7 @@
             "in": "path",
             "description": "specificationId",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           {
             "in": "header",
@@ -389,16 +386,14 @@
             "in": "path",
             "description": "The ID of the specification for which the version should be fetched.",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           {
             "name": "version",
             "in": "path",
             "description": "The version that should be fetched",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           {
             "in": "header",
@@ -445,16 +440,14 @@
             "in": "path",
             "description": "The ID of the specification for which the version should be deleted.",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           {
             "name": "version",
             "in": "path",
             "description": "The version that should be deleted",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           }
         ],
         "responses": {
@@ -517,8 +510,7 @@
             "type": "string"
           },
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "remoteAddress": {
             "type": "string"
@@ -540,8 +532,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
-            "description": "The uuid of an already existing specification",
+            "description": "The id of an already existing specification",
             "required": false
           }
         },

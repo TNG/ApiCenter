@@ -11,4 +11,5 @@ class UserEntityMapper constructor(private val mapperFacade: MapperFacade) {
     fun toDomain(userEntity: UserEntity): User = mapperFacade.map(userEntity, User::class.java)
 
     fun fromDomain(user: User): UserEntity = mapperFacade.map(user, UserEntity::class.java)
+
 }

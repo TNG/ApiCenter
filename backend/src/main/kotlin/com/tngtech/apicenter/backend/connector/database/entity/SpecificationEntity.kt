@@ -3,18 +3,12 @@ package com.tngtech.apicenter.backend.connector.database.entity
 import org.hibernate.search.annotations.Field
 import org.hibernate.search.annotations.Indexed
 import org.hibernate.search.annotations.IndexedEmbedded
-import java.util.UUID
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.OrderBy
+import javax.persistence.*
 
 @Entity
 @Indexed
-data class SpecificationEntity(
-    @Id val id: UUID,
+class SpecificationEntity(
+    @Id val id: String,
     @Field val title: String,
     @Field @Column(columnDefinition = "TEXT") val description: String?,
     @IndexedEmbedded @OneToMany(
@@ -22,4 +16,16 @@ data class SpecificationEntity(
         cascade = [CascadeType.ALL]
     ) @OrderBy("created DESC") val versions: List<VersionEntity>,
     val remoteAddress: String?
-)
+) {
+
+    fun pureUpdate(other: SpecificationEntity): SpecificationEntity {
+        val versions = this.versions + other.versions
+        return SpecificationEntity(
+                this.id,
+                other.title,
+                other.description,
+                versions,
+                other.remoteAddress
+        )
+    }
+}
