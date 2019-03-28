@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class SpecificationConverter constructor(
+class SpecificationFileDtoConverter constructor(
     private val specificationFileService: SpecificationFileService,
     private val specificationDataService: SpecificationDataService
 ) :

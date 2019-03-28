@@ -12,7 +12,7 @@ import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class SpecificationConverterTest {
+class SpecificationFileDtoConverterTest {
 
     companion object {
         const val SWAGGER_SPECIFICATION =
@@ -26,8 +26,8 @@ class SpecificationConverterTest {
 
     private val specificationFileService: SpecificationFileService = mock()
 
-    private val specificationConverter: SpecificationConverter =
-        SpecificationConverter(
+    private val specificationFileDtoConverter: SpecificationFileDtoConverter =
+        SpecificationFileDtoConverter(
             specificationFileService,
             specificationDataService
         )
@@ -43,7 +43,7 @@ class SpecificationConverterTest {
         given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
         given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
 
-        val specification = specificationConverter.convert(specificationFileDto, null, null)
+        val specification = specificationFileDtoConverter.convert(specificationFileDto, null, null)
 
         val expectedSpecification = Specification(
             specification.id,
@@ -75,7 +75,7 @@ class SpecificationConverterTest {
         given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
         given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
 
-        val specification = specificationConverter.convert(specificationFileDto, null, null)
+        val specification = specificationFileDtoConverter.convert(specificationFileDto, null, null)
 
         val expectedSpecification = Specification(
             specification.id,
