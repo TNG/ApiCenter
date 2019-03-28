@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import mu.KotlinLogging
 
-val logger = KotlinLogging.logger {  }
-
 @EnableWebSecurity
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration

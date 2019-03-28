@@ -51,5 +51,9 @@ class RestResponseExceptionHandler {
     fun handleServiceIdMismatch(exception: MismatchedSpecificationIdException) =
             makeResponseEntity("The API ID used in the upload URL (${exception.urlPathId}) " +
                     "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(GiveUpOnAclException::class)
+    fun handleBadRequest(exception: GiveUpOnAclException) =
+            makeResponseEntity("Only Strings representing Longs can be parsed", HttpStatus.BAD_REQUEST)
 }
 

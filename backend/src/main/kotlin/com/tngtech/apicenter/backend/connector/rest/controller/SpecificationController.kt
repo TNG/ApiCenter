@@ -9,6 +9,7 @@ import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationTo
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedSpecificationIdException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

@@ -12,6 +12,7 @@ import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationPr
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.MediaType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
 import mu.KotlinLogging
 import org.springframework.security.acls.domain.BasePermission
 import org.springframework.security.acls.domain.PrincipalSid

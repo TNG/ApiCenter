@@ -26,18 +26,18 @@ interface AclManager {
 
 @Service
 class SpecificationPermissionManager @Autowired constructor(private val aclManagerService : AclManagerService) {
-    fun addPermission(id: UUID, sid: Sid, permission: Permission) {
+    fun addPermission(id: Long, sid: Sid, permission: Permission) {
         logger.info("Add $permission to spec $id ")
-        return aclManagerService.addPermission(UUID::class.java, id, sid, permission)
+        return aclManagerService.addPermission(Long::class.java, id, sid, permission)
     }
 
-    fun removePermission(id: UUID, sid: Sid, permission: Permission) {
+    fun removePermission(id: Long, sid: Sid, permission: Permission) {
         logger.info("Remove $permission from spec $id ")
-        return aclManagerService.removePermission(UUID::class.java, id, sid, permission)
+        return aclManagerService.removePermission(Long::class.java, id, sid, permission)
     }
 
-    fun hasPermission(id: UUID, sid: Sid, permission: Permission): Boolean {
-        val granted = aclManagerService.hasPermission(UUID::class.java, id, sid, permission)
+    fun hasPermission(id: Long, sid: Sid, permission: Permission): Boolean {
+        val granted = aclManagerService.hasPermission(Long::class.java, id, sid, permission)
         logger.info("$granted that $id has permission $permission")
         return granted
     }

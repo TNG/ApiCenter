@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.config
 
 import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissionManager
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
+import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,6 +18,10 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import mu.KotlinLogging
+import java.lang.Long.parseLong
+
+private val logger = KotlinLogging.logger {  }
 
 @Configuration
 class WebConfiguration {
@@ -65,11 +70,11 @@ class AclInterceptor : HandlerInterceptorAdapter() {
 
         val pathVariables = AntPathMatcher("/")
                 .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/versions/{version}", request.servletPath)
-        val specificationId = UUID.fromString(pathVariables["specificationId"])
+        val asLong = try { parseLong(pathVariables["specificationId"]) } catch (exc: NumberFormatException) { throw GiveUpOnAclException() }
 
         return when (request.method) {
-            "GET" ->                    permissionManager.hasPermission(specificationId, sid, BasePermission.READ)
-            "POST", "PUT", "DELETE" ->  permissionManager.hasPermission(specificationId, sid, BasePermission.WRITE)
+            "GET" ->                    permissionManager.hasPermission(asLong, sid, BasePermission.READ)
+            "POST", "PUT", "DELETE" ->  permissionManager.hasPermission(asLong, sid, BasePermission.WRITE)
             else -> false
         }
     }
