@@ -24,7 +24,6 @@ class SynchronizationServiceTest {
 
     companion object {
         const val SPECIFICATION_ID = "ff9da045-05f7-4f3d-9801-da609086935c"
-        const val VERSION_ID = "5aa40ba9-7e26-44de-81ec-f545d1f178aa"
         const val SWAGGER_SPECIFICATION =
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\", \"description\": \"Description\"}}"
         const val UPDATED_SWAGGER_SPECIFICATION =
@@ -32,7 +31,7 @@ class SynchronizationServiceTest {
         const val REMOTE_ADDRESS = "http://testapi.com/testapi.json"
     }
 
-    private val metadata = VersionMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val metadata = VersionMetaData(ServiceId(SPECIFICATION_ID), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     @Test
     fun synchronize_shouldStoreAdaptedSpecification() {

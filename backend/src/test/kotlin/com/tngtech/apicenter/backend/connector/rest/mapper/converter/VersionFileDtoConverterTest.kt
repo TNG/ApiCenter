@@ -35,7 +35,7 @@ class VersionFileDtoConverterTest {
 
     @Test
     fun convert_shouldReturnSpecification() {
-        val versionFileDto = VersionFileDto(SWAGGER_SPECIFICATION)
+        val versionFileDto = VersionFileDto(SWAGGER_SPECIFICATION, id = UUID_STRING)
 
         given(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).willReturn(
             SWAGGER_SPECIFICATION
@@ -55,7 +55,8 @@ class VersionFileDtoConverterTest {
     @Test
     fun convert_shouldReturnRemoteSpecification() {
         val versionFileDto = VersionFileDto(null,
-            SWAGGER_REMOTE
+            SWAGGER_REMOTE,
+            id = UUID_STRING
         )
 
         given(specificationFileService.retrieveFile(SWAGGER_REMOTE)).willReturn(
@@ -64,6 +65,7 @@ class VersionFileDtoConverterTest {
         given(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
         given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
         given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
+        given(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).willReturn(SWAGGER_SPECIFICATION)
 
         val version = versionFileDtoConverter.convert(versionFileDto, null, null)
 

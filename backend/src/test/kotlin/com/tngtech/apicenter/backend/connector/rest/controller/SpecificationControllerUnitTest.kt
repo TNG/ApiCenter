@@ -25,7 +25,7 @@ internal class SpecificationControllerUnitTest {
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val UUID_STRING = "65d8491f-e602-40fc-a595-45e75f690df1"
     }
-    val metadata = VersionMetaData(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val metadata = VersionMetaData(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     private val specificationPersistenceService: SpecificationPersistenceService = mock()
 
@@ -44,36 +44,6 @@ internal class SpecificationControllerUnitTest {
         )
 
     @Test
-    fun uploadSpecification_shouldReturnDto() {
-        val versionFileDto =
-            VersionFileDto(SWAGGER_SPECIFICATION)
-
-        val version = Version(SWAGGER_SPECIFICATION, metadata)
-
-        val specification = Specification(
-            ServiceId(UUID_STRING),
-            "Swagger Petstore",
-            "Description",
-            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
-        val specificationDto = SpecificationDto(
-            UUID_STRING,
-            "Swagger Petstore",
-            "Description",
-            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
-
-        given(versionFileDtoMapper.toDomain(versionFileDto)).willReturn(version)
-        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
-
-        val returnedSpecificationDto = specificationController.uploadSpecification(versionFileDto)
-
-        assertThat(returnedSpecificationDto).isEqualTo(specificationDto)
-    }
-
-    @Test
     fun updateSpecification_shouldReturnDto() {
         val versionFileDto =
             VersionFileDto(
@@ -84,38 +54,16 @@ internal class SpecificationControllerUnitTest {
             )
 
         val version = Version(SWAGGER_SPECIFICATION, metadata)
-
-        val specification = Specification(
-            ServiceId(UUID_STRING),
-            "Swagger Petstore",
-            "Description",
-            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
-        val specificationDto = SpecificationDto(
-            UUID_STRING,
-            "Swagger Petstore",
-            "Description",
-            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
+        val versionDto = VersionDto(SWAGGER_SPECIFICATION, metadata)
 
         given(versionFileDtoMapper.toDomain(versionFileDto)).willReturn(version)
-        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
+        given(versionFileDtoMapper.fromDomain(version)).willReturn(versionDto)
 
-        val returnedSpecificationDto = specificationController.updateSpecification(versionFileDto,
+        val returnedVersionDto = specificationController.updateSpecification(versionFileDto,
             UUID_STRING
         )
 
-        assertThat(returnedSpecificationDto).isEqualTo(
-            SpecificationDto(
-                UUID_STRING,
-                "Swagger Petstore",
-                "Description",
-                listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-                null
-            )
-        )
+        assertThat(returnedVersionDto).isEqualTo(versionDto)
     }
 
     @Test

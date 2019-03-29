@@ -18,11 +18,9 @@ internal class VersionControllerUnitTest {
 
     private val versionPersistenceService: VersionPersistenceService = mock()
 
-    private val specificationDtoMapper: SpecificationDtoMapper = mock()
-
     private val versionFileDtoMapper: VersionFileDtoMapper = mock()
 
-    private val versionController = VersionController(versionPersistenceService, specificationDtoMapper)
+    private val versionController = VersionController(versionPersistenceService, versionFileDtoMapper)
 
     private val specificationId = "7de07d27-eedb-4290-881a-6a402a81dd0f"
 
