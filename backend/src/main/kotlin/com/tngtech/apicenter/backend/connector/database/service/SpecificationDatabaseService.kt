@@ -95,7 +95,7 @@ class SpecificationDatabaseService constructor(
                     throw PreexistingVersionContentDiscrepancyException()
                 }
             } else {
-                mapAndStoreEntity(s.pureAppendVersion(versionEntityMapper.fromDomain(version)))
+                mapAndStoreEntity(s.appendVersion(versionEntityMapper.fromDomain(version)))
             }
         }
     }
