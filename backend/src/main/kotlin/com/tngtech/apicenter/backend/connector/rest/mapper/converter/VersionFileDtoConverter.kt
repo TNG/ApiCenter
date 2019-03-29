@@ -27,7 +27,7 @@ class VersionFileDtoConverter constructor(
         destinationType: Type<out Version>?,
         mappingContext: MappingContext?
     ): Version {
-        val fileContent = getLocalOrRemoteFileContent(versionFileDto)
+        val fileContent = specificationFileService.getLocalOrRemoteFileContent(versionFileDto)
 
         val parsedFileContent = if (versionFileDto.metaData != null) fileContent
                                 else specificationDataService.parseFileContent(fileContent)
@@ -36,17 +36,10 @@ class VersionFileDtoConverter constructor(
         val idFromPath = versionFileDto.id
         val serviceId = getConsistentServiceId(idFromUpload, idFromPath)
 
-        val metadata = versionFileDto.metaData ?: makeSpecificationMetaData(parsedFileContent, serviceId)
+        val metadata = versionFileDto.metaData ?:
+            specificationDataService.makeSpecificationMetaData(parsedFileContent, serviceId, versionFileDto.fileUrl)
 
         return Version(parsedFileContent, metadata)
-    }
-
-    private fun getLocalOrRemoteFileContent(versionFileDto: VersionFileDto): String {
-        return if (versionFileDto.fileUrl != null && versionFileDto.fileUrl != "") {
-            specificationFileService.retrieveFile(versionFileDto.fileUrl)
-        } else {
-            versionFileDto.fileContent ?: ""
-        }
     }
 
     private fun getConsistentServiceId(idFromUpload: String?, idFromPath: String?): ServiceId {
@@ -54,16 +47,5 @@ class VersionFileDtoConverter constructor(
             throw MismatchedSpecificationIdException(idFromUpload, idFromPath)
         }
         return ServiceId(idFromUpload ?: idFromPath ?: UUID.randomUUID().toString())
-    }
-
-    private fun makeSpecificationMetaData(fileContent: String, serviceId: ServiceId): VersionMetaData {
-        return VersionMetaData(
-            serviceId,
-            specificationDataService.extractTitle(fileContent),
-            specificationDataService.extractVersion(fileContent),
-            specificationDataService.extractDescription(fileContent),
-            ApiLanguage.OPENAPI,
-            null
-        )
     }
 }

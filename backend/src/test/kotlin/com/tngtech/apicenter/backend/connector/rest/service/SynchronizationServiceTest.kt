@@ -35,16 +35,11 @@ class SynchronizationServiceTest {
 
     @Test
     fun synchronize_shouldStoreAdaptedSpecification() {
+        val id = ServiceId(SPECIFICATION_ID)
+
         val specification = Specification(
-            ServiceId(SPECIFICATION_ID),
+            id,
             "Swagger Petstore",
-            "Description",
-            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-            REMOTE_ADDRESS
-        )
-        val updatedSpecification = Specification(
-            ServiceId(SPECIFICATION_ID),
-            "Swagger Petstore 2",
             "Description",
             listOf(Version(SWAGGER_SPECIFICATION, metadata)),
             REMOTE_ADDRESS
@@ -55,12 +50,13 @@ class SynchronizationServiceTest {
         given(specificationDataService.parseFileContent(UPDATED_SWAGGER_SPECIFICATION)).willReturn(
             UPDATED_SWAGGER_SPECIFICATION
         )
-        given(specificationDataService.extractTitle(UPDATED_SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore 2")
-        given(specificationDataService.extractVersion(UPDATED_SWAGGER_SPECIFICATION)).willReturn("1.0.0")
-        given(specificationDataService.extractDescription(UPDATED_SWAGGER_SPECIFICATION)).willReturn("Description")
+        given(specificationDataService.makeSpecificationMetaData(UPDATED_SWAGGER_SPECIFICATION, id, REMOTE_ADDRESS)).willReturn(metadata)
 
         synchronizationService.synchronize(ServiceId(SPECIFICATION_ID))
 
-        verify(specificationPersistenceService).save(updatedSpecification)
+        verify(specificationPersistenceService).saveOne(
+                Version(UPDATED_SWAGGER_SPECIFICATION, metadata),
+                id,
+                REMOTE_ADDRESS)
     }
 }

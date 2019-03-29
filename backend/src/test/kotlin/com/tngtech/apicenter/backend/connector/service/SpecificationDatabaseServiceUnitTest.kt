@@ -39,32 +39,6 @@ internal class SpecificationDatabaseServiceUnitTest {
     private val id = "e33dc111-3dd6-40f4-9c54-a64f6b10ab49"
 
     @Test
-    fun save_shouldSaveObjects() {
-        val specification = Specification(
-            ServiceId(id),
-            "Spec",
-            "Description",
-            listOf(Version("{\"json\": \"true\"}", VersionMetaData(
-                    ServiceId("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
-                    "Spec", "1.0.0", "Description", ApiLanguage.OPENAPI, null))),
-            "http://swaggerpetstore.com/docs"
-        )
-
-        val specificationEntity = SpecificationEntity(
-            id,
-            "Spec",
-            "Description",
-            listOf(VersionEntity(VersionId(id, "1.0.0"), "{\"json\": \"true\"}", "Spec", "Description", ApiLanguage.OPENAPI, "", null, null)),
-            "http://swaggerpetstore.com/docs"
-        )
-
-        given(specificationEntityMapper.fromDomain(specification)).willReturn(specificationEntity)
-
-        specificationDatabaseService.save(specification)
-        verify(specificationRepository).save(specificationEntity)
-    }
-
-    @Test
     fun findAll_shouldReturnObjects() {
         specificationDatabaseService.findAll()
         verify(specificationRepository).findAll()
