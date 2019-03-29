@@ -26,5 +26,11 @@ class VersionFileDtoMappingConfigurer constructor(private val versionFileDtoConv
             .field("id", "metadata.id.id")
             .byDefault()
             .register()
+
+        orikaMapperFactory.classMap(Specification::class.java, SpecificationDto::class.java)
+                .field("id.id", "id")
+                .byDefault()
+                .register()
+
     }
 }
