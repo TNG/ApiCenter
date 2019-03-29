@@ -51,7 +51,7 @@ internal class SpecificationDatabaseServiceUnitTest {
         )
 
         val specificationEntity = SpecificationEntity(
-                id,
+            id,
             "Spec",
             "Description",
             listOf(VersionEntity(VersionId(id, "1.0.0"), "{\"json\": \"true\"}", "Spec", "Description", ApiLanguage.OPENAPI, "", null, null)),

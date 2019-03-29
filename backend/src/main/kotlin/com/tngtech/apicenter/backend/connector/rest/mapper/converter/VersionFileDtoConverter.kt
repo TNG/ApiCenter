@@ -23,9 +23,9 @@ class VersionFileDtoConverter constructor(
     CustomConverter<VersionFileDto, Version>() {
 
     override fun convert(
-            versionFileDto: VersionFileDto,
-            destinationType: Type<out Version>?,
-            mappingContext: MappingContext?
+        versionFileDto: VersionFileDto,
+        destinationType: Type<out Version>?,
+        mappingContext: MappingContext?
     ): Version {
         val fileContent = getLocalOrRemoteFileContent(versionFileDto)
 

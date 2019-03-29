@@ -14,8 +14,8 @@ data class VersionMetaData constructor(
 )
 
 data class VersionFileDto @JsonCreator constructor(
-        val fileContent: String?,
-        val fileUrl: String? = "",
-        val metaData: VersionMetaData? = null,
-        val id: String? = null
+    val fileContent: String?,
+    val fileUrl: String? = "",
+    val metaData: VersionMetaData? = null,
+    val id: String? = null
 )
