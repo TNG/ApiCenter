@@ -77,6 +77,44 @@ internal class SpecificationControllerIntegrationTest {
     }
 
     @Test
+    fun uploadSpecification_shouldDetectVersionClash_identicalContent() {
+        mockMvc.perform(
+                post("/api/v1/specifications")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | {
+                            |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
+                            |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"v1\", \"description\": \"Description\"}}"
+                            | }
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isAccepted)
+    }
+
+    @Test
+    fun uploadSpecification_shouldDetectVersionClash_differentContent() {
+        mockMvc.perform(
+                post("/api/v1/specifications")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | {
+                            |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
+                            |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"v1\", \"description\": \"I'm different\"}}"
+                            | }
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isConflict)
+    }
+
+    @Test
     fun uploadSpecification_shouldCreateSpecificationFromYaml() {
         mockMvc.perform(
             post("/api/v1/specifications")

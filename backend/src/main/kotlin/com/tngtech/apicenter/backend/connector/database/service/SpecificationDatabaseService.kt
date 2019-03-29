@@ -75,15 +75,15 @@ class SpecificationDatabaseService constructor(
         }
     }
 
-    override fun saveOne(version: Version, serviceId: ServiceId, fileUrl: String?) {
+    override fun saveOne(versionToStore: Version, serviceId: ServiceId, fileUrl: String?) {
         val existingSpec = specificationRepository.findById(serviceId.id)
 
         if (!existingSpec.isPresent) {
             val newSpecification = Specification(
                     serviceId,
-                    version.metadata.title,
-                    version.metadata.description,
-                    listOf(version),
+                    versionToStore.metadata.title,
+                    versionToStore.metadata.description,
+                    listOf(versionToStore),
                     fileUrl
             )
             val newSpecificationEntity = specificationEntityMapper.fromDomain(newSpecification)
@@ -92,17 +92,20 @@ class SpecificationDatabaseService constructor(
 
         existingSpec.ifPresent { s ->
             val versionStrings = s.versions.map { v -> versionEntityMapper.toDomain(v).metadata.version }
-            val newVersionString = version.metadata.version
+            val newVersionString = versionToStore.metadata.version
             if (versionStrings.contains(newVersionString)) {
-                val index = versionStrings.indexOf(newVersionString)
-                val existingContents = versionStrings[index]
-                if (existingContents == version.content) {
+
+                val existingContents = s.versions.firstOrNull {
+                    versionEntity -> versionEntityMapper.toDomain(versionEntity).metadata.version == newVersionString
+                }?.content
+
+                if (existingContents == versionToStore.content) {
                     throw PreexistingVersionContentIdenticalException()
                 } else {
                     throw PreexistingVersionContentDiscrepancyException()
                 }
             } else {
-                mapAndStoreEntity(s.pureAppendVersion(versionEntityMapper.fromDomain(version)))
+                mapAndStoreEntity(s.pureAppendVersion(versionEntityMapper.fromDomain(versionToStore)))
             }
         }
     }
