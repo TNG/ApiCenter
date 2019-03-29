@@ -8,7 +8,7 @@ import com.tngtech.apicenter.backend.connector.database.entity.VersionId
 import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository
 import com.tngtech.apicenter.backend.connector.database.service.SpecificationDatabaseService
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -41,7 +41,7 @@ internal class SpecificationDatabaseServiceUnitTest {
             ServiceId("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
             "Spec",
             "Description",
-            listOf(Version("{\"json\": \"true\"}", SpecificationMetaData("Spec", "1.0.0", "Description", ApiLanguage.OPENAPI, null))),
+            listOf(Version("{\"json\": \"true\"}", VersionMetaData("Spec", "1.0.0", "Description", ApiLanguage.OPENAPI, null))),
             "http://swaggerpetstore.com/docs"
         )
 

@@ -3,10 +3,11 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionFileDto
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
+import com.tngtech.apicenter.backend.connector.rest.mapper.VersionFileDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
@@ -24,11 +25,13 @@ internal class SpecificationControllerUnitTest {
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val UUID_STRING = "65d8491f-e602-40fc-a595-45e75f690df1"
     }
-    val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    val metadata = VersionMetaData(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     private val specificationPersistenceService: SpecificationPersistenceService = mock()
 
     private val synchronizationService: SynchronizationService = mock()
+
+    private val versionFileDtoMapper: VersionFileDtoMapper = mock()
 
     private val specificationDtoMapper: SpecificationDtoMapper = mock()
 
@@ -36,13 +39,16 @@ internal class SpecificationControllerUnitTest {
         SpecificationController(
             specificationPersistenceService,
             synchronizationService,
+            versionFileDtoMapper,
             specificationDtoMapper
         )
 
     @Test
     fun uploadSpecification_shouldReturnDto() {
-        val specificationFileDto =
-            SpecificationFileDto(SWAGGER_SPECIFICATION)
+        val versionFileDto =
+            VersionFileDto(SWAGGER_SPECIFICATION)
+
+        val version = Version(SWAGGER_SPECIFICATION, metadata)
 
         val specification = Specification(
             ServiceId(UUID_STRING),
@@ -59,23 +65,26 @@ internal class SpecificationControllerUnitTest {
             null
         )
 
-        given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
+        given(versionFileDtoMapper.toDomain(versionFileDto)).willReturn(version)
         given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
-        val returnedSpecificationDto = specificationController.uploadSpecification(specificationFileDto)
+        val returnedSpecificationDto = specificationController.uploadSpecification(versionFileDto)
 
         assertThat(returnedSpecificationDto).isEqualTo(specificationDto)
     }
 
     @Test
     fun updateSpecification_shouldReturnDto() {
-        val specificationFileDto =
-            SpecificationFileDto(
+        val versionFileDto =
+            VersionFileDto(
                 SWAGGER_SPECIFICATION,
                 null,
                 null,
                 UUID_STRING
             )
+
+        val version = Version(SWAGGER_SPECIFICATION, metadata)
+
         val specification = Specification(
             ServiceId(UUID_STRING),
             "Swagger Petstore",
@@ -91,10 +100,10 @@ internal class SpecificationControllerUnitTest {
             null
         )
 
-        given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
+        given(versionFileDtoMapper.toDomain(versionFileDto)).willReturn(version)
         given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
-        val returnedSpecificationDto = specificationController.updateSpecification(specificationFileDto,
+        val returnedSpecificationDto = specificationController.updateSpecification(versionFileDto,
             UUID_STRING
         )
 

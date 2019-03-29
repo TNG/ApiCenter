@@ -1,7 +1,7 @@
 package com.tngtech.apicenter.backend.connector.rest.mapper.converter
 
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionFileDto
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationDataService
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationFileService
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
@@ -16,42 +16,36 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class SpecificationFileDtoConverter constructor(
+class VersionFileDtoConverter constructor(
     private val specificationFileService: SpecificationFileService,
     private val specificationDataService: SpecificationDataService
 ) :
-    CustomConverter<SpecificationFileDto, Specification>() {
+    CustomConverter<VersionFileDto, Version>() {
 
     override fun convert(
-        specificationFileDto: SpecificationFileDto,
-        destinationType: Type<out Specification>?,
-        mappingContext: MappingContext?
-    ): Specification {
-        val fileContent = getLocalOrRemoteFileContent(specificationFileDto)
+            versionFileDto: VersionFileDto,
+            destinationType: Type<out Version>?,
+            mappingContext: MappingContext?
+    ): Version {
+        val fileContent = getLocalOrRemoteFileContent(versionFileDto)
 
-        val parsedFileContent = if (specificationFileDto.metaData != null) fileContent
+        val parsedFileContent = if (versionFileDto.metaData != null) fileContent
                                 else specificationDataService.parseFileContent(fileContent)
 
-        val metadata = specificationFileDto.metaData ?: makeSpecificationMetaData(parsedFileContent)
-
         val idFromUpload = specificationDataService.extractId(parsedFileContent)
-        val idFromPath = specificationFileDto.id
+        val idFromPath = versionFileDto.id
         val serviceId = getConsistentServiceId(idFromUpload, idFromPath)
 
-        return Specification(
-            serviceId,
-            metadata.title,
-            metadata.description,
-            listOf(Version(parsedFileContent, metadata)),
-            specificationFileDto.fileUrl
-        )
+        val metadata = versionFileDto.metaData ?: makeSpecificationMetaData(parsedFileContent, serviceId)
+
+        return Version(parsedFileContent, metadata)
     }
 
-    private fun getLocalOrRemoteFileContent(specificationFileDto: SpecificationFileDto): String {
-        return if (specificationFileDto.fileUrl != null && specificationFileDto.fileUrl != "") {
-            specificationFileService.retrieveFile(specificationFileDto.fileUrl)
+    private fun getLocalOrRemoteFileContent(versionFileDto: VersionFileDto): String {
+        return if (versionFileDto.fileUrl != null && versionFileDto.fileUrl != "") {
+            specificationFileService.retrieveFile(versionFileDto.fileUrl)
         } else {
-            specificationFileDto.fileContent ?: ""
+            versionFileDto.fileContent ?: ""
         }
     }
 
@@ -62,8 +56,9 @@ class SpecificationFileDtoConverter constructor(
         return ServiceId(idFromUpload ?: idFromPath ?: UUID.randomUUID().toString())
     }
 
-    private fun makeSpecificationMetaData(fileContent: String): SpecificationMetaData {
-        return SpecificationMetaData(
+    private fun makeSpecificationMetaData(fileContent: String, serviceId: ServiceId): VersionMetaData {
+        return VersionMetaData(
+            serviceId,
             specificationDataService.extractTitle(fileContent),
             specificationDataService.extractVersion(fileContent),
             specificationDataService.extractDescription(fileContent),

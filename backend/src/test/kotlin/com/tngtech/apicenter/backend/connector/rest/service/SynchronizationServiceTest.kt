@@ -3,7 +3,7 @@ package com.tngtech.apicenter.backend.connector.rest.service
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -32,7 +32,7 @@ class SynchronizationServiceTest {
         const val REMOTE_ADDRESS = "http://testapi.com/testapi.json"
     }
 
-    private val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val metadata = VersionMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     @Test
     fun synchronize_shouldStoreAdaptedSpecification() {

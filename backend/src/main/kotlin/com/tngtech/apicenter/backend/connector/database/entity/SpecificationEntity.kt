@@ -28,4 +28,15 @@ class SpecificationEntity(
                 other.remoteAddress
         )
     }
+
+    fun pureAppendVersion(other: VersionEntity): SpecificationEntity {
+        val versions = this.versions + other
+        return SpecificationEntity(
+                this.id,
+                other.title,
+                other.description,
+                versions,
+                this.remoteAddress
+        )
+    }
 }

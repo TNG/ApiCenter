@@ -1,6 +1,6 @@
 package com.tngtech.apicenter.backend.connector.rest.service
 
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -28,7 +28,7 @@ class SynchronizationService constructor(
             specification.versions
         } else {
             specification.versions + Version(content,
-                    SpecificationMetaData(specification.title, versionString, specification.description, ApiLanguage.OPENAPI))
+                    VersionMetaData(specificationId, specification.title, versionString, specification.description, ApiLanguage.OPENAPI))
         }
 
         val newSpecification = Specification(
