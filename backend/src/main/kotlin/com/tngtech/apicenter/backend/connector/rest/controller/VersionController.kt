@@ -24,9 +24,7 @@ private const val MEDIA_TYPE_YAML = "application/yml"
 
 @RestController
 class VersionController constructor(private val versionPersistenceService: VersionPersistenceService,
-                                    private val versionDtoMapper: VersionDtoMapper,
-                                    private val permissionManager: SpecificationPermissionManager,
-                                    private val jwtAuthenticationProvider: JwtAuthenticationProvider) {
+                                    private val versionDtoMapper: VersionDtoMapper) {
 
     @RequestMapping("/api/v1/specifications/{specificationId}/versions/{version}",
             produces = [MediaType.APPLICATION_JSON_VALUE,
@@ -59,33 +57,4 @@ class VersionController constructor(private val versionPersistenceService: Versi
         versionPersistenceService.delete(ServiceId(specificationId), version)
     }
 
-    @PostMapping("/api/v1/specifications/{specificationId}/versions/{version}/chmod/{principal}")
-    fun chmodVersion(@PathVariable specificationId: String,
-                     @PathVariable version: String,
-                     @PathVariable principal: String,
-                     @RequestHeader(value = "Authorization") authHeader: String,
-                     @RequestParam(value = "read", required = false) grantRead: Boolean,
-                     @RequestParam(value = "write", required = false) grantWrite: Boolean
-    ) {
-        // TODO: Return 400 when principal doesn't exist (should be one of user, group, or 'all', 'everyone' keyword)
-
-        val username = jwtAuthenticationProvider.extractUsername(authHeader)
-        val sid = PrincipalSid(username)
-        logger.info(SecurityContextHolder.getContext().authentication.toString())
-        val asLong = try { parseLong(specificationId) } catch (exc: NumberFormatException) { throw GiveUpOnAclException() }
-
-        // exceptions may be thrown when attempting modifications, which are not yet handled
-        if (grantRead) {
-            permissionManager.addPermission(asLong, sid, BasePermission.READ)
-        } else {
-            permissionManager.removePermission(asLong, sid, BasePermission.READ)
-        }
-
-        if (grantWrite) {
-            permissionManager.addPermission(asLong, sid, BasePermission.WRITE)
-        } else {
-            permissionManager.removePermission(asLong,sid, BasePermission.WRITE)
-        }
-
-    }
 }

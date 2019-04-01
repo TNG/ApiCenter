@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.security.acls.domain.BasePermission
 import org.springframework.security.acls.domain.PrincipalSid
 import org.springframework.security.core.context.SecurityContextHolder
-import java.lang.Long.parseLong
 import java.lang.NumberFormatException
-import java.util.*
+import mu.KotlinLogging
+import org.springframework.security.acls.model.Permission
+
+private val logger = KotlinLogging.logger {  }
 
 @RestController
 @RequestMapping("/api/v1/specifications")
@@ -27,7 +29,8 @@ class SpecificationController @Autowired constructor(
     private val specificationPersistenceService: SpecificationPersistenceService,
     private val synchronizationService: SynchronizationService,
     private val specificationDtoMapper: SpecificationDtoMapper,
-    private val specificationPermissionManager: SpecificationPermissionManager
+    private val specificationPermissionManager: SpecificationPermissionManager,
+    private val permissionManager: SpecificationPermissionManager
 ) {
 
     @PostMapping
@@ -37,10 +40,15 @@ class SpecificationController @Autowired constructor(
 
         specificationPersistenceService.save(specification)
         val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
-        val id = specificationFileDto.id ?: UUID.randomUUID().toString()
-        val asLong = try { parseLong(id) } catch (exc: NumberFormatException) { throw GiveUpOnAclException() }
-        specificationPermissionManager.addPermission(asLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.READ)
-        specificationPermissionManager.addPermission(asLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.WRITE)
+
+        try {
+            val idAsLong = specification.id.id.toLong()
+            specificationPermissionManager.addPermission(idAsLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.READ)
+            specificationPermissionManager.addPermission(idAsLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.WRITE)
+        } catch (exc: NumberFormatException) {
+            logger.info(exc.toString())
+            throw GiveUpOnAclException()
+        }
 
         return specificationDtoMapper.fromDomain(specification)
     }
@@ -69,6 +77,36 @@ class SpecificationController @Autowired constructor(
                 throw MismatchedSpecificationIdException(idFromFile, specificationIdFromPath)
         }
         return specificationIdFromPath
+    }
+
+    @PutMapping("/api/v1/specifications/{specificationId}/chmod")
+    fun chmodVersion(@PathVariable specificationId: String,
+                     @RequestParam(value = "read", required = false) grantRead: Boolean,
+                     @RequestParam(value = "write", required = false) grantWrite: Boolean
+    ) {
+        // TODO: Return 400 when principal doesn't exist (should be one of user, group, or 'all', 'everyone' keyword)
+
+        val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
+        val sid = PrincipalSid(currentlyAuthenticatedUser.userId)
+
+        try {
+            val idAsLong = specificationId.toLong()
+            // exceptions may be thrown when attempting modifications, which are not yet handled
+            changePermission(idAsLong, grantRead, sid, BasePermission.READ)
+            changePermission(idAsLong, grantWrite, sid, BasePermission.WRITE)
+
+        } catch (exc: NumberFormatException) {
+            logger.info(exc.toString())
+            throw GiveUpOnAclException()
+        }
+
+    }
+
+    private fun changePermission(specificationId: Long, grant: Boolean, sid: PrincipalSid, permission: Permission) {
+        if (grant)
+            permissionManager.addPermission(specificationId, sid, permission)
+        else
+            permissionManager.removePermission(specificationId, sid, permission)
     }
 
     @GetMapping
