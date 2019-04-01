@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.config
 
 import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissionManager
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
+import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationToken
 import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -56,17 +57,14 @@ class WebConfiguration {
 
 @Configuration
 class AclInterceptor : HandlerInterceptorAdapter() {
-    @Autowired lateinit var jwtAuthenticationProvider: JwtAuthenticationProvider
     @Autowired lateinit var permissionManager: SpecificationPermissionManager
 
     override fun preHandle(
             request: HttpServletRequest,
             response: HttpServletResponse,
             handler: Any): Boolean {
-        val header = request.getHeader("Authorization")
-        val username = jwtAuthenticationProvider.extractUsername(header)
-        val sid = PrincipalSid(username)
-        logger.info(SecurityContextHolder.getContext().authentication.toString())
+        val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
+        val sid = PrincipalSid(currentlyAuthenticatedUser.userId)
 
         val pathVariables = AntPathMatcher("/")
                 .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/versions/{version}", request.servletPath)
