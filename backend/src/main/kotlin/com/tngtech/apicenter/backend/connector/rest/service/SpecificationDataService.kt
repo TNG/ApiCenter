@@ -72,12 +72,18 @@ class SpecificationDataService @Autowired constructor(
             null
         }
 
-    fun extractId(json: String): String? =
-        try {
-            JsonPath.read<String>(json, "$.info.x-api-id")
+    fun extractId(json: String): String? {
+        val idPath = "$.info.x-api-id"
+        return try {
+            JsonPath.read<String>(json, idPath)
         } catch (exception: ClassCastException) {
-            JsonPath.read<Integer>(json, "$.info.x-api-id").toString()
+            try {
+                JsonPath.read<Integer>(json, idPath).toString()
+            } catch (exception: ClassCastException) {
+                JsonPath.read<Double>(json, idPath).toString()
+            }
         } catch (exception: PathNotFoundException) {
             null
         }
+    }
 }
