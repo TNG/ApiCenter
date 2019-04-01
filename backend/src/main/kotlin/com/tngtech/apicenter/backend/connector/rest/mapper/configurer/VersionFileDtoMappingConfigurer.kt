@@ -1,10 +1,8 @@
 package com.tngtech.apicenter.backend.connector.rest.mapper.configurer
 
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.converter.VersionFileDtoConverter
-import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
 import ma.glasnost.orika.MapperFactory
 import net.rakugakibox.spring.boot.orika.OrikaMapperFactoryConfigurer
@@ -24,11 +22,6 @@ class VersionFileDtoMappingConfigurer constructor(private val versionFileDtoConv
 
         orikaMapperFactory.classMap(VersionFileDto::class.java, Version::class.java)
             .field("id", "metadata.id.id")
-            .byDefault()
-            .register()
-
-        orikaMapperFactory.classMap(Specification::class.java, SpecificationDto::class.java)
-            .field("id.id", "id")
             .byDefault()
             .register()
 
