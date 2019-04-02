@@ -33,6 +33,11 @@ export class PermissionsFormComponent implements OnInit {
   }
 
   public async chmodSpecification(id, targetUserId, grantRead, grantWrite) {
+    if (!targetUserId) {
+      this.error = 'Username must not be blank';
+      return;
+    }
+
     this.specificationService.chmodSpecification(id, targetUserId, grantRead, grantWrite)
       .subscribe(event => {
           this.router.navigateByUrl('/');
@@ -40,6 +45,7 @@ export class PermissionsFormComponent implements OnInit {
         error => this.error = error.error.userMessage
         // eg. current user doesn't have permission to modify permissions
         // eg. this spec doesn't have a long castable id
+        // eg. target user doesn't exist
       );
   }
 

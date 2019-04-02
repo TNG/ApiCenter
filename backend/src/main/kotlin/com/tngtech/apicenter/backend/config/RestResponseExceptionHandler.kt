@@ -55,5 +55,9 @@ class RestResponseExceptionHandler {
     @ExceptionHandler(GiveUpOnAclException::class)
     fun handleBadRequest(exception: GiveUpOnAclException) =
             makeResponseEntity("Only Strings representing Longs can be parsed", HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(AclPermissionDeniedException::class)
+    fun handleBadRequest(exception: AclPermissionDeniedException) =
+            makeResponseEntity("User ${exception.userId} doesn't have edit permission on specification ${exception.specificationId}", HttpStatus.FORBIDDEN)
 }
 

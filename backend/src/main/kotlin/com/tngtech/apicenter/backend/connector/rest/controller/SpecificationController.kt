@@ -9,6 +9,7 @@ import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationTo
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.exceptions.AclPermissionDeniedException
 import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedSpecificationIdException
 import org.springframework.beans.factory.annotation.Autowired
@@ -92,8 +93,8 @@ class SpecificationController @Autowired constructor(
         logger.info(specificationId)
         logger.info(userId)
 
-        val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
-        val currentUserSid = PrincipalSid(currentlyAuthenticatedUser.userId)
+        val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+        val currentUserSid = PrincipalSid(currentUserId)
         val targetUserSid = PrincipalSid(userId)
 
         try {
@@ -102,6 +103,8 @@ class SpecificationController @Autowired constructor(
             if (permissionManager.hasPermission(idAsLong, currentUserSid, BasePermission.WRITE)) {
                 changePermission(idAsLong, grantRead.toBoolean(), targetUserSid, BasePermission.READ)
                 changePermission(idAsLong, grantWrite.toBoolean(), targetUserSid, BasePermission.WRITE)
+            } else {
+                throw AclPermissionDeniedException(specificationId, currentUserId)
             }
 
         } catch (exc: NumberFormatException) {
