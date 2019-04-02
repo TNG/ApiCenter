@@ -49,9 +49,11 @@
               <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
                       (click)="synchronize(specification)"></button>
               <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadSpecification(specification, selectedFormat)"></button>
-              <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
-              <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
-              <button class="btn oi oi-aperture" [routerLink]="['edit-permissions', specification.id]"></button>
+              <span *ngIf="specification.showEditButtons">
+                <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
+                <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
+                <button class="btn oi oi-aperture" [routerLink]="['edit-permissions', specification.id]"></button>
+              </span>
             </td>
           </tr>
           </tbody>

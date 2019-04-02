@@ -5,5 +5,6 @@ data class SpecificationDto(
     val title: String,
     val description: String?,
     val versions: List<VersionDto>,
-    val remoteAddress: String?
+    val remoteAddress: String?,
+    val showEditButtons: Boolean
 )

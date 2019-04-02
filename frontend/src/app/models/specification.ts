@@ -6,6 +6,7 @@ export class Specification {
   description: string;
   versions: Version[];
   remoteAddress: string;
+  showEditButtons: boolean;
 
   constructor(id: string, title: string, description: string, versions: Version[], remoteAddress: string) {
     this.id = id;
