@@ -14,6 +14,7 @@ import org.springframework.security.acls.model.MutableAcl
 import org.springframework.security.acls.model.ObjectIdentity
 import java.util.*
 import mu.KotlinLogging
+import org.springframework.security.acls.domain.BasePermission
 import java.lang.IllegalArgumentException
 
 private val logger = KotlinLogging.logger {  }
@@ -27,20 +28,22 @@ interface AclManager {
 @Service
 class SpecificationPermissionManager @Autowired constructor(private val aclManagerService : AclManagerService) {
     fun addPermission(id: Long, sid: Sid, permission: Permission) {
-        logger.info("Add $permission to spec $id ")
+        logger.info("Add ${permissionToString(permission)} permission to spec $id ")
         return aclManagerService.addPermission(Long::class.java, id, sid, permission)
     }
 
     fun removePermission(id: Long, sid: Sid, permission: Permission) {
-        logger.info("Remove $permission from spec $id ")
+        logger.info("Remove ${permissionToString(permission)} permission from spec $id ")
         return aclManagerService.removePermission(Long::class.java, id, sid, permission)
     }
 
     fun hasPermission(id: Long, sid: Sid, permission: Permission): Boolean {
         val granted = aclManagerService.hasPermission(Long::class.java, id, sid, permission)
-        logger.info("$granted that $id has permission $permission")
+        logger.info("$granted that $sid has ${permissionToString(permission)} permission on resource $id")
         return granted
     }
+
+    private fun permissionToString(permission: Permission): String = if (permission == BasePermission.READ) "READ" else "WRITE"
 }
 
 @Service
