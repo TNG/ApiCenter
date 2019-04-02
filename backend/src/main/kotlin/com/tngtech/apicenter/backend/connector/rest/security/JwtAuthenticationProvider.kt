@@ -3,8 +3,10 @@ package com.tngtech.apicenter.backend.connector.rest.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.acls.domain.PrincipalSid
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 @Component
@@ -30,6 +32,16 @@ class JwtAuthenticationProvider : AuthenticationProvider {
                 .verify(authorizationHeader.replace("Bearer ", ""))
                 .subject
     }
+
+    fun getCurrentUser() =
+            try {
+                (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+            } catch (exception: ClassCastException) {
+                "user"
+            }
+
+    fun getCurrentPrincipal() =
+            PrincipalSid(getCurrentUser())
 
     override fun supports(authentication: Class<*>?) = true
 }

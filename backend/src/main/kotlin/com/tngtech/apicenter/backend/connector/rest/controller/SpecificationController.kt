@@ -5,7 +5,7 @@ import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissi
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationToken
+import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.security.acls.domain.BasePermission
 import org.springframework.security.acls.domain.PrincipalSid
-import org.springframework.security.core.context.SecurityContextHolder
 import java.lang.NumberFormatException
 import mu.KotlinLogging
 import org.springframework.security.acls.model.Permission
@@ -30,8 +29,8 @@ class SpecificationController @Autowired constructor(
     private val specificationPersistenceService: SpecificationPersistenceService,
     private val synchronizationService: SynchronizationService,
     private val specificationDtoMapper: SpecificationDtoMapper,
-    private val specificationPermissionManager: SpecificationPermissionManager,
-    private val permissionManager: SpecificationPermissionManager
+    private val permissionManager: SpecificationPermissionManager,
+    private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
 
     @PostMapping
@@ -42,11 +41,10 @@ class SpecificationController @Autowired constructor(
         specificationPersistenceService.save(specification)
 
         try {
-            val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
-            val currentUserSid = PrincipalSid(currentUserId)
+            val currentUserSid = jwtAuthenticationProvider.getCurrentPrincipal()
             val idAsLong = specification.id.id.toLong()
-            specificationPermissionManager.addPermission(idAsLong, currentUserSid, BasePermission.READ)
-            specificationPermissionManager.addPermission(idAsLong, currentUserSid, BasePermission.WRITE)
+            permissionManager.addPermission(idAsLong, currentUserSid, BasePermission.READ)
+            permissionManager.addPermission(idAsLong, currentUserSid, BasePermission.WRITE)
         } catch (exc: NumberFormatException) {
             // Permissions cannot be set on this object, nothing to do
         }
@@ -68,8 +66,7 @@ class SpecificationController @Autowired constructor(
         )
 
         try {
-            val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
-            val currentUserSid = PrincipalSid(currentUserId)
+            val currentUserSid = jwtAuthenticationProvider.getCurrentPrincipal()
             val idAsLong = specificationId.toLong()
             if (!permissionManager.hasPermission(idAsLong, currentUserSid, BasePermission.WRITE))
                 throw AclPermissionDeniedException(specificationId)
@@ -102,9 +99,7 @@ class SpecificationController @Autowired constructor(
         logger.info(specificationId)
         logger.info(userId)
 
-        val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
-        val currentUserSid = PrincipalSid(currentUserId)
-
+        val currentUserSid = jwtAuthenticationProvider.getCurrentPrincipal()
         val targetUserSid = PrincipalSid(userId)
 
         try {
@@ -167,8 +162,7 @@ class SpecificationController @Autowired constructor(
                 .filter { spec -> userHasPermission(spec.id, BasePermission.READ) }
 
     private fun userHasPermission(specificationId: String, permission: Permission): Boolean {
-        val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
-        val currentUserSid = PrincipalSid(currentUserId)
+        val currentUserSid = jwtAuthenticationProvider.getCurrentPrincipal()
 
         return try {
             permissionManager.hasPermission(specificationId.toLong(), currentUserSid, permission)

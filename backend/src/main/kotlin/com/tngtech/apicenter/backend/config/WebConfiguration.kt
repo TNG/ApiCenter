@@ -2,14 +2,10 @@ package com.tngtech.apicenter.backend.config
 
 import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissionManager
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
-import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationToken
-import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.acls.domain.BasePermission
-import org.springframework.security.acls.domain.PrincipalSid
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -57,18 +53,22 @@ class WebConfiguration {
 }
 
 @Configuration
-class AclInterceptor : HandlerInterceptorAdapter() {
+class AclInterceptor constructor(private val jwtAuthenticationProvider: JwtAuthenticationProvider): HandlerInterceptorAdapter() {
     @Autowired lateinit var permissionManager: SpecificationPermissionManager
 
     override fun preHandle(
             request: HttpServletRequest,
             response: HttpServletResponse,
             handler: Any): Boolean {
-        val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
-        val sid = PrincipalSid(currentlyAuthenticatedUser.userId)
+        val sid = jwtAuthenticationProvider.getCurrentPrincipal()
 
-        val pathVariables = AntPathMatcher("/")
-                .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/versions/{version}", request.servletPath)
+        val pathVariables = try {
+            AntPathMatcher("/")
+                    .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/versions/{version}", request.servletPath)
+        } catch (exception: IllegalStateException) {
+            return true
+        }
+
         val asLong = try {
             parseLong(pathVariables["specificationId"])
         } catch (exc: NumberFormatException) {

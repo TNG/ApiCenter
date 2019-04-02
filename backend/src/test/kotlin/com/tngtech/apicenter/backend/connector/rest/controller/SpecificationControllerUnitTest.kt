@@ -2,11 +2,13 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissionManager
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
+import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
@@ -15,6 +17,8 @@ import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.springframework.security.acls.domain.PrincipalSid
+import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 internal class SpecificationControllerUnitTest {
@@ -32,11 +36,17 @@ internal class SpecificationControllerUnitTest {
 
     private val specificationDtoMapper: SpecificationDtoMapper = mock()
 
+    private val specificationPermissionManager: SpecificationPermissionManager = mock()
+
+    private val jwtAuthenticationProvider: JwtAuthenticationProvider = mock()
+
     private val specificationController: SpecificationController =
         SpecificationController(
             specificationPersistenceService,
             synchronizationService,
-            specificationDtoMapper
+            specificationDtoMapper,
+            specificationPermissionManager,
+            jwtAuthenticationProvider
         )
 
     @Test
@@ -56,7 +66,8 @@ internal class SpecificationControllerUnitTest {
             "Swagger Petstore",
             "Description",
             listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            null
+            null,
+            false
         )
 
         given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
@@ -88,7 +99,8 @@ internal class SpecificationControllerUnitTest {
             "Swagger Petstore",
             "Description",
             listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            null
+            null,
+            false
         )
 
         given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
@@ -104,7 +116,8 @@ internal class SpecificationControllerUnitTest {
                 "Swagger Petstore",
                 "Description",
                 listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-                null
+                null,
+                false
             )
         )
     }
@@ -125,7 +138,8 @@ internal class SpecificationControllerUnitTest {
             "Test",
             "Description",
             listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            "http://swaggerpetstore.com/docs"
+            "http://swaggerpetstore.com/docs",
+            false
         )
 
         given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
@@ -147,7 +161,8 @@ internal class SpecificationControllerUnitTest {
                 uuid, "Test",
                 "Description",
                 listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-                "http://swaggerpetstore.com/docs"
+                "http://swaggerpetstore.com/docs",
+                false
             )
         )
     }
