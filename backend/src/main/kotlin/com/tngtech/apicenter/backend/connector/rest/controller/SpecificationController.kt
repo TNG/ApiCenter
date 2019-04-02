@@ -40,14 +40,15 @@ class SpecificationController @Autowired constructor(
         val specification = specificationDtoMapper.toDomain(specificationFileDto)
 
         specificationPersistenceService.save(specification)
-        val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
 
         try {
+            val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+            val currentUserSid = PrincipalSid(currentUserId)
             val idAsLong = specification.id.id.toLong()
-            specificationPermissionManager.addPermission(idAsLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.READ)
-            specificationPermissionManager.addPermission(idAsLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.WRITE)
+            specificationPermissionManager.addPermission(idAsLong, currentUserSid, BasePermission.READ)
+            specificationPermissionManager.addPermission(idAsLong, currentUserSid, BasePermission.WRITE)
         } catch (exc: NumberFormatException) {
-//            throw GiveUpOnAclException()
+            // Permissions cannot be set on this object, nothing to do
         }
 
         return specificationDtoMapper.fromDomain(specification)
@@ -66,8 +67,17 @@ class SpecificationController @Autowired constructor(
             )
         )
 
-        specificationPersistenceService.save(specification)
+        try {
+            val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+            val currentUserSid = PrincipalSid(currentUserId)
+            val idAsLong = specificationId.toLong()
+            if (!permissionManager.hasPermission(idAsLong, currentUserSid, BasePermission.WRITE))
+                throw AclPermissionDeniedException(specificationId)
+        } catch (exception: NumberFormatException) {
+            // Permissions cannot be set on this object, nothing to do
+        }
 
+        specificationPersistenceService.save(specification)
         return specificationDtoMapper.fromDomain(specification)
     }
 
@@ -94,6 +104,7 @@ class SpecificationController @Autowired constructor(
 
         val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
         val currentUserSid = PrincipalSid(currentUserId)
+
         val targetUserSid = PrincipalSid(userId)
 
         try {
