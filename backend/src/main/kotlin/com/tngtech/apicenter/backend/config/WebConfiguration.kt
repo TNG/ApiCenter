@@ -69,7 +69,11 @@ class AclInterceptor : HandlerInterceptorAdapter() {
 
         val pathVariables = AntPathMatcher("/")
                 .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/versions/{version}", request.servletPath)
-        val asLong = try { parseLong(pathVariables["specificationId"]) } catch (exc: NumberFormatException) { throw GiveUpOnAclException() }
+        val asLong = try {
+            parseLong(pathVariables["specificationId"])
+        } catch (exc: NumberFormatException) {
+            return true
+        }
 
         return when (request.method) {
             "GET" ->                    permissionManager.hasPermission(asLong, sid, BasePermission.READ)
