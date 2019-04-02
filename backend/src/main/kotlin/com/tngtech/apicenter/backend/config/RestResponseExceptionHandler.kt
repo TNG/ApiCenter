@@ -30,7 +30,7 @@ class RestResponseExceptionHandler {
 
     @ExceptionHandler(SpecificationNotFoundException::class)
     fun handleNotFound(exception: SpecificationNotFoundException): ResponseEntity<ErrorMessage> {
-        logger.info("Specification ${exception.specificationId} ${exception.version} not found", exception)
+        logger.info("Specification ${exception.specificationId} ${exception.version} not found")
         return makeResponseEntity("Specification not found", HttpStatus.NOT_FOUND)
     }
 
@@ -53,11 +53,11 @@ class RestResponseExceptionHandler {
                     "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(GiveUpOnAclException::class)
-    fun handleBadRequest(exception: GiveUpOnAclException) =
+    fun handleUncastableId(exception: GiveUpOnAclException) =
             makeResponseEntity("Only Strings representing Longs can be parsed", HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(AclPermissionDeniedException::class)
-    fun handleBadRequest(exception: AclPermissionDeniedException) =
+    fun handlePermissionDenied(exception: AclPermissionDeniedException) =
             makeResponseEntity("You don't have edit permission on specification ${exception.specificationId}", HttpStatus.FORBIDDEN)
 }
 
