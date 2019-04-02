@@ -45,7 +45,7 @@ export class SpecificationService {
       .set('grantRead', String(grantRead))
       .set('grantWrite', String(grantWrite));
 
-    return this.http.post<Specification>(this.specificationsUrl + '/' + specificationId + '/chmod/' + targetUserId, {params})
+    return this.http.put<Specification>(this.specificationsUrl + '/' + specificationId + '/chmod/' + targetUserId, {}, {params})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 

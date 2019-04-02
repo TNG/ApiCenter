@@ -79,21 +79,30 @@ class SpecificationController @Autowired constructor(
         return specificationIdFromPath
     }
 
-    @PutMapping("/api/v1/specifications/{specificationId}/chmod")
+    @PutMapping("/{specificationId}/chmod/{userId}")
     fun chmodVersion(@PathVariable specificationId: String,
-                     @RequestParam(value = "read", required = false) grantRead: Boolean,
-                     @RequestParam(value = "write", required = false) grantWrite: Boolean
+                     @PathVariable userId: String,
+                     @RequestParam("grantRead") grantRead: String,
+                     @RequestParam("grantWrite") grantWrite: String
     ) {
         // TODO: Return 400 when principal doesn't exist (should be one of user, group, or 'all', 'everyone' keyword)
 
+        logger.info(grantRead)
+        logger.info(grantWrite)
+        logger.info(specificationId)
+        logger.info(userId)
+
         val currentlyAuthenticatedUser = SecurityContextHolder.getContext().authentication as JwtAuthenticationToken
-        val sid = PrincipalSid(currentlyAuthenticatedUser.userId)
+        val currentUserSid = PrincipalSid(currentlyAuthenticatedUser.userId)
+        val targetUserSid = PrincipalSid(userId)
 
         try {
             val idAsLong = specificationId.toLong()
             // exceptions may be thrown when attempting modifications, which are not yet handled
-            changePermission(idAsLong, grantRead, sid, BasePermission.READ)
-            changePermission(idAsLong, grantWrite, sid, BasePermission.WRITE)
+            if (permissionManager.hasPermission(idAsLong, currentUserSid, BasePermission.WRITE)) {
+                changePermission(idAsLong, grantRead.toBoolean(), targetUserSid, BasePermission.READ)
+                changePermission(idAsLong, grantWrite.toBoolean(), targetUserSid, BasePermission.WRITE)
+            }
 
         } catch (exc: NumberFormatException) {
             logger.info(exc.toString())
