@@ -42,6 +42,7 @@ class WebConfiguration {
                 registry.addViewController("/specifications/*/*").setViewName("forward:/index.html")
                 registry.addViewController("/add-specifications").setViewName("forward:/index.html")
                 registry.addViewController("/edit-specifications/**").setViewName("forward:/index.html")
+                registry.addViewController("/edit-permissions/**").setViewName("forward:/index.html")
                 registry.addViewController("/search").setViewName("forward:/index.html")
                 registry.addViewController("/search/**").setViewName("forward:/index.html")
                 registry.addViewController("/login").setViewName("forward:/index.html")
