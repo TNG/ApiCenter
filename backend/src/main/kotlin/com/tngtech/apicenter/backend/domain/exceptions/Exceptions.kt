@@ -6,4 +6,4 @@ class VersionAlreadyExistsException(val specificationTitle: String) : RuntimeExc
 class InvalidSpecificationIdException(val userDefinedId: String): RuntimeException()
 class MismatchedSpecificationIdException(val userDefinedId: String, val urlPathId: String): RuntimeException()
 class GiveUpOnAclException: RuntimeException()
-class AclPermissionDeniedException(val specificationId: String, val userId: String): RuntimeException()
+class AclPermissionDeniedException(val specificationId: String): RuntimeException()

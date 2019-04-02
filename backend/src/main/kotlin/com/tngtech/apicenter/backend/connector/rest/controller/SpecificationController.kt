@@ -47,8 +47,7 @@ class SpecificationController @Autowired constructor(
             specificationPermissionManager.addPermission(idAsLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.READ)
             specificationPermissionManager.addPermission(idAsLong, PrincipalSid(currentlyAuthenticatedUser.userId), BasePermission.WRITE)
         } catch (exc: NumberFormatException) {
-            logger.info(exc.toString())
-            throw GiveUpOnAclException()
+//            throw GiveUpOnAclException()
         }
 
         return specificationDtoMapper.fromDomain(specification)
@@ -104,11 +103,10 @@ class SpecificationController @Autowired constructor(
                 changePermission(idAsLong, grantRead.toBoolean(), targetUserSid, BasePermission.READ)
                 changePermission(idAsLong, grantWrite.toBoolean(), targetUserSid, BasePermission.WRITE)
             } else {
-                throw AclPermissionDeniedException(specificationId, currentUserId)
+                throw AclPermissionDeniedException(specificationId)
             }
 
         } catch (exc: NumberFormatException) {
-            logger.info(exc.toString())
             throw GiveUpOnAclException()
         }
 
@@ -123,18 +121,27 @@ class SpecificationController @Autowired constructor(
 
     @GetMapping
     fun findAllSpecifications(): List<SpecificationDto> =
-        specificationPersistenceService.findAll().map { spec -> specificationDtoMapper.fromDomain(spec) }
+        specificationPersistenceService.findAll()
+                .map { spec -> specificationDtoMapper.fromDomain(spec) }
+                .filter { spec -> userHasPermission(spec.id, BasePermission.READ) }
 
     @GetMapping("/{specificationId}")
     fun findSpecification(@PathVariable specificationId: String): SpecificationDto {
-        val specification = specificationPersistenceService.findOne(ServiceId(specificationId))
-        return specification?.let { specificationDtoMapper.fromDomain(it) } ?:
+        val specificationDto = specificationPersistenceService.findOne(ServiceId(specificationId))?.let { specificationDtoMapper.fromDomain(it) }
+        return if (specificationDto != null && userHasPermission(specificationDto.id, BasePermission.READ)) {
+            specificationDto
+        } else {
             throw SpecificationNotFoundException(specificationId)
+        }
     }
 
     @DeleteMapping("/{specificationId}")
     fun deleteSpecification(@PathVariable specificationId: String) {
-        specificationPersistenceService.delete(ServiceId(specificationId))
+        if (userHasPermission(specificationId, BasePermission.WRITE)) {
+            specificationPersistenceService.delete(ServiceId(specificationId))
+        } else {
+            throw AclPermissionDeniedException(specificationId)
+        }
     }
 
     @PostMapping("/{specificationId}/synchronize")
@@ -144,5 +151,18 @@ class SpecificationController @Autowired constructor(
 
     @GetMapping("/search/{searchString}")
     fun searchSpecification(@PathVariable searchString: String): List<SpecificationDto> =
-        specificationPersistenceService.search(searchString).map { spec -> specificationDtoMapper.fromDomain(spec) }
+        specificationPersistenceService.search(searchString)
+                .map { spec -> specificationDtoMapper.fromDomain(spec) }
+                .filter { spec -> userHasPermission(spec.id, BasePermission.READ) }
+
+    private fun userHasPermission(specificationId: String, permission: Permission): Boolean {
+        val currentUserId = (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+        val currentUserSid = PrincipalSid(currentUserId)
+
+        return try {
+            permissionManager.hasPermission(specificationId.toLong(), currentUserSid, permission)
+        } catch (exc: NumberFormatException) {
+            true
+        }
+    }
 }

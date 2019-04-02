@@ -58,6 +58,6 @@ class RestResponseExceptionHandler {
 
     @ExceptionHandler(AclPermissionDeniedException::class)
     fun handleBadRequest(exception: AclPermissionDeniedException) =
-            makeResponseEntity("User ${exception.userId} doesn't have edit permission on specification ${exception.specificationId}", HttpStatus.FORBIDDEN)
+            makeResponseEntity("You don't have edit permission on specification ${exception.specificationId}", HttpStatus.FORBIDDEN)
 }
 
