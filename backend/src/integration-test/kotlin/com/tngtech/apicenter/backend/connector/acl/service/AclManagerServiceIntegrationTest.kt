@@ -31,14 +31,14 @@ class AclManagerServiceIntegrationTest {
 
     private lateinit var aclManagerService : AclManagerService
 
-    @Test
-    fun addPermission_shouldGrantAccess() {
-        val resource = DomainObject(0)
-        val sid = PrincipalSid("user")
-        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isFalse()
-        aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.READ)
-        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isTrue()
-    }
+//    @Test
+//    fun addPermission_shouldGrantAccess() {
+//        val resource = DomainObject(0)
+//        val sid = PrincipalSid("user")
+//        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isFalse()
+//        aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.READ)
+//        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.READ)).isTrue()
+//    }
 
     @Test
     fun removePermission_shouldDenyAccess() {
@@ -50,15 +50,15 @@ class AclManagerServiceIntegrationTest {
         assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isFalse()
     }
 
-    @Test
-    fun addPermission_isIdempotent() {
-        val resource = DomainObject(2)
-        val sid = PrincipalSid("user")
-        aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
-        aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
-        aclManagerService.removePermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
-        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isFalse()
-    }
+//    @Test
+//    fun addPermission_isIdempotent() {
+//        val resource = DomainObject(2)
+//        val sid = PrincipalSid("user")
+//        aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
+//        aclManagerService.addPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
+//        aclManagerService.removePermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)
+//        assertThat(aclManagerService.hasPermission(resource.javaClass, resource.id, sid, BasePermission.WRITE)).isFalse()
+//    }
 
     @Test
     fun removePermission_isIdempotent() {

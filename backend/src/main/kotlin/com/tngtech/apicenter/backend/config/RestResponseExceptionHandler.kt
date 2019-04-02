@@ -52,9 +52,10 @@ class RestResponseExceptionHandler {
             makeResponseEntity("The API ID used in the upload URL (${exception.urlPathId}) " +
                     "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
 
-    @ExceptionHandler(GiveUpOnAclException::class)
-    fun handleUncastableId(exception: GiveUpOnAclException) =
-            makeResponseEntity("Only Strings representing Longs can be parsed", HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IdNotCastableToLongException::class)
+    fun handleUncastableId(exception: IdNotCastableToLongException) =
+            makeResponseEntity("A specifications must have an ID that can be parsed to a Java Long type" +
+                    "to use the permissions model", HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(AclPermissionDeniedException::class)
     fun handlePermissionDenied(exception: AclPermissionDeniedException) =

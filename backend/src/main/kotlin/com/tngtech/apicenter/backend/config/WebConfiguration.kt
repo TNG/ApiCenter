@@ -12,13 +12,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
-import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import mu.KotlinLogging
 import java.lang.Long.parseLong
-
-private val logger = KotlinLogging.logger {  }
 
 @Configuration
 class WebConfiguration {

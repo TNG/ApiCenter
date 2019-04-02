@@ -24,8 +24,7 @@ export class PermissionsFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.specificationService.getSpecification(params['id']).subscribe((specification: Specification) => {
         this.specification = specification;
-        // Ideally, check what permission already exist on this object and set the initial state of the checkboxes
-        // Need an extra GET query, with this target user
+        // TODO: check what permission already exist on this object, use to set the initial checkbox states
         this.grantRead = false;
         this.grantWrite = false;
       });
@@ -43,9 +42,6 @@ export class PermissionsFormComponent implements OnInit {
           this.router.navigateByUrl('/');
         },
         error => this.error = error.error.userMessage
-        // eg. current user doesn't have permission to modify permissions
-        // eg. this spec doesn't have a long castable id
-        // eg. target user doesn't exist
       );
   }
 

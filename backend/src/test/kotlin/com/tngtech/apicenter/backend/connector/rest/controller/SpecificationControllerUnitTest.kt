@@ -17,8 +17,6 @@ import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import org.springframework.security.acls.domain.PrincipalSid
-import org.springframework.security.core.context.SecurityContextHolder
 import java.util.*
 
 internal class SpecificationControllerUnitTest {

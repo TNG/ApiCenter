@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-import mu.KotlinLogging
 
 @EnableWebSecurity
 @Order(Ordered.HIGHEST_PRECEDENCE)

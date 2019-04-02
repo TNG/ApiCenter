@@ -9,8 +9,7 @@ import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationPr
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.exceptions.AclPermissionDeniedException
-import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
+import com.tngtech.apicenter.backend.domain.exceptions.IdNotCastableToLongException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedSpecificationIdException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -80,11 +79,9 @@ class SpecificationController @Autowired constructor(
     @PutMapping("/{specificationId}/chmod/{userId}")
     fun chmodVersion(@PathVariable specificationId: String,
                      @PathVariable userId: String,
-                     @RequestParam("grantRead") grantRead: String,
-                     @RequestParam("grantWrite") grantWrite: String
+                     @RequestParam(value = "grantRead", defaultValue = "false") grantRead: String,
+                     @RequestParam(value = "grantWrite", defaultValue = "false") grantWrite: String
     ) {
-        // TODO: Return 400 when principal doesn't exist (should be one of user, group, or 'all', 'everyone' keyword)
-
         logger.info(grantRead)
         logger.info(grantWrite)
         logger.info(specificationId)
@@ -92,13 +89,13 @@ class SpecificationController @Autowired constructor(
 
         try {
             val idAsLong = specificationId.toLong()
-            // exceptions may be thrown when attempting modifications, which are not yet handled
+            // TODO: Add exception if the target principal or specification doesn't exist
             val targetUserSid = PrincipalSid(userId)
             changePermission(idAsLong, grantRead.toBoolean(), targetUserSid, BasePermission.READ)
             changePermission(idAsLong, grantWrite.toBoolean(), targetUserSid, BasePermission.WRITE)
 
         } catch (exc: NumberFormatException) {
-            throw GiveUpOnAclException()
+            throw IdNotCastableToLongException()
         }
 
     }

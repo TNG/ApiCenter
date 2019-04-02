@@ -7,24 +7,14 @@ import com.tngtech.apicenter.backend.domain.entity.Version
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.VersionDtoMapper
 import com.tngtech.apicenter.backend.domain.service.VersionPersistenceService
-import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissionManager
-import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.MediaType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.exceptions.GiveUpOnAclException
-import mu.KotlinLogging
-import org.springframework.security.acls.domain.BasePermission
-import org.springframework.security.acls.domain.PrincipalSid
-import org.springframework.security.core.context.SecurityContextHolder
-import java.lang.Long.parseLong
 
-private val logger = KotlinLogging.logger {}
 private const val MEDIA_TYPE_YAML = "application/yml"
 
 @RestController
-class VersionController constructor(private val versionPersistenceService: VersionPersistenceService,
-                                    private val versionDtoMapper: VersionDtoMapper) {
+class VersionController constructor(private val versionPersistenceService: VersionPersistenceService, private val versionDtoMapper: VersionDtoMapper) {
 
     @RequestMapping("/api/v1/specifications/{specificationId}/versions/{version}",
             produces = [MediaType.APPLICATION_JSON_VALUE,
@@ -56,5 +46,4 @@ class VersionController constructor(private val versionPersistenceService: Versi
     fun deleteVersion(@PathVariable specificationId: String, @PathVariable version: String) {
         versionPersistenceService.delete(ServiceId(specificationId), version)
     }
-
 }
