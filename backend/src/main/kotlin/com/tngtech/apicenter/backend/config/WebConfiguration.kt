@@ -45,8 +45,7 @@ class WebConfiguration {
             }
 
             override fun addInterceptors(registry: InterceptorRegistry) {
-                // Ideally, this would apply to one @RestController, however I couldn't find out if it was possible to specify that
-                registry.addInterceptor(aclInterceptor).addPathPatterns("/api/v1/specifications/*/versions/*")
+                registry.addInterceptor(aclInterceptor).addPathPatterns("/api/v1/specifications/**")
             }
         }
     }
@@ -64,7 +63,7 @@ class AclInterceptor constructor(private val jwtAuthenticationProvider: JwtAuthe
 
         val pathVariables = try {
             AntPathMatcher("/")
-                    .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/versions/{version}", request.servletPath)
+                    .extractUriTemplateVariables("/api/v1/specifications/{specificationId}/**", request.servletPath)
         } catch (exception: IllegalStateException) {
             return true
         }

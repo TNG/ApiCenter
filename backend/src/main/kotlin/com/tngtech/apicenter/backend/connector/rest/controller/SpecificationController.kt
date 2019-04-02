@@ -65,15 +65,6 @@ class SpecificationController @Autowired constructor(
             )
         )
 
-        try {
-            val currentUserSid = jwtAuthenticationProvider.getCurrentPrincipal()
-            val idAsLong = specificationId.toLong()
-            if (!permissionManager.hasPermission(idAsLong, currentUserSid, BasePermission.WRITE))
-                throw AclPermissionDeniedException(specificationId)
-        } catch (exception: NumberFormatException) {
-            // Permissions cannot be set on this object, nothing to do
-        }
-
         specificationPersistenceService.save(specification)
         return specificationDtoMapper.fromDomain(specification)
     }
@@ -99,18 +90,12 @@ class SpecificationController @Autowired constructor(
         logger.info(specificationId)
         logger.info(userId)
 
-        val currentUserSid = jwtAuthenticationProvider.getCurrentPrincipal()
-        val targetUserSid = PrincipalSid(userId)
-
         try {
             val idAsLong = specificationId.toLong()
             // exceptions may be thrown when attempting modifications, which are not yet handled
-            if (permissionManager.hasPermission(idAsLong, currentUserSid, BasePermission.WRITE)) {
-                changePermission(idAsLong, grantRead.toBoolean(), targetUserSid, BasePermission.READ)
-                changePermission(idAsLong, grantWrite.toBoolean(), targetUserSid, BasePermission.WRITE)
-            } else {
-                throw AclPermissionDeniedException(specificationId)
-            }
+            val targetUserSid = PrincipalSid(userId)
+            changePermission(idAsLong, grantRead.toBoolean(), targetUserSid, BasePermission.READ)
+            changePermission(idAsLong, grantWrite.toBoolean(), targetUserSid, BasePermission.WRITE)
 
         } catch (exc: NumberFormatException) {
             throw GiveUpOnAclException()
@@ -133,21 +118,14 @@ class SpecificationController @Autowired constructor(
 
     @GetMapping("/{specificationId}")
     fun findSpecification(@PathVariable specificationId: String): SpecificationDto {
-        val specificationDto = specificationPersistenceService.findOne(ServiceId(specificationId))?.let { specificationDtoMapper.fromDomain(it) }
-        return if (specificationDto != null && userHasPermission(specificationDto.id, BasePermission.READ)) {
-            specificationDto
-        } else {
+        val specification = specificationPersistenceService.findOne(ServiceId(specificationId))
+        return specification?.let { specificationDtoMapper.fromDomain(it) } ?:
             throw SpecificationNotFoundException(specificationId)
-        }
     }
 
     @DeleteMapping("/{specificationId}")
     fun deleteSpecification(@PathVariable specificationId: String) {
-        if (userHasPermission(specificationId, BasePermission.WRITE)) {
-            specificationPersistenceService.delete(ServiceId(specificationId))
-        } else {
-            throw AclPermissionDeniedException(specificationId)
-        }
+        specificationPersistenceService.delete(ServiceId(specificationId))
     }
 
     @PostMapping("/{specificationId}/synchronize")
