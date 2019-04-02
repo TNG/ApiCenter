@@ -51,6 +51,7 @@
               <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadSpecification(specification, selectedFormat)"></button>
               <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
               <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
+              <button class="btn oi oi-aperture" [routerLink]="['edit-permissions', specification.id]"></button>
             </td>
           </tr>
           </tbody>

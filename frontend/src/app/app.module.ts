@@ -23,12 +23,14 @@ import {LoginEvent} from './login.event';
 import {MarkdownModule} from 'ngx-markdown';
 import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper.component';
 import {VersionViewComponent} from './specification-version/version-view.component';
+import {PermissionsFormComponent} from './permissions-form/permissions-form.component';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
   {path: 'specifications/:specificationId/:version', component: VersionViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'edit-specifications/:id', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
+  {path: 'edit-permissions/:id', component: PermissionsFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'login', component: LoginComponent}
@@ -41,6 +43,7 @@ const appRoutes: Routes = [
     SwaggerUiWrapperComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
+    PermissionsFormComponent,
     HeaderComponent,
     SpecificationSearchComponent,
     SpecificationSearchDetailComponent,

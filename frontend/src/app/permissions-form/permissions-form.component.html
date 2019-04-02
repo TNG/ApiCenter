@@ -1,0 +1,31 @@
+<div class="container top-buffer">
+  <div class="row top-buffer">
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <p>Edit permissions</p>
+      <div class="row">
+        <input type="text" placeholder="Target user" [(ngModel)]="targetUser"/>
+      </div>
+      <div>
+        <input type="checkbox" id="view" name="view" [(ngModel)]="grantRead">
+        <label for="view">View</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="edit" name="edit" [(ngModel)]="grantWrite">
+        <label for="edit">Edit</label>
+      </div>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="chmodSpecification(specification.id, targetUser, grantRead, grantWrite)">Upload</button>
+      <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
+    </div>
+  </div>
+</div>
+

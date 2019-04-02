@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import {Specification} from './models/specification';
 import {SpecificationFile} from './models/specificationfile';
@@ -33,6 +33,19 @@ export class SpecificationService {
 
   public updateSpecification(specificationFile: SpecificationFile, specificationId: string): Observable<Specification> {
     return this.http.put<Specification>(this.specificationsUrl + '/' + specificationId, specificationFile)
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
+
+  public chmodSpecification(specificationId: string,
+                            targetUserId: string,
+                            grantRead: boolean,
+                            grantWrite: boolean
+  ): Observable<Specification> {
+    const params = new HttpParams()
+      .set('grantRead', String(grantRead))
+      .set('grantWrite', String(grantWrite));
+
+    return this.http.post<Specification>(this.specificationsUrl + '/' + specificationId + '/chmod/' + targetUserId, {params})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
