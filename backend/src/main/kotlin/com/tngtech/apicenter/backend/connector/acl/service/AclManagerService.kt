@@ -22,6 +22,7 @@ interface AclManager {
     fun <T> addPermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission)
     fun <T> removePermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission)
     fun <T> hasPermission(domainClass: Class<T>, id: Serializable, sid: Sid, permission: Permission): Boolean
+    fun <T> clearPermissions(domainClass: Class<T>, id: Serializable)
 }
 
 @Service
@@ -42,6 +43,10 @@ class SpecificationPermissionManager @Autowired constructor(private val aclManag
         return granted
     }
 
+    fun clearPermissions(id: Long) {
+        aclManagerService.clearPermissions(Long::class.java, id)
+    }
+
     private fun permissionToString(permission: Permission): String = if (permission == BasePermission.READ) "READ" else "WRITE"
 }
 
@@ -56,6 +61,15 @@ class AclManagerService @Autowired constructor(private val aclService: MutableAc
                 val acl = getOrCreateAcl(identity)
                 acl.insertAce(acl.entries.size, permission, sid, true)
                 aclService.updateAcl(acl)
+            }
+        })
+    }
+
+    override fun <T> clearPermissions(domainClass: Class<T>, id: Serializable) {
+        TransactionTemplate(transactionManager).execute(object : TransactionCallbackWithoutResult() {
+            override fun doInTransactionWithoutResult(status: TransactionStatus) {
+                val identity = ObjectIdentityImpl(domainClass, id)
+                aclService.deleteAcl(identity, false)
             }
         })
     }

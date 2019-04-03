@@ -123,6 +123,11 @@ class SpecificationController @Autowired constructor(
     @DeleteMapping("/{specificationId}")
     fun deleteSpecification(@PathVariable specificationId: String) {
         specificationPersistenceService.delete(ServiceId(specificationId))
+
+        try {
+            val idAsLong = specificationId.toLong()
+            permissionManager.clearPermissions(idAsLong)
+        } catch (exc: NumberFormatException) {}
     }
 
     @PostMapping("/{specificationId}/synchronize")
