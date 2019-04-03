@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.config
 
 import com.tngtech.apicenter.backend.connector.acl.service.SpecificationPermissionManager
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -64,16 +65,20 @@ class AclInterceptor constructor(private val jwtAuthenticationProvider: JwtAuthe
             return true
         }
 
+        val id = pathVariables["specificationId"]
         val asLong = try {
-            parseLong(pathVariables["specificationId"])
+            parseLong(id)
         } catch (exc: NumberFormatException) {
             return true
         }
 
-        return when (request.method) {
+        val allowResourceAccess = when (request.method) {
             "GET" ->                    permissionManager.hasPermission(asLong, sid, BasePermission.READ)
             "POST", "PUT", "DELETE" ->  permissionManager.hasPermission(asLong, sid, BasePermission.WRITE)
             else -> false
         }
+
+        return if (allowResourceAccess) true else
+            throw SpecificationNotFoundException(id!!)
     }
 }
