@@ -78,7 +78,7 @@ class SpecificationDataService @Autowired constructor(
             JsonPath.read<String>(json, idPath)
         } catch (exception: ClassCastException) {
             try {
-                JsonPath.read<Integer>(json, idPath).toString()
+                JsonPath.read<Int>(json, idPath).toString()
             } catch (exception: ClassCastException) {
                 JsonPath.read<Double>(json, idPath).toString()
             }
