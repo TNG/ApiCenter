@@ -27,7 +27,9 @@ export class PermissionsFormComponent implements OnInit {
         // TODO: check what permission already exist on this object, use to set the initial checkbox states
         this.grantRead = false;
         this.grantWrite = false;
-      });
+      },
+        error => this.error = error.error.userMessage
+      );
     });
   }
 

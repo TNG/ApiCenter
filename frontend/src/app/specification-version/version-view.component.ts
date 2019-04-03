@@ -22,11 +22,8 @@ export class VersionViewComponent implements OnInit {
         .subscribe(data => {
           this.specification = data;
         },
-      err => {
-          if (err.status === 404) {
-            this.error = 'Version not found';
-          }
-        });
+      error => this.error = error.error.userMessage
+      );
     });
   }
 }
