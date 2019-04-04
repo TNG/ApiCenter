@@ -117,6 +117,13 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   private async getSpecifications() {
-    this.specificationService.getSpecifications().subscribe((data: Specification[]) => this.specifications = data);
+    this.specificationService.getSpecifications().subscribe(
+     (data: Specification[]) => this.specifications = data,
+     error1 => {
+       if (error1.status === 403) {
+         this.error = 'You don\'t have permission to access content on this page';
+       }
+     }
+   );
   }
 }
