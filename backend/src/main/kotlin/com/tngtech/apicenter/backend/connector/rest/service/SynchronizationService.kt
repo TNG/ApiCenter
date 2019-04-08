@@ -19,16 +19,15 @@ class SynchronizationService constructor(
     fun synchronize(specificationId: ServiceId) {
         val specification = specificationPersistenceService.findOne(specificationId)
 
-        if (specification != null) {
-            val remoteAddress = specification.remoteAddress ?: ""
+        specification ?: throw SpecificationNotFoundException(specificationId.id)
 
-            val fileContent = specificationFileService.retrieveFile(remoteAddress)
-            val content = specificationDataService.parseFileContent(fileContent)
-            val metaData = specificationDataService.makeSpecificationMetaData(content, specificationId, remoteAddress)
+        val remoteAddress = specification.remoteAddress ?: ""
 
-            val newVersion = Version(content, metaData)
-            specificationPersistenceService.saveOne(newVersion, specificationId, specification.remoteAddress)
-        } else
-            throw SpecificationNotFoundException(specificationId.id)
+        val fileContent = specificationFileService.retrieveFile(remoteAddress)
+        val content = specificationDataService.parseFileContent(fileContent)
+        val metaData = specificationDataService.makeSpecificationMetaData(content, specificationId, remoteAddress)
+
+        val newVersion = Version(content, metaData)
+        specificationPersistenceService.saveOne(newVersion, specificationId, specification.remoteAddress)
     }
 }
