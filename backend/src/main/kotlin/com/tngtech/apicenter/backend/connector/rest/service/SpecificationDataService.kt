@@ -8,7 +8,6 @@ import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseExcepti
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
-import java.lang.ClassCastException
 
 @Service
 class SpecificationDataService @Autowired constructor(
@@ -73,17 +72,8 @@ class SpecificationDataService @Autowired constructor(
         }
 
     fun extractId(json: String): String? {
-        val idPath = "$.info.x-api-id"
-        return try {
-            JsonPath.read<String>(json, idPath)
-        } catch (exception: ClassCastException) {
-            try {
-                JsonPath.read<Int>(json, idPath).toString()
-            } catch (exception: ClassCastException) {
-                JsonPath.read<Double>(json, idPath).toString()
-            }
-        } catch (exception: PathNotFoundException) {
-            null
-        }
+        val parsedJson = objectMapper.readTree(json)
+        val jsonNode = parsedJson.at("/info/x-api-id")
+        return if (jsonNode.isMissingNode) null else jsonNode.asText()
     }
 }
