@@ -13,7 +13,7 @@ class SpecificationFileService {
     }
 
     fun getLocalOrRemoteFileContent(versionFileDto: VersionFileDto): String {
-        return if (versionFileDto.fileUrl != null && versionFileDto.fileUrl != "") {
+        return if (versionFileDto.fileUrl != null && versionFileDto.fileUrl.isNotBlank()) {
             retrieveFile(versionFileDto.fileUrl)
         } else {
             versionFileDto.fileContent ?: ""

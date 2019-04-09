@@ -8,19 +8,19 @@ import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
+import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import org.junit.Test
 
 class SynchronizationServiceTest {
 
-    private val specificationPersistenceService: SpecificationPersistenceService = mock()
+    private val specificationHandler: SpecificationHandler = mock()
 
     private val specificationFileService: SpecificationFileService = mock()
 
     private val specificationDataService: SpecificationDataService = mock()
 
     private val synchronizationService =
-        SynchronizationService(specificationPersistenceService, specificationFileService, specificationDataService)
+        SynchronizationService(specificationHandler, specificationFileService, specificationDataService)
 
     companion object {
         const val SPECIFICATION_ID = "ff9da045-05f7-4f3d-9801-da609086935c"
@@ -45,7 +45,7 @@ class SynchronizationServiceTest {
             REMOTE_ADDRESS
         )
 
-        given(specificationPersistenceService.findOne(ServiceId(SPECIFICATION_ID))).willReturn(specification)
+        given(specificationHandler.findOne(ServiceId(SPECIFICATION_ID))).willReturn(specification)
         given(specificationFileService.retrieveFile(REMOTE_ADDRESS)).willReturn(UPDATED_SWAGGER_SPECIFICATION)
         given(specificationDataService.parseFileContent(UPDATED_SWAGGER_SPECIFICATION)).willReturn(
             UPDATED_SWAGGER_SPECIFICATION
@@ -54,7 +54,7 @@ class SynchronizationServiceTest {
 
         synchronizationService.synchronize(ServiceId(SPECIFICATION_ID))
 
-        verify(specificationPersistenceService).saveOne(
+        verify(specificationHandler).saveOne(
                 Version(UPDATED_SWAGGER_SPECIFICATION, metadata),
                 id,
                 REMOTE_ADDRESS)

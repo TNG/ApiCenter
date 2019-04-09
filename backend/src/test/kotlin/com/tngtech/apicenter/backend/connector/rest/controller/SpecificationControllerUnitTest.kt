@@ -13,7 +13,7 @@ import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
+import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.*
@@ -27,7 +27,7 @@ internal class SpecificationControllerUnitTest {
     }
     private val metadata = VersionMetaData(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
-    private val specificationPersistenceService: SpecificationPersistenceService = mock()
+    private val specificationHandler: SpecificationHandler = mock()
 
     private val synchronizationService: SynchronizationService = mock()
 
@@ -37,7 +37,7 @@ internal class SpecificationControllerUnitTest {
 
     private val specificationController: SpecificationController =
         SpecificationController(
-            specificationPersistenceService,
+            specificationHandler,
             synchronizationService,
             versionFileDtoMapper,
             specificationDtoMapper
@@ -85,19 +85,8 @@ internal class SpecificationControllerUnitTest {
             "http://swaggerpetstore.com/docs"
         )
 
+        given(specificationHandler.findAll()).willReturn(arrayListOf(specification))
         given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
-
-        given(specificationPersistenceService.findAll()).willReturn(
-            arrayListOf(
-                Specification(
-                    ServiceId(uuid),
-                    "Test",
-                    "Description",
-                    listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-                    "http://swaggerpetstore.com/docs"
-                )
-            )
-        )
 
         assertThat(specificationController.findAllSpecifications()).containsOnly(
             SpecificationDto(

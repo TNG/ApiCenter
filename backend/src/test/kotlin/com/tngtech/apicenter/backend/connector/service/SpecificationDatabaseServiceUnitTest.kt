@@ -2,18 +2,10 @@ package com.tngtech.apicenter.backend.connector.service
 
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
-import com.tngtech.apicenter.backend.connector.database.entity.VersionEntity
-import com.tngtech.apicenter.backend.connector.database.entity.VersionId
 import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
-import com.tngtech.apicenter.backend.connector.database.mapper.VersionEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository
 import com.tngtech.apicenter.backend.connector.database.service.SpecificationDatabaseService
-import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
-import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.entity.Specification
-import com.tngtech.apicenter.backend.domain.entity.Version
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,10 +23,8 @@ internal class SpecificationDatabaseServiceUnitTest {
 
     private val specificationEntityMapper: SpecificationEntityMapper = mock()
 
-    private val versionEntityMapper: VersionEntityMapper = mock()
-
     private val specificationDatabaseService: SpecificationDatabaseService =
-        SpecificationDatabaseService(specificationRepository, entityManager, specificationEntityMapper, versionEntityMapper)
+        SpecificationDatabaseService(specificationRepository, entityManager, specificationEntityMapper)
 
     private val id = "e33dc111-3dd6-40f4-9c54-a64f6b10ab49"
 
