@@ -11,6 +11,7 @@ import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
 import org.junit.Test
 
 class VersionFileDtoConverterTest {
@@ -33,19 +34,20 @@ class VersionFileDtoConverterTest {
             specificationDataService
         )
 
+    @Before
+    fun setup() {
+        given(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
+        given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
+        given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
+        given(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).willReturn(SWAGGER_SPECIFICATION)
+    }
+
     @Test
     fun convert_shouldReturnSpecification() {
         val versionFileDto = VersionFileDto(SWAGGER_SPECIFICATION, id = UUID_STRING)
 
-        given(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).willReturn(
-            SWAGGER_SPECIFICATION
-        )
-        given(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
-        given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
-        given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
-        given(specificationDataService.makeSpecificationMetaData(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), versionFileDto.fileUrl)).willReturn(metadata)
-
         given(specificationFileService.getLocalOrRemoteFileContent(versionFileDto)).willReturn(SWAGGER_SPECIFICATION)
+        given(specificationDataService.makeSpecificationMetaData(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), versionFileDto.fileUrl)).willReturn(metadata)
 
         val version = versionFileDtoConverter.convert(versionFileDto, null, null)
 
@@ -65,10 +67,6 @@ class VersionFileDtoConverterTest {
         given(specificationFileService.retrieveFile(SWAGGER_REMOTE)).willReturn(SWAGGER_SPECIFICATION)
         given(specificationFileService.getLocalOrRemoteFileContent(versionFileDto)).willReturn(SWAGGER_SPECIFICATION)
 
-        given(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
-        given(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
-        given(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).willReturn("Description")
-        given(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).willReturn(SWAGGER_SPECIFICATION)
         given(specificationDataService.makeSpecificationMetaData(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), versionFileDto.fileUrl)).willReturn(metadata)
 
         val version = versionFileDtoConverter.convert(versionFileDto, null, null)
