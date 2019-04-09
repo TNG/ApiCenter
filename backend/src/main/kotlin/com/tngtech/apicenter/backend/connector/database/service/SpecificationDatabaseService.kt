@@ -69,34 +69,41 @@ class SpecificationDatabaseService constructor(
         val existingSpec = specificationRepository.findById(serviceId.id)
 
         if (!existingSpec.isPresent) {
-            val newSpecification = Specification(
-                    serviceId,
-                    version.metadata.title,
-                    version.metadata.description,
-                    listOf(version),
-                    fileUrl
-            )
-            val newSpecificationEntity = specificationEntityMapper.fromDomain(newSpecification)
-            mapAndStoreEntity(newSpecificationEntity)
+            storeNewSpecification(version, serviceId, fileUrl)
         }
 
-        existingSpec.ifPresent { s ->
-            val versionStrings = s.versions.map { v -> versionEntityMapper.toDomain(v).metadata.version }
-            val newVersionString = version.metadata.version
-            if (versionStrings.contains(newVersionString)) {
+        existingSpec.ifPresent { s -> updateExistingSpecification(s, version) }
+    }
 
-                val existingContents = s.versions.firstOrNull {
-                    versionEntity -> versionEntityMapper.toDomain(versionEntity).metadata.version == newVersionString
-                }?.content
+    private fun storeNewSpecification(version: Version, serviceId: ServiceId, fileUrl: String?) {
+        val newSpecification = Specification(
+                serviceId,
+                version.metadata.title,
+                version.metadata.description,
+                listOf(version),
+                fileUrl
+        )
+        val newSpecificationEntity = specificationEntityMapper.fromDomain(newSpecification)
+        mapAndStoreEntity(newSpecificationEntity)
+    }
 
-                if (existingContents == version.content) {
-                    throw PreexistingVersionContentIdenticalException()
-                } else {
-                    throw PreexistingVersionContentDiscrepancyException()
-                }
+    private fun updateExistingSpecification(s: SpecificationEntity, version: Version) {
+        val versionStrings = s.versions.map { v -> versionEntityMapper.toDomain(v).metadata.version }
+        val newVersionString = version.metadata.version
+        if (versionStrings.contains(newVersionString)) {
+
+            val existingContents = s.versions.firstOrNull {
+                versionEntity -> versionEntityMapper.toDomain(versionEntity).metadata.version == newVersionString
+            }?.content
+
+            if (existingContents == version.content) {
+                throw PreexistingVersionContentIdenticalException()
             } else {
-                mapAndStoreEntity(s.appendVersion(versionEntityMapper.fromDomain(version)))
+                throw PreexistingVersionContentDiscrepancyException()
             }
+        } else {
+            mapAndStoreEntity(s.appendVersion(versionEntityMapper.fromDomain(version)))
         }
+
     }
 }
