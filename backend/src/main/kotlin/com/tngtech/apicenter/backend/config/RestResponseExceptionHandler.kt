@@ -58,8 +58,8 @@ class RestResponseExceptionHandler {
 
     @ExceptionHandler(PreexistingVersionContentDiscrepancyException::class)
     fun handleVersionAlreadyExists(exception: PreexistingVersionContentDiscrepancyException) =
-            makeResponseEntity("A specification with the same version name (but different content) already exists." +
-                    "Change the version string. If you're sure no other service depends on this version, consider deleting and reuploading", HttpStatus.CONFLICT)
+            makeResponseEntity("There is already a different specification with the same version. " +
+                    "Please solve this conflict, for example by increasing the version.", HttpStatus.CONFLICT)
 
 }
 
