@@ -17,7 +17,8 @@ import {HighlightSearchResultPipe} from './pipes/highlight-search-result.pipe';
 import {TrimSearchResultPipe} from './pipes/trim-search-result.pipe';
 import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
 import { LoginComponent } from './login/login.component';
-import {AuthenticationGuard} from './guards/authentication.guard';
+import {AuthenticationGuard} from './auth/auth.guard';
+import {AuthenticationService} from './auth/auth.service';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {LoginEvent} from './login.event';
 import {MarkdownModule} from 'ngx-markdown';
@@ -64,6 +65,7 @@ const appRoutes: Routes = [
   ],
   providers: [
     AuthenticationGuard,
+    AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     LoginEvent
   ],

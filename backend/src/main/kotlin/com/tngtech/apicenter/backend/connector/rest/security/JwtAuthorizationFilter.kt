@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.connector.rest.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.SignatureVerificationException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
@@ -23,13 +24,17 @@ class JwtAuthorizationFilter(authManager: AuthenticationManager, private val jwt
             return
         }
 
-        val user = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
-            .build()
-            .verify(header.replace("Bearer ", ""))
-            .subject
+        try {
+            val user = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
+                    .build()
+                    .verify(header.replace("Bearer ", ""))
+                    .subject
 
-        SecurityContextHolder.getContext().authentication =
-            if (user != null) JwtAuthenticationToken(user, header) else null
+            SecurityContextHolder.getContext().authentication =
+                    if (user != null) JwtAuthenticationToken(user, header) else null
+        } catch (exception: SignatureVerificationException) {
+            // Token's signature invalid when verified using server-side secret and HMAC512"
+        }
         chain.doFilter(req, res)
     }
 }
