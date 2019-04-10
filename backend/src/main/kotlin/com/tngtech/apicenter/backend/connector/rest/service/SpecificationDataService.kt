@@ -71,10 +71,13 @@ class SpecificationDataService @Autowired constructor(
             null
         }
 
-    fun extractId(json: String): String? =
-        try {
-            JsonPath.read<String>(json, "$.info.x-api-id")
-        } catch (exception: PathNotFoundException) {
+    fun extractId(json: String): String? {
+        val parsedJson = objectMapper.readTree(json)
+        val jsonNode = parsedJson.at("/info/x-api-id")
+        return if (jsonNode.isMissingNode) {
             null
+        } else {
+            jsonNode.asText()
         }
+    }
 }
