@@ -74,6 +74,10 @@ class SpecificationDataService @Autowired constructor(
     fun extractId(json: String): String? {
         val parsedJson = objectMapper.readTree(json)
         val jsonNode = parsedJson.at("/info/x-api-id")
-        return if (jsonNode.isMissingNode) null else jsonNode.asText()
+        return if (jsonNode.isMissingNode) {
+            null
+        } else {
+            jsonNode.asText()
+        }
     }
 }
