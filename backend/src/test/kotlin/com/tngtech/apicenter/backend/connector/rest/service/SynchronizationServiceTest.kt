@@ -54,7 +54,7 @@ class SynchronizationServiceTest {
 
         synchronizationService.synchronize(ServiceId(SPECIFICATION_ID))
 
-        verify(specificationHandler).saveOne(
+        verify(specificationHandler).saveNewVersion(
                 Version(UPDATED_SWAGGER_SPECIFICATION, metadata),
                 id,
                 REMOTE_ADDRESS)

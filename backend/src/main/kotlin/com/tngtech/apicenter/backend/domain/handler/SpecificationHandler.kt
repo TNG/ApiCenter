@@ -14,17 +14,17 @@ class SpecificationHandler @Autowired constructor(
         private val specificationPersistenceService: SpecificationPersistenceService
 ) {
 
-    fun saveOne(version: Version, serviceId: ServiceId, fileUrl: String?) {
+    fun saveNewVersion(version: Version, serviceId: ServiceId, fileUrl: String?) {
         val existingSpec: Specification? = specificationPersistenceService.findOne(serviceId)
 
         if (existingSpec == null) {
-            storeNewSpecification(version, serviceId, fileUrl)
+            saveNewSpecification(version, serviceId, fileUrl)
         } else {
             updateExistingSpecification(existingSpec, version)
         }
     }
 
-    private fun storeNewSpecification(version: Version, serviceId: ServiceId, fileUrl: String?) {
+    private fun saveNewSpecification(version: Version, serviceId: ServiceId, fileUrl: String?) {
         val newSpecification = Specification(
                 serviceId,
                 version.metadata.title,

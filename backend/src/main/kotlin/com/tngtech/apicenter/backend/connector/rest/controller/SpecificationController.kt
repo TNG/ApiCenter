@@ -28,7 +28,7 @@ class SpecificationController @Autowired constructor(
     fun uploadSpecification(@RequestBody versionFileDto: VersionFileDto): VersionDto {
         val version = versionFileDtoMapper.toDomain(versionFileDto)
 
-        specificationHandler.saveOne(version, version.metadata.id, version.metadata.endpointUrl)
+        specificationHandler.saveNewVersion(version, version.metadata.id, version.metadata.endpointUrl)
 
         return versionFileDtoMapper.fromDomain(version)
     }
@@ -46,7 +46,7 @@ class SpecificationController @Autowired constructor(
             )
         )
 
-        specificationHandler.saveOne(version, ServiceId(specificationId), versionFileDto.fileUrl)
+        specificationHandler.saveNewVersion(version, ServiceId(specificationId), versionFileDto.fileUrl)
 
         return versionFileDtoMapper.fromDomain(version)
     }

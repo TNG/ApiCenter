@@ -25,6 +25,6 @@ class SynchronizationService constructor(
         val metaData = specificationDataService.makeSpecificationMetaData(content, specificationId, remoteAddress)
 
         val newVersion = Version(content, metaData)
-        specificationHandler.saveOne(newVersion, specificationId, specification.remoteAddress)
+        specificationHandler.saveNewVersion(newVersion, specificationId, specification.remoteAddress)
     }
 }
