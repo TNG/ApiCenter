@@ -1,21 +1,21 @@
 package com.tngtech.apicenter.backend.domain.handler
 
 import com.tngtech.apicenter.backend.domain.entity.User
-import com.tngtech.apicenter.backend.domain.service.ExternalAuthenticationService
-import com.tngtech.apicenter.backend.domain.service.UserPersistenceService
+import com.tngtech.apicenter.backend.domain.service.ExternalAuthentication
+import com.tngtech.apicenter.backend.domain.service.UserPersistence
 import org.springframework.stereotype.Component
 
 @Component
 class SessionHandler constructor(
-    private val userPersistenceService: UserPersistenceService,
-    private val externalAuthenticationService: ExternalAuthenticationService
+        private val userPersistence: UserPersistence,
+        private val externalAuthentication: ExternalAuthentication
 ) {
 
     fun authenticate(username: String, password: String): User? {
-        val searchUser = externalAuthenticationService.authenticate(username, password) ?: return null
+        val searchUser = externalAuthentication.authenticate(username, password) ?: return null
 
-        val storedUser = if (userPersistenceService.exists(searchUser.origin, searchUser.externalId)) {
-            userPersistenceService.findByOrigin(searchUser.origin, searchUser.externalId)
+        val storedUser = if (userPersistence.exists(searchUser.origin, searchUser.externalId)) {
+            userPersistence.findByOrigin(searchUser.origin, searchUser.externalId)
         } else {
             searchUser
         }
@@ -26,8 +26,8 @@ class SessionHandler constructor(
             storedUser
         }
 
-        if (userPersistenceService.exists(searchUser.origin, searchUser.externalId)) {
-            userPersistenceService.save(userToStore)
+        if (userPersistence.exists(searchUser.origin, searchUser.externalId)) {
+            userPersistence.save(userToStore)
         }
 
         return userToStore

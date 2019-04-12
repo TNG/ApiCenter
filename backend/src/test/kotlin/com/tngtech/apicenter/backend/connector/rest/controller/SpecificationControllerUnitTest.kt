@@ -2,99 +2,46 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetadata
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
-import com.tngtech.apicenter.backend.connector.rest.dto.VersionFileDto
-import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
-import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
-import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.mapper.VersionFileDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
+import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
-import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistence
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.*
 
 internal class SpecificationControllerUnitTest {
 
-    companion object {
-        const val SWAGGER_SPECIFICATION =
-            "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
-        const val UUID_STRING = "65d8491f-e602-40fc-a595-45e75f690df1"
-    }
-    private val metadata = VersionMetaData(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val specificationPersistence: SpecificationPersistence = mock()
 
-    private val specificationHandler: SpecificationHandler = mock()
+    private val specificationFileDtoMapper: SpecificationFileDtoMapper = mock()
 
-    private val synchronizationService: SynchronizationService = mock()
+    private val versionController = SpecificationController(specificationPersistence, specificationFileDtoMapper)
 
-    private val versionFileDtoMapper: VersionFileDtoMapper = mock()
+    private val serviceId = "7de07d27-eedb-4290-881a-6a402a81dd0f"
 
-    private val specificationDtoMapper: SpecificationDtoMapper = mock()
+    private val metadata = SpecificationMetadata(ServiceId(serviceId), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
-    private val specificationController: SpecificationController =
-        SpecificationController(
-            specificationHandler,
-            synchronizationService,
-            versionFileDtoMapper,
-            specificationDtoMapper
-        )
+    private val version = Specification("Content", metadata)
+
+    private val versionDto = SpecificationDto("Content", metadata)
 
     @Test
-    fun updateSpecification_shouldReturnDto() {
-        val versionFileDto =
-            VersionFileDto(
-                SWAGGER_SPECIFICATION,
-                null,
-                null,
-                UUID_STRING
-            )
+    fun findOne_shouldReturnVersionDto() {
+        given(specificationPersistence.findOne(ServiceId(serviceId), "1.0")).willReturn(version)
+        given(specificationFileDtoMapper.fromDomain(version)).willReturn(versionDto)
 
-        val version = Version(SWAGGER_SPECIFICATION, metadata)
-        val versionDto = VersionDto(SWAGGER_SPECIFICATION, metadata)
-
-        given(versionFileDtoMapper.toDomain(versionFileDto)).willReturn(version)
-        given(versionFileDtoMapper.fromDomain(version)).willReturn(versionDto)
-
-        val returnedVersionDto = specificationController.updateSpecification(versionFileDto,
-            UUID_STRING
-        )
-
-        assertThat(returnedVersionDto).isEqualTo(versionDto)
+        assertThat(versionController.findSpecification(serviceId, "1.0")).isEqualTo(versionDto)
     }
 
     @Test
-    fun findAllSpecifications_shouldReturnSpecifications() {
-        val uuid = UUID.randomUUID().toString()
+    fun delete_shouldDeleteVersion() {
+        versionController.deleteSpecification(serviceId, "1.0")
 
-        val specification = Specification(
-            ServiceId(uuid),
-            "Test",
-            "Description",
-            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-            "http://swaggerpetstore.com/docs"
-        )
-        val specificationDto = SpecificationDto(
-            uuid,
-            "Test",
-            "Description",
-            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            "http://swaggerpetstore.com/docs"
-        )
-
-        given(specificationHandler.findAll()).willReturn(arrayListOf(specification))
-        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
-
-        assertThat(specificationController.findAllSpecifications()).containsOnly(
-            SpecificationDto(
-                uuid, "Test",
-                "Description",
-                listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-                "http://swaggerpetstore.com/docs"
-            )
-        )
+        verify(specificationPersistence).delete(ServiceId(serviceId), "1.0")
     }
+
 }

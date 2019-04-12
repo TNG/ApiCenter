@@ -11,7 +11,7 @@ class GraphQLController {
     @RequestMapping("/api/v1/graphql", method = [RequestMethod.GET, RequestMethod.POST])
     @ResponseStatus(
             code = HttpStatus.NOT_FOUND,
-            reason = "No graphql API endpoint was specified for this specification. Add an API URL to use GraphiQL"
+            reason = "No graphql API endpoint found for this specification. Add an API URL to use GraphiQL"
     )
     fun noGraphQLEndpointSpecifiedHandler() {}
 }

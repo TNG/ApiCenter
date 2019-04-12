@@ -1,12 +1,12 @@
 package com.tngtech.apicenter.backend.domain.entity
 
-import com.tngtech.apicenter.backend.domain.exceptions.InvalidSpecificationIdException
+import com.tngtech.apicenter.backend.domain.exceptions.InvalidServiceIdException
 
 class ServiceId {
     val id: String
 
     constructor(id: String) {
-        if (containsInvalidCharacters(id)) throw InvalidSpecificationIdException(id)
+        if (containsInvalidCharacters(id)) throw InvalidServiceIdException(id)
         this.id = id
     }
 

@@ -95,4 +95,4 @@ src/main/resources/public/favicon.ico
 src/main/resources/public/open-iconic.*
 
 # In memory database, if nothing else is configured
-com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity/
+com.tngtech.apicenter.backend.connector.database.entity.ServiceEntity/
