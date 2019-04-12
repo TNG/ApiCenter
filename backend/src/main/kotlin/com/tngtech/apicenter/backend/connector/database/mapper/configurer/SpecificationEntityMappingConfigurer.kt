@@ -7,11 +7,11 @@ import net.rakugakibox.spring.boot.orika.OrikaMapperFactoryConfigurer
 import org.springframework.stereotype.Component
 
 @Component
-class SpecificationEntityMappingConfigurer: OrikaMapperFactoryConfigurer {
+class SpecificationEntityMappingConfigurer : OrikaMapperFactoryConfigurer {
 
     override fun configure(orikaMapperFactory: MapperFactory) {
-        orikaMapperFactory.classMap(SpecificationEntity::class.java, Specification::class.java)
-            .field("id", "id.id")
+        orikaMapperFactory.classMap(Specification::class.java, SpecificationEntity::class.java)
+            .field("id.id", "id")
             .byDefault()
             .register()
     }

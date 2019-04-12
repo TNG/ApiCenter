@@ -51,5 +51,15 @@ class RestResponseExceptionHandler {
     fun handleServiceIdMismatch(exception: MismatchedSpecificationIdException) =
             makeResponseEntity("The API ID used in the upload URL (${exception.urlPathId}) " +
                     "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(PreexistingVersionContentIdenticalException::class)
+    fun handleVersionAlreadyExists(exception: PreexistingVersionContentIdenticalException) =
+            makeResponseEntity("This specification already exists on ApiCenter", HttpStatus.ACCEPTED)
+
+    @ExceptionHandler(PreexistingVersionContentDiscrepancyException::class)
+    fun handleVersionAlreadyExists(exception: PreexistingVersionContentDiscrepancyException) =
+            makeResponseEntity("There is already a different specification with the same version. " +
+                    "Please solve this conflict, for example by increasing the version.", HttpStatus.CONFLICT)
+
 }
 

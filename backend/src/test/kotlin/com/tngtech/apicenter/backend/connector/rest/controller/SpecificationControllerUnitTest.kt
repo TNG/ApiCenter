@@ -3,16 +3,17 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionFileDto
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
+import com.tngtech.apicenter.backend.connector.rest.mapper.VersionFileDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.entity.Version
-import com.tngtech.apicenter.backend.domain.service.SpecificationPersistenceService
+import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.*
@@ -24,89 +25,45 @@ internal class SpecificationControllerUnitTest {
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val UUID_STRING = "65d8491f-e602-40fc-a595-45e75f690df1"
     }
-    val metadata = SpecificationMetaData("Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val metadata = VersionMetaData(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
-    private val specificationPersistenceService: SpecificationPersistenceService = mock()
+    private val specificationHandler: SpecificationHandler = mock()
 
     private val synchronizationService: SynchronizationService = mock()
+
+    private val versionFileDtoMapper: VersionFileDtoMapper = mock()
 
     private val specificationDtoMapper: SpecificationDtoMapper = mock()
 
     private val specificationController: SpecificationController =
         SpecificationController(
-            specificationPersistenceService,
+            specificationHandler,
             synchronizationService,
+            versionFileDtoMapper,
             specificationDtoMapper
         )
 
     @Test
-    fun uploadSpecification_shouldReturnDto() {
-        val specificationFileDto =
-            SpecificationFileDto(SWAGGER_SPECIFICATION)
-
-        val specification = Specification(
-            ServiceId(UUID_STRING),
-            "Swagger Petstore",
-            "Description",
-            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
-        val specificationDto = SpecificationDto(
-            UUID_STRING,
-            "Swagger Petstore",
-            "Description",
-            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
-
-        given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
-        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
-
-        val returnedSpecificationDto = specificationController.uploadSpecification(specificationFileDto)
-
-        assertThat(returnedSpecificationDto).isEqualTo(specificationDto)
-    }
-
-    @Test
     fun updateSpecification_shouldReturnDto() {
-        val specificationFileDto =
-            SpecificationFileDto(
+        val versionFileDto =
+            VersionFileDto(
                 SWAGGER_SPECIFICATION,
                 null,
                 null,
                 UUID_STRING
             )
-        val specification = Specification(
-            ServiceId(UUID_STRING),
-            "Swagger Petstore",
-            "Description",
-            listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
-        val specificationDto = SpecificationDto(
-            UUID_STRING,
-            "Swagger Petstore",
-            "Description",
-            listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-            null
-        )
 
-        given(specificationDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
-        given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
+        val version = Version(SWAGGER_SPECIFICATION, metadata)
+        val versionDto = VersionDto(SWAGGER_SPECIFICATION, metadata)
 
-        val returnedSpecificationDto = specificationController.updateSpecification(specificationFileDto,
+        given(versionFileDtoMapper.toDomain(versionFileDto)).willReturn(version)
+        given(versionFileDtoMapper.fromDomain(version)).willReturn(versionDto)
+
+        val returnedVersionDto = specificationController.updateSpecification(versionFileDto,
             UUID_STRING
         )
 
-        assertThat(returnedSpecificationDto).isEqualTo(
-            SpecificationDto(
-                UUID_STRING,
-                "Swagger Petstore",
-                "Description",
-                listOf(VersionDto(SWAGGER_SPECIFICATION, metadata)),
-                null
-            )
-        )
+        assertThat(returnedVersionDto).isEqualTo(versionDto)
     }
 
     @Test
@@ -128,19 +85,8 @@ internal class SpecificationControllerUnitTest {
             "http://swaggerpetstore.com/docs"
         )
 
+        given(specificationHandler.findAll()).willReturn(arrayListOf(specification))
         given(specificationDtoMapper.fromDomain(specification)).willReturn(specificationDto)
-
-        given(specificationPersistenceService.findAll()).willReturn(
-            arrayListOf(
-                Specification(
-                    ServiceId(uuid),
-                    "Test",
-                    "Description",
-                    listOf(Version(SWAGGER_SPECIFICATION, metadata)),
-                    "http://swaggerpetstore.com/docs"
-                )
-            )
-        )
 
         assertThat(specificationController.findAllSpecifications()).containsOnly(
             SpecificationDto(

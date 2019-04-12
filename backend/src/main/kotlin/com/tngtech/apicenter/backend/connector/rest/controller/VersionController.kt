@@ -3,7 +3,8 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
-import com.tngtech.apicenter.backend.connector.rest.mapper.VersionDtoMapper
+import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
+import com.tngtech.apicenter.backend.connector.rest.mapper.VersionFileDtoMapper
 import com.tngtech.apicenter.backend.domain.service.VersionPersistenceService
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.MediaType
@@ -16,7 +17,8 @@ private val logger = KotlinLogging.logger {}
 private const val MEDIA_TYPE_YAML = "application/yml"
 
 @RestController
-class VersionController constructor(private val versionPersistenceService: VersionPersistenceService, private val versionDtoMapper: VersionDtoMapper) {
+class VersionController constructor(private val versionPersistenceService: VersionPersistenceService,
+                                    private val versionFileDtoMapper: VersionFileDtoMapper) {
 
     @RequestMapping("/api/v1/specifications/{specificationId}/versions/{version}",
             produces = [MediaType.APPLICATION_JSON_VALUE,
@@ -31,7 +33,7 @@ class VersionController constructor(private val versionPersistenceService: Versi
         // i.e. The integration test and unit test require the default specified in two different ways
         val foundVersion = versionPersistenceService.findOne(ServiceId(specificationId), version)
                 ?: throw SpecificationNotFoundException(specificationId, version)
-        return versionDtoMapper.fromDomain(convertVersion(accept, foundVersion))
+        return versionFileDtoMapper.fromDomain(convertVersion(accept, foundVersion))
     }
 
     private fun convertVersion(accept: String, foundVersion: Version): Version {

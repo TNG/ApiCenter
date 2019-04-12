@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
+import com.tngtech.apicenter.backend.connector.rest.dto.VersionMetaData
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -79,5 +82,16 @@ class SpecificationDataService @Autowired constructor(
         } else {
             jsonNode.asText()
         }
+    }
+
+    fun makeSpecificationMetaData(fileContent: String, serviceId: ServiceId, endpointUrl: String?): VersionMetaData {
+        return VersionMetaData(
+                serviceId,
+                extractTitle(fileContent),
+                extractVersion(fileContent),
+                extractDescription(fileContent),
+                ApiLanguage.OPENAPI,
+                endpointUrl
+        )
     }
 }

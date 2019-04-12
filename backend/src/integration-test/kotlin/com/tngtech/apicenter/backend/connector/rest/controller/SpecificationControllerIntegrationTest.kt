@@ -72,8 +72,46 @@ internal class SpecificationControllerIntegrationTest {
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.title", equalTo("Spec")))
-            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("1.0")))
+            .andExpect(jsonPath("$.metadata.title", equalTo("Spec")))
+            .andExpect(jsonPath("$.metadata.version", equalTo("1.0")))
+    }
+
+    @Test
+    fun uploadSpecification_shouldDetectVersionClash_identicalContent() {
+        mockMvc.perform(
+                post("/api/v1/specifications")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | {
+                            |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
+                            |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"v1\", \"description\": \"Description\"}}"
+                            | }
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isAccepted)
+    }
+
+    @Test
+    fun uploadSpecification_shouldDetectVersionClash_differentContent() {
+        mockMvc.perform(
+                post("/api/v1/specifications")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | {
+                            |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
+                            |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"v1\", \"description\": \"I'm different\"}}"
+                            | }
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isConflict)
     }
 
     @Test
@@ -92,8 +130,8 @@ internal class SpecificationControllerIntegrationTest {
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.title", equalTo("YamlSpec")))
-            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("1.0")))
+            .andExpect(jsonPath("$.metadata.title", equalTo("YamlSpec")))
+            .andExpect(jsonPath("$.metadata.version", equalTo("1.0")))
     }
 
     @Test
@@ -112,8 +150,8 @@ internal class SpecificationControllerIntegrationTest {
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("v2")))
+            .andExpect(jsonPath("$.metadata.title", equalTo("Spec1")))
+            .andExpect(jsonPath("$.metadata.version", equalTo("v2")))
 
         mockMvc.perform(
             get("/api/v1/specifications/unique-identifier")
@@ -144,8 +182,8 @@ internal class SpecificationControllerIntegrationTest {
                 )
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.versions[0].metadata.version", equalTo("vX")))
+            .andExpect(jsonPath("$.metadata.title", equalTo("NewSpec")))
+            .andExpect(jsonPath("$.metadata.version", equalTo("vX")))
 
         mockMvc.perform(
             get("/api/v1/specifications/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user"))

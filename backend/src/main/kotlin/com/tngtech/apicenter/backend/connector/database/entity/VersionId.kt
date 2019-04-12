@@ -5,6 +5,6 @@ import javax.persistence.Embeddable
 
 @Embeddable
 data class VersionId(
-    val specificationId: String?,
+    val specificationId: String,
     val version: String
 ) : Serializable

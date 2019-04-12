@@ -2,17 +2,10 @@ package com.tngtech.apicenter.backend.connector.service
 
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
-import com.tngtech.apicenter.backend.connector.database.entity.VersionEntity
-import com.tngtech.apicenter.backend.connector.database.entity.VersionId
 import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository
 import com.tngtech.apicenter.backend.connector.database.service.SpecificationDatabaseService
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetaData
-import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.entity.Specification
-import com.tngtech.apicenter.backend.domain.entity.Version
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,31 +26,7 @@ internal class SpecificationDatabaseServiceUnitTest {
     private val specificationDatabaseService: SpecificationDatabaseService =
         SpecificationDatabaseService(specificationRepository, entityManager, specificationEntityMapper)
 
-    private val versionId = "5aa40ba9-7e26-44de-81ec-f545d1f178aa"
-
-    @Test
-    fun save_shouldSaveObjects() {
-        val specification = Specification(
-            ServiceId("e33dc111-3dd6-40f4-9c54-a64f6b10ab49"),
-            "Spec",
-            "Description",
-            listOf(Version("{\"json\": \"true\"}", SpecificationMetaData("Spec", "1.0.0", "Description", ApiLanguage.OPENAPI, null))),
-            "http://swaggerpetstore.com/docs"
-        )
-
-        val specificationEntity = SpecificationEntity(
-            "e33dc111-3dd6-40f4-9c54-a64f6b10ab49",
-            "Spec",
-            "Description",
-            listOf(VersionEntity(VersionId(null, "1.0.0"), "{\"json\": \"true\"}", "Spec", "Description", ApiLanguage.OPENAPI, "", null, null)),
-            "http://swaggerpetstore.com/docs"
-        )
-
-        given(specificationEntityMapper.fromDomain(specification)).willReturn(specificationEntity)
-
-        specificationDatabaseService.save(specification)
-        verify(specificationRepository).save(specificationEntity)
-    }
+    private val id = "e33dc111-3dd6-40f4-9c54-a64f6b10ab49"
 
     @Test
     fun findAll_shouldReturnObjects() {
@@ -75,7 +44,7 @@ internal class SpecificationDatabaseServiceUnitTest {
 
     @Test
     fun exists_shouldCheckForExistence() {
-        val uuid = ServiceId("e33dc111-3dd6-40f4-9c54-a64f6b10ab49")
+        val uuid = ServiceId(id)
 
         given(specificationRepository.existsById(uuid.id)).willReturn(true)
 

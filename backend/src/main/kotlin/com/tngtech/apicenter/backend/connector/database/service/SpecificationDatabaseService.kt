@@ -22,13 +22,14 @@ class SpecificationDatabaseService constructor(
 ) : SpecificationPersistenceService {
 
     override fun save(specification: Specification) {
-        val newEntity = specificationEntityMapper.fromDomain(specification)
+        val specificationEntity = specificationEntityMapper.fromDomain(specification)
+        specificationEntity.versions.map { versionEntity -> versionEntity.specification = specificationEntity }
 
-        val entityToStore = specificationRepository.findById(newEntity.id)
-            .map { existingEntity -> existingEntity.pureUpdate(newEntity)}
-            .orElse(newEntity)
-
-        mapAndStoreEntity(entityToStore)
+        try {
+            specificationRepository.save(specificationEntity)
+        } catch (sqlException: DataIntegrityViolationException) {
+            throw VersionAlreadyExistsException(specificationEntity.title)
+        }
     }
 
     override fun findAll(): List<Specification> = specificationRepository.findAll().map { spec -> specificationEntityMapper.toDomain(spec) }
@@ -60,13 +61,5 @@ class SpecificationDatabaseService constructor(
         }
     }
 
-    private fun mapAndStoreEntity(specificationEntity: SpecificationEntity) {
-        specificationEntity.versions.map { versionEntity -> versionEntity.specification = specificationEntity }
 
-        try {
-            specificationRepository.save(specificationEntity)
-        } catch (sqlException: DataIntegrityViolationException) {
-            throw VersionAlreadyExistsException(specificationEntity.title)
-        }
-    }
 }

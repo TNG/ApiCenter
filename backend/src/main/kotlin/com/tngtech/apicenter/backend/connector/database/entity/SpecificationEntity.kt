@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 @Indexed
-class SpecificationEntity(
+data class SpecificationEntity(
     @Id val id: String,
     @Field val title: String,
     @Field @Column(columnDefinition = "TEXT") val description: String?,
@@ -16,16 +16,4 @@ class SpecificationEntity(
         cascade = [CascadeType.ALL]
     ) @OrderBy("created DESC") val versions: List<VersionEntity>,
     val remoteAddress: String?
-) {
-
-    fun pureUpdate(other: SpecificationEntity): SpecificationEntity {
-        val versions = this.versions + other.versions
-        return SpecificationEntity(
-                this.id,
-                other.title,
-                other.description,
-                versions,
-                other.remoteAddress
-        )
-    }
-}
+)
