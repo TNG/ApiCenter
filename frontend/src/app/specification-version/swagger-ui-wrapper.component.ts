@@ -2,16 +2,16 @@ import {Component, Input, OnChanges} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import * as SwaggerUI from 'swagger-ui';
-import {Version} from '../models/version';
-import {VersionViewComponent} from './version-view.component';
+import {Specification} from '../models/specification';
+import {SpecificationViewComponent} from './specification-view.component';
 
 @Component({
   selector: 'app-swagger-ui',
   template: '<div id="display-swagger-ui"></div>',
   styleUrls: ['./swagger-ui-wrapper.component.css']
 })
-export class SwaggerUiWrapperComponent extends VersionViewComponent implements OnChanges {
-  @Input() specification: Version;
+export class SwaggerUiWrapperComponent extends SpecificationViewComponent implements OnChanges {
+  @Input() specification: Specification;
 
   constructor(route: ActivatedRoute, http: HttpClient) {
     super(route, http);

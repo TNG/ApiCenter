@@ -6,11 +6,11 @@
   </div>
   <div class="row top-buffer">
     <div class="col">
-      <div *ngFor="let specification of specifications">
-        <div><p class="lead"><a [routerLink]="['/specifications', specification.id, specification.versions[0].metadata.version]" routerLinkActive="active">{{ specification.title }}</a></p></div>
-        <div><p class="small"><markdown>{{ specification.description != null && specification.description.length > 100 ? (specification.description | slice:0:100) + ' ...' : specification.description }}</markdown></p></div>
+      <div *ngFor="let service of services">
+        <div><p class="lead"><a [routerLink]="['/specifications', service.id, service.specifications[0].metadata.version]" routerLinkActive="active">{{ service.title }}</a></p></div>
+        <div><p class="small"><markdown>{{ service.description != null && service.description.length > 100 ? (service.description | slice:0:100) + ' ...' : service.description }}</markdown></p></div>
       </div>
-      <div class="row top-buffer alert alert-danger" *ngIf="specifications.length == 0">
+      <div class="row top-buffer alert alert-danger" *ngIf="services.length == 0">
         No specifications found
       </div>
     </div>

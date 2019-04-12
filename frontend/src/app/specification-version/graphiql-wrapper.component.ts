@@ -14,8 +14,8 @@ import {GraphQLSchema} from 'graphql';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {makeExecutableSchema} from 'graphql-tools';
-import {VersionViewComponent} from './version-view.component';
-import {Version} from '../models/version';
+import {SpecificationViewComponent} from './specification-view.component';
+import {Specification} from '../models/specification';
 import {environment} from '../../environments/environment';
 
 @Component({
@@ -23,7 +23,7 @@ import {environment} from '../../environments/environment';
   template: '<div style="height: calc(100vh - 56px)" [id]="graphiql">Loading...</div>',
 })
 
-export class GraphiQLWrapperComponent extends VersionViewComponent implements AfterViewChecked {
+export class GraphiQLWrapperComponent extends SpecificationViewComponent implements AfterViewChecked {
   public graphiql: string;
 
   constructor(route: ActivatedRoute, http: HttpClient) {

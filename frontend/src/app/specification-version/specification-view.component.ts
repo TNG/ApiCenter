@@ -1,5 +1,5 @@
 import {Component, OnInit, Output} from '@angular/core';
-import {Version} from '../models/version';
+import {Specification} from '../models/specification';
 import {environment} from '../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
@@ -9,8 +9,8 @@ import {HttpClient} from '@angular/common/http';
   templateUrl: './version-view.component.html',
 })
 
-export class VersionViewComponent implements OnInit {
-  @Output() specification: Version;
+export class SpecificationViewComponent implements OnInit {
+  @Output() specification: Specification;
   error: string;
 
   constructor(protected route: ActivatedRoute, protected http: HttpClient) {
@@ -18,13 +18,13 @@ export class VersionViewComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.http.get<Version>(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
+      this.http.get<Specification>(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
         .subscribe(data => {
           this.specification = data;
         },
       err => {
           if (err.status === 404) {
-            this.error = 'Version not found';
+            this.error = 'Specification not found';
           }
         });
     });

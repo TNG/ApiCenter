@@ -1,7 +1,7 @@
 import {SpecificationFormComponent} from './specification-form.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {anyOfClass, instance, mock, verify, when} from 'ts-mockito';
-import {SpecificationService} from '../specification.service';
+import {ServiceStore} from '../service-store.service';
 import {SpecificationFile} from '../models/specificationfile';
 import {from} from 'rxjs/observable/from';
 
@@ -10,7 +10,7 @@ describe('SpecificationFormComponent', () => {
   let specificationFormComponent: SpecificationFormComponent;
   const mockedRouter = mock(Router);
   const router = instance(mockedRouter);
-  const mockedSpecificationService = mock(SpecificationService);
+  const mockedSpecificationService = mock(ServiceStore);
   const specificationService = instance(mockedSpecificationService);
   const mockedActivatedRoute = mock(ActivatedRoute);
   const activatedRoute = instance(mockedActivatedRoute);
