@@ -1,7 +1,6 @@
 import {Component, OnInit, Output} from '@angular/core';
 import {Specification} from '../models/specification';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {SpecificationStore} from '../specification-store.service';
 
 @Component({
@@ -14,7 +13,7 @@ export class SpecificationViewComponent implements OnInit {
   @Output() specification: Specification;
   error: string;
 
-  constructor(protected route: ActivatedRoute, protected http: HttpClient, protected specificationStore: SpecificationStore) {
+  constructor(protected route: ActivatedRoute, protected specificationStore: SpecificationStore) {
   }
 
   ngOnInit() {

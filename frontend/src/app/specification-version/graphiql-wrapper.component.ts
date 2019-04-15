@@ -10,7 +10,6 @@ import GraphiQL from 'graphiql';
 import fetch from 'isomorphic-fetch';
 import {GraphQLSchema} from 'graphql';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {makeExecutableSchema} from 'graphql-tools';
 import {SpecificationViewComponent} from './specification-view.component';
 import {environment} from '../../environments/environment';
@@ -24,8 +23,8 @@ import {SpecificationStore} from '../specification-store.service';
 export class GraphiQLWrapperComponent extends SpecificationViewComponent implements AfterViewChecked {
   public graphiql: string;
 
-  constructor(route: ActivatedRoute, http: HttpClient, specificationStore: SpecificationStore) {
-    super(route, http, specificationStore);
+  constructor(route: ActivatedRoute, specificationStore: SpecificationStore) {
+    super(route, specificationStore);
     this.graphiql = uuid.v1();
   }
 
