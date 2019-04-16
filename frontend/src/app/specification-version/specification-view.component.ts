@@ -5,8 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
-  selector: 'app-version-view',
-  templateUrl: './version-view.component.html',
+  selector: 'app-specification-view',
+  templateUrl: './specification-view.component.html',
 })
 
 export class SpecificationViewComponent implements OnInit {
@@ -18,7 +18,7 @@ export class SpecificationViewComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.http.get<Specification>(environment.apiUrl + '/specifications/' + params['specificationId'] + '/versions/' + params['version'])
+      this.http.get<Specification>(environment.apiUrl + '/service/' + params['serviceId'] + '/version/' + params['version'])
         .subscribe(data => {
           this.specification = data;
         },
