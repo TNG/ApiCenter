@@ -9,28 +9,28 @@ import {SpecificationStore} from '../specification-store.service';
 describe('SpecificationOverviewComponent', () => {
 
   let specificationOverviewComponent: SpecificationOverviewComponent;
-  const mockedSpecificationService = mock(ServiceStore);
-  const specificationService = instance(mockedSpecificationService);
-  const mockedVersionService = mock(SpecificationStore);
-  const versionService = instance(mockedVersionService);
-  const versions = [new Specification('Content', {
+  const mockedServiceStore = mock(ServiceStore);
+  const serviceStore = instance(mockedServiceStore);
+  const mockedSpecificationStore = mock(SpecificationStore);
+  const specificationStore = instance(mockedSpecificationStore);
+  const specifications = [new Specification('Content', {
     title: 'Test',
     version: '1.0.0',
     description: 'Description',
     language: ApiLanguage.OpenAPI,
     endpointUrl: null,
   })];
-  const specification = new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', versions, null);
+  const service = new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null);
 
   beforeEach(() => {
-    specificationOverviewComponent = new SpecificationOverviewComponent(specificationService, versionService);
+    specificationOverviewComponent = new SpecificationOverviewComponent(serviceStore, specificationStore);
   });
 
-  it('should snychronize file', () => {
-    when(mockedSpecificationService.synchronizeService('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990')).thenReturn(from([]));
+  it('should synchronize file', () => {
+    when(mockedServiceStore.synchronizeService('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990')).thenReturn(from([]));
 
-    specificationOverviewComponent.synchronize(specification).then(() => {
-      verify(mockedSpecificationService.synchronizeService('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990')).called();
+    specificationOverviewComponent.synchronize(service).then(() => {
+      verify(mockedServiceStore.synchronizeService('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990')).called();
     });
   });
 });

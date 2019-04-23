@@ -24,7 +24,7 @@ export class SpecificationSearchDetailComponent implements OnInit {
     });
   }
 
-  public async searchSpecifications(event) {
+  public async searchServices(event) {
     if (event.keyCode === 13) {
       this.serviceStore.searchForServices(this.searchString).subscribe((data: Service[]) => this.services = data);
     }

@@ -12,29 +12,29 @@ describe('SpecificationSearchDetailComponent', () => {
   const specificationService = instance(mockedSpecificationService);
   const mockedActivatedRoute = mock(ActivatedRoute);
   const activatedRoute = instance(mockedActivatedRoute);
-  const versions = [new Specification('Content', {
+  const specifications = [new Specification('Content', {
     title: 'Test',
     version: '1.0',
     description: 'Description',
     language: ApiLanguage.OpenAPI,
     endpointUrl: null,
   })];
-  const specifications = [new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', versions, null)];
+  const services = [new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null)];
 
   beforeEach(() => {
     specificationSearchDetailComponent = new SpecificationSearchDetailComponent(specificationService, activatedRoute);
   });
 
-  it('should show specifications', () => {
-    when(mockedSpecificationService.searchForServices('Search String')).thenReturn(from([specifications]));
+  it('should show services', () => {
+    when(mockedSpecificationService.searchForServices('Search String')).thenReturn(from([services]));
 
     const event = new KeyboardEvent('keyup', {
       code: '13'
     });
 
-    specificationSearchDetailComponent.searchSpecifications(event).then(() => {
+    specificationSearchDetailComponent.searchServices(event).then(() => {
       verify(specificationService.searchForServices('Search String')).called();
-      expect(specificationSearchDetailComponent.services).toBe(specifications);
+      expect(specificationSearchDetailComponent.services).toBe(services);
     });
   });
 });
