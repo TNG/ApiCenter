@@ -43,36 +43,36 @@ class SpecificationFileDtoConverterTest {
 
     @Test
     fun convert_shouldReturnSpecification() {
-        val versionFileDto = SpecificationFileDto(SWAGGER_SPECIFICATION, id = UUID_STRING)
+        val specificationFileDto = SpecificationFileDto(SWAGGER_SPECIFICATION, id = UUID_STRING)
 
-        given(specificationFileDownloader.getLocalOrRemoteFileContent(versionFileDto)).willReturn(SWAGGER_SPECIFICATION)
-        given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), versionFileDto.fileUrl)).willReturn(metadata)
+        given(specificationFileDownloader.getLocalOrRemoteFileContent(specificationFileDto)).willReturn(SWAGGER_SPECIFICATION)
+        given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), specificationFileDto.fileUrl)).willReturn(metadata)
 
-        val version = specificationFileDtoConverter.convert(versionFileDto, null, null)
+        val specification = specificationFileDtoConverter.convert(specificationFileDto, null, null)
 
-        val expectedVersion = Specification(SWAGGER_SPECIFICATION, metadata)
+        val expectedSpecification = Specification(SWAGGER_SPECIFICATION, metadata)
 
-        assertThat(version.content).isEqualTo(expectedVersion.content)
-        assertThat(version.metadata).isEqualTo(expectedVersion.metadata)
+        assertThat(specification.content).isEqualTo(expectedSpecification.content)
+        assertThat(specification.metadata).isEqualTo(expectedSpecification.metadata)
     }
 
     @Test
     fun convert_shouldReturnRemoteSpecification() {
-        val versionFileDto = SpecificationFileDto(null,
+        val specificationFileDto = SpecificationFileDto(null,
             SWAGGER_REMOTE,
             id = UUID_STRING
         )
 
         given(specificationFileDownloader.retrieveFile(SWAGGER_REMOTE)).willReturn(SWAGGER_SPECIFICATION)
-        given(specificationFileDownloader.getLocalOrRemoteFileContent(versionFileDto)).willReturn(SWAGGER_SPECIFICATION)
+        given(specificationFileDownloader.getLocalOrRemoteFileContent(specificationFileDto)).willReturn(SWAGGER_SPECIFICATION)
 
-        given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), versionFileDto.fileUrl)).willReturn(metadata)
+        given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), specificationFileDto.fileUrl)).willReturn(metadata)
 
-        val version = specificationFileDtoConverter.convert(versionFileDto, null, null)
+        val specification = specificationFileDtoConverter.convert(specificationFileDto, null, null)
 
-        val expectedVersion = Specification(SWAGGER_SPECIFICATION, metadata)
+        val expectedSpecification = Specification(SWAGGER_SPECIFICATION, metadata)
 
-        assertThat(version.content).isEqualTo(expectedVersion.content)
-        assertThat(version.metadata).isEqualTo(expectedVersion.metadata)
+        assertThat(specification.content).isEqualTo(expectedSpecification.content)
+        assertThat(specification.metadata).isEqualTo(expectedSpecification.metadata)
     }
 }

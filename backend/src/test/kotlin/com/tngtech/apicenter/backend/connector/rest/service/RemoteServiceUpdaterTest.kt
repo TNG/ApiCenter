@@ -19,7 +19,7 @@ class RemoteServiceUpdaterTest {
 
     private val specificationDataParser: SpecificationDataParser = mock()
 
-    private val synchronizationService =
+    private val remoteServiceUpdater =
         RemoteServiceUpdater(serviceHandler, specificationFileDownloader, specificationDataParser)
 
     companion object {
@@ -34,10 +34,10 @@ class RemoteServiceUpdaterTest {
     private val metadata = SpecificationMetadata(ServiceId(SPECIFICATION_ID), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
     @Test
-    fun synchronize_shouldStoreAdaptedSpecification() {
+    fun synchronize_shouldStoreUpdatedService() {
         val id = ServiceId(SPECIFICATION_ID)
 
-        val specification = Service(
+        val service = Service(
             id,
             "Swagger Petstore",
             "Description",
@@ -45,14 +45,14 @@ class RemoteServiceUpdaterTest {
             REMOTE_ADDRESS
         )
 
-        given(serviceHandler.findOne(ServiceId(SPECIFICATION_ID))).willReturn(specification)
+        given(serviceHandler.findOne(ServiceId(SPECIFICATION_ID))).willReturn(service)
         given(specificationFileDownloader.retrieveFile(REMOTE_ADDRESS)).willReturn(UPDATED_SWAGGER_SPECIFICATION)
         given(specificationDataParser.parseFileContent(UPDATED_SWAGGER_SPECIFICATION)).willReturn(
             UPDATED_SWAGGER_SPECIFICATION
         )
         given(specificationDataParser.makeSpecificationMetadata(UPDATED_SWAGGER_SPECIFICATION, id, REMOTE_ADDRESS)).willReturn(metadata)
 
-        synchronizationService.synchronize(ServiceId(SPECIFICATION_ID))
+        remoteServiceUpdater.synchronize(ServiceId(SPECIFICATION_ID))
 
         verify(serviceHandler).addNewSpecification(
                 Specification(UPDATED_SWAGGER_SPECIFICATION, metadata),

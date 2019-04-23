@@ -45,7 +45,7 @@ internal class ServiceControllerUnitTest {
 
     @Test
     fun updateSpecification_shouldReturnDto() {
-        val versionFileDto =
+        val specificationFileDto =
             SpecificationFileDto(
                 SWAGGER_SPECIFICATION,
                 null,
@@ -53,31 +53,31 @@ internal class ServiceControllerUnitTest {
                 UUID_STRING
             )
 
-        val version = Specification(SWAGGER_SPECIFICATION, metadata)
-        val versionDto = SpecificationDto(SWAGGER_SPECIFICATION, metadata)
+        val specification = Specification(SWAGGER_SPECIFICATION, metadata)
+        val specificationDto = SpecificationDto(SWAGGER_SPECIFICATION, metadata)
 
-        given(specificationFileDtoMapper.toDomain(versionFileDto)).willReturn(version)
-        given(specificationFileDtoMapper.fromDomain(version)).willReturn(versionDto)
+        given(specificationFileDtoMapper.toDomain(specificationFileDto)).willReturn(specification)
+        given(specificationFileDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
-        val returnedVersionDto = serviceController.updateSpecification(versionFileDto,
+        val returnedSpecificationDto = serviceController.updateSpecification(specificationFileDto,
             UUID_STRING
         )
 
-        assertThat(returnedVersionDto).isEqualTo(versionDto)
+        assertThat(returnedSpecificationDto).isEqualTo(specificationDto)
     }
 
     @Test
-    fun findAllSpecifications_shouldReturnSpecifications() {
+    fun findAllServices_shouldReturnServices() {
         val uuid = UUID.randomUUID().toString()
 
-        val specification = Service(
+        val service = Service(
             ServiceId(uuid),
             "Test",
             "Description",
             listOf(Specification(SWAGGER_SPECIFICATION, metadata)),
             "http://swaggerpetstore.com/docs"
         )
-        val specificationDto = ServiceDto(
+        val serviceDto = ServiceDto(
             uuid,
             "Test",
             "Description",
@@ -85,8 +85,8 @@ internal class ServiceControllerUnitTest {
             "http://swaggerpetstore.com/docs"
         )
 
-        given(serviceHandler.findAll()).willReturn(arrayListOf(specification))
-        given(serviceDtoMapper.fromDomain(specification)).willReturn(specificationDto)
+        given(serviceHandler.findAll()).willReturn(arrayListOf(service))
+        given(serviceDtoMapper.fromDomain(service)).willReturn(serviceDto)
 
         assertThat(serviceController.findAllServices()).containsOnly(
             ServiceDto(

@@ -19,27 +19,27 @@ internal class SpecificationControllerUnitTest {
 
     private val specificationFileDtoMapper: SpecificationFileDtoMapper = mock()
 
-    private val versionController = SpecificationController(specificationPersistence, specificationFileDtoMapper)
+    private val specificationController = SpecificationController(specificationPersistence, specificationFileDtoMapper)
 
     private val serviceId = "7de07d27-eedb-4290-881a-6a402a81dd0f"
 
     private val metadata = SpecificationMetadata(ServiceId(serviceId), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
 
-    private val version = Specification("Content", metadata)
+    private val specification = Specification("Content", metadata)
 
-    private val versionDto = SpecificationDto("Content", metadata)
+    private val specificationDto = SpecificationDto("Content", metadata)
 
     @Test
-    fun findOne_shouldReturnVersionDto() {
-        given(specificationPersistence.findOne(ServiceId(serviceId), "1.0")).willReturn(version)
-        given(specificationFileDtoMapper.fromDomain(version)).willReturn(versionDto)
+    fun findOne_shouldReturnSpecificationDto() {
+        given(specificationPersistence.findOne(ServiceId(serviceId), "1.0")).willReturn(specification)
+        given(specificationFileDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
-        assertThat(versionController.findSpecification(serviceId, "1.0")).isEqualTo(versionDto)
+        assertThat(specificationController.findSpecification(serviceId, "1.0")).isEqualTo(specificationDto)
     }
 
     @Test
-    fun delete_shouldDeleteVersion() {
-        versionController.deleteSpecification(serviceId, "1.0")
+    fun delete_shouldDeleteSpecification() {
+        specificationController.deleteSpecification(serviceId, "1.0")
 
         verify(specificationPersistence).delete(ServiceId(serviceId), "1.0")
     }

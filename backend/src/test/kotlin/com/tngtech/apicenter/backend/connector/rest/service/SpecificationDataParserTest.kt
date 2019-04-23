@@ -10,13 +10,13 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import java.io.IOException
 
-class ServiceDataServiceTest {
+class SpecificationDataParserTest {
 
     private val objectMapper: ObjectMapper = mock()
 
     private val yamlMapper: YAMLMapper = mock()
 
-    private val specificationDataService = SpecificationDataParser(objectMapper, yamlMapper)
+    private val specificationDataParser = SpecificationDataParser(objectMapper, yamlMapper)
 
     companion object {
         const val SWAGGER_SPECIFICATION =
@@ -31,66 +31,66 @@ class ServiceDataServiceTest {
 
     @Test
     fun parseFileContent_shouldReturnFileContent() {
-        assertThat(specificationDataService.parseFileContent(SWAGGER_SPECIFICATION)).isEqualTo(
+        assertThat(specificationDataParser.parseFileContent(SWAGGER_SPECIFICATION)).isEqualTo(
             SWAGGER_SPECIFICATION
         )
     }
 
     @Test
     fun readTitle_shouldReturnTitle() {
-        assertThat(specificationDataService.extractTitle(SWAGGER_SPECIFICATION)).isEqualTo("Swagger Petstore")
+        assertThat(specificationDataParser.extractTitle(SWAGGER_SPECIFICATION)).isEqualTo("Swagger Petstore")
     }
 
     @Test
     fun readVersion_shouldReturnVersion() {
-        assertThat(specificationDataService.extractVersion(SWAGGER_SPECIFICATION)).isEqualTo("1.0.0")
+        assertThat(specificationDataParser.extractVersion(SWAGGER_SPECIFICATION)).isEqualTo("1.0.0")
     }
 
     @Test
     fun readDescription_shouldReturnDescription() {
-        assertThat(specificationDataService.extractDescription(SWAGGER_SPECIFICATION)).isEqualTo("My Description")
+        assertThat(specificationDataParser.extractDescription(SWAGGER_SPECIFICATION)).isEqualTo("My Description")
     }
 
     @Test
     fun readTitle_shouldFailWhenNoTitleIsGiven() {
-        assertThatThrownBy { specificationDataService.extractTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
+        assertThatThrownBy { specificationDataParser.extractTitle(SWAGGER_SPECIFICATION_WITHOUT_TITLE) }.isInstanceOf(
             SpecificationParseException::class.java
         )
     }
 
     @Test
     fun readVersion_shouldFailWhenNoVersionIsGiven() {
-        assertThatThrownBy { specificationDataService.extractVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
+        assertThatThrownBy { specificationDataParser.extractVersion(SWAGGER_SPECIFICATION_WITHOUT_VERSION) }.isInstanceOf(
             SpecificationParseException::class.java
         )
     }
 
     @Test
     fun readDescription_shouldReturnNullWhenNoDescriptionIsGiven() {
-        assertThat(specificationDataService.extractDescription(SWAGGER_SPECIFICATION_WITHOUT_DESCRIPTION)).isNull()
+        assertThat(specificationDataParser.extractDescription(SWAGGER_SPECIFICATION_WITHOUT_DESCRIPTION)).isNull()
     }
 
     @Test
     fun isYaml_shouldReturnTrueWhenYamlIsGiven() {
-        assertThat(specificationDataService.isYaml(YAML_SPECIFICATION)).isTrue()
+        assertThat(specificationDataParser.isYaml(YAML_SPECIFICATION)).isTrue()
     }
 
     @Test
     fun isYaml_shouldReturnFalseWhenYamlCantBeParsed() {
         given(yamlMapper.readTree(YAML_SPECIFICATION)).willThrow(IOException())
 
-        assertThat(specificationDataService.isYaml(YAML_SPECIFICATION)).isFalse()
+        assertThat(specificationDataParser.isYaml(YAML_SPECIFICATION)).isFalse()
     }
 
     @Test
     fun isJson_shouldRetrunTrueWhenJsonIsGiven() {
-        assertThat(specificationDataService.isJson(SWAGGER_SPECIFICATION)).isTrue()
+        assertThat(specificationDataParser.isJson(SWAGGER_SPECIFICATION)).isTrue()
     }
 
     @Test
     fun isJson_shouldReturnFalseWhenJsonCantBeParsed() {
         given(objectMapper.readTree(SWAGGER_SPECIFICATION)).willThrow(IOException())
 
-        assertThat(specificationDataService.isJson(SWAGGER_SPECIFICATION)).isFalse()
+        assertThat(specificationDataParser.isJson(SWAGGER_SPECIFICATION)).isFalse()
     }
 }

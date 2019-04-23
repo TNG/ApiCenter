@@ -15,7 +15,7 @@ import java.util.*
 import javax.persistence.EntityManager
 
 @RunWith(MockitoJUnitRunner::class)
-internal class ServiceDatabaseServiceUnitTest {
+internal class ServiceDatabaseUnitTest {
 
     private val serviceRepository: ServiceRepository = mock()
 

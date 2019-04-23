@@ -24,7 +24,7 @@ internal class ServiceControllerIntegrationTest {
     private lateinit var mockMvc: MockMvc
 
     @Test
-    fun findAllSpecifications_shouldReturnAllSpecifications() {
+    fun findAllServices_shouldReturnAllServices() {
         mockMvc.perform(get("/api/v1/service").with(user("user")))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -39,13 +39,13 @@ internal class ServiceControllerIntegrationTest {
     }
 
     @Test
-    fun findAllSpecifications_requiresAuthentication() {
+    fun findAllServices_requiresAuthentication() {
         mockMvc.perform(get("/api/v1/service"))
                 .andExpect(status().isForbidden)
     }
 
     @Test
-    fun findOneSpecification_shouldGetOne() {
+    fun findOneService_shouldGetOne() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user")))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -53,13 +53,13 @@ internal class ServiceControllerIntegrationTest {
     }
 
     @Test
-    fun findOneSpecification_shouldGracefullyFail() {
+    fun findOneService_shouldGracefullyFail() {
         mockMvc.perform(get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ef").with(user("user")))
                 .andExpect(status().isNotFound)
     }
 
     @Test
-    fun uploadSpecification_shouldCreateSpecification() {
+    fun uploadSpecification_shouldCreateService() {
         mockMvc.perform(
             post("/api/v1/service")
                 .with(user("user"))
@@ -137,7 +137,7 @@ internal class ServiceControllerIntegrationTest {
     }
 
     @Test
-    fun uploadSpecification_shouldCreateNewVersion() {
+    fun uploadSpecification_shouldCreateNewSpecification() {
         mockMvc.perform(
             post("/api/v1/service")
                 .with(user("user"))
@@ -232,7 +232,7 @@ internal class ServiceControllerIntegrationTest {
     }
 
     @Test
-    fun deleteSpecification_shouldDeleteSpecification() {
+    fun deleteService_shouldDeleteService() {
         mockMvc.perform(
             delete("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee")
                 .with(user("user"))

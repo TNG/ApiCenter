@@ -26,7 +26,7 @@ class SpecificationControllerIntegrationTest {
     private lateinit var mockMvc: MockMvc
 
     @Test
-    fun findOneVersion_shouldReturnVersion() {
+    fun findOneSpecification_shouldReturnSpecification() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/v1")
             .with(user("user"))
             .with(csrf()))
@@ -34,7 +34,7 @@ class SpecificationControllerIntegrationTest {
     }
 
     @Test
-    fun findOneVersion_shouldReturnJson() {
+    fun findOneSpecification_shouldReturnJson() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/v1")
                 .header("Accept", "application/json")
                 .with(user("user"))
@@ -43,7 +43,7 @@ class SpecificationControllerIntegrationTest {
     }
 
     @Test
-    fun findOneVersion_shouldReturnYaml() {
+    fun findOneSpecification_shouldReturnYaml() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/v1")
                 .header("Accept", "application/yml")
                 .with(user("user"))
@@ -52,7 +52,7 @@ class SpecificationControllerIntegrationTest {
     }
 
     @Test
-    fun findOneVersion_shouldGracefullyFail() {
+    fun findOneSpecification_shouldGracefullyFail() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/42")
                 .with(user("user"))
                 .with(csrf()))
@@ -61,7 +61,7 @@ class SpecificationControllerIntegrationTest {
 
 
     @Test
-    fun deleteVersion_shouldDeleteVersion() {
+    fun deleteSpecification_shouldDeleteSpecification() {
         mockMvc.perform(delete("/api/v1/service/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/version/v2")
             .with(user("user"))
             .with(csrf()))
