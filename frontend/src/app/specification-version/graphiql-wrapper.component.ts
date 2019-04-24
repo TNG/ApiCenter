@@ -1,8 +1,6 @@
 import {
   AfterViewChecked,
-  Component,
-  Input,
-  OnDestroy,
+  Component
 } from '@angular/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -12,11 +10,10 @@ import GraphiQL from 'graphiql';
 import fetch from 'isomorphic-fetch';
 import {GraphQLSchema} from 'graphql';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {makeExecutableSchema} from 'graphql-tools';
 import {SpecificationViewComponent} from './specification-view.component';
-import {Specification} from '../models/specification';
 import {environment} from '../../environments/environment';
+import {SpecificationStore} from '../specification-store.service';
 
 @Component({
   selector: 'app-graphiql',
@@ -26,8 +23,8 @@ import {environment} from '../../environments/environment';
 export class GraphiQLWrapperComponent extends SpecificationViewComponent implements AfterViewChecked {
   public graphiql: string;
 
-  constructor(route: ActivatedRoute, http: HttpClient) {
-    super(route, http);
+  constructor(route: ActivatedRoute, specificationStore: SpecificationStore) {
+    super(route, specificationStore);
     this.graphiql = uuid.v1();
   }
 

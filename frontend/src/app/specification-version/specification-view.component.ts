@@ -1,32 +1,28 @@
 import {Component, OnInit, Output} from '@angular/core';
 import {Specification} from '../models/specification';
-import {environment} from '../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {SpecificationStore} from '../specification-store.service';
 
 @Component({
   selector: 'app-specification-view',
   templateUrl: './specification-view.component.html',
+  providers: [SpecificationStore]
 })
 
 export class SpecificationViewComponent implements OnInit {
   @Output() specification: Specification;
   error: string;
 
-  constructor(protected route: ActivatedRoute, protected http: HttpClient) {
+  constructor(protected route: ActivatedRoute, protected specificationStore: SpecificationStore) {
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.http.get<Specification>(environment.apiUrl + '/service/' + params['serviceId'] + '/version/' + params['version'])
+      this.specificationStore.getSpecification(params['serviceId'], params['version'])
         .subscribe(data => {
           this.specification = data;
         },
-      err => {
-          if (err.status === 404) {
-            this.error = 'Specification not found';
-          }
-        });
+      error => this.error = error.error.userMessage);
     });
   }
 }

@@ -1,9 +1,9 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import * as SwaggerUI from 'swagger-ui';
 import {Specification} from '../models/specification';
 import {SpecificationViewComponent} from './specification-view.component';
+import {SpecificationStore} from '../specification-store.service';
 
 @Component({
   selector: 'app-swagger-ui',
@@ -13,8 +13,8 @@ import {SpecificationViewComponent} from './specification-view.component';
 export class SwaggerUiWrapperComponent extends SpecificationViewComponent implements OnChanges {
   @Input() specification: Specification;
 
-  constructor(route: ActivatedRoute, http: HttpClient) {
-    super(route, http);
+  constructor(route: ActivatedRoute, specificationStore: SpecificationStore) {
+    super(route, specificationStore);
   }
 
   ngOnChanges() {
