@@ -1,9 +1,9 @@
 package com.tngtech.apicenter.backend.domain.exceptions
 
-class SpecificationNotFoundException(val specificationId: String, val version: String? = "") : RuntimeException()
+class SpecificationNotFoundException(val serviceId: String, val version: String? = "") : RuntimeException()
 class SpecificationParseException(val userMessage: String) : RuntimeException()
-class VersionAlreadyExistsException(val specificationTitle: String) : RuntimeException()
-class InvalidSpecificationIdException(val userDefinedId: String): RuntimeException()
-class MismatchedSpecificationIdException(val userDefinedId: String, val urlPathId: String): RuntimeException()
-class PreexistingVersionContentIdenticalException: RuntimeException()
-class PreexistingVersionContentDiscrepancyException: RuntimeException()
+class SpecificationAlreadyExistsException(val title: String) : RuntimeException()
+class InvalidServiceIdException(val userDefinedId: String): RuntimeException()
+class MismatchedServiceIdException(val userDefinedId: String, val urlPathId: String): RuntimeException()
+class SpecificationDuplicationException: RuntimeException()
+class SpecificationConflictException: RuntimeException()

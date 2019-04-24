@@ -1,86 +1,86 @@
 import {Component, OnInit} from '@angular/core';
-import {SpecificationService} from '../specification.service';
-import {Specification} from '../models/specification';
-import {ApiLanguage, Version} from '../models/version';
-import {VersionService} from '../version.service';
+import {ServiceStore} from '../service-store.service';
+import {Service} from '../models/service';
+import {ApiLanguage, Specification} from '../models/specification';
+import {SpecificationStore} from '../specification-store.service';
 
 @Component({
   selector: 'app-specification-overview',
   templateUrl: './specification-overview.component.html',
   styleUrls: ['./specification-overview.component.css'],
-  providers: [SpecificationService, VersionService]
+  providers: [ServiceStore, SpecificationStore]
 })
 export class SpecificationOverviewComponent implements OnInit {
-  specifications: Specification[];
+  services: Service[];
   error: string;
   expanded: string[] = [];
 
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
 
-  constructor(private specificationService: SpecificationService, private versionService: VersionService) {
+  constructor(private serviceStore: ServiceStore, private specificationStore: SpecificationStore) {
   }
 
   ngOnInit(): void {
-    this.getSpecifications();
+    this.getServices();
   }
 
-  public async deleteSpecification(specification) {
-    if (confirm('Are you sure that you want to delete "' + specification.title + '"?')) {
-      this.specificationService.deleteSpecification(specification.id)
-        .subscribe(event => this.getSpecifications());
+  public async deleteService(service: Service) {
+    if (confirm('Are you sure that you want to delete "' + service.title + '"?')) {
+      this.serviceStore.deleteService(service.id)
+        .subscribe(event => this.getServices());
     }
   }
 
-  public async deleteVersion(specification, version) {
-    if (confirm('Are you sure that you want to delete version "' + version.metadata.version + '"?')) {
-      this.versionService.deleteVersion(specification.id, version.metadata.version).subscribe(event => {
-          this.getSpecifications();
+  public async deleteSpecification(service: Service, specification: Specification) {
+    if (confirm('Are you sure that you want to delete version "' + specification.metadata.version + '"?')) {
+      this.specificationStore.deleteSpecification(service.id, specification.metadata.version).subscribe(event => {
+          this.getServices();
           this.expanded = [];
         }
       );
     }
   }
 
-  public async downloadSpecification(specification: Specification, fileType: string) {
-    this.downloadVersion(fileType, specification, specification.versions[0]);
+  public async downloadService(service: Service, fileType: string) {
+    this.downloadSpecification(fileType, service, service.specifications[0]);
   }
 
-  public downloadVersion(fileType: string, spec: Specification, version: Version) {
-    switch (version.metadata.language) {
+  public downloadSpecification(fileType: string, service: Service, specification: Specification) {
+    switch (specification.metadata.language) {
       case ApiLanguage.GraphQL:
-        this.versionService.getVersion(spec.id, version.metadata.version)
+        this.specificationStore.getSpecification(service.id, specification.metadata.version)
           .subscribe(event => {
-            const fileName = this.createDownloadFileName(spec, version);
+            const fileName = this.createDownloadFileName(service, specification);
             this.doDownload(event.content, fileName + '.graphql', 'application/json');
           });
         break;
       case ApiLanguage.OpenAPI:
-        this.downloadOpenApiVersion(fileType, spec, version);
+        this.downloadOpenApi(fileType, service, specification);
         break;
     }
   }
 
-  public downloadOpenApiVersion(fileType: string, spec: Specification, version: Version) {
+  public downloadOpenApi(fileType: string, service: Service, specification: Specification) {
     switch (fileType) {
       case 'json':
-        this.downloadJsonVersion(spec, version);
+        this.downloadJson(service, specification);
         break;
       case 'yaml':
-        this.downloadYamlVersion(spec, version);
+        this.downloadYaml(service, specification);
         break;
     }
   }
 
-  public downloadJsonVersion(specification: Specification, version: Version) {
-    const fileName = this.createDownloadFileName(specification, version);
-    const content = JSON.stringify(JSON.parse(version.content), null, 2);
+  public downloadJson(service: Service, specification: Specification) {
+    const fileName = this.createDownloadFileName(service, specification);
+    const content = JSON.stringify(JSON.parse(specification.content), null, 2);
     this.doDownload(content, fileName + '.json', 'application/json');
   }
 
-  public downloadYamlVersion(specification: Specification, version: Version) {
-    const fileName = this.createDownloadFileName(specification, version);
-    this.versionService.getYamlVersion(specification.id, version.metadata.version)
+  public downloadYaml(service: Service, specification: Specification) {
+    const fileName = this.createDownloadFileName(service, specification);
+    this.specificationStore.getYamlSpecification(service.id, specification.metadata.version)
       .subscribe(event => {
         this.doDownload(event.content, fileName + '.yml', 'application/yaml');
       });
@@ -98,27 +98,27 @@ export class SpecificationOverviewComponent implements OnInit {
     document.body.removeChild(anchor);
   }
 
-  private createDownloadFileName(specification: Specification, version: Version) {
+  private createDownloadFileName(service: Service, specification: Specification) {
     // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    return (specification.title + '_v' + version.metadata.version).replace(/[^a-z0-9\.]/gi, '_');
+    return (service.title + '_v' + specification.metadata.version).replace(/[^a-z0-9\.]/gi, '_');
   }
 
-  public async synchronize(specification) {
-    return this.specificationService.synchronizeSpecification(specification.id)
-      .subscribe(event => this.getSpecifications());
+  public async synchronize(service: Service) {
+    return this.serviceStore.synchronizeService(service.id)
+      .subscribe(event => this.getServices());
   }
 
-  public async switchExpanded(specification) {
-    if (this.expanded.includes(specification.id)) {
-      this.expanded.splice(this.expanded.indexOf(specification.id), 1);
+  public async switchExpanded(service: Service) {
+    if (this.expanded.includes(service.id)) {
+      this.expanded.splice(this.expanded.indexOf(service.id), 1);
     } else {
-      this.expanded.push(specification.id);
+      this.expanded.push(service.id);
     }
   }
 
-  private async getSpecifications() {
-    this.specificationService.getSpecifications().subscribe(
-     (data: Specification[]) => this.specifications = data,
+  private async getServices() {
+    this.serviceStore.getServices().subscribe(
+     (data: Service[]) => this.services = data,
      error1 => {
        if (error1.status === 403) {
          this.error = 'You don\'t have permission to access content on this page';

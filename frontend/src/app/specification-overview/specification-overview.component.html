@@ -30,38 +30,38 @@
           <th scope="col">Options</th>
         </tr>
         </thead>
-        <ng-container *ngFor="let specification of specifications">
+        <ng-container *ngFor="let service of services">
           <tbody>
-          <tr class="clickable" data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"
-              (click)="switchExpanded(specification)">
+          <tr class="clickable" data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"
+              (click)="switchExpanded(service)">
             <td>
               <span class="oi oi-chevron-right clickable"
-                    *ngIf="specification.versions.length > 1 && !expanded.includes(specification.id)"
-                    data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
+                    *ngIf="service.specifications.length > 1 && !expanded.includes(service.id)"
+                    data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
               <span class="oi oi-chevron-bottom clickable"
-                    *ngIf="specification.versions.length > 1 && expanded.includes(specification.id)"
-                    data-toggle="collapse" [attr.data-target]="'#versions-' + specification.id"></span>
+                    *ngIf="service.specifications.length > 1 && expanded.includes(service.id)"
+                    data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
             </td>
-            <td><a [routerLink]="['specifications/', specification.id, specification.versions[0].metadata.version]" routerLinkActive="active">{{ specification.title
+            <td><a [routerLink]="['specifications/', service.id, service.specifications[0].metadata.version]" routerLinkActive="active">{{ service.title
               }}</a></td>
-            <td>{{ specification.versions[0].metadata.version }}</td>
+            <td>{{ service.specifications[0].metadata.version }}</td>
             <td>
-              <button class="btn oi oi-loop-circular" *ngIf="specification.remoteAddress != null"
-                      (click)="synchronize(specification)"></button>
-              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadSpecification(specification, selectedFormat)"></button>
-              <button class="btn oi oi-trash" (click)="deleteSpecification(specification)"></button>
-              <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', specification.id]"></button>
+              <button class="btn oi oi-loop-circular" *ngIf="service.remoteAddress != null"
+                      (click)="synchronize(service)"></button>
+              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadService(service, selectedFormat)"></button>
+              <button class="btn oi oi-trash" (click)="deleteService(service)"></button>
+              <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', service.id]"></button>
             </td>
           </tr>
           </tbody>
-          <tbody [attr.id]="'versions-' + specification.id" class="collapse" *ngIf="specification.versions.length > 1">
-          <tr *ngFor="let version of specification.versions">
+          <tbody [attr.id]="'versions-' + service.id" class="collapse" *ngIf="service.specifications.length > 1">
+          <tr *ngFor="let specification of service.specifications">
             <td></td>
-            <td><a [routerLink]="['specifications/', specification.id, version.metadata.version]" routerLinkActive="active">{{ specification.title }}</a></td>
-            <td>{{ version.metadata.version }}</td>
+            <td><a [routerLink]="['specifications/', service.id, specification.metadata.version]" routerLinkActive="active">{{ service.title }}</a></td>
+            <td>{{ specification.metadata.version }}</td>
             <td>
-              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadVersion(selectedFormat, specification, version)"></button>
-              <button class="btn oi oi-trash" (click)="deleteVersion(specification, version)"></button>
+              <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadSpecification(selectedFormat, service, specification)"></button>
+              <button class="btn oi oi-trash" (click)="deleteSpecification(service, specification)"></button>
             </td>
           </tr>
           </tbody>

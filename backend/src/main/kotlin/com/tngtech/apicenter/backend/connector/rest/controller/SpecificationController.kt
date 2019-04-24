@@ -1,86 +1,50 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
-import com.tngtech.apicenter.backend.connector.rest.dto.VersionDto
-import com.tngtech.apicenter.backend.connector.rest.dto.VersionFileDto
-import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.mapper.VersionFileDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.service.SynchronizationService
-import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
-import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.exceptions.MismatchedSpecificationIdException
-import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
+import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.springframework.web.bind.annotation.*
+import org.springframework.http.MediaType
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
+
+private const val MEDIA_TYPE_YAML = "application/yml"
 
 @RestController
-@RequestMapping("/api/v1/specifications")
-class SpecificationController @Autowired constructor(
-    private val specificationHandler: SpecificationHandler,
-    private val synchronizationService: SynchronizationService,
-    private val versionFileDtoMapper: VersionFileDtoMapper,
-    private val specificationDtoMapper: SpecificationDtoMapper
-) {
+class SpecificationController constructor(private val specificationPersistor: SpecificationPersistor,
+                                          private val specificationFileDtoMapper: SpecificationFileDtoMapper) {
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    fun uploadSpecification(@RequestBody versionFileDto: VersionFileDto): VersionDto {
-        val version = versionFileDtoMapper.toDomain(versionFileDto)
-
-        specificationHandler.saveNewVersion(version, version.metadata.id, version.metadata.endpointUrl)
-
-        return versionFileDtoMapper.fromDomain(version)
+    @RequestMapping("/api/v1/service/{serviceId}/version/{version}",
+            produces = [MediaType.APPLICATION_JSON_VALUE,
+                        MEDIA_TYPE_YAML],
+            headers =  ["Accept=" + MediaType.APPLICATION_JSON_VALUE,
+                        "Accept=" + MEDIA_TYPE_YAML],
+            method =   [RequestMethod.GET])
+    fun findSpecification(@PathVariable serviceId: String,
+                          @PathVariable version: String,
+                          @RequestHeader(value = "Accept",
+                                   defaultValue = MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): SpecificationDto {
+        // i.e. The integration test and unit test require the default specified in two different ways
+        val specification = specificationPersistor.findOne(ServiceId(serviceId), version)
+                ?: throw SpecificationNotFoundException(serviceId, version)
+        return specificationFileDtoMapper.fromDomain(convertByMediaType(accept, specification))
     }
 
-    @PutMapping("/{specificationIdFromPath}")
-    fun updateSpecification(@RequestBody versionFileDto: VersionFileDto, @PathVariable specificationIdFromPath: String): VersionDto {
-        val specificationId = getConsistentId(versionFileDto, specificationIdFromPath)
-
-        val version = versionFileDtoMapper.toDomain(
-            VersionFileDto(
-                versionFileDto.fileContent,
-                versionFileDto.fileUrl,
-                versionFileDto.metaData,
-                specificationId
-            )
-        )
-
-        specificationHandler.saveNewVersion(version, ServiceId(specificationId), versionFileDto.fileUrl)
-
-        return versionFileDtoMapper.fromDomain(version)
-    }
-
-    private fun getConsistentId(versionFileDto: VersionFileDto, specificationIdFromPath: String): String {
-        versionFileDto.id?.let {
-            idFromFile -> if (idFromFile != specificationIdFromPath)
-                throw MismatchedSpecificationIdException(idFromFile, specificationIdFromPath)
+    private fun convertByMediaType(accept: String, specification: Specification): Specification {
+        return if (accept == MEDIA_TYPE_YAML) {
+            val jsonNodeTree = ObjectMapper().readTree(specification.content)
+            val jsonAsYaml = YAMLMapper().writeValueAsString(jsonNodeTree)
+            Specification(jsonAsYaml, specification.metadata)
+        } else {
+            specification
         }
-        return specificationIdFromPath
     }
 
-    @GetMapping
-    fun findAllSpecifications(): List<SpecificationDto> =
-        specificationHandler.findAll().map { spec -> specificationDtoMapper.fromDomain(spec) }
-
-    @GetMapping("/{specificationId}")
-    fun findSpecification(@PathVariable specificationId: String): SpecificationDto {
-        val specification = specificationHandler.findOne(ServiceId(specificationId))
-        return specification?.let { specificationDtoMapper.fromDomain(it) } ?:
-            throw SpecificationNotFoundException(specificationId)
+    @DeleteMapping("/api/v1/service/{serviceId}/version/{version}")
+    fun deleteSpecification(@PathVariable serviceId: String, @PathVariable version: String) {
+        specificationPersistor.delete(ServiceId(serviceId), version)
     }
-
-    @DeleteMapping("/{specificationId}")
-    fun deleteSpecification(@PathVariable specificationId: String) {
-        specificationHandler.delete(ServiceId(specificationId))
-    }
-
-    @PostMapping("/{specificationId}/synchronize")
-    fun synchronizeSpecification(@PathVariable specificationId: String) {
-        synchronizationService.synchronize(ServiceId(specificationId))
-    }
-
-    @GetMapping("/search/{searchString}")
-    fun searchSpecification(@PathVariable searchString: String): List<SpecificationDto> =
-        specificationHandler.search(searchString).map { spec -> specificationDtoMapper.fromDomain(spec) }
 }

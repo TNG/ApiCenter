@@ -30,7 +30,7 @@ class RestResponseExceptionHandler {
 
     @ExceptionHandler(SpecificationNotFoundException::class)
     fun handleNotFound(exception: SpecificationNotFoundException): ResponseEntity<ErrorMessage> {
-        logger.info("Specification ${exception.specificationId} ${exception.version} not found", exception)
+        logger.info("Specification ${exception.serviceId} ${exception.version} not found", exception)
         return makeResponseEntity("Specification not found", HttpStatus.NOT_FOUND)
     }
 
@@ -38,26 +38,26 @@ class RestResponseExceptionHandler {
     fun handleBadRequest(exception: SpecificationParseException) =
             makeResponseEntity(exception.userMessage, HttpStatus.BAD_REQUEST)
 
-    @ExceptionHandler(VersionAlreadyExistsException::class)
-    fun handleVersionAlreadyExists(exception: VersionAlreadyExistsException) =
-            makeResponseEntity("A specification with the same version already exists for ${exception.specificationTitle}", HttpStatus.CONFLICT)
+    @ExceptionHandler(SpecificationAlreadyExistsException::class)
+    fun handleVersionAlreadyExists(exception: SpecificationAlreadyExistsException) =
+            makeResponseEntity("A specification with the same version already exists for ${exception.title}", HttpStatus.CONFLICT)
 
-    @ExceptionHandler(InvalidSpecificationIdException::class)
-    fun handleUnacceptableId(exception: InvalidSpecificationIdException) =
+    @ExceptionHandler(InvalidServiceIdException::class)
+    fun handleUnacceptableId(exception: InvalidServiceIdException) =
             makeResponseEntity("The API ID supplied (${exception.userDefinedId}) should only contain numbers, " +
                     "A-Z characters, underscores and hyphens", HttpStatus.BAD_REQUEST)
 
-    @ExceptionHandler(MismatchedSpecificationIdException::class)
-    fun handleServiceIdMismatch(exception: MismatchedSpecificationIdException) =
+    @ExceptionHandler(MismatchedServiceIdException::class)
+    fun handleServiceIdMismatch(exception: MismatchedServiceIdException) =
             makeResponseEntity("The API ID used in the upload URL (${exception.urlPathId}) " +
                     "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
 
-    @ExceptionHandler(PreexistingVersionContentIdenticalException::class)
-    fun handleVersionAlreadyExists(exception: PreexistingVersionContentIdenticalException) =
+    @ExceptionHandler(SpecificationDuplicationException::class)
+    fun handleSpecificationDuplication(exception: SpecificationDuplicationException) =
             makeResponseEntity("This specification already exists on ApiCenter", HttpStatus.ACCEPTED)
 
-    @ExceptionHandler(PreexistingVersionContentDiscrepancyException::class)
-    fun handleVersionAlreadyExists(exception: PreexistingVersionContentDiscrepancyException) =
+    @ExceptionHandler(SpecificationConflictException::class)
+    fun handleSpecificationConflict(exception: SpecificationConflictException) =
             makeResponseEntity("There is already a different specification with the same version. " +
                     "Please solve this conflict, for example by increasing the version.", HttpStatus.CONFLICT)
 

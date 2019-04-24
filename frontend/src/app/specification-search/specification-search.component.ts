@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {SpecificationService} from '../specification.service';
+import {ServiceStore} from '../service-store.service';
 import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-specification-search',
   templateUrl: './specification-search.component.html',
   styleUrls: ['./specification-search.component.css'],
-  providers: [SpecificationService]
+  providers: [ServiceStore]
 })
 export class SpecificationSearchComponent implements OnInit {
   searchString: string;
 
-  constructor(private specificationService: SpecificationService, private router: Router) {
+  constructor(private serviceStore: ServiceStore, private router: Router) {
   }
 
   ngOnInit() {
