@@ -79,6 +79,23 @@ internal class ServiceControllerIntegrationTest {
     }
 
     @Test
+    fun uploadSpecification_shouldCreateSpecificationWithMetadata() {
+        mockMvc.perform(
+                post("/api/v1/service")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content("""
+                           {"fileContent":"t","metadata":{"title":"My title","version":"v3","description":"","language":"GRAPHQL","endpointUrl":""}}
+                        """.trimIndent()
+                        )
+        )
+                .andExpect(status().isCreated)
+                .andExpect(jsonPath("$.metadata.title", equalTo("My title")))
+                .andExpect(jsonPath("$.metadata.version", equalTo("v3")))
+    }
+
+    @Test
     fun uploadSpecification_shouldDetectVersionClash_identicalContent() {
         mockMvc.perform(
                 post("/api/v1/service")

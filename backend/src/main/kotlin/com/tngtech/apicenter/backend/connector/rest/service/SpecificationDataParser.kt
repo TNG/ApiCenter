@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetadata
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
+import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
+import java.util.*
 
 @Service
 class SpecificationDataParser @Autowired constructor(
@@ -73,25 +76,52 @@ class SpecificationDataParser @Autowired constructor(
         } catch (exception: PathNotFoundException) {
             null
         }
-
-    fun extractId(json: String): String? {
-        val parsedJson = objectMapper.readTree(json)
-        val jsonNode = parsedJson.at("/info/x-api-id")
-        return if (jsonNode.isMissingNode) {
+    fun extractId(json: String): String? =
+        try {
+            val parsedJson = objectMapper.readTree(json)
+            val jsonNode = parsedJson.at("/info/x-api-id")
+            if (jsonNode.isMissingNode) {
+                null
+            } else {
+                jsonNode.asText()
+            }
+        } catch (exception: IOException) {
             null
-        } else {
-            jsonNode.asText()
         }
+
+    fun makeSpecificationMetadata(fileContent: String,
+                                  idFromPath: String? = null,
+                                  metadata: SpecificationFileMetadata? = null
+    ): SpecificationMetadata {
+        val idFromUpload = extractId(fileContent)
+        val serviceId = getConsistentServiceId(idFromUpload, idFromPath)
+
+        return if (metadata != null) {
+            SpecificationMetadata(
+                    serviceId,
+                    metadata.title,
+                    metadata.version,
+                    metadata.description,
+                    ApiLanguage.GRAPHQL,
+                    metadata.endpointUrl
+            )
+        } else {
+            SpecificationMetadata(
+                    serviceId,
+                    extractTitle(fileContent),
+                    extractVersion(fileContent),
+                    extractDescription(fileContent),
+                    ApiLanguage.OPENAPI,
+                    null
+            )
+        }
+
     }
 
-    fun makeSpecificationMetadata(fileContent: String, serviceId: ServiceId, endpointUrl: String?): SpecificationMetadata {
-        return SpecificationMetadata(
-                serviceId,
-                extractTitle(fileContent),
-                extractVersion(fileContent),
-                extractDescription(fileContent),
-                ApiLanguage.OPENAPI,
-                endpointUrl
-        )
+    private fun getConsistentServiceId(idFromUpload: String?, idFromPath: String?): ServiceId {
+        if (idFromUpload != null && idFromPath != null && idFromUpload != idFromPath) {
+            throw MismatchedServiceIdException(idFromUpload, idFromPath)
+        }
+        return ServiceId(idFromUpload ?: idFromPath ?: UUID.randomUUID().toString())
     }
 }

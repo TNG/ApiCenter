@@ -2,9 +2,9 @@ package com.tngtech.apicenter.backend.connector.database.mapper.converter
 
 import com.tngtech.apicenter.backend.connector.database.entity.SpecificationEntity
 import com.tngtech.apicenter.backend.connector.database.entity.SpecificationId
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetadata
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
 import ma.glasnost.orika.MappingContext
 import ma.glasnost.orika.converter.BidirectionalConverter
 import ma.glasnost.orika.metadata.Type

@@ -22,7 +22,7 @@ class RemoteServiceUpdater constructor(
 
         val fileContent = specificationFileDownloader.retrieveFile(remoteAddress)
         val content = specificationDataParser.parseFileContent(fileContent)
-        val metadata = specificationDataParser.makeSpecificationMetadata(content, serviceId, remoteAddress)
+        val metadata = specificationDataParser.makeSpecificationMetadata(content, serviceId.id)
 
         val specification = Specification(content, metadata)
         serviceHandler.addNewSpecification(specification, serviceId, service.remoteAddress)
