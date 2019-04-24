@@ -13,17 +13,17 @@ export class SpecificationStore {
 
   public getYamlSpecification(serviceId: string, version: string) {
     const headers = new HttpHeaders({'Accept': 'application/yml'});
-    return this.http.get<Specification>(this.urlRoot + '/' + serviceId + '/versions/' + version, {headers})
+    return this.http.get<Specification>(this.urlRoot + '/' + serviceId + '/version/' + version, {headers})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public getSpecification(serviceId: string, version: string) {
-    return this.http.get<Specification>(this.urlRoot + '/' + serviceId + '/versions/' + version)
+    return this.http.get<Specification>(this.urlRoot + '/' + serviceId + '/version/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public deleteSpecification(serviceId: string, version: string): Observable<Specification> {
-    return this.http.delete<Specification>(this.urlRoot + '/' + serviceId + '/versions/' + version)
+    return this.http.delete<Specification>(this.urlRoot + '/' + serviceId + '/version/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 }

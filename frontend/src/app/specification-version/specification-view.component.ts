@@ -18,7 +18,7 @@ export class SpecificationViewComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.specificationStore.getSpecification(params['specificationId'], params['version'])
+      this.specificationStore.getSpecification(params['serviceId'], params['version'])
         .subscribe(data => {
           this.specification = data;
         },
