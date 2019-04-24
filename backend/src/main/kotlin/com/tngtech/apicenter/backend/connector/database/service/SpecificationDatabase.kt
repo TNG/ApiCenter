@@ -5,14 +5,14 @@ import com.tngtech.apicenter.backend.connector.database.mapper.SpecificationEnti
 import com.tngtech.apicenter.backend.connector.database.repository.SpecificationRepository
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
-import com.tngtech.apicenter.backend.domain.service.SpecificationPersistence
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.springframework.stereotype.Service
 
 @Service
 class SpecificationDatabase constructor(
         private val specificationRepository: SpecificationRepository,
         private val specificationEntityMapper: SpecificationEntityMapper
-) : SpecificationPersistence {
+) : SpecificationPersistor {
 
     override fun findOne(serviceId: ServiceId, version: String): Specification? {
         return specificationRepository.findById(SpecificationId(serviceId.id, version)).orElse(null)?.let { entity -> specificationEntityMapper.toDomain(entity) }

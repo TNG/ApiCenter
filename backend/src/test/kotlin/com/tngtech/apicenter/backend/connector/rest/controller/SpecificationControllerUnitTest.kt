@@ -9,17 +9,17 @@ import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoM
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
-import com.tngtech.apicenter.backend.domain.service.SpecificationPersistence
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 internal class SpecificationControllerUnitTest {
 
-    private val specificationPersistence: SpecificationPersistence = mock()
+    private val specificationPersistor: SpecificationPersistor = mock()
 
     private val specificationFileDtoMapper: SpecificationFileDtoMapper = mock()
 
-    private val specificationController = SpecificationController(specificationPersistence, specificationFileDtoMapper)
+    private val specificationController = SpecificationController(specificationPersistor, specificationFileDtoMapper)
 
     private val serviceId = "7de07d27-eedb-4290-881a-6a402a81dd0f"
 
@@ -31,7 +31,7 @@ internal class SpecificationControllerUnitTest {
 
     @Test
     fun findOne_shouldReturnSpecificationDto() {
-        given(specificationPersistence.findOne(ServiceId(serviceId), "1.0")).willReturn(specification)
+        given(specificationPersistor.findOne(ServiceId(serviceId), "1.0")).willReturn(specification)
         given(specificationFileDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
         assertThat(specificationController.findSpecification(serviceId, "1.0")).isEqualTo(specificationDto)
@@ -41,7 +41,7 @@ internal class SpecificationControllerUnitTest {
     fun delete_shouldDeleteSpecification() {
         specificationController.deleteSpecification(serviceId, "1.0")
 
-        verify(specificationPersistence).delete(ServiceId(serviceId), "1.0")
+        verify(specificationPersistor).delete(ServiceId(serviceId), "1.0")
     }
 
 }

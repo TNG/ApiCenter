@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
-import com.tngtech.apicenter.backend.domain.service.SpecificationPersistence
+import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.MediaType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
@@ -14,7 +14,7 @@ import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundExce
 private const val MEDIA_TYPE_YAML = "application/yml"
 
 @RestController
-class SpecificationController constructor(private val specificationPersistence: SpecificationPersistence,
+class SpecificationController constructor(private val specificationPersistor: SpecificationPersistor,
                                           private val specificationFileDtoMapper: SpecificationFileDtoMapper) {
 
     @RequestMapping("/api/v1/service/{serviceId}/version/{version}",
@@ -28,7 +28,7 @@ class SpecificationController constructor(private val specificationPersistence: 
                           @RequestHeader(value = "Accept",
                                    defaultValue = MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): SpecificationDto {
         // i.e. The integration test and unit test require the default specified in two different ways
-        val specification = specificationPersistence.findOne(ServiceId(serviceId), version)
+        val specification = specificationPersistor.findOne(ServiceId(serviceId), version)
                 ?: throw SpecificationNotFoundException(serviceId, version)
         return specificationFileDtoMapper.fromDomain(convertByMediaType(accept, specification))
     }
@@ -45,6 +45,6 @@ class SpecificationController constructor(private val specificationPersistence: 
 
     @DeleteMapping("/api/v1/service/{serviceId}/version/{version}")
     fun deleteSpecification(@PathVariable serviceId: String, @PathVariable version: String) {
-        specificationPersistence.delete(ServiceId(serviceId), version)
+        specificationPersistor.delete(ServiceId(serviceId), version)
     }
 }

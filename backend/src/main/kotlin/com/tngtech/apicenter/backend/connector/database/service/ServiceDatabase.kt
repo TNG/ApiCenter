@@ -6,7 +6,7 @@ import com.tngtech.apicenter.backend.connector.database.repository.ServiceReposi
 import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationAlreadyExistsException
-import com.tngtech.apicenter.backend.domain.service.ServicePersistence
+import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.hibernate.search.exception.EmptyQueryException
 import org.hibernate.search.jpa.Search
 import org.springframework.dao.DataIntegrityViolationException
@@ -18,7 +18,7 @@ class ServiceDatabase constructor(
         private val serviceRepository: ServiceRepository,
         private val entityManager: EntityManager,
         private val serviceEntityMapper: ServiceEntityMapper
-) : ServicePersistence {
+) : ServicePersistor {
 
     override fun save(service: Service) {
         val specificationEntity = serviceEntityMapper.fromDomain(service)

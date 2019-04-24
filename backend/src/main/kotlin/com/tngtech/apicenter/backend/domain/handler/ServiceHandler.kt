@@ -5,17 +5,17 @@ import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationConflictException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationDuplicationException
-import com.tngtech.apicenter.backend.domain.service.ServicePersistence
+import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
 class ServiceHandler @Autowired constructor(
-        private val servicePersistence: ServicePersistence
+        private val servicePersistor: ServicePersistor
 ) {
 
     fun addNewSpecification(specification: Specification, serviceId: ServiceId, fileUrl: String?) {
-        val service: Service? = servicePersistence.findOne(serviceId)
+        val service: Service? = servicePersistor.findOne(serviceId)
 
         if (service == null) {
             saveNewService(specification, serviceId, fileUrl)
@@ -32,7 +32,7 @@ class ServiceHandler @Autowired constructor(
                 listOf(specification),
                 fileUrl
         )
-        servicePersistence.save(service)
+        servicePersistor.save(service)
     }
 
     private fun updateExistingService(service: Service, specification: Specification) {
@@ -50,18 +50,18 @@ class ServiceHandler @Autowired constructor(
                 throw SpecificationConflictException()
             }
         } else {
-            servicePersistence.save(service.appendSpecification(specification))
+            servicePersistor.save(service.appendSpecification(specification))
         }
 
     }
 
-    fun findAll(): List<Service> = servicePersistence.findAll()
+    fun findAll(): List<Service> = servicePersistor.findAll()
 
-    fun findOne(id: ServiceId): Service? = servicePersistence.findOne(id)
+    fun findOne(id: ServiceId): Service? = servicePersistor.findOne(id)
 
-    fun delete(id: ServiceId) = servicePersistence.delete(id)
+    fun delete(id: ServiceId) = servicePersistor.delete(id)
 
-    fun exists(id: ServiceId): Boolean = servicePersistence.exists(id)
+    fun exists(id: ServiceId): Boolean = servicePersistor.exists(id)
 
-    fun search(searchString: String): List<Service> = servicePersistence.search(searchString)
+    fun search(searchString: String): List<Service> = servicePersistor.search(searchString)
 }
