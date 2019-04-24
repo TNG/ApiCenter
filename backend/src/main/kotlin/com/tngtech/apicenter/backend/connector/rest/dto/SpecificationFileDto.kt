@@ -2,10 +2,8 @@ package com.tngtech.apicenter.backend.connector.rest.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
-import com.tngtech.apicenter.backend.domain.entity.ServiceId
 
-data class SpecificationMetadata constructor(
-    val id: ServiceId,
+data class SpecificationFileMetadata constructor(
     val title: String,
     val version: String,
     val description: String?,
@@ -16,6 +14,6 @@ data class SpecificationMetadata constructor(
 data class SpecificationFileDto @JsonCreator constructor(
         val fileContent: String?,
         val fileUrl: String? = "",
-        val metadata: SpecificationMetadata? = null,
+        val metadata: SpecificationFileMetadata? = null,
         val id: String? = null
 )

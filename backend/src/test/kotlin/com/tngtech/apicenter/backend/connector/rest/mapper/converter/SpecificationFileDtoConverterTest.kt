@@ -6,9 +6,10 @@ import com.tngtech.apicenter.backend.connector.rest.service.SpecificationFileDow
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetadata
+import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +47,7 @@ class SpecificationFileDtoConverterTest {
         val specificationFileDto = SpecificationFileDto(SWAGGER_SPECIFICATION, id = UUID_STRING)
 
         given(specificationFileDownloader.getLocalOrRemoteFileContent(specificationFileDto)).willReturn(SWAGGER_SPECIFICATION)
-        given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), specificationFileDto.fileUrl)).willReturn(metadata)
+        given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, UUID_STRING)).willReturn(metadata)
 
         val specification = specificationFileDtoConverter.convert(specificationFileDto, null, null)
 
@@ -66,7 +67,7 @@ class SpecificationFileDtoConverterTest {
         given(specificationFileDownloader.retrieveFile(SWAGGER_REMOTE)).willReturn(SWAGGER_SPECIFICATION)
         given(specificationFileDownloader.getLocalOrRemoteFileContent(specificationFileDto)).willReturn(SWAGGER_SPECIFICATION)
 
-        given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, ServiceId(UUID_STRING), specificationFileDto.fileUrl)).willReturn(metadata)
+        given(specificationDataParser.makeSpecificationMetadata(fileContent = SWAGGER_SPECIFICATION, idFromPath = UUID_STRING)).willReturn(metadata)
 
         val specification = specificationFileDtoConverter.convert(specificationFileDto, null, null)
 

@@ -3,12 +3,12 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationMetadata
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
