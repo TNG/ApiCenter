@@ -63,21 +63,21 @@ class ServiceController @Autowired constructor(
     fun findAllServices(): List<ServiceDto> =
         serviceHandler.findAll().map { service -> serviceDtoMapper.fromDomain(service) }
 
-    @GetMapping("/{specificationId}")
-    fun findService(@PathVariable specificationId: String): ServiceDto {
-        val specification = serviceHandler.findOne(ServiceId(specificationId))
+    @GetMapping("/{serviceId}")
+    fun findService(@PathVariable serviceId: String): ServiceDto {
+        val specification = serviceHandler.findOne(ServiceId(serviceId))
         return specification?.let { serviceDtoMapper.fromDomain(it) } ?:
-            throw SpecificationNotFoundException(specificationId)
+            throw SpecificationNotFoundException(serviceId)
     }
 
-    @DeleteMapping("/{specificationId}")
-    fun deleteService(@PathVariable specificationId: String) {
-        serviceHandler.delete(ServiceId(specificationId))
+    @DeleteMapping("/{serviceId}")
+    fun deleteService(@PathVariable serviceId: String) {
+        serviceHandler.delete(ServiceId(serviceId))
     }
 
-    @PostMapping("/{specificationId}/synchronize")
-    fun synchronizeService(@PathVariable specificationId: String) {
-        remoteServiceUpdater.synchronize(ServiceId(specificationId))
+    @PostMapping("/{serviceId}/synchronize")
+    fun synchronizeService(@PathVariable serviceId: String) {
+        remoteServiceUpdater.synchronize(ServiceId(serviceId))
     }
 
     @GetMapping("/search/{searchString}")
