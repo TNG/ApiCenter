@@ -46,11 +46,11 @@
               }}</a></td>
             <td>{{ service.specifications[0].metadata.version }}</td>
             <td>
-              <button class="btn oi oi-loop-circular" *ngIf="service.remoteAddress != null"
+              <button class="btn oi oi-loop-circular" title="Check for updates" *ngIf="service.remoteAddress != null"
                       (click)="synchronize(service)"></button>
               <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadService(service, selectedFormat)"></button>
-              <button class="btn oi oi-trash" (click)="deleteService(service)"></button>
-              <button class="btn oi oi-pencil" [routerLink]="['edit-specifications', service.id]"></button>
+              <button class="btn oi oi-trash" title="Delete" (click)="deleteService(service)"></button>
+              <button class="btn oi oi-pencil" title="Edit" [routerLink]="['edit-specifications', service.id]"></button>
             </td>
           </tr>
           </tbody>
