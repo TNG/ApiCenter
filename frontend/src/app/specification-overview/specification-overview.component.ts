@@ -105,7 +105,10 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public async synchronize(service: Service) {
     return this.serviceStore.synchronizeService(service.id)
-      .subscribe(event => this.getServices());
+      .subscribe(event => this.getServices(),
+        error => {
+          this.error = error.error.userMessage;
+        });
   }
 
   public async switchExpanded(service: Service) {

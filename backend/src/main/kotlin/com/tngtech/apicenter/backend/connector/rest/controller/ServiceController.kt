@@ -28,7 +28,7 @@ class ServiceController @Autowired constructor(
     fun uploadSpecification(@RequestBody specificationFileDto: SpecificationFileDto): SpecificationDto {
         val specification = specificationFileDtoMapper.toDomain(specificationFileDto)
 
-        serviceHandler.addNewSpecification(specification, specification.metadata.id, specification.metadata.endpointUrl)
+        serviceHandler.addNewSpecification(specification, specification.metadata.id, specificationFileDto.fileUrl)
 
         return specificationFileDtoMapper.fromDomain(specification)
     }

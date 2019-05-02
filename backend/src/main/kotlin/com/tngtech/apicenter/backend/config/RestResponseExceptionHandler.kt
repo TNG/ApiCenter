@@ -61,5 +61,8 @@ class RestResponseExceptionHandler {
             makeResponseEntity("There is already a different specification with the same version. " +
                     "Please solve this conflict, for example by increasing the version.", HttpStatus.CONFLICT)
 
+    @ExceptionHandler(RemoteFileConnectionRefusedException::class)
+    fun handleConnectionRefused(exception: RemoteFileConnectionRefusedException) =
+            makeResponseEntity("Specification couldn't be retrieved from ${exception.location}.", HttpStatus.NOT_FOUND)
 }
 
