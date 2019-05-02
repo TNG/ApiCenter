@@ -8,24 +8,36 @@
       "name": "Apache License Version 2.0, January 2004"
     }
   },
-  "host": "localhost:8080",
-  "basePath": "/",
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/v1",
+      "description": "Test against an instance of ApiCenter running on localhost"
+    }
+  ],
   "tags": [
     {
+      "name": "service-controller",
+      "description": "Operations to create, update, delete, and search for services"
+    },
+    {
       "name": "specification-controller",
-      "description": "Operations to create, update and maintain specifications"
+      "description": "Operations to find and delete individual specifications"
+    },
+    {
+      "name": "session-controller",
+      "description": "Operations to authenticate users"
     }
   ],
   "paths": {
-    "/api/v1/specifications": {
+    "/service": {
       "get": {
         "tags": [
-          "specification-controller"
+          "service-controller"
         ],
-        "summary": "List all existing specifications",
-        "operationId": "findAllSpecificationsUsingGET",
+        "summary": "List all existing services",
+        "operationId": "findAllServicesUsingGET",
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
@@ -45,7 +57,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SpecificationDto"
+                    "$ref": "#/components/schemas/ServiceDto"
                   }
                 }
               }
@@ -53,16 +65,13 @@
           },
           "403": {
             "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "deprecated": false
       },
       "post": {
         "tags": [
-          "specification-controller"
+          "service-controller"
         ],
         "summary": "Upload a new specification, or define a remote specification by its url",
         "operationId": "uploadSpecificationUsingPOST",
@@ -70,7 +79,7 @@
           "application/json"
         ],
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
@@ -78,14 +87,7 @@
             "name": "specificationFileDto",
             "required": true,
             "schema": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/RemoteSpecificationFileDto"
-                },
-                {
-                  "$ref": "#/components/schemas/LocalSpecificationFileDto"
-                }
-              ]
+              "$ref": "#/components/schemas/SpecificationFileDto"
             }
           },
           {
@@ -110,23 +112,20 @@
           },
           "403": {
             "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "deprecated": false
       }
     },
-    "/api/v1/specifications/search/{searchString}": {
+    "/service/search/{searchString}": {
       "get": {
         "tags": [
-          "specification-controller"
+          "service-controller"
         ],
-        "summary": "Search for specifications by a search string",
-        "operationId": "searchSpecificationUsingGET",
+        "summary": "Search for services by a search string",
+        "operationId": "searchForServicesUsingGET",
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
@@ -153,7 +152,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SpecificationDto"
+                    "$ref": "#/components/schemas/ServiceDto"
                   }
                 }
               }
@@ -161,29 +160,26 @@
           },
           "403": {
             "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "deprecated": false
       }
     },
-    "/api/v1/specifications/{specificationId}": {
+    "/service/{serviceId}": {
       "get": {
         "tags": [
-          "specification-controller"
+          "service-controller"
         ],
-        "summary": "Find a specific specification by id",
-        "operationId": "findSpecificationUsingGET",
+        "summary": "Find a specific service by id",
+        "operationId": "findServiceUsingGET",
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
-            "name": "specificationId",
+            "name": "serviceId",
             "in": "path",
-            "description": "specificationId",
+            "description": "serviceId",
             "required": true,
             "type": "string"
           },
@@ -202,7 +198,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SpecificationDto"
+                  "$ref": "#/components/schemas/ServiceDto"
                 }
               }
             }
@@ -218,15 +214,15 @@
       },
       "put": {
         "tags": [
-          "specification-controller"
+          "service-controller"
         ],
-        "summary": "Update an existing specification",
-        "operationId": "updateSpecificationUsingPUT",
+        "summary": "Update an existing service",
+        "operationId": "updateServiceUsingPUT",
         "consumes": [
           "application/json"
         ],
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
@@ -235,20 +231,13 @@
             "description": "specificationFileDto",
             "required": true,
             "schema": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/LocalSpecificationFileDto"
-                },
-                {
-                  "$ref": "#/components/schemas/RemoteSpecificationFileDto"
-                }
-              ]
+               "$ref": "#/components/schemas/SpecificationFileDto"
             }
           },
           {
-            "name": "specificationId",
+            "name": "serviceId",
             "in": "path",
-            "description": "specificationId",
+            "description": "serviceId",
             "required": true,
             "type": "string"
           },
@@ -272,9 +261,6 @@
               }
             }
           },
-          "201": {
-            "description": "Created"
-          },
           "403": {
             "description": "Forbidden"
           },
@@ -286,18 +272,18 @@
       },
       "delete": {
         "tags": [
-          "specification-controller"
+          "service-controller"
         ],
-        "summary": "Delete a specification by id",
+        "summary": "Delete a service by id",
         "operationId": "deleteSpecificationUsingDELETE",
         "produces": [
           "*/*"
         ],
         "parameters": [
           {
-            "name": "specificationId",
+            "name": "serviceId",
             "in": "path",
-            "description": "specificationId",
+            "description": "serviceId",
             "required": true,
             "type": "string"
           },
@@ -324,24 +310,24 @@
         "deprecated": false
       }
     },
-    "/api/v1/specifications/{specificationId}/synchronize": {
+    "/service/{serviceId}/synchronize": {
       "post": {
         "tags": [
-          "specification-controller"
+          "service-controller"
         ],
-        "summary": "Synchronize an existing specification with its remote source",
-        "operationId": "synchronizeSpecificationUsingPOST",
+        "summary": "Synchronize an existing service with its remote source",
+        "operationId": "synchronizeServiceUsingPOST",
         "consumes": [
           "application/json"
         ],
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
-            "name": "specificationId",
+            "name": "serviceId",
             "in": "path",
-            "description": "specificationId",
+            "description": "serviceId",
             "required": true,
             "type": "string"
           },
@@ -358,9 +344,6 @@
           "200": {
             "description": "OK"
           },
-          "201": {
-            "description": "Created"
-          },
           "403": {
             "description": "Forbidden"
           },
@@ -371,20 +354,21 @@
         "deprecated": false
       }
     },
-    "/api/v1/specifications/{specificationId}/versions/{version}": {
+    "/service/{serviceId}/version/{version}": {
       "get": {
         "tags": [
-          "version-controller"
+          "specification-controller"
         ],
         "summary": "Retrieve a specific version of a specification.",
         "produces": [
-          "application/json"
+          "application/json",
+          "application/yml"
         ],
         "parameters": [
           {
-            "name": "specificationId",
+            "name": "serviceId",
             "in": "path",
-            "description": "The ID of the specification for which the version should be fetched.",
+            "description": "The ID of the service for which the specification should be fetched.",
             "required": true,
             "type": "string"
           },
@@ -402,6 +386,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "description": "Desired file format, supports JSON and YAML. Defaults to JSON",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -412,7 +404,7 @@
                 "schema": {
                   "type": "object",
                   "items": {
-                    "$ref": "#/components/schemas/VersionDto"
+                    "$ref": "#/components/schemas/SpecificationDto"
                   }
                 }
               }
@@ -428,7 +420,7 @@
       },
       "delete": {
         "tags": [
-          "version-controller"
+          "specification-controller"
         ],
         "summary": "Delete a specific version of a specification.",
         "produces": [
@@ -436,9 +428,9 @@
         ],
         "parameters": [
           {
-            "name": "specificationId",
+            "name": "serviceId",
             "in": "path",
-            "description": "The ID of the specification for which the version should be deleted.",
+            "description": "The ID of the service for which the specification should be deleted.",
             "required": true,
             "type": "string"
           },
@@ -463,12 +455,12 @@
         }
       }
     },
-    "/api/v1/sessions": {
+    "/sessions": {
       "post": {
         "tags": [
           "session-controller"
         ],
-        "summary": "Create a new session to log in to the service",
+        "summary": "Create a new session login to ApiCenter",
         "produces": [
           "application/json"
         ],
@@ -503,7 +495,7 @@
   },
   "components": {
     "schemas": {
-      "SpecificationDto": {
+      "ServiceDto": {
         "type": "object",
         "properties": {
           "description": {
@@ -518,80 +510,147 @@
           "title": {
             "type": "string"
           },
-          "versions": {
+          "specifications": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/VersionDto"
+              "$ref": "#/components/schemas/SpecificationDto"
             }
           }
         },
-        "title": "SpecificationDto"
+        "required": [
+          "id",
+          "title",
+          "specifications"
+        ],
+        "title": "ServiceDto"
       },
       "SpecificationFileDto": {
-        "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "The id of an already existing specification",
-            "required": false
-          }
-        },
-        "title": "SpecificationFileDto",
-        "description": "Represents an OpenAPI-File"
-      },
-      "RemoteSpecificationFileDto": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/SpecificationFileDto"
-          }
-        ],
-        "properties": {
-          "fileUrl": {
-            "type": "string",
-            "description": "The url of a remote file to be loaded.",
-            "required": true
-          }
-        }
-      },
-      "LocalSpecificationFileDto": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/SpecificationFileDto"
-          }
-        ],
-        "properties": {
-          "fileContent": {
-            "type": "string",
-            "description": "The content of a file to be uploaded.",
-            "required": true
-          }
-        }
-      },
-      "VersionDto": {
-        "properties": {
-          "version": {
-            "type": "string"
+          "metadata": {
+            "$ref": "SpecificationFileMetadata"
           },
           "content": {
             "type": "string",
-            "description": "The content of this version"
+            "description": "The content of this specification"
           }
-        }
+        },
+        "required": [
+          "metadata",
+          "content"
+        ]
+      },
+      "SpecificationFileMetadata": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Specification title, not necessarily unique"
+          },
+          "version": {
+            "type": "string",
+            "description": "Specification version"
+          },
+          "description": {
+            "type": "string",
+            "description": "Specification description"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "OPENAPI",
+              "GRAPHQL"
+            ],
+            "description": "Specification version"
+          },
+          "endpointUrl": {
+            "type": "string",
+            "description": "A test endpoint for this specification, if it cannot be stored in the specification itself (eg. GraphQL)"
+          }
+        },
+        "required": [
+          "title",
+          "version",
+          "language"
+        ]
+      },
+      "SpecificationDto": {
+        "properties": {
+          "metadata": {
+            "$ref": "SpecificationMetadata"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of this specification"
+          }
+        },
+        "required": [
+          "metadata",
+          "content"
+        ]
+      },
+      "SpecificationMetadata": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "object",
+            "description": "ID of the service containing this specification",
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "Specification title, not necessarily unique"
+          },
+          "version": {
+            "type": "string",
+            "description": "Specification version"
+          },
+          "description": {
+            "type": "string",
+            "description": "Specification description"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "OPENAPI",
+              "GRAPHQL"
+            ],
+            "description": "Specification version"
+          },
+          "endpointUrl": {
+            "type": "string",
+            "description": "A test endpoint for this specification, if it cannot be stored in the specification itself (eg. GraphQL)"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "version",
+          "language"
+        ]
       },
       "LoginDto": {
         "type": "object",
         "properties": {
           "username": {
             "type": "string",
-            "description": "The username of the user.",
-            "required": true
+            "description": "The username of the user."
           },
           "password": {
             "type": "string",
-            "description": "The password of the user.",
-            "required: true"
+            "description": "The password of the user."
           }
-        }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
       },
       "SessionDto": {
         "type": "string",
@@ -604,7 +663,11 @@
             "type": "string",
             "description": "The username of the logged in user."
           }
-        }
+        },
+        "required": [
+          "token",
+          "username"
+        ]
       }
     }
   }
