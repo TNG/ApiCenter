@@ -8,8 +8,12 @@
       "name": "Apache License Version 2.0, January 2004"
     }
   },
-  "host": "localhost:8080",
-  "basePath": "/",
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/v1",
+      "description": "Test against an instance of ApiCenter running on localhost"
+    }
+  ],
   "tags": [
     {
       "name": "service-controller",
@@ -25,7 +29,7 @@
     }
   ],
   "paths": {
-    "/api/v1/service": {
+    "/service": {
       "get": {
         "tags": [
           "service-controller"
@@ -113,7 +117,7 @@
         "deprecated": false
       }
     },
-    "/api/v1/service/search/{searchString}": {
+    "/service/search/{searchString}": {
       "get": {
         "tags": [
           "service-controller"
@@ -161,7 +165,7 @@
         "deprecated": false
       }
     },
-    "/api/v1/service/{serviceId}": {
+    "/service/{serviceId}": {
       "get": {
         "tags": [
           "service-controller"
@@ -306,7 +310,7 @@
         "deprecated": false
       }
     },
-    "/api/v1/service/{serviceId}/synchronize": {
+    "/service/{serviceId}/synchronize": {
       "post": {
         "tags": [
           "service-controller"
@@ -350,7 +354,7 @@
         "deprecated": false
       }
     },
-    "/api/v1/service/{serviceId}/version/{version}": {
+    "/service/{serviceId}/version/{version}": {
       "get": {
         "tags": [
           "specification-controller"
@@ -451,7 +455,7 @@
         }
       }
     },
-    "/api/v1/sessions": {
+    "/sessions": {
       "post": {
         "tags": [
           "session-controller"
