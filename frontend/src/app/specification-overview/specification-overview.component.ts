@@ -121,7 +121,14 @@ export class SpecificationOverviewComponent implements OnInit {
 
   private async getServices() {
     this.serviceStore.getServices().subscribe(
-     (data: Service[]) => this.services = data,
+     (data: Service[]) => {
+       data
+         .map(element =>
+           // An explicit constructor is required to use the Service class methods
+           new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress))
+         .forEach(service => service.sortVersionsSemantically());
+       this.services = data;
+     },
      error1 => {
        if (error1.status === 403) {
          this.error = 'You don\'t have permission to access content on this page';

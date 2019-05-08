@@ -2,6 +2,8 @@ package com.tngtech.apicenter.backend.connector.rest.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
+import com.github.zafarkhaja.semver.Version as SemVer
+import com.github.zafarkhaja.semver.UnexpectedCharacterException
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
@@ -95,12 +97,18 @@ class SpecificationDataParser @Autowired constructor(
     ): SpecificationMetadata {
         val idFromUpload = extractId(fileContent)
         val serviceId = getConsistentServiceId(idFromUpload, idFromPath)
+        val version = metadata?.version ?: extractVersion(fileContent)
+        try {
+            SemVer.valueOf(version)
+        } catch (exception: UnexpectedCharacterException) {
+            throw SpecificationParseException("Version must be SemVer formatted, see https://semver.org/")
+        }
 
         return if (metadata != null) {
             SpecificationMetadata(
                     serviceId,
                     metadata.title,
-                    metadata.version,
+                    version,
                     metadata.description,
                     ApiLanguage.GRAPHQL,
                     metadata.endpointUrl
@@ -109,7 +117,7 @@ class SpecificationDataParser @Autowired constructor(
             SpecificationMetadata(
                     serviceId,
                     extractTitle(fileContent),
-                    extractVersion(fileContent),
+                    version,
                     extractDescription(fileContent),
                     ApiLanguage.OPENAPI,
                     null

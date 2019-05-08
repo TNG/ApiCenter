@@ -27,28 +27,28 @@ class SpecificationControllerIntegrationTest {
 
     @Test
     fun findOneSpecification_shouldReturnSpecification() {
-        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/v1")
+        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/1.0.0")
             .with(user("user"))
             .with(csrf()))
-            .andExpect(jsonPath("$.metadata.version", equalTo("v1")))
+            .andExpect(jsonPath("$.metadata.version", equalTo("1.0.0")))
     }
 
     @Test
     fun findOneSpecification_shouldReturnJson() {
-        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/v1")
+        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/1.0.0")
                 .header("Accept", "application/json")
                 .with(user("user"))
                 .with(csrf()))
-                .andExpect(jsonPath("$.content", equalTo("{\"info\": {\"title\": \"Spec1\",  \"version\": \"v1\", \"description\": \"Description\"}}")))
+                .andExpect(jsonPath("$.content", equalTo("{\"info\": {\"title\": \"Spec1\",  \"version\": \"1.0.0\", \"description\": \"Description\"}}")))
     }
 
     @Test
     fun findOneSpecification_shouldReturnYaml() {
-        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/v1")
+        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/1.0.0")
                 .header("Accept", "application/yml")
                 .with(user("user"))
                 .with(csrf()))
-                .andExpect(jsonPath("$.content", equalTo("---\ninfo:\n  title: \"Spec1\"\n  version: \"v1\"\n  description: \"Description\"\n")))
+                .andExpect(jsonPath("$.content", equalTo("---\ninfo:\n  title: \"Spec1\"\n  version: \"1.0.0\"\n  description: \"Description\"\n")))
     }
 
     @Test
@@ -62,7 +62,7 @@ class SpecificationControllerIntegrationTest {
 
     @Test
     fun deleteSpecification_shouldDeleteSpecification() {
-        mockMvc.perform(delete("/api/v1/service/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/version/v2")
+        mockMvc.perform(delete("/api/v1/service/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/version/2.0.0")
             .with(user("user"))
             .with(csrf()))
             .andExpect(status().isOk)
