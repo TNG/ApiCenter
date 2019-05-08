@@ -1,6 +1,5 @@
 package com.tngtech.apicenter.backend.domain.handler
 
-import com.github.zafarkhaja.semver.Version as SemVer
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.Specification
