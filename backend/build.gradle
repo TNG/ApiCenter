@@ -57,6 +57,7 @@ dependencies {
     compile "com.h2database:h2:1.4.199"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jackson_version"
+    compile "org.flywaydb:flyway-core:5.2.4"
     compile "com.jayway.jsonpath:json-path:2.4.0"
     compile "org.apache.commons:commons-io:1.3.2"
     compile "net.rakugakibox.spring.boot:orika-spring-boot-starter:1.8.0"
