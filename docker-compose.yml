@@ -9,12 +9,12 @@ services:
     db:
         image: postgres:latest
         volumes:
-            - ./backend/create.sql:/docker-entrypoint-initdb.d/create.sql
+            - pgdata:/var/lib/postgresql/data
         environment:
             - POSTGRES_PASSWORD=sample
             - POSTGRES_USER=sample
             - POSTGRES_DB=sample
-            - PGDATA=/var/lib/postgresql/data/pgdata
         ports:
             - 5434:5432
-
+volumes:
+    pgdata:
