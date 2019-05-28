@@ -71,6 +71,7 @@ dependencies {
     testCompile "org.springframework.security:spring-security-test:5.1.5.RELEASE"
     testCompile "org.assertj:assertj-core:3.11.1"
     testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+    testCompile "com.h2database:h2:1.4.199"
 }
 
 compileKotlin {
