@@ -1,3 +1,4 @@
+import * as compareVersions from 'compare-versions';
 import {Specification} from './specification';
 
 export class Service {
@@ -13,5 +14,10 @@ export class Service {
     this.description = description;
     this.specifications = specifications;
     this.remoteAddress = remoteAddress;
+  }
+
+  public sortVersionsSemantically() {
+    this.specifications.sort((spec1, spec2) =>
+      -compareVersions(spec1.metadata.version, spec2.metadata.version));
   }
 }
