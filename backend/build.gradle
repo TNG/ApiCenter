@@ -105,6 +105,7 @@ task integrationTest(type: Test) {
 docker {
     springBootApplication {
         baseImage = 'openjdk:8-alpine'
+        tag = 'catenoid/apicenter:extdb'
         jvmArgs = ['-Dspring.profiles.active=docker']
         ports = [8080]
     }

@@ -1,7 +1,7 @@
 version: '3'
 services:
     web:
-        image: com.tngtech.apicenter/backend:1.0.0-snapshot
+        image: catenoid/apicenter:extdb
         ports:
             - 8080:8080
         depends_on:
