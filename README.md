@@ -3,6 +3,12 @@
 # ApiCenter
 
 ApiCenter is a repository for OpenAPI and GraphQL specifications. Through the web interface you can upload and download specifications, interact with them through the [SwaggerUI](https://swagger.io/tools/swagger-ui/) / [GraphiQL](https://github.com/graphql/graphiql), and search their contents.
+#### Specification overview
+![Specification overview screenshot](https://user-images.githubusercontent.com/6897716/58478901-651c4480-8157-11e9-90d1-b4c3957c64d3.PNG)
+
+#### SwaggerUI view 
+
+![SwaggerUI view](https://user-images.githubusercontent.com/6897716/58482301-6866fe80-815e-11e9-9c76-3e748bb610fe.PNG)
 
 More information and troubleshooting is on the [wiki](https://github.com/TNG/ApiCenter/wiki).
 
