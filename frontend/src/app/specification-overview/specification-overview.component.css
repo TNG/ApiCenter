@@ -1,3 +1,16 @@
 button {
   margin-right: 5px;
 }
+
+#title-column {
+  width: 60%;
+}
+
+#version-column {
+  width: 20%;
+}
+
+#actions-column {
+  width: 20%;
+}
+
