@@ -4,6 +4,7 @@ import {SpecificationFile, SpecificationMetadata} from '../models/specificationf
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {ApiLanguage} from '../models/specification';
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-specification-form',
@@ -20,8 +21,12 @@ export class SpecificationFormComponent implements OnInit {
   endpointUrl = '';
   isGraphQLFile = false;
   objectKeys = Object.keys;
+  closeResult: string;
 
-  constructor(private router: Router, private serviceStore: ServiceStore, private route: ActivatedRoute) {
+  constructor(private router: Router,
+              private serviceStore: ServiceStore,
+              private route: ActivatedRoute,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -34,6 +39,27 @@ export class SpecificationFormComponent implements OnInit {
       }
     });
   }
+
+
+  private open(content) {
+    this.modalService.open(content, {}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+
 
   public onLocalFileChange(event) {
     this.specificationFile = event.target.files[0];

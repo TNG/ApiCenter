@@ -1,0 +1,7 @@
+.modal-dialog {
+  position:fixed;
+  top:0;
+  right:auto;
+  left:0;
+  bottom:auto;
+}
