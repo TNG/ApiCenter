@@ -6,7 +6,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <button class="btn btn-primary" routerLink="add-specifications" ngbTooltip="Add a new specification" placement="right"><span class="oi oi-plus"></span></button>
+      <button class="btn btn-primary" routerLink="add-specifications" ngbTooltip="Upload a new specification" placement="right"><span class="oi oi-plus"></span></button>
     </div>
 
     <div class="col">
@@ -25,9 +25,9 @@
         <thead class="thead">
         <tr>
           <th scope="col"></th>
-          <th scope="col">Title</th>
+          <th scope="col">Specification title</th>
           <th scope="col">Version</th>
-          <th scope="col">Options</th>
+          <th scope="col">Actions</th>
         </tr>
         </thead>
         <ng-container *ngFor="let service of services">
