@@ -3,6 +3,7 @@ import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {ApiLanguage, Specification} from '../models/specification';
 import {SpecificationStore} from '../specification-store.service';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-specification-overview',
@@ -18,7 +19,10 @@ export class SpecificationOverviewComponent implements OnInit {
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
 
-  constructor(private serviceStore: ServiceStore, private specificationStore: SpecificationStore) {
+  constructor(private serviceStore: ServiceStore,
+              private specificationStore: SpecificationStore,
+              private title: Title) {
+    this.title.setTitle('Specification overview');
   }
 
   ngOnInit(): void {
