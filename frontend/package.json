@@ -70,7 +70,7 @@
     "stryker": "^0.29.5",
     "stryker-api": "^0.21.2",
     "stryker-html-reporter": "^0.16.4",
-    "stryker-karma-runner": "^0.18.3",
+    "stryker-karma-runner": "^0.24.1",
     "stryker-typescript": "^0.15.0",
     "ts-mockito": "^2.3.0",
     "ts-node": "~4.1.0",
