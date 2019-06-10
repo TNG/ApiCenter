@@ -3,9 +3,7 @@ matrix:
     - language: java
       jdk: oraclejdk8
       script:
-        - ./gradlew clean test
-        - ./gradlew clean integrationTest
-        - ./gradlew clean check
+        - ./gradlew clean spotlessCheck test integrationTest check
 
     - language: node_js
       node_js: "8"
