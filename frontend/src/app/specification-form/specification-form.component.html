@@ -17,7 +17,7 @@
     </div>
     <div class="modal-body">
        <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
-         (change)="onLocalFileChange($event)" [attr.disabled]="remoteUploadSelected ? '' : null">
+         (change)="onLocalFileChange($event)">
 
        <div *ngIf="isGraphQLFile" [@displayFields]>
          <p>
