@@ -20,18 +20,18 @@
          (change)="onLocalFileChange($event)">
 
        <div *ngIf="isGraphQLFile" [@displayFields]>
+         <hr>
          <p>
            For a GraphQL specification, ApiCenter needs some additional metadata:
          </p>
          <div *ngFor="let fieldName of objectKeys(additionalFields)">
-           <div class="row">
-             <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="additionalFields[fieldName]"/>
-           </div>
+           <input type="text"
+                  [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)"
+                  [(ngModel)]="additionalFields[fieldName]"/>
          </div>
-         <p>API endpoint:</p>
-         <div class="row">
-           <input type="text" placeholder="URL" [(ngModel)]="endpointUrl"/>
-         </div>
+         <hr>
+         <p>Test API endpoint, where sample requests can be sent:</p>
+         <input type="text" placeholder="URL" [(ngModel)]="endpointUrl"/>
        </div>
     </div>
 
