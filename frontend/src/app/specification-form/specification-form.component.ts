@@ -4,7 +4,7 @@ import {SpecificationFile, SpecificationMetadata} from '../models/specificationf
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {ApiLanguage} from '../models/specification';
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-specification-form',
