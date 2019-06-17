@@ -5,7 +5,19 @@ import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {ApiLanguage} from '../models/specification';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {animate, state, style, transition, trigger} from "@angular/animations";
+import {animate, style, transition, trigger} from "@angular/animations";
+
+const hiddenStyle = {
+  'max-height': '0px',
+  'visibility': 'hidden',
+  'opacity': '0'
+};
+
+const visibleStyle ={
+  'max-height': '300px',
+  'visibility': 'visible',
+  'opacity': '1'
+};
 
 @Component({
   selector: 'app-specification-form',
@@ -15,11 +27,11 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   animations: [
     trigger('displayFields', [
       transition(':enter', [
-        style({transform: 'translateY(-100%)'}),
-        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+        style(hiddenStyle),
+        animate('200ms ease-in', style(visibleStyle))
       ]),
       transition(':leave', [
-        animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+        animate('200ms ease-in', style(hiddenStyle))
       ])
     ])
   ]
