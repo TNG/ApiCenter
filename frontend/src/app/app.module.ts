@@ -16,7 +16,7 @@ import {SpecificationSearchDetailComponent} from './specification-search-detail/
 import {HighlightSearchResultPipe} from './pipes/highlight-search-result.pipe';
 import {TrimSearchResultPipe} from './pipes/trim-search-result.pipe';
 import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
-import { LoginComponent } from './login/login.component';
+import {LoginComponent} from './login/login.component';
 import {AuthenticationGuard} from './auth/auth.guard';
 import {AuthenticationService} from './auth/auth.service';
 import {TokenInterceptor} from './interceptors/token.interceptor';

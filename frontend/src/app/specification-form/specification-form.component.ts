@@ -4,8 +4,8 @@ import {SpecificationFile, SpecificationMetadata} from '../models/specificationf
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {ApiLanguage} from '../models/specification';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {animate, style, transition, trigger} from "@angular/animations";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 const hiddenStyle = {
   'max-height': '0px',
