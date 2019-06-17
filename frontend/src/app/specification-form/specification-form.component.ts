@@ -21,7 +21,6 @@ export class SpecificationFormComponent implements OnInit {
   endpointUrl = '';
   isGraphQLFile = false;
   objectKeys = Object.keys;
-  closeResult: string;
 
   constructor(private router: Router,
               private serviceStore: ServiceStore,
@@ -40,26 +39,12 @@ export class SpecificationFormComponent implements OnInit {
     });
   }
 
-
   private open(content) {
-    this.modalService.open(content, {}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.modalService.open(content, {}).result.then(
+      () => {},
+      () => {}
+      );
   }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
-
 
   public onLocalFileChange(event) {
     this.specificationFile = event.target.files[0];

@@ -9,13 +9,13 @@
   <br>
 
   <ng-template #local let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Local file upload</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
+    <div class="modal-header">
+      <h4 class="modal-title">Local file upload</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
       <div class="form-group">
         <div class="input-group">
 
@@ -42,11 +42,11 @@
 
         </div>
       </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close('Local upload click')">Upload</button>
-  </div>
-</ng-template>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close()">Upload</button>
+    </div>
+  </ng-template>
 
   <ng-template #remote let-modal>
     <div class="modal-header">
@@ -71,19 +71,19 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close('Remote upload click')">Upload</button>
+      <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close()">Upload</button>
     </div>
   </ng-template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(local)">From my computer</button>
+  <button class="btn btn-lg btn-outline-primary" (click)="open(local)">From my computer</button>
 
-<br>
-<br>
+  <br>
+  <br>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(remote)">From a URL</button>
+  <button class="btn btn-lg btn-outline-primary" (click)="open(remote)">From a URL</button>
 
-<pre>{{closeResult}}</pre>
-
+  <br>
+  <br>
   <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
 
 </div>
