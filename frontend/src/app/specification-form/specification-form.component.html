@@ -16,33 +16,25 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="form-group">
-        <div class="input-group">
+       <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
+         (change)="onLocalFileChange($event)" [attr.disabled]="remoteUploadSelected ? '' : null">
 
-          <div class="row top-buffer">
-            <div class="col">
-              <p>
-                <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
-                       (change)="onLocalFileChange($event)" [attr.disabled]="remoteUploadSelected ? '' : null">
-              </p>
-            </div>
-            <div class="col" *ngIf="isGraphQLFile">
-              Additionally required fields for GraphQL upload:
-              <div *ngFor="let fieldName of objectKeys(additionalFields)">
-                <div class="row">
-                  <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="additionalFields[fieldName]"/>
-                </div>
-              </div>
-              <p>API endpoint:</p>
-              <div class="row">
-                <input type="text" placeholder="URL" [(ngModel)]="endpointUrl"/>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+       <div *ngIf="isGraphQLFile">
+         <p>
+           For a GraphQL specification, ApiCenter needs some additional metadata:
+         </p>
+         <div *ngFor="let fieldName of objectKeys(additionalFields)">
+           <div class="row">
+             <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="additionalFields[fieldName]"/>
+           </div>
+         </div>
+         <p>API endpoint:</p>
+         <div class="row">
+           <input type="text" placeholder="URL" [(ngModel)]="endpointUrl"/>
+         </div>
+       </div>
     </div>
+
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close()">Upload</button>
     </div>
@@ -56,19 +48,12 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="form-group">
-        <div class="input-group">
-
-          <div class="row top-buffer">
-            <div class="col">
-              <p>
-                <input type="text" title="url" placeholder="Insert URL here" [(ngModel)]="remoteFileUrl"/>
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
+      <p>
+        Enter the name of a URL, where the specification file is hosted.
+        ApiCenter will download the specification and add it to the database.
+      </p>
+      <hr>
+      <input type="text" title="url" placeholder="Insert URL here" [(ngModel)]="remoteFileUrl"/>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close()">Upload</button>
