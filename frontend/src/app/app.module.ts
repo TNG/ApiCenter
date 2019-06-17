@@ -16,7 +16,7 @@ import {SpecificationSearchDetailComponent} from './specification-search-detail/
 import {HighlightSearchResultPipe} from './pipes/highlight-search-result.pipe';
 import {TrimSearchResultPipe} from './pipes/trim-search-result.pipe';
 import {FormatSearchResultPipe} from './pipes/format-search-result.pipe';
-import { LoginComponent } from './login/login.component';
+import {LoginComponent} from './login/login.component';
 import {AuthenticationGuard} from './auth/auth.guard';
 import {AuthenticationService} from './auth/auth.service';
 import {TokenInterceptor} from './interceptors/token.interceptor';
@@ -24,12 +24,12 @@ import {LoginEvent} from './login.event';
 import {MarkdownModule} from 'ngx-markdown';
 import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper.component';
 import {SpecificationViewComponent} from './specification-version/specification-view.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
   {path: 'specifications/:serviceId/:version', component: SpecificationViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
-  {path: 'edit-specifications/:serviceId', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'login', component: LoginComponent}
@@ -61,7 +61,8 @@ const appRoutes: Routes = [
       appRoutes
     ),
     NgbModule.forRoot(),
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     AuthenticationGuard,

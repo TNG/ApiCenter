@@ -4,48 +4,72 @@
       {{ error }}
     </div>
   </div>
-  <div class="row top-buffer">
-    <div class="col">
-      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="!remoteUploadSelected"/>
-      Upload a file from your computer
+
+  <h4>Upload a specification...</h4>
+  <br>
+
+  <ng-template #local let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Local file upload</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </div>
-  <div class="row top-buffer">
-    <div class="col">
+    <div class="modal-body">
+       <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
+         (change)="onLocalFileChange($event)">
+
+       <div *ngIf="isGraphQLFile" [@displayFields]>
+         <hr>
+         <p>
+           For a GraphQL specification, ApiCenter needs some additional metadata:
+         </p>
+         <div *ngFor="let fieldName of objectKeys(additionalFields)">
+           <input type="text"
+                  [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)"
+                  [(ngModel)]="additionalFields[fieldName]"/>
+         </div>
+         <hr>
+         <p>Test API endpoint, where sample requests can be sent:</p>
+         <input type="text" placeholder="URL" [(ngModel)]="endpointUrl"/>
+       </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="submitLocalSpecification() && modal.close()">Upload</button>
+    </div>
+  </ng-template>
+
+  <ng-template #remote let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Remote file upload</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
       <p>
-        <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
-               (change)="onLocalFileChange($event)" [attr.disabled]="remoteUploadSelected ? '' : null">
+        Enter the name of a URL, where the specification file is hosted.
+        ApiCenter will download the specification and add it to the database.
       </p>
+      <hr>
+      <input type="text" title="url" placeholder="Insert URL here" [(ngModel)]="remoteFileUrl"/>
     </div>
-    <div class="col" *ngIf="isGraphQLFile">
-      Additionally required fields for GraphQL upload:
-      <div *ngFor="let fieldName of objectKeys(additionalFields)">
-        <div class="row">
-          <input type="text" [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)" [(ngModel)]="additionalFields[fieldName]"/>
-        </div>
-      </div>
-      <p>API endpoint:</p>
-      <div class="row">
-        <input type="text" placeholder="URL" [(ngModel)]="endpointUrl"/>
-      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="submitRemoteSpecification() && modal.close()">Upload</button>
     </div>
-  </div>
-  <div class="row top-buffer">
-    <div class="col">
-      <input type="radio" name="type-radio" (click)="changeTypeRadio()" [checked]="remoteUploadSelected"/>
-      Load file from URL
-    </div>
-  </div>
-  <div class="row top-buffer">
-    <div class="col">
-      <input type="text" title="url" placeholder="Insert URL here" [attr.disabled]="!remoteUploadSelected ? '' : null" [(ngModel)]="remoteFileUrl"/>
-    </div>
-  </div>
-  <div class="row top-buffer">
-    <div class="col">
-      <button type="button" class="btn btn-primary" (click)="submitSpecification()">Upload</button>
-      <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
-    </div>
-  </div>
+  </ng-template>
+
+  <button class="btn btn-lg btn-outline-primary" (click)="open(local)">From my computer</button>
+
+  <br>
+  <br>
+
+  <button class="btn btn-lg btn-outline-primary" (click)="open(remote)">From a URL</button>
+
+  <br>
+  <br>
+  <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
+
 </div>
 

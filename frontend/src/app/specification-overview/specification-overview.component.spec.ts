@@ -5,6 +5,7 @@ import {Service} from '../models/service';
 import {from} from 'rxjs/observable/from';
 import {ApiLanguage, Specification} from '../models/specification';
 import {SpecificationStore} from '../specification-store.service';
+import {Title} from '@angular/platform-browser';
 
 describe('SpecificationOverviewComponent', () => {
 
@@ -13,6 +14,7 @@ describe('SpecificationOverviewComponent', () => {
   const serviceStore = instance(mockedServiceStore);
   const mockedSpecificationStore = mock(SpecificationStore);
   const specificationStore = instance(mockedSpecificationStore);
+  const title = instance(mock(Title));
   const specifications = [new Specification('Content', {
     title: 'Test',
     version: '1.0.0',
@@ -23,7 +25,7 @@ describe('SpecificationOverviewComponent', () => {
   const service = new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null);
 
   beforeEach(() => {
-    specificationOverviewComponent = new SpecificationOverviewComponent(serviceStore, specificationStore);
+    specificationOverviewComponent = new SpecificationOverviewComponent(serviceStore, specificationStore, title);
   });
 
   it('should synchronize file', () => {
