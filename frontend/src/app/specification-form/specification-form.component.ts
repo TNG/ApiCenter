@@ -13,7 +13,7 @@ const hiddenStyle = {
   'opacity': '0'
 };
 
-const visibleStyle ={
+const visibleStyle = {
   'max-height': '300px',
   'visibility': 'visible',
   'opacity': '1'
@@ -62,6 +62,10 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private open(content) {
+    this.isGraphQLFile = false;
+    // Otherwise, GraphQL metadata fields persist when the modal is closed and reopened,
+    // even though the file is no longer selected.
+
     this.modalService.open(content, {}).result.then(
       () => {},
       () => {}
