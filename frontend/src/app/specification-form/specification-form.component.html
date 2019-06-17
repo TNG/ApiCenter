@@ -8,9 +8,9 @@
   <h4>Upload a specification...</h4>
   <br>
 
-  <ng-template #content let-modal>
+  <ng-template #local let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Local file upload</h4>
+    <h4 class="modal-title">Local file upload</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -44,31 +44,47 @@
       </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Local upload click')">Upload</button>
+    <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close('Local upload click')">Upload</button>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">From my computer</button>
+  <ng-template #remote let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Remote file upload</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="input-group">
+
+          <div class="row top-buffer">
+            <div class="col">
+              <p>
+                <input type="text" title="url" placeholder="Insert URL here" [(ngModel)]="remoteFileUrl"/>
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close('Remote upload click')">Upload</button>
+    </div>
+  </ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(local)">From my computer</button>
 
 <br>
 <br>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">From a URL</button>
+<button class="btn btn-lg btn-outline-primary" (click)="open(remote)">From a URL</button>
 
 <pre>{{closeResult}}</pre>
 
-  <!--<div class="row top-buffer">-->
-    <!--<div class="col">-->
-      <!--<input type="text" title="url" placeholder="Insert URL here" [attr.disabled]="!remoteUploadSelected ? '' : null" [(ngModel)]="remoteFileUrl"/>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<div class="row top-buffer">-->
-    <!--<div class="col">-->
-      <!--<button type="button" class="btn btn-primary" (click)="submitSpecification()">Upload</button>-->
-      <!--<button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>-->
-    <!--</div>-->
-  <!--</div>-->
-
+  <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
 
 </div>
 
