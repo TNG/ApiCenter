@@ -5,17 +5,28 @@ import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {ApiLanguage} from '../models/specification';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-specification-form',
   templateUrl: './specification-form.component.html',
   styleUrls: ['./specification-form.component.css'],
-  providers: [ServiceStore]
+  providers: [ServiceStore],
+  animations: [
+    trigger('displayFields', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+      ])
+    ])
+  ]
 })
 export class SpecificationFormComponent implements OnInit {
   error: string;
   specificationFile: File;
-  remoteUploadSelected = false;
   remoteFileUrl: string;
   additionalFields = {title: '', version: '', description: ''};
   endpointUrl = '';
@@ -32,7 +43,6 @@ export class SpecificationFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.serviceStore.getService(params['id']).subscribe((service: Service) => {
-          this.remoteUploadSelected = service.remoteAddress != null;
           this.remoteFileUrl = service.remoteAddress;
         });
       }
@@ -51,33 +61,20 @@ export class SpecificationFormComponent implements OnInit {
     this.isGraphQLFile = /.*\.graphql/.test(this.specificationFile.name);
   }
 
-  public async submitSpecification(id?: string) {
+  public async submitLocalSpecification() {
     const allFieldsPresent: boolean = !!this.additionalFields.title && !!this.additionalFields.version;
     if (this.isGraphQLFile && !allFieldsPresent) {
       this.error = 'Title and version are required';
       return;
     }
-
-    if (this.remoteUploadSelected) {
-      this.handleRemoteFile(id);
-    } else {
-      this.handleLocalFile(id);
-    }
+    this.handleLocalFile();
   }
 
-  public changeTypeRadio() {
-    this.remoteUploadSelected = !this.remoteUploadSelected;
+  public async submitRemoteSpecification() {
+    this.handleRemoteFile();
   }
 
-  private handleRemoteFile(id: string) {
-    if (!id) {
-      this.createSpecification(null, this.remoteFileUrl);
-    } else {
-      this.updateSpecification(null, this.remoteFileUrl, id);
-    }
-  }
-
-  private handleLocalFile(id: string) {
+  private handleLocalFile() {
     if (!this.specificationFile) {
       this.error = 'No file selected';
       return;
@@ -88,15 +85,14 @@ export class SpecificationFormComponent implements OnInit {
 
     reader.onload = function () {
       const text = reader.result;
-
-      if (!id) {
-        me.createSpecification(text, null);
-      } else {
-        me.updateSpecification(text, null, id);
-      }
+      me.createSpecification(text, null);
     };
 
     reader.readAsText(this.specificationFile);
+  }
+
+  private handleRemoteFile() {
+    this.createSpecification(null, this.remoteFileUrl);
   }
 
   private createSpecification(fileContent: string, fileUrl: string) {
@@ -112,13 +108,4 @@ export class SpecificationFormComponent implements OnInit {
         error => this.error = error.error.userMessage);
   }
 
-  private updateSpecification(fileContent: string, fileUrl: string, specificationId: string) {
-    const file = new SpecificationFile(fileContent, fileUrl);
-
-    this.serviceStore.updateSpecification(file, specificationId)
-      .subscribe(event => {
-          this.router.navigateByUrl('/');
-        },
-        error => this.error = error.error.userMessage);
-  }
 }

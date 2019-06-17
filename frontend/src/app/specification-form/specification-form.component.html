@@ -19,7 +19,7 @@
        <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
          (change)="onLocalFileChange($event)" [attr.disabled]="remoteUploadSelected ? '' : null">
 
-       <div *ngIf="isGraphQLFile">
+       <div *ngIf="isGraphQLFile" [@displayFields]>
          <p>
            For a GraphQL specification, ApiCenter needs some additional metadata:
          </p>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close()">Upload</button>
+      <button type="button" class="btn btn-outline-dark" (click)="submitLocalSpecification() && modal.close()">Upload</button>
     </div>
   </ng-template>
 
@@ -56,7 +56,7 @@
       <input type="text" title="url" placeholder="Insert URL here" [(ngModel)]="remoteFileUrl"/>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="submitSpecification() && modal.close()">Upload</button>
+      <button type="button" class="btn btn-outline-dark" (click)="submitRemoteSpecification() && modal.close()">Upload</button>
     </div>
   </ng-template>
 

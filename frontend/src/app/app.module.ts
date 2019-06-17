@@ -24,6 +24,7 @@ import {LoginEvent} from './login.event';
 import {MarkdownModule} from 'ngx-markdown';
 import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper.component';
 import {SpecificationViewComponent} from './specification-version/specification-view.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
@@ -60,7 +61,8 @@ const appRoutes: Routes = [
       appRoutes
     ),
     NgbModule.forRoot(),
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     AuthenticationGuard,
