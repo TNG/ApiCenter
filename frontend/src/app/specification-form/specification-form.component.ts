@@ -100,7 +100,7 @@ export class SpecificationFormComponent implements OnInit {
     const me = this;
 
     reader.onload = function () {
-      const text = reader.result;
+      const text = reader.result.toString();
       me.createSpecification(text, null);
     };
 

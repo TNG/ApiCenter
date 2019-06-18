@@ -3,7 +3,13 @@ task monoBuild {
     dependsOn(':frontend:buildClientDev', ':frontend:copyFrontendFiles', ':backend:bootRun')
 }
 
+task buildDockerImage {
+    description = 'Build Docker image'
+    dependsOn(':frontend:buildClientDev', ':frontend:copyFrontendFiles', ':backend:dockerBuildImage')
+}
+
 tasks.getByPath(':backend:bootRun').mustRunAfter(':frontend:copyFrontendFiles')
+tasks.getByPath(':backend:dockerBuildImage').mustRunAfter(':frontend:copyFrontendFiles')
 
 // Task run by heroku
 task stage(dependsOn: [':backend:build', ':frontend:buildClientDev', ':frontend:copyFrontendFiles'])
