@@ -53,7 +53,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-security:$spring_boot_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$spring_boot_version"
-    compile "org.postgresql:postgresql:42.0.0"
+    compile "org.postgresql:postgresql:42.2.5"
     compile "com.h2database:h2:1.4.199"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jackson_version"
