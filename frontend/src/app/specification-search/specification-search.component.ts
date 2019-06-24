@@ -18,7 +18,7 @@ export class SpecificationSearchComponent implements OnInit {
   }
 
   public searchForString(event) {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && this.searchString !== undefined && this.searchString !== '') {
       this.router.navigate(['search', this.searchString]);
       this.searchString = '';
     }
