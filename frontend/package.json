@@ -32,7 +32,7 @@
     "compare-versions": "^3.4.0",
     "core-js": "^2.6.9",
     "graphiql": "^0.13.2",
-    "graphql": "^14.1.1",
+    "graphql": "^14.3.1",
     "graphql-tools": "^4.0.4",
     "invariant": "^2.2.4",
     "jquery": "^3.4.0",
