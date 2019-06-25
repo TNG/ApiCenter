@@ -17,12 +17,15 @@ export class SpecificationSearchComponent implements OnInit {
   ngOnInit() {
   }
 
-  public searchForString(event) {
-    if (event.keyCode === 13 && this.searchString !== undefined && this.searchString !== '') {
-      this.router.navigate(['search', this.searchString]);
-      this.searchString = '';
+  public searchForString(event, searchHelp) {
+    if (event.keyCode === 13) {
+      if (this.searchString !== undefined && this.searchString !== '') {
+        searchHelp.close();
+        this.router.navigate(['search', this.searchString]);
+        this.searchString = '';
+      } else {
+        searchHelp.open();
+      }
     }
   }
-
-
 }
