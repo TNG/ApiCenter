@@ -1,0 +1,74 @@
+<div class="container top-buffer">
+  <div class="row top-buffer">
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
+
+  <div class="row top-buffer">
+    <div class="col">
+      <table class="table">
+        <thead class="thead">
+        <tr>
+          <th scope="col">Specification title</th>
+          <th scope="col">Version</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <ng-container *ngFor="let specification of (searchComplete ? service.specifications : [])">
+          <tbody *ngIf="service.specifications.length > 1">
+          <tr>
+            <td><a [routerLink]="['specifications/', service.id, specification.metadata.version]" routerLinkActive="active">{{ service.title }}</a></td>
+            <td>{{ specification.metadata.version }}</td>
+            <td>
+              <input type="radio" name="radiogroup-before" [value]="specification.metadata.version" (change)="radioButtonChange($event)" [(ngModel)]="radioSelectedBeforeVersion"/>
+            </td>
+            <td>
+              <input type="radio" name="radiogroup-after" [value]="specification.metadata.version" (change)="radioButtonChange($event)" [(ngModel)]="radioSelectedAfterVersion"/>
+            </td>
+            <td></td>
+          </tr>
+          </tbody>
+        </ng-container>
+      </table>
+    </div>
+    <div class="col">
+      <div [hidden]="!this.validRangeSelected || this.noEndpointChanges">
+        <h4>Endpoint changes</h4>
+        <ngb-tabset #tabs>
+          <ngb-tab id="new" title="New" [disabled]="this.diff && this.diff.newEndpoints.length == 0">
+            <ng-template ngbTabContent>
+              <ul>
+                <li *ngFor="let endpoint of this.diff.newEndpoints">
+                  {{ endpoint.pathUrl }}
+                </li>
+              </ul>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab id="missing" title="Missing" [disabled]="this.diff && this.diff.missingEndpoints.length == 0">
+            <ng-template ngbTabContent>
+              list
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab id="deprecated" title="Deprecated" [disabled]="this.diff && this.diff.deprecatedEndpoints.length == 0">
+            <ng-template ngbTabContent>
+              list
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+      <div *ngIf="!this.validRangeSelected">
+        <p>
+          Choose two different versions from the table on the left using the radio buttons
+        </p>
+      </div>
+      <div *ngIf="this.validRangeSelected && this.noEndpointChanges">
+        <p>
+          No endpoint changes to show for the selected range
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -25,10 +25,12 @@ import {MarkdownModule} from 'ngx-markdown';
 import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper.component';
 import {SpecificationViewComponent} from './specification-version/specification-view.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {DiffVersionsComponent} from './diff-versions/diff-versions.component';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
   {path: 'specifications/:serviceId/:version', component: SpecificationViewComponent, canActivate: [AuthenticationGuard]},
+  {path: 'diff/:serviceId', component: DiffVersionsComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
@@ -42,6 +44,7 @@ const appRoutes: Routes = [
     SwaggerUiWrapperComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
+    DiffVersionsComponent,
     HeaderComponent,
     SpecificationSearchComponent,
     SpecificationSearchDetailComponent,
