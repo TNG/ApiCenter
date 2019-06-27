@@ -3,13 +3,10 @@ package com.tngtech.apicenter.backend.connector.rest.mapper.converter
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationDataParser
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationFileDownloader
-import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
-import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
-import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
+import com.tngtech.apicenter.backend.domain.entity.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +19,7 @@ class SpecificationFileDtoConverterTest {
         const val SWAGGER_REMOTE = "https://swagger.com/remote/file.json"
         const val UUID_STRING = "5aa40ba9-7e26-44de-81ec-f545d1f178aa"
     }
-    private val metadata = SpecificationMetadata(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val metadata = SpecificationMetadata(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, ReleaseType.RELEASE, null)
 
     private val specificationDataParser: SpecificationDataParser = mock()
 

@@ -22,6 +22,7 @@ class SpecificationEntityConverter : BidirectionalConverter<Specification, Speci
                     source.specificationId.version,
                     source.description,
                     source.language,
+                    source.releaseType,
                     source.endpointUrl
             )
         )
@@ -35,6 +36,7 @@ class SpecificationEntityConverter : BidirectionalConverter<Specification, Speci
                         source.metadata.title,
                         source.metadata.description,
                         source.metadata.language,
+                        source.metadata.releaseType,
                         source.metadata.endpointUrl,
                         null,
                         null

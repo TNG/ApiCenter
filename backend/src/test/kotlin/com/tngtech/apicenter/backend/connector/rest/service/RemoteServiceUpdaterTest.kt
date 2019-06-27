@@ -28,7 +28,7 @@ class RemoteServiceUpdaterTest {
         const val REMOTE_ADDRESS = "http://testapi.com/testapi.json"
     }
 
-    private val metadata = SpecificationMetadata(ServiceId(SPECIFICATION_ID), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val metadata = SpecificationMetadata(ServiceId(SPECIFICATION_ID), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, ReleaseType.RELEASE, null)
 
     @Test
     fun synchronize_shouldStoreUpdatedService() {

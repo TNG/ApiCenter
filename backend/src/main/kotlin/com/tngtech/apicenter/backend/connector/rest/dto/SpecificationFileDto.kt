@@ -2,12 +2,14 @@ package com.tngtech.apicenter.backend.connector.rest.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ReleaseType
 
 data class SpecificationFileMetadata constructor(
     val title: String,
     val version: String,
     val description: String?,
     val language: ApiLanguage,
+    val releaseType: ReleaseType,
     val endpointUrl: String? = null
 )
 

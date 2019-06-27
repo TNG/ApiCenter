@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.domain.handler
 
+import com.tngtech.apicenter.backend.domain.entity.ReleaseType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -47,7 +48,11 @@ class ServiceHandler @Autowired constructor(
             if (existingContents == specification.content) {
                 throw SpecificationDuplicationException()
             } else {
-                throw SpecificationConflictException()
+                if (specification.metadata.releaseType == ReleaseType.SNAPSHOT) {
+                    servicePersistor.save(service.overwriteSpecificationContents(specification))
+                } else {
+                    throw SpecificationConflictException()
+                }
             }
         } else {
             servicePersistor.save(service.appendSpecification(specification))

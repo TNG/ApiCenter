@@ -1,6 +1,7 @@
 package com.tngtech.apicenter.backend.connector.database.entity
 
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ReleaseType
 import org.hibernate.search.annotations.ContainedIn
 import org.hibernate.search.annotations.Field
 import org.hibernate.search.annotations.IndexedEmbedded
@@ -23,6 +24,7 @@ data class SpecificationEntity(
         @Field @Column(columnDefinition = "TEXT") val title: String,
         @Field @Column(columnDefinition = "TEXT") val description: String?,
         @Field @Column(columnDefinition = "TEXT") val language: ApiLanguage,
+        @Field @Column(columnDefinition = "TEXT") val releaseType: ReleaseType,
         @Field @Column(columnDefinition = "TEXT") val endpointUrl: String?,
         @ContainedIn @ManyToOne @MapsId("serviceId") var service: ServiceEntity?,
         var created: Date?

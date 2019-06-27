@@ -10,6 +10,7 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadat
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
+import com.tngtech.apicenter.backend.domain.entity.inferReleaseType
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.springframework.beans.factory.annotation.Autowired
@@ -111,6 +112,7 @@ class SpecificationDataParser @Autowired constructor(
                     version,
                     metadata.description,
                     ApiLanguage.GRAPHQL,
+                    metadata.releaseType,
                     metadata.endpointUrl
             )
         } else {
@@ -120,6 +122,7 @@ class SpecificationDataParser @Autowired constructor(
                     version,
                     extractDescription(fileContent),
                     ApiLanguage.OPENAPI,
+                    inferReleaseType(version),
                     null
             )
         }

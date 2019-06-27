@@ -86,7 +86,7 @@ internal class ServiceControllerIntegrationTest {
                         .with(csrf())
                         .contentType("application/json")
                         .content("""
-                           [{"fileContent":"t","metadata":{"title":"My title","version":"3.0.0","description":"","language":"GRAPHQL","endpointUrl":""}}]
+                           [{"fileContent":"t","metadata":{"title":"My title","version":"3.0.0","description":"","language":"GRAPHQL","releaseType":"RELEASE","endpointUrl":""}}]
                         """.trimIndent()
                         )
         )
@@ -131,6 +131,26 @@ internal class ServiceControllerIntegrationTest {
                         )
         )
                 .andExpect(status().isConflict)
+    }
+
+    @Test
+    fun uploadSpecification_shouldDetectVersionClash_overwriteSnapshot() {
+        mockMvc.perform(
+                post("/api/v1/service")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | {
+                            |   "id": "unique-identifier-2",
+                            |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"1.0.0-SNAPSHOT\", \"description\": \"I'm different\"}}"
+                            | }
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isCreated)
+                .andExpect(jsonPath("$.metadata.description", equalTo("I'm different")))
     }
 
     @Test
