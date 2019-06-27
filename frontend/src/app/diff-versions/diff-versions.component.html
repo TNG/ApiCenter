@@ -5,6 +5,8 @@
     </div>
   </div>
 
+  <h4>View changes between specification versions</h4>
+
   <div class="row top-buffer">
     <div class="col">
       <table class="table">
@@ -12,9 +14,8 @@
         <tr>
           <th scope="col">Specification title</th>
           <th scope="col">Version</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col"></th>
+          <th scope="col">+</th>
+          <th scope="col">-</th>
         </tr>
         </thead>
         <ng-container *ngFor="let specification of (searchComplete ? service.specifications : [])">
@@ -28,7 +29,6 @@
             <td>
               <input type="radio" name="radiogroup-after" [value]="specification.metadata.version" (change)="radioButtonChange($event)" [(ngModel)]="radioSelectedAfterVersion"/>
             </td>
-            <td></td>
           </tr>
           </tbody>
         </ng-container>
@@ -36,25 +36,72 @@
     </div>
     <div class="col">
       <div [hidden]="!this.validRangeSelected || this.noEndpointChanges">
-        <h4>Endpoint changes</h4>
+        <h5>Endpoint changes</h5>
         <ngb-tabset #tabs>
-          <ngb-tab id="new" title="New" [disabled]="this.diff && this.diff.newEndpoints.length == 0">
+          <ngb-tab id="new" title="Added" [disabled]="this.diff && this.diff.newEndpoints.length == 0">
             <ng-template ngbTabContent>
-              <ul>
-                <li *ngFor="let endpoint of this.diff.newEndpoints">
-                  {{ endpoint.pathUrl }}
-                </li>
-              </ul>
+              <table class="table">
+                <thead class="thead">
+                <tr>
+                  <th scope="col">Path URL</th>
+                  <th scope="col">HTTP Method</th>
+                  <th scope="col">Summary</th>
+                </tr>
+                </thead>
+                <ng-container *ngFor="let endpoint of this.diff.newEndpoints">
+                  <tbody>
+                  <tr>
+                    <td>{{endpoint.pathUrl}}</td>
+                    <td>{{endpoint.method}}</td>
+                    <td>{{endpoint.summary}}</td>
+                  </tr>
+                  </tbody>
+                </ng-container>
+              </table>
             </ng-template>
           </ngb-tab>
-          <ngb-tab id="missing" title="Missing" [disabled]="this.diff && this.diff.missingEndpoints.length == 0">
+          <ngb-tab id="missing" title="Removed" [disabled]="this.diff && this.diff.missingEndpoints.length == 0">
             <ng-template ngbTabContent>
-              list
+              <table class="table">
+                <thead class="thead">
+                <tr>
+                  <th scope="col">Path URL</th>
+                  <th scope="col">HTTP Method</th>
+                  <th scope="col">Summary</th>
+                </tr>
+                </thead>
+                <ng-container *ngFor="let endpoint of this.diff.missingEndpoints">
+                  <tbody>
+                  <tr>
+                    <td>{{endpoint.pathUrl}}</td>
+                    <td>{{endpoint.method}}</td>
+                    <td>{{endpoint.summary}}</td>
+                  </tr>
+                  </tbody>
+                </ng-container>
+              </table>
             </ng-template>
           </ngb-tab>
           <ngb-tab id="deprecated" title="Deprecated" [disabled]="this.diff && this.diff.deprecatedEndpoints.length == 0">
             <ng-template ngbTabContent>
-              list
+              <table class="table">
+                <thead class="thead">
+                <tr>
+                  <th scope="col">Path URL</th>
+                  <th scope="col">HTTP Method</th>
+                  <th scope="col">Summary</th>
+                </tr>
+                </thead>
+                <ng-container *ngFor="let endpoint of this.diff.deprecatedEndpoints">
+                  <tbody>
+                  <tr>
+                    <td>{{endpoint.pathUrl}}</td>
+                    <td>{{endpoint.method}}</td>
+                    <td>{{endpoint.summary}}</td>
+                  </tr>
+                  </tbody>
+                </ng-container>
+              </table>
             </ng-template>
           </ngb-tab>
         </ngb-tabset>
