@@ -4,12 +4,33 @@ import {Service} from '../models/service';
 import {ApiLanguage, Specification} from '../models/specification';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
+import {animate, state, style, transition, trigger} from "@angular/animations";
+
+const pointingRight = {
+  'transform': 'rotate(0)'
+};
+
+const pointingDown = {
+  'transform': 'rotate(0.25turn)'
+};
 
 @Component({
   selector: 'app-specification-overview',
   templateUrl: './specification-overview.component.html',
   styleUrls: ['./specification-overview.component.css'],
-  providers: [ServiceStore, SpecificationStore]
+  providers: [ServiceStore, SpecificationStore],
+  animations: [
+    trigger('rotateChevron', [
+      state('pointRight', style(pointingRight)),
+      state('pointDown', style(pointingDown)),
+      transition('pointRight => pointDown', [
+        animate('0.2s')
+      ]),
+      transition('pointDown => pointRight', [
+        animate('0.2s')
+      ])
+    ])
+  ]
 })
 export class SpecificationOverviewComponent implements OnInit {
   services: Service[];

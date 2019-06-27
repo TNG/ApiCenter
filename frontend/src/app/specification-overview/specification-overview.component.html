@@ -36,10 +36,8 @@
               (click)="switchExpanded(service)">
             <td>
               <span class="oi oi-chevron-right clickable"
-                    *ngIf="service.specifications.length > 1 && !expanded.includes(service.id)"
-                    data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
-              <span class="oi oi-chevron-bottom clickable"
-                    *ngIf="service.specifications.length > 1 && expanded.includes(service.id)"
+                    [@rotateChevron]="expanded.includes(service.id) ? 'pointDown' : 'pointRight'"
+                    *ngIf="service.specifications.length > 1"
                     data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
             </td>
             <td><a [routerLink]="['specifications/', service.id, service.specifications[0].metadata.version]" routerLinkActive="active">{{ service.title
