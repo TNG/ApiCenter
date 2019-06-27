@@ -4,7 +4,7 @@ import {Service} from '../models/service';
 import {ApiLanguage, Specification} from '../models/specification';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
-import {animate, state, style, transition, trigger} from "@angular/animations";
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 const pointingRight = {
   'transform': 'rotate(0)'
