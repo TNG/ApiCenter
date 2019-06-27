@@ -40,8 +40,10 @@
                     *ngIf="service.specifications.length > 1"
                     data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
             </td>
-            <td><a [routerLink]="['specifications/', service.id, service.specifications[0].metadata.version]" routerLinkActive="active">{{ service.title
-              }}</a></td>
+            <td>
+              <a [routerLink]="['specifications/', service.id, service.specifications[0].metadata.version]"
+                 routerLinkActive="active">{{service.title}}</a>
+            </td>
             <td>{{ service.specifications[0].metadata.version }}</td>
             <td>
               <button class="btn oi oi-loop-circular" title="Check for updates" *ngIf="service.remoteAddress != null"
