@@ -24,10 +24,10 @@
       <table class="table">
         <thead class="thead">
         <tr>
-          <th scope="col"></th>
-          <th scope="col">Specification title</th>
-          <th scope="col">Version</th>
-          <th scope="col">Actions</th>
+          <th scope="col" id="chevron-column"></th>
+          <th scope="col" id="title-column">Specification title</th>
+          <th scope="col" id="version-column">Version</th>
+          <th scope="col" id="actions-column">Actions</th>
         </tr>
         </thead>
         <ng-container *ngFor="let service of services">
@@ -36,14 +36,14 @@
               (click)="switchExpanded(service)">
             <td>
               <span class="oi oi-chevron-right clickable"
-                    *ngIf="service.specifications.length > 1 && !expanded.includes(service.id)"
-                    data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
-              <span class="oi oi-chevron-bottom clickable"
-                    *ngIf="service.specifications.length > 1 && expanded.includes(service.id)"
+                    [@rotateChevron]="expanded.includes(service.id) ? 'pointDown' : 'pointRight'"
+                    *ngIf="service.specifications.length > 1"
                     data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
             </td>
-            <td><a [routerLink]="['specifications/', service.id, service.specifications[0].metadata.version]" routerLinkActive="active">{{ service.title
-              }}</a></td>
+            <td>
+              <a [routerLink]="['specifications/', service.id, service.specifications[0].metadata.version]"
+                 routerLinkActive="active">{{service.title}}</a>
+            </td>
             <td>{{ service.specifications[0].metadata.version }}</td>
             <td>
               <button class="btn oi oi-loop-circular" title="Check for updates" *ngIf="service.remoteAddress != null"

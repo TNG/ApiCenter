@@ -1,3 +1,20 @@
 button {
   margin-right: 5px;
 }
+
+#chevron-column {
+  width: 5%;
+}
+
+#title-column {
+  width: 60%;
+}
+
+#version-column {
+  width: 15%;
+}
+
+#actions-column {
+  width: 20%;
+}
+
