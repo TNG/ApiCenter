@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
-import {ApiLanguage, Specification} from '../models/specification';
+import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -160,5 +160,13 @@ export class SpecificationOverviewComponent implements OnInit {
        }
      }
    );
+  }
+
+  public getFirstRelease(service: Service): string {
+    return (
+      service.specifications
+        .find(spec => spec.metadata.releaseType === ReleaseType.Release)
+      || service.specifications[0]
+    ).metadata.version;
   }
 }

@@ -1,4 +1,4 @@
-import {ApiLanguage} from './specification';
+import {ApiLanguage, ReleaseType} from './specification';
 
 export interface SpecificationMetadata {
   title: string;
@@ -6,6 +6,7 @@ export interface SpecificationMetadata {
   description?: string;
   language: ApiLanguage;
   endpointUrl?: string;
+  releaseType: ReleaseType;
 }
 
 export class SpecificationFile {

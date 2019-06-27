@@ -41,10 +41,14 @@
                     data-toggle="collapse" [attr.data-target]="'#versions-' + service.id"></span>
             </td>
             <td>
-              <a [routerLink]="['specifications/', service.id, service.specifications[0].metadata.version]"
+              <a [routerLink]="[
+                                'specifications/',
+                                service.id,
+                                getFirstRelease(service)
+                                ]"
                  routerLinkActive="active">{{service.title}}</a>
             </td>
-            <td>{{ service.specifications[0].metadata.version }}</td>
+            <td>{{ getFirstRelease(service) }}</td>
             <td>
               <button class="btn oi oi-loop-circular" title="Check for updates" *ngIf="service.remoteAddress != null"
                       (click)="synchronize(service)"></button>
