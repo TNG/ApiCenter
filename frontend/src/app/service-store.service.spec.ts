@@ -5,7 +5,7 @@ import {Service} from './models/service';
 import {from} from 'rxjs/observable/from';
 import 'rxjs/add/operator/catch';
 import {SpecificationFile} from './models/specificationfile';
-import {ApiLanguage, Specification} from './models/specification';
+import {ApiLanguage, ReleaseType, Specification} from './models/specification';
 
 describe('ServiceStore', () => {
 
@@ -17,6 +17,7 @@ describe('ServiceStore', () => {
     version: '1.0.0',
     description: 'Description',
     language: ApiLanguage.OpenAPI,
+    releaseType: ReleaseType.Release,
     endpointUrl: null,
   };
 

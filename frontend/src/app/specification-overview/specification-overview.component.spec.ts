@@ -3,7 +3,7 @@ import {instance, mock, verify, when} from 'ts-mockito';
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {from} from 'rxjs/observable/from';
-import {ApiLanguage, Specification} from '../models/specification';
+import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
 
@@ -20,6 +20,7 @@ describe('SpecificationOverviewComponent', () => {
     version: '1.0.0',
     description: 'Description',
     language: ApiLanguage.OpenAPI,
+    releaseType: ReleaseType.Release,
     endpointUrl: null,
   })];
   const service = new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null);
