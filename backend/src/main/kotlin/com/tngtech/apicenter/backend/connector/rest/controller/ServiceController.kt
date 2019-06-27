@@ -83,4 +83,7 @@ class ServiceController @Autowired constructor(
     @GetMapping("/search/{searchString}")
     fun searchForServices(@PathVariable searchString: String): List<ServiceDto> =
         serviceHandler.search(searchString).map { spec -> serviceDtoMapper.fromDomain(spec) }
+
+    @GetMapping("/search/")
+    fun searchWithBlank(): List<ServiceDto> = listOf()
 }

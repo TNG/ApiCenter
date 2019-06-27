@@ -12,6 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 export class SpecificationSearchDetailComponent implements OnInit {
   services: Service[];
   searchString: string;
+  searchComplete = false;
 
   constructor(private serviceStore: ServiceStore, private activatedRoute: ActivatedRoute) {
   }
@@ -19,14 +20,19 @@ export class SpecificationSearchDetailComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.serviceStore.searchForServices(params['searchString'])
-        .subscribe((data: Service[]) => this.services = data);
+        .subscribe((data: Service[]) => {
+          this.services = data;
+          this.searchComplete = true;
+        });
       this.searchString = params['searchString'];
     });
   }
 
   public async searchServices(event) {
-    if (event.keyCode === 13) {
-      this.serviceStore.searchForServices(this.searchString).subscribe((data: Service[]) => this.services = data);
+    if (event.keyCode === 13 && this.searchString !== undefined && this.searchString !== '') {
+      this.serviceStore.searchForServices(this.searchString).subscribe((data: Service[]) => {
+        this.services = data;
+      });
     }
   }
 
