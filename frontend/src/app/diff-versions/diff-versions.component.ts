@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {SpecificationStore} from '../specification-store.service';
@@ -17,7 +17,7 @@ export class DiffVersionsComponent implements OnInit {
 
   radioSelectedBeforeVersion;
   radioSelectedAfterVersion;
-  private searchComplete = false;
+  searchComplete = false;
   diff: SpecificationDiff;
   validRangeSelected = false;
   noEndpointChanges = true;
