@@ -63,7 +63,7 @@
           <tbody [attr.id]="'versions-' + service.id" class="collapse" *ngIf="service.specifications.length > 1">
           <tr *ngFor="let specification of service.specifications">
             <td></td>
-            <td><a [routerLink]="['specifications/', service.id, specification.metadata.version]" routerLinkActive="active">{{ service.title }}</a></td>
+            <td><a [routerLink]="['specifications/', service.id, specification.metadata.version]" routerLinkActive="active">{{ specification.metadata.title }}</a></td>
             <td>{{ specification.metadata.version }}</td>
             <td>
               <button class="btn oi oi-data-transfer-download" title="Download" (click)="downloadSpecification(selectedFormat, service, specification)"></button>
