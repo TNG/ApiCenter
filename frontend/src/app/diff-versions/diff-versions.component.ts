@@ -2,8 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {SpecificationStore} from '../specification-store.service';
-import {ActivatedRoute} from "@angular/router";
-import {SpecificationDiff} from "../models/specificationdiff";
+import {ActivatedRoute} from '@angular/router';
+import {SpecificationDiff} from '../models/specificationdiff';
 
 @Component({
   selector: 'app-diff-versions',
@@ -72,7 +72,7 @@ export class DiffVersionsComponent implements OnInit {
           );
 
           const isTabDisabled = [this.diff.newEndpoints, this.diff.missingEndpoints, this.diff.deprecatedEndpoints]
-            .map(endpoints => endpoints.length == 0);
+            .map(endpoints => endpoints.length === 0);
 
           this.noEndpointChanges = isTabDisabled.every(value => value);
 
