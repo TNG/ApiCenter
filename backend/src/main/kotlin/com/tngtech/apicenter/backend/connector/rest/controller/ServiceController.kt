@@ -8,6 +8,7 @@ import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoM
 import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,13 +29,11 @@ class ServiceController @Autowired constructor(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun uploadSpecifications(@RequestBody specificationFileDtos: List<SpecificationFileDto>) {
-        val specifications = specificationFileDtos.map { dto ->
-            specificationFileDtoMapper.toDomain(dto)
-        }
-
-        specifications.forEach { specification ->
-            serviceHandler.addNewSpecification(specification, specification.metadata.id, null)
+    fun uploadSpecifications(@RequestBody specificationFileDtos: List<SpecificationFileDto>): List<Specification> {
+        return specificationFileDtos.map { dto ->
+            val specification = specificationFileDtoMapper.toDomain(dto)
+            serviceHandler.addNewSpecification(specification, specification.metadata.id, dto.fileUrl)
+            specification
         }
     }
 
