@@ -5,9 +5,10 @@
         <div *ngIf="loginError" class="alert alert-danger">
           Username or password is wrong.
         </div>
+        <h4>Please enter your credentials</h4>
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" formControlName="username" id="username" class="form-control"
+          <input autofocus type="text" formControlName="username" id="username" class="form-control"
                  [ngClass]="{ 'is-invalid': submitted && loginForm.controls.username.errors }"/>
           <div *ngIf="submitted && loginForm.controls.username.errors" class="invalid-feedback">
             <div *ngIf="loginForm.controls.username.errors.required">Username is required</div>
