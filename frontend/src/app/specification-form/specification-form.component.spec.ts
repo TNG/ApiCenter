@@ -24,11 +24,11 @@ describe('SpecificationFormComponent', () => {
   });
 
   it('should create remote specification', () => {
-    when(mockedServiceStore.createSpecification(anyOfClass(SpecificationFile))).thenReturn(from([]));
+    when(mockedServiceStore.createSpecifications([anyOfClass(SpecificationFile)])).thenReturn(from([]));
 
     specificationFormComponent.remoteFileUrl = 'https://testurl.com/file.json';
     specificationFormComponent.submitRemoteSpecification().then(() => {
-      verify(mockedServiceStore.createSpecification(anyOfClass(SpecificationFile))).called();
+      verify(mockedServiceStore.createSpecifications([anyOfClass(SpecificationFile)])).called();
     });
   });
 });

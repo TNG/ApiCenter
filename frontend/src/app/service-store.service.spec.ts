@@ -47,15 +47,6 @@ describe('ServiceStore', () => {
     });
   });
 
-  it('should create service', () => {
-    when(mockedHttpClient.post('http://localhost:8080/api/v1/service', specificationFile))
-      .thenReturn(from([services[0]]));
-
-    serviceStore.createSpecification(specificationFile).subscribe((data: Service) => {
-      expect(data).toBe(services[0]);
-    });
-  });
-
   it('should update specification', () => {
     when(mockedHttpClient.put('http://localhost:8080/api/v1/service/d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', specificationFile))
       .thenReturn(from([services[0]]));
