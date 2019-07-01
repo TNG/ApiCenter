@@ -162,11 +162,11 @@ export class SpecificationOverviewComponent implements OnInit {
    );
   }
 
-  public getFirstRelease(service: Service): string {
+  public getFirstRelease(service: Service): Specification {
     return (
       service.specifications
         .find(spec => spec.metadata.releaseType === ReleaseType.Release)
       || service.specifications[0]
-    ).metadata.version;
+    );
   }
 }

@@ -44,11 +44,11 @@
               <a [routerLink]="[
                                 'specifications/',
                                 service.id,
-                                getFirstRelease(service)
+                                getFirstRelease(service).metadata.version
                                 ]"
-                 routerLinkActive="active">{{service.title}}</a>
+                 routerLinkActive="active">{{getFirstRelease(service).metadata.title}}</a>
             </td>
-            <td>{{ getFirstRelease(service) }}</td>
+            <td>{{ getFirstRelease(service).metadata.version }}</td>
             <td>
               <button class="btn oi oi-loop-circular" title="Check for updates" *ngIf="service.remoteAddress != null"
                       (click)="synchronize(service)"></button>
