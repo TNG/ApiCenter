@@ -48,7 +48,7 @@
                   <th scope="col">Summary</th>
                 </tr>
                 </thead>
-                <ng-container *ngFor="let endpoint of this.diff.newEndpoints">
+                <ng-container *ngFor="let endpoint of (this.diff ? this.diff.newEndpoints : [])">
                   <tbody>
                   <tr>
                     <td>{{endpoint.pathUrl}}</td>
@@ -70,7 +70,7 @@
                   <th scope="col">Summary</th>
                 </tr>
                 </thead>
-                <ng-container *ngFor="let endpoint of this.diff.missingEndpoints">
+                <ng-container *ngFor="let endpoint of (this.diff ? this.diff.missingEndpoints : [])">
                   <tbody>
                   <tr>
                     <td>{{endpoint.pathUrl}}</td>
@@ -92,7 +92,7 @@
                   <th scope="col">Summary</th>
                 </tr>
                 </thead>
-                <ng-container *ngFor="let endpoint of this.diff.deprecatedEndpoints">
+                <ng-container *ngFor="let endpoint of (this.diff ? this.diff.deprecatedEndpoints: [])">
                   <tbody>
                   <tr>
                     <td>{{endpoint.pathUrl}}</td>
