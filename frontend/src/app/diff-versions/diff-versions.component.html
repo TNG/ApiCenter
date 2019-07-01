@@ -21,7 +21,7 @@
         <ng-container *ngFor="let specification of (searchComplete ? service.specifications : [])">
           <tbody *ngIf="service.specifications.length > 1">
           <tr>
-            <td><a [routerLink]="['specifications/', service.id, specification.metadata.version]" routerLinkActive="active">{{ service.title }}</a></td>
+            <td><a [routerLink]="['specifications/', service.id, specification.metadata.version]" routerLinkActive="active">{{ specification.metadata.title }}</a></td>
             <td>{{ specification.metadata.version }}</td>
             <td>
               <input type="radio" name="radiogroup-before" [value]="specification.metadata.version" (change)="radioButtonChange($event)" [(ngModel)]="radioSelectedBeforeVersion"/>
