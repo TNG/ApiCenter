@@ -109,40 +109,49 @@ export class SpecificationFormComponent implements OnInit {
       return;
     }
 
-    const arrayOfPromises: Promise<SpecificationFile>[] =
-      mutableFileList.map(file => this.createFileUploadPromise(file));
+    if (this.specificationFiles.length > 1) {
+      const arrayOfPromises: Promise<SpecificationFile>[] =
+        mutableFileList.map(file => this.createFileUploadPromise(file));
 
-    const promiseOfArray: Promise<SpecificationFile[]> =
-      Promise.all(arrayOfPromises);
+      const promiseOfArray: Promise<SpecificationFile[]> =
+        Promise.all(arrayOfPromises);
 
-    promiseOfArray.then(files => {
-      console.log(files);
-      // Once all the promises are fulfilled, we POST the specifications
-      this.serviceStore.createSpecifications(files)
-        .subscribe(event => {
-          this.router.navigateByUrl('/');
-          // TODO: PR #171 will require another modal dismissal call here
-          },
-          error => this.error = error.error.userMessage);
-    }).catch(() =>
-      this.error = 'Error during file read operation'
-    );
+      promiseOfArray.then(files => {
+        // Once all the promises are fulfilled, we POST the specifications
+        this.createSpecifications(files);
+      }).catch(() =>
+        this.error = 'Error during file read operation'
+      );
+
+    } else if (this.specificationFiles.length === 1) {
+      const reader = new FileReader();
+      const me = this;
+
+      reader.onload = function () {
+        const fileContent = reader.result.toString();
+        const metadata: SpecificationMetadata = me.showAdditionalMetadataFields ?
+          {...me.additionalFields, language: ApiLanguage.GraphQL, endpointUrl: me.endpointUrl}
+          : null;
+        const file = new SpecificationFile(fileContent, null, metadata);
+        me.createSpecifications([file]);
+      };
+
+      reader.readAsText(this.specificationFiles[0]);
+    }
   }
 
   private handleRemoteFile() {
-    this.createSpecification(null, this.remoteFileUrl);
+    this.createSpecifications([
+      new SpecificationFile(null, this.remoteFileUrl, null)
+    ]);
   }
 
-  private createSpecification(fileContent: string, fileUrl: string) {
-    const endpointUrl = this.endpointUrl;
-    const metadata: SpecificationMetadata = this.showAdditionalMetadataFields ?
-      {...this.additionalFields, language: ApiLanguage.GraphQL, endpointUrl} : null;
-    const file = new SpecificationFile(fileContent, fileUrl, metadata);
-
-    this.serviceStore.createSpecifications([file])
+  private createSpecifications(files: SpecificationFile[]) {
+    this.serviceStore.createSpecifications(files)
       .subscribe(event => {
           this.modalService.dismissAll();
           this.router.navigateByUrl('/');
+          // TODO: PR #171 will require another modal dismissal call here
         },
         error => this.error = error.error.userMessage);
   }
