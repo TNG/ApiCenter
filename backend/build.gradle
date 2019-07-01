@@ -30,7 +30,7 @@ plugins {
     id "info.solidsoft.pitest" version "1.4.0"
     id "com.moowork.node" version "0.11"
     id "com.moowork.gulp" version "0.11"
-    id "com.bmuschko.docker-spring-boot-application" version "4.8.0"
+    id "com.bmuschko.docker-spring-boot-application" version "4.10.0"
 }
 
 group 'com.tngtech.apicenter'
