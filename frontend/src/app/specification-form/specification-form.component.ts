@@ -38,11 +38,11 @@ const visibleStyle = {
 })
 export class SpecificationFormComponent implements OnInit {
   error: string;
-  specificationFile: File;
+  specificationFiles: File[];
   remoteFileUrl: string;
   additionalFields = {title: '', version: '', description: ''};
   endpointUrl = '';
-  isGraphQLFile = false;
+  showAdditionalMetadataFields = false;
   objectKeys = Object.keys;
 
   constructor(private router: Router,
@@ -62,8 +62,8 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private open(content) {
-    this.isGraphQLFile = false;
-    // Otherwise, GraphQL metadata fields persist when the modal is closed and reopened,
+    this.showAdditionalMetadataFields = false;
+    // Otherwise, metadata fields persist when the modal is closed and reopened,
     // even though the file is no longer selected.
 
     this.modalService.open(content, {}).result.then(
@@ -79,13 +79,13 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   public onLocalFileChange(event) {
-    this.specificationFile = event.target.files[0];
-    this.isGraphQLFile = /.*\.graphql/.test(this.specificationFile.name);
+    this.specificationFiles = event.target.files;
+    this.showAdditionalMetadataFields = this.specificationFiles.length === 1 && /.*\.graphql/.test(this.specificationFiles[0].name);
   }
 
   public async submitLocalSpecification() {
     const allFieldsPresent: boolean = !!this.additionalFields.title && !!this.additionalFields.version;
-    if (this.isGraphQLFile && !allFieldsPresent) {
+    if (this.showAdditionalMetadataFields && !allFieldsPresent) {
       this.error = 'Title and version are required';
       return;
     }
@@ -97,20 +97,36 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private handleLocalFile() {
-    if (!this.specificationFile) {
+    if (!this.specificationFiles) {
       this.error = 'No file selected';
       return;
     }
 
-    const reader = new FileReader();
-    const me = this;
+    const mutableFileList = Array.from(this.specificationFiles);
+    if (this.specificationFiles.length > 1 &&
+      mutableFileList.some(file => /.*\.graphql/.test(file.name))) {
+      this.error = 'Multi-upload is only allowed when every file includes all the required metadata';
+      return;
+    }
 
-    reader.onload = function () {
-      const text = reader.result.toString();
-      me.createSpecification(text, null);
-    };
+    const arrayOfPromises: Promise<SpecificationFile>[] =
+      mutableFileList.map(file => this.createFileUploadPromise(file));
 
-    reader.readAsText(this.specificationFile);
+    const promiseOfArray: Promise<SpecificationFile[]> =
+      Promise.all(arrayOfPromises);
+
+    promiseOfArray.then(files => {
+      console.log(files);
+      // Once all the promises are fulfilled, we POST the specifications
+      this.serviceStore.createSpecifications(files)
+        .subscribe(event => {
+          this.router.navigateByUrl('/');
+          // TODO: PR #171 will require another modal dismissal call here
+          },
+          error => this.error = error.error.userMessage);
+    }).catch(() =>
+      this.error = 'Error during file read operation'
+    );
   }
 
   private handleRemoteFile() {
@@ -119,11 +135,11 @@ export class SpecificationFormComponent implements OnInit {
 
   private createSpecification(fileContent: string, fileUrl: string) {
     const endpointUrl = this.endpointUrl;
-    const metadata: SpecificationMetadata = this.isGraphQLFile ?
+    const metadata: SpecificationMetadata = this.showAdditionalMetadataFields ?
       {...this.additionalFields, language: ApiLanguage.GraphQL, endpointUrl} : null;
     const file = new SpecificationFile(fileContent, fileUrl, metadata);
 
-    this.serviceStore.createSpecification(file)
+    this.serviceStore.createSpecifications([file])
       .subscribe(event => {
           this.modalService.dismissAll();
           this.router.navigateByUrl('/');
@@ -131,4 +147,23 @@ export class SpecificationFormComponent implements OnInit {
         error => this.error = error.error.userMessage);
   }
 
+  createFileUploadPromise: (blob: Blob) => Promise<SpecificationFile> =
+    (inputFile) => {
+      const temporaryFileReader = new FileReader();
+
+      return new Promise((resolve, reject) => {
+        temporaryFileReader.onerror = () => {
+          temporaryFileReader.abort();
+          reject();
+        };
+
+        temporaryFileReader.onload = () => {
+          const text = temporaryFileReader.result.toString();
+          const dto = new SpecificationFile(text, null, null);
+          resolve(dto);
+        };
+
+        temporaryFileReader.readAsText(inputFile, 'UTF-8');
+      });
+    }
 }

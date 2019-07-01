@@ -13,6 +13,9 @@ import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {  }
 
 @RestController
 @RequestMapping("/api/v1/service")
@@ -25,12 +28,14 @@ class ServiceController @Autowired constructor(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun uploadSpecification(@RequestBody specificationFileDto: SpecificationFileDto): SpecificationDto {
-        val specification = specificationFileDtoMapper.toDomain(specificationFileDto)
+    fun uploadSpecifications(@RequestBody specificationFileDtos: List<SpecificationFileDto>) {
+        val specifications = specificationFileDtos.map { dto ->
+            specificationFileDtoMapper.toDomain(dto)
+        }
 
-        serviceHandler.addNewSpecification(specification, specification.metadata.id, specificationFileDto.fileUrl)
-
-        return specificationFileDtoMapper.fromDomain(specification)
+        specifications.forEach { specification ->
+            serviceHandler.addNewSpecification(specification, specification.metadata.id, null)
+        }
     }
 
     @PutMapping("/{serviceIdFromPath}")

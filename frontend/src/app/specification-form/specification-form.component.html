@@ -13,10 +13,10 @@
        <div class="alert alert-danger" role="alert" *ngIf="error">
          {{ error }}
        </div>
-       <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
+       <input multiple type="file" accept=".yml,.json,.yaml,.graphql" ngModel
          (change)="onLocalFileChange($event)">
 
-       <div *ngIf="isGraphQLFile" [@displayFields]>
+       <div *ngIf="showAdditionalMetadataFields" [@displayFields]>
          <hr>
          <p>
            For a GraphQL specification, ApiCenter needs some additional metadata:
