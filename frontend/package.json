@@ -51,7 +51,7 @@
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2",
     "stream": "0.0.2",
-    "swagger-ui": "^3.22.3",
+    "swagger-ui": "^3.23.0",
     "uuid": "^3.3.2",
     "webpack": "^4.35.0",
     "zone.js": "^0.8.29"
