@@ -67,8 +67,14 @@ export class SpecificationFormComponent implements OnInit {
     // even though the file is no longer selected.
 
     this.modalService.open(content, {}).result.then(
-      () => {},
-      () => {}
+      () => {
+        // modal is closed
+        this.error = undefined;
+      },
+      () => {
+        // modal is dismissed
+        this.error = undefined;
+      }
       );
   }
 
@@ -119,6 +125,7 @@ export class SpecificationFormComponent implements OnInit {
 
     this.serviceStore.createSpecification(file)
       .subscribe(event => {
+          this.modalService.dismissAll();
           this.router.navigateByUrl('/');
         },
         error => this.error = error.error.userMessage);

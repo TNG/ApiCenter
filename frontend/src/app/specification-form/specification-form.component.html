@@ -1,21 +1,18 @@
 <div class="container top-buffer">
-  <div class="row top-buffer">
-    <div class="alert alert-danger" role="alert" *ngIf="error">
-      {{ error }}
-    </div>
-  </div>
-
   <h4>Upload a specification...</h4>
   <br>
 
   <ng-template #local let-modal>
     <div class="modal-header">
       <h4 class="modal-title">Local file upload</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
+       <div class="alert alert-danger" role="alert" *ngIf="error">
+         {{ error }}
+       </div>
        <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
          (change)="onLocalFileChange($event)">
 
@@ -36,7 +33,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="submitLocalSpecification() && modal.close()">Upload</button>
+      <button type="button" class="btn btn-outline-dark" (click)="submitLocalSpecification()">Upload</button>
     </div>
   </ng-template>
 
@@ -48,6 +45,9 @@
       </button>
     </div>
     <div class="modal-body">
+      <div class="alert alert-danger" role="alert" *ngIf="error">
+        {{ error }}
+      </div>
       <p>
         Enter the name of a URL, where the specification file is hosted.
         ApiCenter will download the specification and add it to the database.
@@ -56,7 +56,7 @@
       <input type="text" title="url" placeholder="Insert URL here" [(ngModel)]="remoteFileUrl"/>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="submitRemoteSpecification() && modal.close()">Upload</button>
+      <button type="button" class="btn btn-outline-dark" (click)="submitRemoteSpecification()">Upload</button>
     </div>
   </ng-template>
 
