@@ -3,19 +3,18 @@ package com.tngtech.apicenter.backend.domain.entity
 import java.util.regex.Pattern
 
 enum class ReleaseType {
-    RELEASE, PRERELEASE, SNAPSHOT
-}
+    RELEASE, PRERELEASE, SNAPSHOT;
 
-fun inferReleaseType(version: String): ReleaseType {
-    return if (version.endsWith("-SNAPSHOT")) {
-        ReleaseType.SNAPSHOT
-    } else if (Pattern.matches("-BETA\\d*", version) || Pattern.matches("-RC\\d*", version)) {
-        ReleaseType.PRERELEASE
-    } else {
-        ReleaseType.RELEASE
+    companion object {
+        fun fromVersionString(version: String): ReleaseType {
+            return when {
+                version.endsWith("-SNAPSHOT") -> SNAPSHOT
+                Pattern.matches("-(BETA|RC)\\d*", version) -> PRERELEASE
+                else -> RELEASE
+            }
+        }
     }
 }
-
 
 data class SpecificationMetadata constructor(
     val id: ServiceId,

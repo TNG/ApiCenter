@@ -9,7 +9,6 @@ data class SpecificationFileMetadata constructor(
     val version: String,
     val description: String?,
     val language: ApiLanguage,
-    val releaseType: ReleaseType,
     val endpointUrl: String? = null
 )
 
