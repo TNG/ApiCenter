@@ -5,6 +5,7 @@ export interface SpecificationMetadata {
   version: string;
   description: string;
   language: ApiLanguage;
+  apiId: string;
   endpointUrl: string;
 }
 

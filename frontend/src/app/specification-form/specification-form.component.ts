@@ -40,8 +40,7 @@ export class SpecificationFormComponent implements OnInit {
   error: string;
   specificationFile: File;
   remoteFileUrl: string;
-  additionalFields = {title: '', version: '', description: ''};
-  endpointUrl = '';
+  additionalFields = {title: '', version: '', description: '', endpointUrl: '', apiId: ''};
   isGraphQLFile = false;
   objectKeys = Object.keys;
 
@@ -118,9 +117,8 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   private createSpecification(fileContent: string, fileUrl: string) {
-    const endpointUrl = this.endpointUrl;
     const metadata: SpecificationMetadata = this.isGraphQLFile ?
-      {...this.additionalFields, language: ApiLanguage.GraphQL, endpointUrl} : null;
+      {...this.additionalFields, language: ApiLanguage.GraphQL} : null;
     const file = new SpecificationFile(fileContent, fileUrl, metadata);
 
     this.serviceStore.createSpecification(file)
