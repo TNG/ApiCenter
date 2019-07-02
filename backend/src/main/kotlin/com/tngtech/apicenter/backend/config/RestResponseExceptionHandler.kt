@@ -63,6 +63,10 @@ class RestResponseExceptionHandler {
 
     @ExceptionHandler(RemoteFileConnectionRefusedException::class)
     fun handleConnectionRefused(exception: RemoteFileConnectionRefusedException) =
-            makeResponseEntity("Specification couldn't be retrieved from ${exception.location}.", HttpStatus.NOT_FOUND)
+            makeResponseEntity("Specification couldn't be retrieved (HTTP Not found)", HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(BadUrlException::class)
+    fun handleMalformedUrl(exception: BadUrlException) =
+            makeResponseEntity("URL couldn't be parsed", HttpStatus.BAD_REQUEST)
 }
 

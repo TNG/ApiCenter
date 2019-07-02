@@ -1,11 +1,13 @@
 package com.tngtech.apicenter.backend.connector.rest.service
 
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
+import com.tngtech.apicenter.backend.domain.exceptions.BadUrlException
 import com.tngtech.apicenter.backend.domain.exceptions.RemoteFileConnectionRefusedException
 import org.springframework.stereotype.Service
 import java.net.URL
 import java.util.Scanner
 import java.net.ConnectException
+import java.net.MalformedURLException
 
 @Service
 class SpecificationFileDownloader {
@@ -15,6 +17,8 @@ class SpecificationFileDownloader {
             Scanner(URL(location).openStream(), "UTF-8").useDelimiter("\\A").next()
         } catch (exception: ConnectException) {
             throw RemoteFileConnectionRefusedException(location)
+        } catch (exception: MalformedURLException) {
+            throw BadUrlException(location)
         }
 
     fun getLocalOrRemoteFileContent(specificationFileDto: SpecificationFileDto): String {

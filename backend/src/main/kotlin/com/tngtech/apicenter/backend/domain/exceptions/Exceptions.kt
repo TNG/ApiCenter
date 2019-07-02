@@ -8,3 +8,4 @@ class MismatchedServiceIdException(val userDefinedId: String, val urlPathId: Str
 class SpecificationDuplicationException: RuntimeException()
 class SpecificationConflictException: RuntimeException()
 class RemoteFileConnectionRefusedException(val location: String): RuntimeException()
+class BadUrlException(val location: String): RuntimeException()
