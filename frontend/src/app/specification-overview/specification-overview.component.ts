@@ -33,11 +33,11 @@ const pointingDown = {
   ]
 })
 export class SpecificationOverviewComponent implements OnInit {
-  services: Service[];
+  services: Service[] = [];
   error: string;
   expanded: string[] = [];
-  displayShowMoreButton: boolean;
-  pageNumber = 0;
+  displayShowMoreButton: boolean = false;
+  pageNumber = -1;
 
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
@@ -49,7 +49,7 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadFirstPage();
+    this.loadNextPage();
   }
 
   public async deleteService(service: Service) {
@@ -146,37 +146,6 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-
-  private async loadPage(pageNumber: number): Promise<PageOfServices> {
-    return this.serviceStore.getPage(pageNumber).toPromise().then(
-     (data: Page<Service>) => {
-
-       const services: Service[] = data.content.map((element: Service) => {
-           // An explicit constructor is required to use the Service class methods
-           const service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress);
-           service.sortVersionsSemantically();
-           return service;
-         });
-
-       console.log(data.last);
-       return {services, isLast: data.last};
-     },
-     error1 => {
-       if (error1.status === 403) {
-         this.error = 'You don\'t have permission to access content on this page';
-       }
-       return {services: [], isLast: true};
-     }
-    );
-  }
-
-  public loadFirstPage() {
-    this.loadPage(0).then(page => {
-      this.services = page.services;
-      this.displayShowMoreButton = !page.isLast;
-    })
-  }
-
   public loadNextPage() {
     const nextPage = this.pageNumber + 1;
     this.loadPage(nextPage).then(page => {
@@ -204,6 +173,29 @@ export class SpecificationOverviewComponent implements OnInit {
       service.specifications
         .find(spec => spec.metadata.releaseType === ReleaseType.Release)
       || service.specifications[0]
+    );
+  }
+
+  private async loadPage(pageNumber: number): Promise<PageOfServices> {
+    return this.serviceStore.getPage(pageNumber).toPromise().then(
+      (data: Page<Service>) => {
+
+        const services: Service[] = data.content.map((element: Service) => {
+          // An explicit constructor is required to use the Service class methods
+          const service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress);
+          service.sortVersionsSemantically();
+          return service;
+        });
+
+        console.log(data.last);
+        return {services, isLast: data.last};
+      },
+      error => {
+        if (error.status === 403) {
+          this.error = 'You don\'t have permission to access content on this page';
+        }
+        return {services: [], isLast: true};
+      }
     );
   }
 }
