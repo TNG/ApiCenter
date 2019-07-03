@@ -40,7 +40,7 @@ export class SpecificationFormComponent implements OnInit {
   error: string;
   specificationFile: File;
   remoteFileUrl: string;
-  additionalFields = {title: '', version: '', description: '', endpointUrl: '', apiId: ''};
+  additionalFields = {title: '', version: '', description: '', endpointUrl: '', id: ''};
   isGraphQLFile = false;
   objectKeys = Object.keys;
 
@@ -51,13 +51,6 @@ export class SpecificationFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.serviceStore.getService(params['id']).subscribe((service: Service) => {
-          this.remoteFileUrl = service.remoteAddress;
-        });
-      }
-    });
   }
 
   private open(content) {

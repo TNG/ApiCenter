@@ -54,7 +54,7 @@ class ServiceController @Autowired constructor(
     private fun getConsistentId(specificationFileDto: SpecificationFileDto, specificationIdFromPath: String): String {
         specificationFileDto.id?.let {
             idFromFile -> if (idFromFile != specificationIdFromPath)
-                throw MismatchedServiceIdException(idFromFile, specificationIdFromPath)
+                throw MismatchedServiceIdException(listOf(idFromFile, specificationIdFromPath))
         }
         return specificationIdFromPath
     }

@@ -49,8 +49,7 @@ class RestResponseExceptionHandler {
 
     @ExceptionHandler(MismatchedServiceIdException::class)
     fun handleServiceIdMismatch(exception: MismatchedServiceIdException) =
-            makeResponseEntity("The API ID used in the upload URL (${exception.urlPathId}) " +
-                    "is not the same as the API ID used in the specification body (${exception.userDefinedId})", HttpStatus.BAD_REQUEST)
+            makeResponseEntity("The supplied API IDs don't match", HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(SpecificationDuplicationException::class)
     fun handleSpecificationDuplication(exception: SpecificationDuplicationException) =

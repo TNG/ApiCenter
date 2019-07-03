@@ -96,7 +96,8 @@ class SpecificationDataParser @Autowired constructor(
                                   metadata: SpecificationFileMetadata? = null
     ): SpecificationMetadata {
         val idFromUpload = extractId(fileContent)
-        val serviceId = getConsistentServiceId(idFromUpload, idFromPath)
+        val serviceId = getConsistentServiceId(listOf(idFromUpload, idFromPath, metadata?.id))
+
         val version = metadata?.version ?: extractVersion(fileContent)
         try {
             SemVer.valueOf(version)
@@ -126,10 +127,12 @@ class SpecificationDataParser @Autowired constructor(
 
     }
 
-    private fun getConsistentServiceId(idFromUpload: String?, idFromPath: String?): ServiceId {
-        if (idFromUpload != null && idFromPath != null && idFromUpload != idFromPath) {
-            throw MismatchedServiceIdException(idFromUpload, idFromPath)
+    private fun getConsistentServiceId(ids: List<String?>): ServiceId {
+        val notNullIds: List<String> = ids.filterNotNull()
+        if (notNullIds.distinct().size > 1) {
+            throw MismatchedServiceIdException(notNullIds)
         }
-        return ServiceId(idFromUpload ?: idFromPath ?: UUID.randomUUID().toString())
+
+        return ServiceId(ids.first() ?: UUID.randomUUID().toString())
     }
 }
