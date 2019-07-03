@@ -105,7 +105,7 @@ export class SpecificationFormComponent implements OnInit {
     const mutableFileList = Array.from(this.specificationFiles);
     if (this.specificationFiles.length > 1 &&
       mutableFileList.some(file => /.*\.graphql/.test(file.name))) {
-      this.error = 'Multi-upload is only allowed when every file includes all the required metadata';
+      this.error = 'Multi-upload is only allowed when every file includes all the required metadata (ie. are all of the OpenAPI format)';
       return;
     }
 
@@ -151,7 +151,6 @@ export class SpecificationFormComponent implements OnInit {
       .subscribe(event => {
           this.modalService.dismissAll();
           this.router.navigateByUrl('/');
-          // TODO: PR #171 will require another modal dismissal call here
         },
         error => this.error = error.error.userMessage);
   }
