@@ -16,7 +16,9 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import mu.KotlinLogging
 
+private val logger = KotlinLogging.logger {  }
 @RestController
 @RequestMapping("/api/v1/service")
 class ServiceController @Autowired constructor(
@@ -62,9 +64,12 @@ class ServiceController @Autowired constructor(
         return specificationIdFromPath
     }
 
-    @GetMapping
-    fun findAllServices(): Page<ServiceDto> =
-        serviceHandler.findAll(PageRequest.of(0, 10)).map { service -> serviceDtoMapper.fromDomain(service) }
+    @GetMapping(params = ["page"])
+    fun findAllServices(@RequestParam("page") page: String): Page<ServiceDto> {
+
+        logger.info(page)
+        return serviceHandler.findAll(PageRequest.of(page.toInt(), 1)).map { service -> serviceDtoMapper.fromDomain(service) }
+    }
 
     @GetMapping("/{serviceId}")
     fun findService(@PathVariable serviceId: String): ServiceDto {

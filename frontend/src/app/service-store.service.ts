@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import {Page, Service} from './models/service';
 import {SpecificationFile} from './models/specificationfile';
@@ -16,8 +16,10 @@ export class ServiceStore {
   constructor(private http: HttpClient) {
   }
 
-  public getServices(): Observable<Page<Service>> {
-    return this.http.get<Page<Service>>(this.urlRoot)
+  public getPage(pageNumber: number): Observable<Page<Service>> {
+    const params = new HttpParams().set("page", pageNumber.toString());
+    console.log("call");
+    return this.http.get<Page<Service>>(this.urlRoot, {params: params})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 

@@ -5,6 +5,7 @@ import {Page, Service} from '../models/service';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Observable} from "rxjs";
 
 const pointingRight = {
   'transform': 'rotate(0)'
@@ -36,6 +37,8 @@ export class SpecificationOverviewComponent implements OnInit {
   services: Service[];
   error: string;
   expanded: string[] = [];
+  displayShowMoreButton: boolean;
+  pageNumber = 0;
 
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
@@ -47,20 +50,20 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getServices();
+    this.loadFirstPage();
   }
 
   public async deleteService(service: Service) {
     if (confirm('Are you sure that you want to delete "' + service.title + '"?')) {
       this.serviceStore.deleteService(service.id)
-        .subscribe(event => this.getServices());
+        .subscribe(event => this.reloadAllPages());
     }
   }
 
   public async deleteSpecification(service: Service, specification: Specification) {
     if (confirm('Are you sure that you want to delete version "' + specification.metadata.version + '"?')) {
       this.specificationStore.deleteSpecification(service.id, specification.metadata.version).subscribe(event => {
-          this.getServices();
+          this.reloadAllPages();
           this.expanded = [];
         }
       );
@@ -130,7 +133,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public async synchronize(service: Service) {
     return this.serviceStore.synchronizeService(service.id)
-      .subscribe(event => this.getServices(),
+      .subscribe(event => this.reloadAllPages(),
         error => {
           this.error = error.error.userMessage;
         });
@@ -144,23 +147,44 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  private async getServices() {
-    this.serviceStore.getServices().subscribe(
-     (data: Page<Service>) => {
-       data
-         .content
-         .map(element =>
-           // An explicit constructor is required to use the Service class methods
-           new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress))
-         .forEach(service => service.sortVersionsSemantically());
-       this.services = data.content;
-     },
+  private async loadPage(pageNumber: number): Promise<Service[]> {
+    return this.serviceStore.getPage(pageNumber).toPromise().then(
+     (data: Page<Service>) =>
+       data.content.map((element: Service) => {
+         // An explicit constructor is required to use the Service class methods
+         const service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress);
+         service.sortVersionsSemantically();
+         return service;
+       }),
      error1 => {
        if (error1.status === 403) {
          this.error = 'You don\'t have permission to access content on this page';
        }
+       return [];
      }
-   );
+    );
+  }
+
+  public loadFirstPage() {
+    this.loadPage(0).then(services => {
+      this.services = services;
+    })
+  }
+
+  public loadNextPage() {
+    const nextPage = this.pageNumber + 1;
+    this.loadPage(nextPage).then((contents: Service[]) => {
+      this.services.push(...contents);
+      this.pageNumber = nextPage;
+    });
+  }
+
+  public reloadAllPages() {
+    const pageRange = Array.from(Array(this.pageNumber + 1).keys());
+    const promiseOfAllPages: Promise<Service[][]> = Promise.all(pageRange.map(n => this.loadPage(n)));
+    promiseOfAllPages.then(allPages => {
+      this.services = allPages.flat();
+    });
   }
 
   public getFirstRelease(service: Service): Specification {
