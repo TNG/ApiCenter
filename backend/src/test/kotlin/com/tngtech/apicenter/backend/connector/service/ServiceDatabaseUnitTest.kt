@@ -29,12 +29,6 @@ internal class ServiceDatabaseUnitTest {
     private val id = "e33dc111-3dd6-40f4-9c54-a64f6b10ab49"
 
     @Test
-    fun findAll_shouldReturnObjects() {
-        serviceDatabase.findAll()
-        verify(serviceRepository).findAll()
-    }
-
-    @Test
     fun delete_shouldDeleteObject() {
         val uuid = ServiceId(UUID.randomUUID().toString())
 

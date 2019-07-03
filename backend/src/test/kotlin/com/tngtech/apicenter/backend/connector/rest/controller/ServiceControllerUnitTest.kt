@@ -12,6 +12,8 @@ import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import java.util.*
 
 internal class ServiceControllerUnitTest {
@@ -81,10 +83,11 @@ internal class ServiceControllerUnitTest {
             "http://swaggerpetstore.com/docs"
         )
 
-        given(serviceHandler.findAll()).willReturn(arrayListOf(service))
+        val request = PageRequest.of(0, 10)
+        given(serviceHandler.findAll(request)).willReturn(PageImpl<Service>(listOf(service)))
         given(serviceDtoMapper.fromDomain(service)).willReturn(serviceDto)
 
-        assertThat(serviceController.findAllServices()).containsOnly(
+        assertThat(serviceController.findAllServices("0")).containsOnly(
             ServiceDto(
                 uuid, "Test",
                 "Description",

@@ -33,11 +33,13 @@ const pointingDown = {
   ]
 })
 export class SpecificationOverviewComponent implements OnInit {
-  services: Service[] = [];
   error: string;
+
+  services: Service[] = [];
   expanded: string[] = [];
-  displayShowMoreButton: boolean = false;
+
   pageNumber = -1;
+  displayShowMoreButton = false;
 
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
