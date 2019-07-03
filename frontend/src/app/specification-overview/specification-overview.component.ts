@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
 import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
-import {Page, Service} from '../models/service';
+import {Page, PageOfServices, Service} from '../models/service';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Observable} from "rxjs";
 
 const pointingRight = {
   'transform': 'rotate(0)'
@@ -147,43 +146,56 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  private async loadPage(pageNumber: number): Promise<Service[]> {
+
+  private async loadPage(pageNumber: number): Promise<PageOfServices> {
     return this.serviceStore.getPage(pageNumber).toPromise().then(
-     (data: Page<Service>) =>
-       data.content.map((element: Service) => {
-         // An explicit constructor is required to use the Service class methods
-         const service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress);
-         service.sortVersionsSemantically();
-         return service;
-       }),
+     (data: Page<Service>) => {
+
+       const services: Service[] = data.content.map((element: Service) => {
+           // An explicit constructor is required to use the Service class methods
+           const service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress);
+           service.sortVersionsSemantically();
+           return service;
+         });
+
+       console.log(data.last);
+       return {services, isLast: data.last};
+     },
      error1 => {
        if (error1.status === 403) {
          this.error = 'You don\'t have permission to access content on this page';
        }
-       return [];
+       return {services: [], isLast: true};
      }
     );
   }
 
   public loadFirstPage() {
-    this.loadPage(0).then(services => {
-      this.services = services;
+    this.loadPage(0).then(page => {
+      this.services = page.services;
+      this.displayShowMoreButton = !page.isLast;
     })
   }
 
   public loadNextPage() {
     const nextPage = this.pageNumber + 1;
-    this.loadPage(nextPage).then((contents: Service[]) => {
-      this.services.push(...contents);
+    this.loadPage(nextPage).then(page => {
+      this.services.push(...page.services);
+      this.displayShowMoreButton = !page.isLast;
       this.pageNumber = nextPage;
     });
   }
 
   public reloadAllPages() {
     const pageRange = Array.from(Array(this.pageNumber + 1).keys());
-    const promiseOfAllPages: Promise<Service[][]> = Promise.all(pageRange.map(n => this.loadPage(n)));
+    const promiseOfAllPages: Promise<PageOfServices[]> = Promise.all(pageRange.map(n => this.loadPage(n)));
     promiseOfAllPages.then(allPages => {
-      this.services = allPages.flat();
+      this.services = allPages.map(page => page.services).flat();
+      if (allPages.length > 0) {
+        this.displayShowMoreButton = !allPages[allPages.length - 1].isLast;
+      } else {
+        this.displayShowMoreButton = false;
+      }
     });
   }
 

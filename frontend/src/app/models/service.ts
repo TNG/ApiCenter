@@ -22,6 +22,11 @@ export class Service {
   }
 }
 
+export interface PageOfServices {
+  services: Service[];
+  isLast: boolean;
+}
+
 export interface Page<T> {
   // org.springframework.data.domain.Page
 
