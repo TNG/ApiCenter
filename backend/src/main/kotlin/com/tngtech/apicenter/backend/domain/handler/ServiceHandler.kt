@@ -8,6 +8,8 @@ import com.tngtech.apicenter.backend.domain.exceptions.SpecificationConflictExce
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationDuplicationException
 import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
@@ -60,7 +62,7 @@ class ServiceHandler @Autowired constructor(
 
     }
 
-    fun findAll(): List<Service> = servicePersistor.findAll()
+    fun findAll(pageable: Pageable): Page<Service> = servicePersistor.findAll(pageable)
 
     fun findOne(id: ServiceId): Service? = servicePersistor.findOne(id)
 

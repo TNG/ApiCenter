@@ -10,8 +10,13 @@ import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.hibernate.search.exception.EmptyQueryException
 import org.hibernate.search.jpa.Search
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {  }
 
 @org.springframework.stereotype.Service
 class ServiceDatabase constructor(
@@ -31,7 +36,11 @@ class ServiceDatabase constructor(
         }
     }
 
-    override fun findAll(): List<Service> = serviceRepository.findAll().map { spec -> serviceEntityMapper.toDomain(spec) }
+    override fun findAll(pageable: Pageable): Page<Service> {
+        val page = serviceRepository.findAll(pageable)
+        logger.info(page.toString())
+        return page.map { spec -> serviceEntityMapper.toDomain(spec) }
+    }
 
     override fun findOne(id: ServiceId): Service? =
         serviceRepository.findById(id.id).orElse(null)?.let { spec -> serviceEntityMapper.toDomain(spec) }

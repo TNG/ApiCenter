@@ -12,8 +12,14 @@ import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {  }
 
 @RestController
 @RequestMapping("/api/v1/service")
@@ -61,8 +67,12 @@ class ServiceController @Autowired constructor(
     }
 
     @GetMapping
-    fun findAllServices(): List<ServiceDto> =
-        serviceHandler.findAll().map { service -> serviceDtoMapper.fromDomain(service) }
+    fun findAllServices(): Page<ServiceDto> {
+        val page = serviceHandler.findAll(PageRequest.of(0, 10))
+        logger.info(page.toString())
+        logger.info(page.content.toString())
+        return page.map { service -> serviceDtoMapper.fromDomain(service) }
+    }
 
     @GetMapping("/{serviceId}")
     fun findService(@PathVariable serviceId: String): ServiceDto {
