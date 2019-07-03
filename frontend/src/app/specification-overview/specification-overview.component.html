@@ -1,5 +1,4 @@
 <div class="container top-buffer">
-  <button class="btn btn-light" [hidden]="!displayShowMoreButton" (click)="loadNextPage()">Show more</button>
   <div class="row top-buffer">
     <div class="alert alert-danger" role="alert" *ngIf="error">
       {{ error }}
@@ -74,6 +73,9 @@
           </tbody>
         </ng-container>
       </table>
+      <div class="centered">
+        <button class="btn btn-light" [hidden]="!displayShowMoreButton" (click)="loadNextPage()">Show more</button>
+      </div>
     </div>
   </div>
 </div>
