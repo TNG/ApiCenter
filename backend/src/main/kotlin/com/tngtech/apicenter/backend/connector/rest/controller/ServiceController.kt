@@ -66,7 +66,7 @@ class ServiceController @Autowired constructor(
     @GetMapping(params = ["page"])
     fun findAllServices(@RequestParam("page") page: String): Page<ServiceDto> =
         try {
-            serviceHandler.findAll(PageRequest.of(page.toInt(), 1)).map { service -> serviceDtoMapper.fromDomain(service) }
+            serviceHandler.findAll(PageRequest.of(page.toInt(), 10)).map { service -> serviceDtoMapper.fromDomain(service) }
         } catch (exception: NumberFormatException) {
             throw BadUrlException(page)
         }
