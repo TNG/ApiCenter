@@ -3,10 +3,10 @@ import {ApiLanguage} from './specification';
 export interface SpecificationMetadata {
   title: string;
   version: string;
-  description: string;
+  description?: string;
   language: ApiLanguage;
-  id: string;
-  endpointUrl: string;
+  id?: string;
+  endpointUrl?: string;
 }
 
 export class SpecificationFile {
