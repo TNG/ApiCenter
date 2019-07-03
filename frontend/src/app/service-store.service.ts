@@ -18,7 +18,6 @@ export class ServiceStore {
 
   public getPage(pageNumber: number): Observable<Page<Service>> {
     const params = new HttpParams().set("page", pageNumber.toString());
-    console.log("call");
     return this.http.get<Page<Service>>(this.urlRoot, {params: params})
       .catch((error: any) => throwError(error || 'Server error'));
   }

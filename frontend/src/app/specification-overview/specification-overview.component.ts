@@ -187,7 +187,6 @@ export class SpecificationOverviewComponent implements OnInit {
           return service;
         });
 
-        console.log(data.last);
         return {services, isLast: data.last};
       },
       error => {

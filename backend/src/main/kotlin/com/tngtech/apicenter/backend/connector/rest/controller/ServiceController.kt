@@ -9,6 +9,7 @@ import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.exceptions.BadUrlException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,9 +17,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import mu.KotlinLogging
 
-private val logger = KotlinLogging.logger {  }
 @RestController
 @RequestMapping("/api/v1/service")
 class ServiceController @Autowired constructor(
@@ -65,11 +64,12 @@ class ServiceController @Autowired constructor(
     }
 
     @GetMapping(params = ["page"])
-    fun findAllServices(@RequestParam("page") page: String): Page<ServiceDto> {
-
-        logger.info(page)
-        return serviceHandler.findAll(PageRequest.of(page.toInt(), 1)).map { service -> serviceDtoMapper.fromDomain(service) }
-    }
+    fun findAllServices(@RequestParam("page") page: String): Page<ServiceDto> =
+        try {
+            serviceHandler.findAll(PageRequest.of(page.toInt(), 1)).map { service -> serviceDtoMapper.fromDomain(service) }
+        } catch (exception: NumberFormatException) {
+            throw BadUrlException(page)
+        }
 
     @GetMapping("/{serviceId}")
     fun findService(@PathVariable serviceId: String): ServiceDto {
