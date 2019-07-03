@@ -133,6 +133,6 @@ class SpecificationDataParser @Autowired constructor(
             throw MismatchedServiceIdException(notNullIds)
         }
 
-        return ServiceId(ids.first() ?: UUID.randomUUID().toString())
+        return ServiceId(notNullIds.firstOrNull() ?: UUID.randomUUID().toString())
     }
 }
