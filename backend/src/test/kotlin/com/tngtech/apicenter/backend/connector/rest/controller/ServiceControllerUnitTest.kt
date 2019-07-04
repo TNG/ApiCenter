@@ -80,7 +80,8 @@ internal class ServiceControllerUnitTest {
             "Test",
             "Description",
             listOf(SpecificationDto(SWAGGER_SPECIFICATION, metadata)),
-            "http://swaggerpetstore.com/docs"
+            "http://swaggerpetstore.com/docs",
+            false
         )
 
         given(serviceHandler.findAll(0, 10)).willReturn(ResultPage(listOf(service), true))
@@ -91,7 +92,8 @@ internal class ServiceControllerUnitTest {
                 uuid, "Test",
                 "Description",
                 listOf(SpecificationDto(SWAGGER_SPECIFICATION, metadata)),
-                "http://swaggerpetstore.com/docs"
+                "http://swaggerpetstore.com/docs",
+                false
             )
         )
     }

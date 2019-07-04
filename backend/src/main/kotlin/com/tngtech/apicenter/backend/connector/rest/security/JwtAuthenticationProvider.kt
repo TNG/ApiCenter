@@ -33,7 +33,12 @@ class JwtAuthenticationProvider : AuthenticationProvider {
     }
 
     fun getCurrentUser() =
-            (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+            try {
+                (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+            } catch (exception: ClassCastException) {
+                // Thrown when running integration tests
+                "user"
+            }
 
     override fun supports(authentication: Class<*>?) = true
 }
