@@ -12,10 +12,6 @@ export class Endpoint {
     this.method = method;
     this.summary = summary;
   }
-
-  public toString() {
-    return this.pathUrl + this.method + this.summary;
-  }
 }
 
 export class SpecificationDiff {
@@ -38,5 +34,4 @@ export class SpecificationDiff {
     this.missingEndpoints = missingEndpoints;
     this.newEndpoints = newEndpoints;
   }
-
 }
