@@ -3,21 +3,21 @@ import {ApiLanguage} from './specification';
 export interface SpecificationMetadata {
   title: string;
   version: string;
-  description: string;
+  description?: string;
   language: ApiLanguage;
-  endpointUrl: string;
+  endpointUrl?: string;
 }
 
 export class SpecificationFile {
   metadata?: SpecificationMetadata;
   fileContent: string;
   fileUrl: string;
+  id?: string;
 
-  constructor(fileContent: string, fileUrl: string, metadata?: SpecificationMetadata) {
+  constructor(fileContent: string, fileUrl: string, id?: string, metadata?: SpecificationMetadata) {
     this.fileContent = fileContent;
     this.fileUrl = fileUrl;
-    if (metadata) {
-      this.metadata = metadata;
-    }
+    this.id = id;
+    this.metadata = metadata;
   }
 }

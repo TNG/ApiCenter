@@ -40,8 +40,8 @@ export class SpecificationFormComponent implements OnInit {
   error: string;
   specificationFiles: File[];
   remoteFileUrl: string;
-  additionalFields = {title: '', version: '', description: ''};
-  endpointUrl = '';
+  additionalFields = {title: '', version: '', description: '', endpointUrl: ''};
+  id?: string;
   showAdditionalMetadataFields = false;
   objectKeys = Object.keys;
 
@@ -53,10 +53,8 @@ export class SpecificationFormComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.serviceStore.getService(params['id']).subscribe((service: Service) => {
-          this.remoteFileUrl = service.remoteAddress;
-        });
+      if (params['serviceId']) {
+        this.id = params['serviceId'];
       }
     });
   }
@@ -130,9 +128,9 @@ export class SpecificationFormComponent implements OnInit {
       reader.onload = function () {
         const fileContent = reader.result.toString();
         const metadata: SpecificationMetadata = me.showAdditionalMetadataFields ?
-          {...me.additionalFields, language: ApiLanguage.GraphQL, endpointUrl: me.endpointUrl}
+          {...me.additionalFields, language: ApiLanguage.GraphQL}
           : null;
-        const file = new SpecificationFile(fileContent, null, metadata);
+        const file = new SpecificationFile(fileContent, null, me.id, metadata);
         me.createSpecifications([file]);
       };
 
@@ -142,7 +140,7 @@ export class SpecificationFormComponent implements OnInit {
 
   private handleRemoteFile() {
     this.createSpecifications([
-      new SpecificationFile(null, this.remoteFileUrl, null)
+      new SpecificationFile(null, this.remoteFileUrl, this.id, null)
     ]);
   }
 
@@ -167,7 +165,7 @@ export class SpecificationFormComponent implements OnInit {
 
         temporaryFileReader.onload = () => {
           const text = temporaryFileReader.result.toString();
-          const dto = new SpecificationFile(text, null, null);
+          const dto = new SpecificationFile(text, null, this.id, null);
           resolve(dto);
         };
 
