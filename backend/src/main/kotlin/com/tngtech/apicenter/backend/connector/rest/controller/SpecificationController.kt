@@ -2,6 +2,8 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
+import com.qdesrame.openapi.diff.OpenApiCompare
+import com.qdesrame.openapi.diff.model.ChangedOpenApi
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
 import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
@@ -46,5 +48,14 @@ class SpecificationController constructor(private val specificationPersistor: Sp
     @DeleteMapping("/api/v1/service/{serviceId}/version/{version}")
     fun deleteSpecification(@PathVariable serviceId: String, @PathVariable version: String) {
         specificationPersistor.delete(ServiceId(serviceId), version)
+    }
+
+    @GetMapping("/api/v1/service/{serviceId}/diff/{version1}/with/{version2}")
+    fun generateDiff(@PathVariable serviceId: String, @PathVariable version1: String, @PathVariable version2: String): ChangedOpenApi {
+        val specification1 = specificationPersistor.findOne(ServiceId(serviceId), version1)
+                ?: throw SpecificationNotFoundException(serviceId, version1)
+        val specification2 = specificationPersistor.findOne(ServiceId(serviceId), version2)
+                ?: throw SpecificationNotFoundException(serviceId, version2)
+        return OpenApiCompare.fromContents(specification1.content, specification2.content)
     }
 }

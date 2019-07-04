@@ -22,6 +22,12 @@ export class SpecificationStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
+  public getSpecificationDiff(serviceId: string, version1: string, version2: string) {
+    const url = this.urlRoot + '/' + serviceId + '/diff/' + version1 + '/with/' + version2;
+    return this.http.get(url)
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
+
   public deleteSpecification(serviceId: string, version: string): Observable<Specification> {
     return this.http.delete<Specification>(this.urlRoot + '/' + serviceId + '/version/' + version)
       .catch((error: any) => throwError(error || 'Server error'));
