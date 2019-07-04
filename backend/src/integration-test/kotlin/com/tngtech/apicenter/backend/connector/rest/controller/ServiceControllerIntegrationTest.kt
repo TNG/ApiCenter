@@ -67,15 +67,15 @@ internal class ServiceControllerIntegrationTest {
                 .contentType("application/json")
                 .content(
                     """
-                            | {
+                            | [{
                             |   "fileContent": "{\"info\": {\"title\": \"Spec\",\"version\": \"1.0.0\"}}"
-                            | }
+                            | }]
                             """.trimMargin()
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.metadata.title", equalTo("Spec")))
-            .andExpect(jsonPath("$.metadata.version", equalTo("1.0.0")))
+            .andExpect(jsonPath("$[0].metadata.title", equalTo("Spec")))
+            .andExpect(jsonPath("$[0].metadata.version", equalTo("1.0.0")))
     }
 
     @Test
@@ -86,13 +86,13 @@ internal class ServiceControllerIntegrationTest {
                         .with(csrf())
                         .contentType("application/json")
                         .content("""
-                           {"fileContent":"t","metadata":{"title":"My title","version":"3.0.0","description":"","language":"GRAPHQL","endpointUrl":""}}
+                           [{"fileContent":"t","metadata":{"title":"My title","version":"3.0.0","description":"","language":"GRAPHQL","endpointUrl":""}}]
                         """.trimIndent()
                         )
         )
                 .andExpect(status().isCreated)
-                .andExpect(jsonPath("$.metadata.title", equalTo("My title")))
-                .andExpect(jsonPath("$.metadata.version", equalTo("3.0.0")))
+                .andExpect(jsonPath("$[0].metadata.title", equalTo("My title")))
+                .andExpect(jsonPath("$[0].metadata.version", equalTo("3.0.0")))
     }
 
     @Test
@@ -104,10 +104,10 @@ internal class ServiceControllerIntegrationTest {
                         .contentType("application/json")
                         .content(
                                 """
-                            | {
+                            | [{
                             |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
                             |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"1.0.0\", \"description\": \"Description\"}}"
-                            | }
+                            | }]
                             """.trimMargin()
                         )
         )
@@ -123,10 +123,10 @@ internal class ServiceControllerIntegrationTest {
                         .contentType("application/json")
                         .content(
                                 """
-                            | {
+                            | [{
                             |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
                             |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"1.0.0\", \"description\": \"I'm different\"}}"
-                            | }
+                            | }]
                             """.trimMargin()
                         )
         )
@@ -142,15 +142,15 @@ internal class ServiceControllerIntegrationTest {
                 .contentType("application/json")
                 .content(
                     """
-                            | {
+                            | [{
                             |   "fileContent": "openapi: \"3.0.0\"\r\ninfo:\r\n  version: \"1.0.0\"\r\n  title: YamlSpec"
-                            | }
+                            | }]
                             """.trimMargin()
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.metadata.title", equalTo("YamlSpec")))
-            .andExpect(jsonPath("$.metadata.version", equalTo("1.0.0")))
+            .andExpect(jsonPath("$[0].metadata.title", equalTo("YamlSpec")))
+            .andExpect(jsonPath("$[0].metadata.version", equalTo("1.0.0")))
     }
 
     @Test
@@ -162,15 +162,15 @@ internal class ServiceControllerIntegrationTest {
                 .contentType("application/json")
                 .content(
                     """
-                        | {
+                        | [{
                         |   "fileContent": "{\"info\": {\"title\": \"Spec1\",\"version\": \"2.0.0\",\"x-api-id\": \"unique-identifier\"}}"
-                        | }
+                        | }]
                     """.trimMargin()
                 )
         )
             .andExpect(status().isCreated)
-            .andExpect(jsonPath("$.metadata.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.metadata.version", equalTo("2.0.0")))
+            .andExpect(jsonPath("$[0].metadata.title", equalTo("Spec1")))
+            .andExpect(jsonPath("$[0].metadata.version", equalTo("2.0.0")))
 
         mockMvc.perform(
             get("/api/v1/service/unique-identifier")

@@ -26,8 +26,8 @@ export class ServiceStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public createSpecification(specificationFile: SpecificationFile): Observable<Service> {
-    return this.http.post<Service>(this.urlRoot, specificationFile)
+  public createSpecifications(specificationFiles: SpecificationFile[]): Observable<Service> {
+    return this.http.post<Service>(this.urlRoot, specificationFiles)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 

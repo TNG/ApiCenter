@@ -13,10 +13,13 @@
        <div class="alert alert-danger" role="alert" *ngIf="error">
          {{ error }}
        </div>
-       <input type="file" placeholder="Upload Swagger Specification" accept=".yml,.json,.yaml,.graphql" ngModel
+
+       <label for="files">Upload a specification</label>
+       <br>
+       <input multiple type="file" id="files" accept=".yml,.json,.yaml,.graphql" ngModel
          (change)="onLocalFileChange($event)">
 
-       <div *ngIf="isGraphQLFile" [@displayFields]>
+       <div *ngIf="showAdditionalMetadataFields" [@displayFields]>
          <hr>
          <p>
            For a GraphQL specification, ApiCenter needs some additional metadata:
@@ -40,7 +43,7 @@
   <ng-template #remote let-modal>
     <div class="modal-header">
       <h4 class="modal-title">Remote file upload</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
