@@ -68,5 +68,9 @@ class RestResponseExceptionHandler {
     @ExceptionHandler(BadUrlException::class)
     fun handleMalformedUrl(exception: BadUrlException) =
             makeResponseEntity("URL couldn't be parsed", HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(PermissionDeniedException::class)
+    fun handlePermissionDenied(exception: PermissionDeniedException) =
+            makeResponseEntity("You don't have edit permission on specification ${exception.serviceId}", HttpStatus.FORBIDDEN)
 }
 

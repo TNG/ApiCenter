@@ -17,7 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Value("\${jwt.secret}")
-    private lateinit var jwtSecuritySecret: String;
+    private lateinit var jwtSecuritySecret: String
 
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity

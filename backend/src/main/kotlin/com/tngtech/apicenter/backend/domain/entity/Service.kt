@@ -38,4 +38,12 @@ class Service(
                 this.remoteAddress
         )
     }
+
+    fun removePrereleases(): Service =
+            Service(this.id,
+                    this.title,
+                    this.description,
+                    this.specifications.filter { spec -> spec.metadata.releaseType == ReleaseType.RELEASE },
+                    this.remoteAddress
+            )
 }

@@ -7,6 +7,7 @@ export class Service {
   description: string;
   specifications: Specification[];
   remoteAddress: string;
+  canEdit: boolean;
 
   constructor(id: string, title: string, description: string, specifications: Specification[], remoteAddress: string) {
     this.id = id;
