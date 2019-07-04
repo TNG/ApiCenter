@@ -14,9 +14,6 @@ import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import mu.KotlinLogging
-
-private val logger = KotlinLogging.logger {  }
 
 @RestController
 @RequestMapping("/api/v1/service")
