@@ -11,16 +11,6 @@ export enum ReleaseType {
   Snapshot = 'SNAPSHOT',
 }
 
-export function inferReleaseType(version: string): ReleaseType {
-  if (version.endsWith('-SNAPSHOT')) {
-    return ReleaseType.Snapshot;
-  } else if (/-BETA\d*/.test(version) || /-RC\d*/.test(version)) {
-    return ReleaseType.Prerelease;
-  } else {
-    return ReleaseType.Release;
-  }
-}
-
 export class Specification {
   content: string;
   metadata: SpecificationMetadata;

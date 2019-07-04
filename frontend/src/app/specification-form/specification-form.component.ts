@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SpecificationFile, SpecificationFileMetadata, SpecificationMetadata} from '../models/specificationfile';
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
-import {ApiLanguage, inferReleaseType, ReleaseType} from '../models/specification';
+import {ApiLanguage} from '../models/specification';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {animate, style, transition, trigger} from '@angular/animations';
 
