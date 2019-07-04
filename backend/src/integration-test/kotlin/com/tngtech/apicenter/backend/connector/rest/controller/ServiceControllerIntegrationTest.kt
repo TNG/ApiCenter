@@ -86,7 +86,7 @@ internal class ServiceControllerIntegrationTest {
                         .with(csrf())
                         .contentType("application/json")
                         .content("""
-                           [{"fileContent":"t","metadata":{"title":"My title","version":"3.0.0","description":"","language":"GRAPHQL","releaseType":"RELEASE","endpointUrl":""}}]
+                           [{"fileContent":"t","metadata":{"title":"My title","version":"3.0.0","description":"","language":"GRAPHQL","endpointUrl":""}}]
                         """.trimIndent()
                         )
         )
@@ -142,15 +142,15 @@ internal class ServiceControllerIntegrationTest {
                         .contentType("application/json")
                         .content(
                                 """
-                            | {
+                            | [{
                             |   "id": "unique-identifier-2",
                             |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"1.0.0-SNAPSHOT\", \"description\": \"I'm different\"}}"
-                            | }
+                            | }]
                             """.trimMargin()
                         )
         )
                 .andExpect(status().isCreated)
-                .andExpect(jsonPath("$.metadata.description", equalTo("I'm different")))
+                .andExpect(jsonPath("$[0].metadata.description", equalTo("I'm different")))
     }
 
     @Test
