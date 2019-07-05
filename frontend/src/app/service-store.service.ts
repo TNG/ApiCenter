@@ -52,4 +52,18 @@ export class ServiceStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
+  public chmodSpecification(serviceId: string,
+                            userId: string,
+                            view: boolean,
+                            viewPrereleases: boolean,
+                            edit: boolean
+  ): Observable<Service> {
+    const params = new HttpParams()
+      .set('view', String(view))
+      .set('viewPrereleases', String(viewPrereleases))
+      .set('edit', String(edit));
+
+    return this.http.put<Service>(this.urlRoot + '/' + serviceId + '/chmod/' + userId, {}, {params})
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
 }

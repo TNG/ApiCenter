@@ -1,0 +1,41 @@
+<div class="container top-buffer">
+  <div class="row top-buffer">
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <h4>Edit permissions</h4>
+
+      <input type="text" placeholder="Target user" [(ngModel)]="targetUser"/>
+
+      <br>
+      <br>
+
+      <div>
+        <input type="checkbox" id="view" name="view" [(ngModel)]="view">
+        &nbsp;
+        <label for="view">View</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="viewPrereleases" name="viewPrereleases" [(ngModel)]="viewPrereleases">
+        &nbsp;
+        <label for="viewPrereleases">View pre-releases</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="edit" name="edit" [(ngModel)]="edit">
+        &nbsp;
+        <label for="edit">Edit</label>
+      </div>
+    </div>
+  </div>
+  <div class="row top-buffer">
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="chmodSpecification()">Update</button>
+      <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
+    </div>
+  </div>
+</div>

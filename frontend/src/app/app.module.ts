@@ -26,11 +26,13 @@ import {GraphiQLWrapperComponent} from './specification-version/graphiql-wrapper
 import {SpecificationViewComponent} from './specification-version/specification-view.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DiffVersionsComponent} from './diff-versions/diff-versions.component';
+import {PermissionsFormComponent} from './permissions-form/permissions-form.component';
 
 const appRoutes: Routes = [
   {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
   {path: 'specifications/:serviceId/:version', component: SpecificationViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'diff/:serviceId', component: DiffVersionsComponent, canActivate: [AuthenticationGuard]},
+  {path: 'edit-permissions/:serviceId', component: PermissionsFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'edit-specifications/:serviceId', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
@@ -45,6 +47,7 @@ const appRoutes: Routes = [
     SwaggerUiWrapperComponent,
     SpecificationOverviewComponent,
     SpecificationFormComponent,
+    PermissionsFormComponent,
     DiffVersionsComponent,
     HeaderComponent,
     SpecificationSearchComponent,
