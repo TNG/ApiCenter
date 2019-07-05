@@ -4,9 +4,7 @@ import com.tngtech.apicenter.backend.domain.entity.ReleaseType
 import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
-import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.entity.Service
-import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.exceptions.PermissionDeniedException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationConflictException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationDuplicationException
@@ -111,6 +109,16 @@ class ServiceHandler @Autowired constructor(
             PermissionDeniedException(serviceId.id)
         }
     }
+
+    fun getPermissions(serviceId: ServiceId, userId: String): Permissions =
+        if (canEdit(serviceId)) {
+            val view = permissionsManager.hasPermission(userId, serviceId, PermissionType.VIEW)
+            val viewPrereleases = permissionsManager.hasPermission(userId, serviceId, PermissionType.VIEWPRERELEASE)
+            val edit = permissionsManager.hasPermission(userId, serviceId, PermissionType.EDIT)
+            Permissions(view, viewPrereleases, edit)
+        } else {
+            Permissions(false, false, false)
+        }
 
     private fun filterByViewPermission(services: List<Service>): List<Service> {
         val userId = jwtAuthenticationProvider.getCurrentUser()

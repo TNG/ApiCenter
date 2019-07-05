@@ -10,23 +10,25 @@
 
       <input type="text" placeholder="Target user" [(ngModel)]="targetUser"/>
 
+      <button (click)="updateCheckboxes()">Fill</button>
+
       <br>
       <br>
 
       <div>
-        <input type="checkbox" id="view" name="view" [(ngModel)]="view">
+        <input type="checkbox" id="view" name="view" [(ngModel)]="permissions.view">
         &nbsp;
         <label for="view">View</label>
       </div>
 
       <div>
-        <input type="checkbox" id="viewPrereleases" name="viewPrereleases" [(ngModel)]="viewPrereleases">
+        <input type="checkbox" id="viewPrereleases" name="viewPrereleases" [(ngModel)]="permissions.viewPrereleases">
         &nbsp;
         <label for="viewPrereleases">View pre-releases</label>
       </div>
 
       <div>
-        <input type="checkbox" id="edit" name="edit" [(ngModel)]="edit">
+        <input type="checkbox" id="edit" name="edit" [(ngModel)]="permissions.edit">
         &nbsp;
         <label for="edit">Edit</label>
       </div>

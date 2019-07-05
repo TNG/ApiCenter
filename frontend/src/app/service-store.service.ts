@@ -7,6 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {throwError} from 'rxjs';
+import {Permissions} from './models/permissions';
 
 @Injectable()
 export class ServiceStore {
@@ -52,18 +53,23 @@ export class ServiceStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public chmodSpecification(serviceId: string,
-                            userId: string,
-                            view: boolean,
-                            viewPrereleases: boolean,
-                            edit: boolean
+  public chmodService(serviceId: string,
+                      userId: string,
+                      permissions: Permissions
   ): Observable<Service> {
     const params = new HttpParams()
-      .set('view', String(view))
-      .set('viewPrereleases', String(viewPrereleases))
-      .set('edit', String(edit));
+      .set('view', String(permissions.view))
+      .set('viewPrereleases', String(permissions.viewPrereleases))
+      .set('edit', String(permissions.edit));
 
     return this.http.put<Service>(this.urlRoot + '/' + serviceId + '/chmod/' + userId, {}, {params})
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
+
+  public getmodService(serviceId: string,
+                       userId: string,
+  ): Observable<Permissions> {
+    return this.http.get<Permissions>(this.urlRoot + '/' + serviceId + '/getmod/' + userId)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 }

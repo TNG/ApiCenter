@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.connector.rest.dto.ResultPageDto
+import com.tngtech.apicenter.backend.connector.rest.dto.PermissionsDto
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.connector.rest.dto.ServiceDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
@@ -58,7 +59,7 @@ class ServiceController @Autowired constructor(
     }
 
     @PutMapping("/{serviceId}/chmod/{userId}")
-    fun chmodVersion(@PathVariable serviceId: String,
+    fun chmodService(@PathVariable serviceId: String,
                      @PathVariable userId: String,
                      @RequestParam(value = "view", defaultValue = "false") view: String,
                      @RequestParam(value = "viewPrereleases", defaultValue = "false") viewPrereleases: String,
@@ -68,6 +69,15 @@ class ServiceController @Autowired constructor(
         serviceHandler.changePermission(id, userId, view.toBoolean(), PermissionType.VIEW)
         serviceHandler.changePermission(id, userId, viewPrereleases.toBoolean(), PermissionType.VIEWPRERELEASE)
         serviceHandler.changePermission(id, userId, edit.toBoolean(), PermissionType.EDIT)
+    }
+
+    @GetMapping("/{serviceId}/getmod/{userId}")
+    fun getmodService(@PathVariable serviceId: String,
+                     @PathVariable userId: String
+    ): PermissionsDto {
+        val id = ServiceId(serviceId)
+        val permissions = serviceHandler.getPermissions(id, userId)
+        return PermissionsDto(permissions.view, permissions.viewPrereleases, permissions.edit)
     }
 
     private fun getConsistentId(specificationFileDto: SpecificationFileDto, specificationIdFromPath: String): String {
