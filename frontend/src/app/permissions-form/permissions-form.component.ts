@@ -10,7 +10,7 @@ import {Permissions} from '../models/permissions';
 })
 export class PermissionsFormComponent implements OnInit {
   error: string;
-  targetUser: string = '';
+  targetUser = '';
   serviceId: string;
   permissions: Permissions = {
     view: false,
