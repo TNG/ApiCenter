@@ -40,7 +40,7 @@ export class SpecificationOverviewComponent implements OnInit {
   expanded: string[] = [];
 
   pageNumber = -1;
-  displayShowMoreButton = false;
+  morePagesExist = true;
 
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
@@ -50,12 +50,9 @@ export class SpecificationOverviewComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   onscroll() {
-    const element = this.serviceTable.nativeElement;
-    const totalTableHeight = element.scrollHeight;
-    const distanceToTopOfViewport = element.getBoundingClientRect().top;
-    const viewportHeight = this.windowInnerHeight;
-    const reachedEndOfTable = viewportHeight - distanceToTopOfViewport > totalTableHeight;
-    console.log(reachedEndOfTable);
+    if (this.reachedEndOfTable()) {
+      this.loadNextPage();
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -72,6 +69,14 @@ export class SpecificationOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.loadNextPage();
     this.windowInnerHeight = window.innerHeight;
+  }
+
+  private reachedEndOfTable(): boolean {
+    const element = this.serviceTable.nativeElement;
+    const totalTableHeight = element.scrollHeight;
+    const distanceToTopOfViewport = element.getBoundingClientRect().top;
+    const viewportHeight = this.windowInnerHeight;
+    return viewportHeight - distanceToTopOfViewport >= totalTableHeight;
   }
 
   public async deleteService(service: Service) {
@@ -169,12 +174,14 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   public loadNextPage() {
-    const nextPage = this.pageNumber + 1;
-    this.loadPage(nextPage).then(page => {
-      this.services.push(...page.services);
-      this.displayShowMoreButton = !page.isLast;
-      this.pageNumber = nextPage;
-    });
+    if (this.morePagesExist) {
+      const nextPage = this.pageNumber + 1;
+      this.loadPage(nextPage).then(page => {
+        this.services.push(...page.services);
+        this.morePagesExist = !page.isLast;
+        this.pageNumber = nextPage;
+      });
+    }
   }
 
   public reloadAllPages() {
@@ -183,9 +190,9 @@ export class SpecificationOverviewComponent implements OnInit {
     promiseOfAllPages.then(allPages => {
       this.services = allPages.map(page => page.services).flat();
       if (allPages.length > 0) {
-        this.displayShowMoreButton = !allPages[allPages.length - 1].isLast;
+        this.morePagesExist = !allPages[allPages.length - 1].isLast;
       } else {
-        this.displayShowMoreButton = false;
+        this.morePagesExist = false;
       }
     });
   }
