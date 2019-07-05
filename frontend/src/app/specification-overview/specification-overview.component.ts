@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
 import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
 import {Page, PageOfServices, Service} from '../models/service';
@@ -34,6 +34,7 @@ const pointingDown = {
 })
 export class SpecificationOverviewComponent implements OnInit {
   error: string;
+  windowInnerHeight: number;
 
   services: Service[] = [];
   expanded: string[] = [];
@@ -44,6 +45,24 @@ export class SpecificationOverviewComponent implements OnInit {
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
 
+  @ViewChild('serviceTable')
+  serviceTable: ElementRef;
+
+  @HostListener('window:scroll', ['$event'])
+  onscroll() {
+    const element = this.serviceTable.nativeElement;
+    const totalTableHeight = element.scrollHeight;
+    const distanceToTopOfViewport = element.getBoundingClientRect().top;
+    const viewportHeight = this.windowInnerHeight;
+    const reachedEndOfTable = viewportHeight - distanceToTopOfViewport > totalTableHeight;
+    console.log(reachedEndOfTable);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.windowInnerHeight = window.innerHeight;
+  }
+
   constructor(private serviceStore: ServiceStore,
               private specificationStore: SpecificationStore,
               private title: Title) {
@@ -52,6 +71,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadNextPage();
+    this.windowInnerHeight = window.innerHeight;
   }
 
   public async deleteService(service: Service) {
