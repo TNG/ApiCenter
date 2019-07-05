@@ -8,9 +8,7 @@
     <div class="col">
       <h4>Edit permissions</h4>
 
-      <input type="text" placeholder="Target user" [(ngModel)]="targetUser"/>
-
-      <button (click)="updateCheckboxes()">Fill</button>
+      <input type="text" placeholder="Target user" [(ngModel)]="targetUser" (ngModelChange)="updateCheckboxes()"/>
 
       <br>
       <br>

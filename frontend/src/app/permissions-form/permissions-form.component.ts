@@ -10,9 +10,13 @@ import {Permissions} from '../models/permissions';
 })
 export class PermissionsFormComponent implements OnInit {
   error: string;
-  targetUser: string;
+  targetUser: string = '';
   serviceId: string;
-  permissions: Permissions;
+  permissions: Permissions = {
+    view: false,
+    viewPrereleases: false,
+    edit: false
+  };
 
   constructor(private router: Router,
               private serviceStore: ServiceStore,
@@ -26,11 +30,6 @@ export class PermissionsFormComponent implements OnInit {
   }
 
   public async chmodSpecification() {
-    if (!this.targetUser) {
-      this.error = 'Username must not be blank';
-      return;
-    }
-
     this.serviceStore.chmodService(this.serviceId, this.targetUser, this.permissions)
       .subscribe(event => {
           this.router.navigateByUrl('/');
