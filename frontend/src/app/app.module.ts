@@ -32,6 +32,7 @@ const appRoutes: Routes = [
   {path: 'specifications/:serviceId/:version', component: SpecificationViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'diff/:serviceId', component: DiffVersionsComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
+  {path: 'edit-specifications/:serviceId', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
   {path: 'login', component: LoginComponent}

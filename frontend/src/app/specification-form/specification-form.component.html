@@ -24,14 +24,18 @@
          <p>
            For a GraphQL specification, ApiCenter needs some additional metadata:
          </p>
-         <div *ngFor="let fieldName of objectKeys(additionalFields)">
+         <div *ngFor="let fieldName of objectKeys({
+                                          title: additionalFields.title,
+                                          version: additionalFields.version,
+                                          description: additionalFields.description
+                                          })">
            <input type="text"
                   [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)"
                   [(ngModel)]="additionalFields[fieldName]"/>
          </div>
          <hr>
          <p>Test API endpoint, where sample requests can be sent:</p>
-         <input type="text" placeholder="URL" [(ngModel)]="endpointUrl"/>
+         <input type="text" placeholder="URL" [(ngModel)]="additionalFields.endpointUrl"/>
        </div>
     </div>
 
