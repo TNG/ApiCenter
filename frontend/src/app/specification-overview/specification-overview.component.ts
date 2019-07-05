@@ -67,8 +67,16 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadNextPage();
     this.windowInnerHeight = window.innerHeight;
+    this.loadInitialPages();
+  }
+
+  private loadInitialPages() {
+    if (this.reachedEndOfTable()) {
+      this.loadNextPage();
+      setTimeout(() => this.loadInitialPages(), 200);
+      // Some delay required, or else the document sizing won't have time to adjust between calls, resulting in an infinite loop
+    }
   }
 
   private reachedEndOfTable(): boolean {
@@ -76,7 +84,8 @@ export class SpecificationOverviewComponent implements OnInit {
     const totalTableHeight = element.scrollHeight;
     const distanceToTopOfViewport = element.getBoundingClientRect().top;
     const viewportHeight = this.windowInnerHeight;
-    return viewportHeight - distanceToTopOfViewport >= totalTableHeight;
+    const gapHeight = viewportHeight - distanceToTopOfViewport - totalTableHeight;
+    return gapHeight >= 0;
   }
 
   public async deleteService(service: Service) {
