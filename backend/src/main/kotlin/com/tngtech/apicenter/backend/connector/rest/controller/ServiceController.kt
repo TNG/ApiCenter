@@ -6,6 +6,7 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.ServiceDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
+import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -13,8 +14,6 @@ import com.tngtech.apicenter.backend.domain.exceptions.BadUrlException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -64,9 +63,9 @@ class ServiceController @Autowired constructor(
     }
 
     @GetMapping(params = ["page"])
-    fun findAllServices(@RequestParam("page") page: String): Page<ServiceDto> =
+    fun findAllServices(@RequestParam(value = "page", defaultValue = "0") page: String): ResultPage<ServiceDto> =
         try {
-            serviceHandler.findAll(PageRequest.of(page.toInt(), 10)).map { service -> serviceDtoMapper.fromDomain(service) }
+            serviceHandler.findAll(page.toInt(), 10).map { service -> serviceDtoMapper.fromDomain(service) }
         } catch (exception: NumberFormatException) {
             throw BadUrlException(page)
         }

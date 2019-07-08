@@ -83,11 +83,10 @@ internal class ServiceControllerUnitTest {
             "http://swaggerpetstore.com/docs"
         )
 
-        val request = PageRequest.of(0, 10)
-        given(serviceHandler.findAll(request)).willReturn(PageImpl<Service>(listOf(service)))
+        given(serviceHandler.findAll(0, 10)).willReturn(ResultPage(listOf(service), true))
         given(serviceDtoMapper.fromDomain(service)).willReturn(serviceDto)
 
-        assertThat(serviceController.findAllServices("0")).containsOnly(
+        assertThat(serviceController.findAllServices("0").content).containsOnly(
             ServiceDto(
                 uuid, "Test",
                 "Description",

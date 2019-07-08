@@ -3,6 +3,7 @@ package com.tngtech.apicenter.backend.connector.database.service
 import com.tngtech.apicenter.backend.connector.database.entity.ServiceEntity
 import com.tngtech.apicenter.backend.connector.database.mapper.ServiceEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.ServiceRepository
+import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationAlreadyExistsException
@@ -10,8 +11,7 @@ import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.hibernate.search.exception.EmptyQueryException
 import org.hibernate.search.jpa.Search
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.PageRequest
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
@@ -33,8 +33,11 @@ class ServiceDatabase constructor(
         }
     }
 
-    override fun findAll(pageable: Pageable): Page<Service> =
-        serviceRepository.findAll(pageable).map { spec -> serviceEntityMapper.toDomain(spec) }
+    override fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
+        val pageable = PageRequest.of(pageNumber, pageSize)
+        val page = serviceRepository.findAll(pageable).map { spec -> serviceEntityMapper.toDomain(spec) }
+        return ResultPage(page.content, page.isLast)
+    }
 
     override fun findOne(id: ServiceId): Service? =
         serviceRepository.findById(id.id).orElse(null)?.let { spec -> serviceEntityMapper.toDomain(spec) }

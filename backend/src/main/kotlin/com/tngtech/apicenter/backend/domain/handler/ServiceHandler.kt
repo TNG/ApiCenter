@@ -1,6 +1,7 @@
 package com.tngtech.apicenter.backend.domain.handler
 
 import com.tngtech.apicenter.backend.domain.entity.ReleaseType
+import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -8,8 +9,6 @@ import com.tngtech.apicenter.backend.domain.exceptions.SpecificationConflictExce
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationDuplicationException
 import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
@@ -62,7 +61,8 @@ class ServiceHandler @Autowired constructor(
 
     }
 
-    fun findAll(pageable: Pageable): Page<Service> = servicePersistor.findAll(pageable)
+    fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> =
+            servicePersistor.findAll(pageNumber, pageSize)
 
     fun findOne(id: ServiceId): Service? = servicePersistor.findOne(id)
 
