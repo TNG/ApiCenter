@@ -22,36 +22,7 @@ export class Service {
   }
 }
 
-export interface PageOfServices {
-  services: Service[];
-  isLast: boolean;
-}
-
-export interface Page<T> {
-  // org.springframework.data.domain.Page
-
+export interface ResultPage<T> {
   content: T[];
-  pageable: {
-    sort: Sort;
-    offset: number;
-    pageNumber: number;
-    pageSize: number;
-    paged: boolean;
-    unpaged: boolean;
-  };
-  totalPages: number;
-  totalElements: number;
   last: boolean;
-  size: number;
-  number: number;
-  sort: Sort;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
-}
-
-interface Sort {
-  unsorted: boolean;
-  sorted: boolean;
-  empty: boolean;
 }

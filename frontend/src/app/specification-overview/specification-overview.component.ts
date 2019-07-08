@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
 import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
-import {Page, PageOfServices, Service} from '../models/service';
+import {ResultPage, Service} from '../models/service';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -186,8 +186,8 @@ export class SpecificationOverviewComponent implements OnInit {
     if (this.morePagesExist) {
       const nextPage = this.pageNumber + 1;
       this.loadPage(nextPage).then(page => {
-        this.services.push(...page.services);
-        this.morePagesExist = !page.isLast;
+        this.services.push(...page.content);
+        this.morePagesExist = !page.last;
         this.pageNumber = nextPage;
       });
     }
@@ -195,11 +195,11 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public reloadAllPages() {
     const pageRange = Array.from(Array(this.pageNumber + 1).keys());
-    const promiseOfAllPages: Promise<PageOfServices[]> = Promise.all(pageRange.map(n => this.loadPage(n)));
+    const promiseOfAllPages: Promise<ResultPage<Service>[]> = Promise.all(pageRange.map(n => this.loadPage(n)));
     promiseOfAllPages.then(allPages => {
-      this.services = allPages.map(page => page.services).flat();
+      this.services = allPages.map(page => page.content).flat();
       if (allPages.length > 0) {
-        this.morePagesExist = !allPages[allPages.length - 1].isLast;
+        this.morePagesExist = !allPages[allPages.length - 1].last;
       } else {
         this.morePagesExist = false;
       }
@@ -214,9 +214,9 @@ export class SpecificationOverviewComponent implements OnInit {
     );
   }
 
-  private async loadPage(pageNumber: number): Promise<PageOfServices> {
+  private async loadPage(pageNumber: number): Promise<ResultPage<Service>> {
     return this.serviceStore.getPage(pageNumber).toPromise().then(
-      (data: Page<Service>) => {
+      (data: ResultPage<Service>) => {
 
         const services: Service[] = data.content.map((element: Service) => {
           // An explicit constructor is required to use the Service class methods
@@ -225,13 +225,13 @@ export class SpecificationOverviewComponent implements OnInit {
           return service;
         });
 
-        return {services, isLast: data.last};
+        return {content: services, last: data.last};
       },
       error => {
         if (error.status === 403) {
           this.error = 'You don\'t have permission to access content on this page';
         }
-        return {services: [], isLast: true};
+        return {content: [], last: true};
       }
     );
   }
