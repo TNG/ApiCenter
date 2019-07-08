@@ -27,7 +27,7 @@
     "@angular/router": "7.2.15",
     "@ng-bootstrap/ng-bootstrap": "^4.2.1",
     "@ng-select/ng-select": "^2.20.1",
-    "@stryker-mutator/core": "^2.0.0",
+    "@stryker-mutator/core": "^2.0.1",
     "@types/react": "^16.8.22",
     "acorn": "^6.2.0",
     "bootstrap": "^4.3.1",
