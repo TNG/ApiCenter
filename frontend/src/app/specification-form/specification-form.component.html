@@ -22,20 +22,38 @@
        <div *ngIf="showAdditionalMetadataFields" [@displayFields]>
          <hr>
          <p>
-           For a GraphQL specification, ApiCenter needs some additional metadata:
+           For a non-OpenAPI specification, ApiCenter needs additional metadata:
          </p>
-         <div *ngFor="let fieldName of objectKeys({
-                                          title: additionalFields.title,
-                                          version: additionalFields.version,
-                                          description: additionalFields.description
-                                          })">
-           <input type="text"
-                  [placeholder]="fieldName.charAt(0).toUpperCase() + fieldName.slice(1)"
-                  [(ngModel)]="additionalFields[fieldName]"/>
-         </div>
+
+         <label for="title-field">Title</label>
+         &nbsp;
+         <input type="text"
+                id="title-field"
+                [(ngModel)]="additionalFields.title"/>
+
          <hr>
-         <p>Test API endpoint, where sample requests can be sent:</p>
-         <input type="text" placeholder="URL" [(ngModel)]="additionalFields.endpointUrl"/>
+         <label for="version-field">Version</label>
+         &nbsp;
+         <input type="text"
+                id="version-field"
+                placeholder="Semver formatted, eg. 2.0.5-RELEASE"
+                [(ngModel)]="additionalFields.version"/>
+
+         <hr>
+         <label for="description-field">
+           Description of service (optional)
+         </label>
+         <textarea id="description-field"
+                   [(ngModel)]="additionalFields.description">
+         </textarea>
+
+         <hr>
+         <label for="endpoint-url-field">Test API endpoint (optional)</label>
+         <input type="text"
+                id="endpoint-url-field"
+                placeholder="ie. where sample requests from ApiCenter users can be sent"
+                [(ngModel)]="additionalFields.endpointUrl"/>
+
        </div>
     </div>
 
