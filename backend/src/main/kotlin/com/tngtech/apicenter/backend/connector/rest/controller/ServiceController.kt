@@ -28,6 +28,7 @@ class ServiceController @Autowired constructor(
         private val specificationFileDtoMapper: SpecificationFileDtoMapper,
         private val serviceDtoMapper: ServiceDtoMapper
 ) {
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun uploadSpecifications(@RequestBody specificationFileDtos: List<SpecificationFileDto>): List<Specification> {
