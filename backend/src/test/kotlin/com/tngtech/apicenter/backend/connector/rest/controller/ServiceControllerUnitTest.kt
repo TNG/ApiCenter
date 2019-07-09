@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.connector.rest.dto.ServiceDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
@@ -12,8 +13,6 @@ import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import java.util.*
 
 internal class ServiceControllerUnitTest {
@@ -35,6 +34,7 @@ internal class ServiceControllerUnitTest {
 
     private val serviceController: ServiceController =
         ServiceController(
+            ApiCenterProperties(),
             serviceHandler,
             remoteServiceUpdater,
             specificationFileDtoMapper,
