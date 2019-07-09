@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
+import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.connector.rest.dto.ResultPageDto
 import com.tngtech.apicenter.backend.connector.rest.dto.ServiceDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
@@ -21,15 +22,12 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/service")
 class ServiceController @Autowired constructor(
+        private val apiCenterProperties: ApiCenterProperties,
         private val serviceHandler: ServiceHandler,
         private val remoteServiceUpdater: RemoteServiceUpdater,
         private val specificationFileDtoMapper: SpecificationFileDtoMapper,
         private val serviceDtoMapper: ServiceDtoMapper
 ) {
-
-    @Value("\${page-size:10}")
-    private lateinit var pageSize: Int
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun uploadSpecifications(@RequestBody specificationFileDtos: List<SpecificationFileDto>): List<Specification> {
@@ -69,7 +67,7 @@ class ServiceController @Autowired constructor(
     @GetMapping(params = ["page"])
     fun findAllServices(@RequestParam(value = "page") page: String): ResultPageDto<ServiceDto> =
         try {
-            val resultPage = serviceHandler.findAll(page.toInt(), pageSize).map { service -> serviceDtoMapper.fromDomain(service) }
+            val resultPage = serviceHandler.findAll(page.toInt(), apiCenterProperties.pageSize).map { service -> serviceDtoMapper.fromDomain(service) }
             ResultPageDto(resultPage.content, resultPage.last)
         } catch (exception: NumberFormatException) {
             throw BadUrlException(page)
