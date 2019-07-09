@@ -1,6 +1,7 @@
 package com.tngtech.apicenter.backend.domain.handler
 
 import com.tngtech.apicenter.backend.domain.entity.ReleaseType
+import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -60,7 +61,8 @@ class ServiceHandler @Autowired constructor(
 
     }
 
-    fun findAll(): List<Service> = servicePersistor.findAll()
+    fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> =
+            servicePersistor.findAll(pageNumber, pageSize)
 
     fun findOne(id: ServiceId): Service? = servicePersistor.findOne(id)
 

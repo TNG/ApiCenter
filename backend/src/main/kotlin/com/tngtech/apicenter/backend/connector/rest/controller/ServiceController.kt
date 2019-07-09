@@ -1,5 +1,7 @@
 package com.tngtech.apicenter.backend.connector.rest.controller
 
+import com.tngtech.apicenter.backend.config.ApiCenterProperties
+import com.tngtech.apicenter.backend.connector.rest.dto.ResultPageDto
 import com.tngtech.apicenter.backend.connector.rest.dto.ServiceDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
@@ -9,15 +11,18 @@ import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.exceptions.BadUrlException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/service")
 class ServiceController @Autowired constructor(
+        private val apiCenterProperties: ApiCenterProperties,
         private val serviceHandler: ServiceHandler,
         private val remoteServiceUpdater: RemoteServiceUpdater,
         private val specificationFileDtoMapper: SpecificationFileDtoMapper,
@@ -60,9 +65,14 @@ class ServiceController @Autowired constructor(
         return specificationIdFromPath
     }
 
-    @GetMapping
-    fun findAllServices(): List<ServiceDto> =
-        serviceHandler.findAll().map { service -> serviceDtoMapper.fromDomain(service) }
+    @GetMapping(params = ["page"])
+    fun findAllServices(@RequestParam(value = "page") page: String): ResultPageDto<ServiceDto> =
+        try {
+            val resultPage = serviceHandler.findAll(page.toInt(), apiCenterProperties.getPageSize()).map { service -> serviceDtoMapper.fromDomain(service) }
+            ResultPageDto(resultPage.content, resultPage.last)
+        } catch (exception: NumberFormatException) {
+            throw BadUrlException(page)
+        }
 
     @GetMapping("/{serviceId}")
     fun findService(@PathVariable serviceId: String): ServiceDto {

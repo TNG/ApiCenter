@@ -20,7 +20,7 @@
 
   </div>
   <div class="row top-buffer">
-    <div class="col">
+    <div class="col" #serviceTable>
       <table class="table">
         <thead class="thead">
         <tr>
@@ -73,6 +73,9 @@
           </tbody>
         </ng-container>
       </table>
+      <div class="centered">
+        <button class="btn btn-light" [hidden]="!morePagesExist" (click)="loadNextPage()">Show more</button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../environments/environment';
-import {Service} from './models/service';
+import {ResultPage, Service} from './models/service';
 import {SpecificationFile} from './models/specificationfile';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -16,8 +16,9 @@ export class ServiceStore {
   constructor(private http: HttpClient) {
   }
 
-  public getServices(): Observable<Service[]> {
-    return this.http.get<Service[]>(this.urlRoot)
+  public getPage(pageNumber: number): Observable<ResultPage<Service>> {
+    const params = new HttpParams().set('page', pageNumber.toString());
+    return this.http.get<ResultPage<Service>>(this.urlRoot, {params: params})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 

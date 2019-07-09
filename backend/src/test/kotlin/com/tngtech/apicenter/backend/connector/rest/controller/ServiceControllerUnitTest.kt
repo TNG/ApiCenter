@@ -2,6 +2,7 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
+import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.connector.rest.dto.ServiceDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
@@ -33,6 +34,7 @@ internal class ServiceControllerUnitTest {
 
     private val serviceController: ServiceController =
         ServiceController(
+            ApiCenterProperties(),
             serviceHandler,
             remoteServiceUpdater,
             specificationFileDtoMapper,
@@ -81,10 +83,10 @@ internal class ServiceControllerUnitTest {
             "http://swaggerpetstore.com/docs"
         )
 
-        given(serviceHandler.findAll()).willReturn(arrayListOf(service))
+        given(serviceHandler.findAll(0, 10)).willReturn(ResultPage(listOf(service), true))
         given(serviceDtoMapper.fromDomain(service)).willReturn(serviceDto)
 
-        assertThat(serviceController.findAllServices()).containsOnly(
+        assertThat(serviceController.findAllServices("0").content).containsOnly(
             ServiceDto(
                 uuid, "Test",
                 "Description",

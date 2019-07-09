@@ -21,3 +21,8 @@ export class Service {
       -compareVersions(spec1.metadata.version, spec2.metadata.version));
   }
 }
+
+export interface ResultPage<T> {
+  content: T[];
+  last: boolean;
+}

@@ -25,17 +25,17 @@ internal class ServiceControllerIntegrationTest {
 
     @Test
     fun findAllServices_shouldReturnAllServices() {
-        mockMvc.perform(get("/api/v1/service").with(user("user")))
+        mockMvc.perform(get("/api/v1/service?page=0").with(user("user")))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$[0].title", equalTo("Spec1")))
-            .andExpect(jsonPath("$[0].specifications[0].metadata.version", equalTo("1.0.0")))
-            .andExpect(jsonPath("$[1].title", equalTo("Spec2")))
-            .andExpect(jsonPath("$[1].specifications[0].metadata.version", equalTo("1.0.0")))
-            .andExpect(jsonPath("$[1].specifications[1].metadata.version", equalTo("2.0.0")))
-            .andExpect(jsonPath("$[2].title", equalTo("Spec3")))
-            .andExpect(jsonPath("$[2].specifications[0].metadata.version", equalTo("1.0.0")))
-            .andExpect(jsonPath("$[2].specifications[1].metadata.version", equalTo("1.1.0")))
+            .andExpect(jsonPath("$.content[0].title", equalTo("Spec1")))
+            .andExpect(jsonPath("$.content[0].specifications[0].metadata.version", equalTo("1.0.0")))
+            .andExpect(jsonPath("$.content[1].title", equalTo("Spec2")))
+            .andExpect(jsonPath("$.content[1].specifications[0].metadata.version", equalTo("1.0.0")))
+            .andExpect(jsonPath("$.content[1].specifications[1].metadata.version", equalTo("2.0.0")))
+            .andExpect(jsonPath("$.content[2].title", equalTo("Spec3")))
+            .andExpect(jsonPath("$.content[2].specifications[0].metadata.version", equalTo("1.0.0")))
+            .andExpect(jsonPath("$.content[2].specifications[1].metadata.version", equalTo("1.1.0")))
     }
 
     @Test

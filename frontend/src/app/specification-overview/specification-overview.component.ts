@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
-import {Service} from '../models/service';
 import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
+import {ResultPage, Service} from '../models/service';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -33,12 +33,32 @@ const pointingDown = {
   ]
 })
 export class SpecificationOverviewComponent implements OnInit {
-  services: Service[];
   error: string;
+  windowInnerHeight: number;
+
+  services: Service[] = [];
   expanded: string[] = [];
+
+  pageNumber = -1;
+  morePagesExist = true;
 
   downloadFileFormatOptions: string[] = ['json', 'yaml'];
   selectedFormat: string = this.downloadFileFormatOptions[0];
+
+  @ViewChild('serviceTable')
+  serviceTable: ElementRef;
+
+  @HostListener('window:scroll', ['$event'])
+  onscroll() {
+    if (this.reachedEndOfTable()) {
+      this.loadNextPage();
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.windowInnerHeight = window.innerHeight;
+  }
 
   constructor(private serviceStore: ServiceStore,
               private specificationStore: SpecificationStore,
@@ -47,20 +67,38 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getServices();
+    this.windowInnerHeight = window.innerHeight;
+    this.loadInitialPages();
+  }
+
+  private loadInitialPages() {
+    if (this.reachedEndOfTable()) {
+      this.loadNextPage();
+      setTimeout(() => this.loadInitialPages(), 200);
+      // Some delay required, or else the document sizing won't have time to adjust between calls, resulting in an infinite loop
+    }
+  }
+
+  private reachedEndOfTable(): boolean {
+    const element = this.serviceTable.nativeElement;
+    const totalTableHeight = element.scrollHeight;
+    const distanceToTopOfViewport = element.getBoundingClientRect().top;
+    const viewportHeight = this.windowInnerHeight;
+    const gapHeight = viewportHeight - distanceToTopOfViewport - totalTableHeight;
+    return gapHeight >= 0;
   }
 
   public async deleteService(service: Service) {
     if (confirm('Are you sure that you want to delete "' + service.title + '"?')) {
       this.serviceStore.deleteService(service.id)
-        .subscribe(event => this.getServices());
+        .subscribe(event => this.reloadAllPages());
     }
   }
 
   public async deleteSpecification(service: Service, specification: Specification) {
     if (confirm('Are you sure that you want to delete version "' + specification.metadata.version + '"?')) {
       this.specificationStore.deleteSpecification(service.id, specification.metadata.version).subscribe(event => {
-          this.getServices();
+          this.reloadAllPages();
           this.expanded = [];
         }
       );
@@ -130,7 +168,7 @@ export class SpecificationOverviewComponent implements OnInit {
 
   public async synchronize(service: Service) {
     return this.serviceStore.synchronizeService(service.id)
-      .subscribe(event => this.getServices(),
+      .subscribe(event => this.reloadAllPages(),
         error => {
           this.error = error.error.userMessage;
         });
@@ -144,22 +182,28 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  private async getServices() {
-    this.serviceStore.getServices().subscribe(
-     (data: Service[]) => {
-       data
-         .map(element =>
-           // An explicit constructor is required to use the Service class methods
-           new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress))
-         .forEach(service => service.sortVersionsSemantically());
-       this.services = data;
-     },
-     error1 => {
-       if (error1.status === 403) {
-         this.error = 'You don\'t have permission to access content on this page';
-       }
-     }
-   );
+  public loadNextPage() {
+    if (this.morePagesExist) {
+      const nextPage = this.pageNumber + 1;
+      this.loadPage(nextPage).then(page => {
+        this.services.push(...page.content);
+        this.morePagesExist = !page.last;
+        this.pageNumber = nextPage;
+      });
+    }
+  }
+
+  public reloadAllPages() {
+    const pageRange = Array.from(Array(this.pageNumber + 1).keys());
+    const promiseOfAllPages: Promise<ResultPage<Service>[]> = Promise.all(pageRange.map(n => this.loadPage(n)));
+    promiseOfAllPages.then(allPages => {
+      this.services = allPages.map(page => page.content).flat();
+      if (allPages.length > 0) {
+        this.morePagesExist = !allPages[allPages.length - 1].last;
+      } else {
+        this.morePagesExist = false;
+      }
+    });
   }
 
   public getFirstRelease(service: Service): Specification {
@@ -167,6 +211,28 @@ export class SpecificationOverviewComponent implements OnInit {
       service.specifications
         .find(spec => spec.metadata.releaseType === ReleaseType.Release)
       || service.specifications[0]
+    );
+  }
+
+  private async loadPage(pageNumber: number): Promise<ResultPage<Service>> {
+    return this.serviceStore.getPage(pageNumber).toPromise().then(
+      (data: ResultPage<Service>) => {
+
+        const services: Service[] = data.content.map((element: Service) => {
+          // An explicit constructor is required to use the Service class methods
+          const service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress);
+          service.sortVersionsSemantically();
+          return service;
+        });
+
+        return {content: services, last: data.last};
+      },
+      error => {
+        if (error.status === 403) {
+          this.error = 'You don\'t have permission to access content on this page';
+        }
+        return {content: [], last: true};
+      }
     );
   }
 }
