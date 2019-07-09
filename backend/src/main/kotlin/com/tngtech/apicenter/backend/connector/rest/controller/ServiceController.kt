@@ -14,6 +14,7 @@ import com.tngtech.apicenter.backend.domain.exceptions.BadUrlException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -25,6 +26,9 @@ class ServiceController @Autowired constructor(
         private val specificationFileDtoMapper: SpecificationFileDtoMapper,
         private val serviceDtoMapper: ServiceDtoMapper
 ) {
+
+    @Value("\${page-size:10}")
+    private lateinit var pageSize: Int
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -65,7 +69,7 @@ class ServiceController @Autowired constructor(
     @GetMapping(params = ["page"])
     fun findAllServices(@RequestParam(value = "page") page: String): ResultPageDto<ServiceDto> =
         try {
-            val resultPage = serviceHandler.findAll(page.toInt(), 10).map { service -> serviceDtoMapper.fromDomain(service) }
+            val resultPage = serviceHandler.findAll(page.toInt(), pageSize).map { service -> serviceDtoMapper.fromDomain(service) }
             ResultPageDto(resultPage.content, resultPage.last)
         } catch (exception: NumberFormatException) {
             throw BadUrlException(page)
