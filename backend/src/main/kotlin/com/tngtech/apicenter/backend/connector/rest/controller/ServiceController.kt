@@ -67,7 +67,7 @@ class ServiceController @Autowired constructor(
     @GetMapping(params = ["page"])
     fun findAllServices(@RequestParam(value = "page") page: String): ResultPageDto<ServiceDto> =
         try {
-            val resultPage = serviceHandler.findAll(page.toInt(), apiCenterProperties.pageSize).map { service -> serviceDtoMapper.fromDomain(service) }
+            val resultPage = serviceHandler.findAll(page.toInt(), apiCenterProperties.getPageSize()).map { service -> serviceDtoMapper.fromDomain(service) }
             ResultPageDto(resultPage.content, resultPage.last)
         } catch (exception: NumberFormatException) {
             throw BadUrlException(page)

@@ -4,5 +4,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("apicenter")
 class ApiCenterProperties{
-    val pageSize = 10
+    private var pageSize = 10
+
+    fun getPageSize(): Int = pageSize
+
+    fun setPageSize(newPageSize: Int) {
+        pageSize = newPageSize
+    }
 }
