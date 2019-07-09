@@ -5,6 +5,12 @@ export enum ApiLanguage {
   GraphQL = 'GRAPHQL',
 }
 
+export enum ReleaseType {
+  Release = 'RELEASE',
+  Prerelease = 'PRERELEASE',
+  Snapshot = 'SNAPSHOT',
+}
+
 export class Specification {
   content: string;
   metadata: SpecificationMetadata;

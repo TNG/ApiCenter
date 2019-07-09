@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
-import {ApiLanguage, Specification} from '../models/specification';
+import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
 import {SpecificationStore} from '../specification-store.service';
 import {Title} from '@angular/platform-browser';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -68,7 +68,7 @@ export class SpecificationOverviewComponent implements OnInit {
   }
 
   public async downloadService(service: Service, fileType: string) {
-    this.downloadSpecification(fileType, service, service.specifications[0]);
+    this.downloadSpecification(fileType, service, this.getFirstRelease(service));
   }
 
   public downloadSpecification(fileType: string, service: Service, specification: Specification) {
@@ -76,7 +76,7 @@ export class SpecificationOverviewComponent implements OnInit {
       case ApiLanguage.GraphQL:
         this.specificationStore.getSpecification(service.id, specification.metadata.version)
           .subscribe(event => {
-            const fileName = this.createDownloadFileName(service, specification);
+            const fileName = this.createDownloadFileName(specification);
             this.doDownload(event.content, fileName + '.graphql', 'application/json');
           });
         break;
@@ -89,7 +89,7 @@ export class SpecificationOverviewComponent implements OnInit {
   public downloadOpenApi(fileType: string, service: Service, specification: Specification) {
     switch (fileType) {
       case 'json':
-        this.downloadJson(service, specification);
+        this.downloadJson(specification);
         break;
       case 'yaml':
         this.downloadYaml(service, specification);
@@ -97,14 +97,14 @@ export class SpecificationOverviewComponent implements OnInit {
     }
   }
 
-  public downloadJson(service: Service, specification: Specification) {
-    const fileName = this.createDownloadFileName(service, specification);
+  public downloadJson(specification: Specification) {
+    const fileName = this.createDownloadFileName(specification);
     const content = JSON.stringify(JSON.parse(specification.content), null, 2);
     this.doDownload(content, fileName + '.json', 'application/json');
   }
 
   public downloadYaml(service: Service, specification: Specification) {
-    const fileName = this.createDownloadFileName(service, specification);
+    const fileName = this.createDownloadFileName(specification);
     this.specificationStore.getYamlSpecification(service.id, specification.metadata.version)
       .subscribe(event => {
         this.doDownload(event.content, fileName + '.yml', 'application/yaml');
@@ -123,9 +123,9 @@ export class SpecificationOverviewComponent implements OnInit {
     document.body.removeChild(anchor);
   }
 
-  private createDownloadFileName(service: Service, specification: Specification) {
+  private createDownloadFileName(specification: Specification) {
     // Make it filename safe by replacing any non-alphanumeric character with an underscore
-    return (service.title + '_v' + specification.metadata.version).replace(/[^a-z0-9\.]/gi, '_');
+    return (specification.metadata.title + '_v' + specification.metadata.version).replace(/[^a-z0-9\.]/gi, '_');
   }
 
   public async synchronize(service: Service) {
@@ -160,5 +160,13 @@ export class SpecificationOverviewComponent implements OnInit {
        }
      }
    );
+  }
+
+  public getFirstRelease(service: Service): Specification {
+    return (
+      service.specifications
+        .find(spec => spec.metadata.releaseType === ReleaseType.Release)
+      || service.specifications[0]
+    );
   }
 }

@@ -7,9 +7,7 @@ import com.github.zafarkhaja.semver.UnexpectedCharacterException
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
-import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
-import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
+import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.springframework.beans.factory.annotation.Autowired
@@ -111,6 +109,7 @@ class SpecificationDataParser @Autowired constructor(
                     version,
                     metadata.description,
                     ApiLanguage.GRAPHQL,
+                    ReleaseType.fromVersionString(metadata.version),
                     metadata.endpointUrl
             )
         } else {
@@ -120,6 +119,7 @@ class SpecificationDataParser @Autowired constructor(
                     version,
                     extractDescription(fileContent),
                     ApiLanguage.OPENAPI,
+                    ReleaseType.fromVersionString(version),
                     null
             )
         }

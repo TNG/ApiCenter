@@ -4,7 +4,7 @@ import {instance, mock, verify, when} from 'ts-mockito';
 import {ActivatedRoute} from '@angular/router';
 import {Service} from '../models/service';
 import {from} from 'rxjs/index';
-import {ApiLanguage, Specification} from '../models/specification';
+import {ApiLanguage, ReleaseType, Specification} from '../models/specification';
 
 describe('SpecificationSearchDetailComponent', () => {
   let specificationSearchDetailComponent: SpecificationSearchDetailComponent;
@@ -17,6 +17,7 @@ describe('SpecificationSearchDetailComponent', () => {
     version: '1.0',
     description: 'Description',
     language: ApiLanguage.OpenAPI,
+    releaseType: ReleaseType.Release,
     endpointUrl: null,
   })];
   const services = [new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null)];

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SpecificationFile, SpecificationMetadata} from '../models/specificationfile';
+import {SpecificationFile, SpecificationFileMetadata, SpecificationMetadata} from '../models/specificationfile';
 import {ServiceStore} from '../service-store.service';
 import {Service} from '../models/service';
 import {ApiLanguage} from '../models/specification';
@@ -127,7 +127,7 @@ export class SpecificationFormComponent implements OnInit {
 
       reader.onload = function () {
         const fileContent = reader.result.toString();
-        const metadata: SpecificationMetadata = me.showAdditionalMetadataFields ?
+        const metadata: SpecificationFileMetadata = me.showAdditionalMetadataFields ?
           {...me.additionalFields, language: ApiLanguage.GraphQL}
           : null;
         const file = new SpecificationFile(fileContent, null, me.id, metadata);

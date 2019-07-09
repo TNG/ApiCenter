@@ -134,6 +134,26 @@ internal class ServiceControllerIntegrationTest {
     }
 
     @Test
+    fun uploadSpecification_shouldDetectVersionClash_overwriteSnapshot() {
+        mockMvc.perform(
+                post("/api/v1/service")
+                        .with(user("user"))
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
+                            | [{
+                            |   "id": "unique-identifier-2",
+                            |   "fileContent": "{\"info\": {\"title\": \"Spec1\",  \"version\": \"1.0.0-SNAPSHOT\", \"description\": \"I'm different\"}}"
+                            | }]
+                            """.trimMargin()
+                        )
+        )
+                .andExpect(status().isCreated)
+                .andExpect(jsonPath("$[0].metadata.description", equalTo("I'm different")))
+    }
+
+    @Test
     fun uploadSpecification_shouldCreateSpecificationFromYaml() {
         mockMvc.perform(
             post("/api/v1/service")

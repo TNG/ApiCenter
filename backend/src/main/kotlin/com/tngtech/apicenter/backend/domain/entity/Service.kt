@@ -21,4 +21,21 @@ class Service(
                 this.remoteAddress
         )
     }
+
+    fun overwriteSpecificationContents(newSpec: Specification): Service {
+        val specifications = this.specifications.map { spec ->
+            if (spec.metadata.version == newSpec.metadata.version) {
+                newSpec
+            } else {
+                spec
+            }
+        }
+        return Service(
+                this.id,
+                this.title,
+                this.description,
+                specifications,
+                this.remoteAddress
+        )
+    }
 }

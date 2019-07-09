@@ -21,7 +21,7 @@ internal class ServiceControllerUnitTest {
             "{\"swagger\": \"2.0\", \"info\": {\"version\": \"1.0.0\",\"title\": \"Swagger Petstore\",\"description\":\"Description\"}}"
         const val UUID_STRING = "65d8491f-e602-40fc-a595-45e75f690df1"
     }
-    private val metadata = SpecificationMetadata(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, null)
+    private val metadata = SpecificationMetadata(ServiceId(UUID_STRING), "Swagger Petstore", "1.0.0", "Description", ApiLanguage.OPENAPI, ReleaseType.RELEASE, null)
 
     private val serviceHandler: ServiceHandler = mock()
 

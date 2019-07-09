@@ -21,13 +21,13 @@ class ServiceDatabase constructor(
 ) : ServicePersistor {
 
     override fun save(service: Service) {
-        val specificationEntity = serviceEntityMapper.fromDomain(service)
-        specificationEntity.specifications.map { versionEntity -> versionEntity.service = specificationEntity }
+        val serviceEntity = serviceEntityMapper.fromDomain(service)
+        serviceEntity.specifications.map { specificationEntity -> specificationEntity.service = serviceEntity }
 
         try {
-            serviceRepository.save(specificationEntity)
+            serviceRepository.save(serviceEntity)
         } catch (sqlException: DataIntegrityViolationException) {
-            throw SpecificationAlreadyExistsException(specificationEntity.title)
+            throw SpecificationAlreadyExistsException(serviceEntity.title)
         }
     }
 
