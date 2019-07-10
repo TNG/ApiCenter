@@ -73,7 +73,8 @@ class ServiceHandler @Autowired constructor(
     }
 
     fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
-        val page = servicePersistor.findAll(pageNumber, pageSize)
+        val username = jwtAuthenticationProvider.getCurrentUser()
+        val page = servicePersistor.findAll(pageNumber, pageSize, username)
         return ResultPage(this.filterByViewPermission(page.content), page.last)
     }
 
