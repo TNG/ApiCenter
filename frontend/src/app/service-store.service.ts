@@ -53,23 +53,23 @@ export class ServiceStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public chmodService(serviceId: string,
-                      userId: string,
-                      permissions: Permissions
+  public changePermissionsForService(serviceId: string,
+                                     userId: string,
+                                     permissions: Permissions
   ): Observable<Service> {
     const params = new HttpParams()
       .set('view', String(permissions.view))
       .set('viewPrereleases', String(permissions.viewPrereleases))
       .set('edit', String(permissions.edit));
 
-    return this.http.put<Service>(this.urlRoot + '/' + serviceId + '/chmod/' + userId, {}, {params})
+    return this.http.put<Service>(this.urlRoot + '/' + serviceId + '/permissions/' + userId, {}, {params})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public getmodService(serviceId: string,
-                       userId: string,
+  public getPermissionsForService(serviceId: string,
+                                  userId: string,
   ): Observable<Permissions> {
-    return this.http.get<Permissions>(this.urlRoot + '/' + serviceId + '/getmod/' + userId)
+    return this.http.get<Permissions>(this.urlRoot + '/' + serviceId + '/permissions/' + userId)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 }

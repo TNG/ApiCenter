@@ -29,8 +29,8 @@ export class PermissionsFormComponent implements OnInit {
     });
   }
 
-  public async chmodSpecification() {
-    this.serviceStore.chmodService(this.serviceId, this.targetUser, this.permissions)
+  public async changePermissionsForService() {
+    this.serviceStore.changePermissionsForService(this.serviceId, this.targetUser, this.permissions)
       .subscribe(event => {
           this.router.navigateByUrl('/');
         },
@@ -40,7 +40,7 @@ export class PermissionsFormComponent implements OnInit {
 
   public updateCheckboxes() {
     if (this.serviceId) {
-      this.serviceStore.getmodService(this.serviceId, this.targetUser).subscribe(
+      this.serviceStore.getPermissionsForService(this.serviceId, this.targetUser).subscribe(
         (element: Permissions) => {
           this.permissions = element;
         },

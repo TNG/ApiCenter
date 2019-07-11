@@ -58,12 +58,12 @@ class ServiceController @Autowired constructor(
         return specificationFileDtoMapper.fromDomain(specification)
     }
 
-    @PutMapping("/{serviceId}/chmod/{userId}")
-    fun chmodService(@PathVariable serviceId: String,
-                     @PathVariable userId: String,
-                     @RequestParam(value = "view", defaultValue = "false") view: String,
-                     @RequestParam(value = "viewPrereleases", defaultValue = "false") viewPrereleases: String,
-                     @RequestParam(value = "edit", defaultValue = "false") edit: String
+    @PutMapping("/{serviceId}/permissions/{userId}")
+    fun changePermissionsForService(@PathVariable serviceId: String,
+                                    @PathVariable userId: String,
+                                    @RequestParam(value = "view", defaultValue = "false") view: String,
+                                    @RequestParam(value = "viewPrereleases", defaultValue = "false") viewPrereleases: String,
+                                    @RequestParam(value = "edit", defaultValue = "false") edit: String
     ) {
         val id = ServiceId(serviceId)
         serviceHandler.changePermission(id, userId, view.toBoolean(), PermissionType.VIEW)
@@ -71,9 +71,9 @@ class ServiceController @Autowired constructor(
         serviceHandler.changePermission(id, userId, edit.toBoolean(), PermissionType.EDIT)
     }
 
-    @GetMapping("/{serviceId}/getmod/{userId}")
-    fun getmodService(@PathVariable serviceId: String,
-                     @PathVariable userId: String
+    @GetMapping("/{serviceId}/permissions/{userId}")
+    fun getPermissionsForService(@PathVariable serviceId: String,
+                                 @PathVariable userId: String
     ): PermissionsDto {
         val id = ServiceId(serviceId)
         val permissions = serviceHandler.getPermissions(id, userId)
