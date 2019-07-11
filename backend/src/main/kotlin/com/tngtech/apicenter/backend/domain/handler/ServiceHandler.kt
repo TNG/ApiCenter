@@ -125,7 +125,11 @@ class ServiceHandler @Autowired constructor(
 
     fun synchroniseRemoteService(serviceId: ServiceId) {
         if (canEdit(serviceId)) {
-            remoteServiceUpdater.synchronize(serviceId)
+            this.findOne(serviceId)?.let {
+               service ->
+                val newSpecification = remoteServiceUpdater.synchronize(service)
+                this.addNewSpecification(newSpecification, service.id, service.remoteAddress)
+            }
         } else {
             PermissionDeniedException(serviceId.id)
         }
