@@ -4,6 +4,7 @@ import com.tngtech.apicenter.backend.domain.entity.ReleaseType
 import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
+import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
 import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.exceptions.PermissionDeniedException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationConflictException
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component
 @Component
 class ServiceHandler @Autowired constructor(
         private val servicePersistor: ServicePersistor,
+        private val remoteServiceUpdater: RemoteServiceUpdater,
         private val jwtAuthenticationProvider: JwtAuthenticationProvider,
         private val permissionsManager: PermissionsManager
 ) {
@@ -120,6 +122,14 @@ class ServiceHandler @Autowired constructor(
         } else {
             Permissions(false, false, false)
         }
+
+    fun synchroniseRemoteService(serviceId: ServiceId) {
+        if (canEdit(serviceId)) {
+            remoteServiceUpdater.synchronize(serviceId)
+        } else {
+            PermissionDeniedException(serviceId.id)
+        }
+    }
 
     private fun filterByViewPermission(services: List<Service>): List<Service> {
         val userId = jwtAuthenticationProvider.getCurrentUser()

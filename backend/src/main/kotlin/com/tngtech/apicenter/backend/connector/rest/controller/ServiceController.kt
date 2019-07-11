@@ -9,7 +9,6 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.ServiceDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*
 class ServiceController @Autowired constructor(
         private val apiCenterProperties: ApiCenterProperties,
         private val serviceHandler: ServiceHandler,
-        private val remoteServiceUpdater: RemoteServiceUpdater,
         private val specificationFileDtoMapper: SpecificationFileDtoMapper,
         private val serviceDtoMapper: ServiceDtoMapper
 ) {
@@ -111,7 +109,7 @@ class ServiceController @Autowired constructor(
 
     @PostMapping("/{serviceId}/synchronize")
     fun synchronizeService(@PathVariable serviceId: String) {
-        remoteServiceUpdater.synchronize(ServiceId(serviceId))
+        serviceHandler.synchroniseRemoteService(ServiceId(serviceId))
     }
 
     @GetMapping("/search/{searchString}")

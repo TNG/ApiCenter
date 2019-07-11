@@ -8,7 +8,6 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.ServiceDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
 import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.assertj.core.api.Assertions.assertThat
@@ -26,8 +25,6 @@ internal class ServiceControllerUnitTest {
 
     private val serviceHandler: ServiceHandler = mock()
 
-    private val remoteServiceUpdater: RemoteServiceUpdater = mock()
-
     private val specificationFileDtoMapper: SpecificationFileDtoMapper = mock()
 
     private val serviceDtoMapper: ServiceDtoMapper = mock()
@@ -36,7 +33,6 @@ internal class ServiceControllerUnitTest {
         ServiceController(
             ApiCenterProperties(),
             serviceHandler,
-            remoteServiceUpdater,
             specificationFileDtoMapper,
             serviceDtoMapper
         )
