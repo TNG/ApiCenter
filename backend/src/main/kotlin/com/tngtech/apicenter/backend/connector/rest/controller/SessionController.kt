@@ -29,7 +29,8 @@ class SessionController @Autowired constructor(private val sessionHandler: Sessi
             ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
 
         val jwt = JWT.create()
-            .withSubject(user.username)
+            .withSubject(user.id.toString())
+            .withClaim("username", user.username)
             .sign(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
 
         return ResponseEntity.ok(SessionDto("Bearer $jwt", user.username))

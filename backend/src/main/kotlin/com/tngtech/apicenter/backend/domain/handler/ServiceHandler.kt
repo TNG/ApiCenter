@@ -13,6 +13,7 @@ import com.tngtech.apicenter.backend.domain.service.PermissionsManager
 import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class ServiceHandler @Autowired constructor(
@@ -28,7 +29,7 @@ class ServiceHandler @Autowired constructor(
         if (service == null) {
             saveNewService(specification, serviceId, fileUrl)
 
-            val userId = jwtAuthenticationProvider.getCurrentUser()
+            val userId = jwtAuthenticationProvider.getCurrentUserId()
             permissionsManager.addPermission(userId, serviceId, PermissionType.VIEW)
             permissionsManager.addPermission(userId, serviceId, PermissionType.VIEWPRERELEASE)
             permissionsManager.addPermission(userId, serviceId, PermissionType.EDIT)
@@ -75,8 +76,8 @@ class ServiceHandler @Autowired constructor(
     }
 
     fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
-        val username = jwtAuthenticationProvider.getCurrentUser()
-        val page = servicePersistor.findAll(pageNumber, pageSize, username)
+        val userId = jwtAuthenticationProvider.getCurrentUserId()
+        val page = servicePersistor.findAll(pageNumber, pageSize, userId)
         return ResultPage(this.filterByViewPermission(page.content), page.last)
     }
 
@@ -86,13 +87,13 @@ class ServiceHandler @Autowired constructor(
     fun exists(serviceId: ServiceId): Boolean = this.findOne(serviceId) != null
 
     private fun canEdit(serviceId: ServiceId) =
-            permissionsManager.hasPermission(jwtAuthenticationProvider.getCurrentUser(), serviceId, PermissionType.EDIT)
+            permissionsManager.hasPermission(jwtAuthenticationProvider.getCurrentUserId(), serviceId, PermissionType.EDIT)
 
     fun delete(serviceId: ServiceId) {
         if (canEdit(serviceId)) {
             servicePersistor.delete(serviceId)
 
-            val userId = jwtAuthenticationProvider.getCurrentUser()
+            val userId = jwtAuthenticationProvider.getCurrentUserId()
             permissionsManager.clearPermissions(userId, serviceId)
         } else {
             PermissionDeniedException(serviceId.id)
@@ -101,7 +102,7 @@ class ServiceHandler @Autowired constructor(
 
     fun search(searchString: String): List<Service> = this.filterByViewPermission(servicePersistor.search(searchString))
 
-    fun changePermission(serviceId: ServiceId, userId: String, addingPermission: Boolean, permission: PermissionType) {
+    fun changePermission(serviceId: ServiceId, userId: UUID, addingPermission: Boolean, permission: PermissionType) {
         if (canEdit(serviceId)) {
             if (addingPermission) {
                 permissionsManager.addPermission(userId, serviceId, permission)
@@ -113,7 +114,7 @@ class ServiceHandler @Autowired constructor(
         }
     }
 
-    fun getPermissions(serviceId: ServiceId, userId: String): Permissions =
+    fun getPermissions(serviceId: ServiceId, userId: UUID): Permissions =
         if (canEdit(serviceId)) {
             val view = permissionsManager.hasPermission(userId, serviceId, PermissionType.VIEW)
             val viewPrereleases = permissionsManager.hasPermission(userId, serviceId, PermissionType.VIEWPRERELEASE)
@@ -136,7 +137,7 @@ class ServiceHandler @Autowired constructor(
     }
 
     private fun filterByViewPermission(services: List<Service>): List<Service> {
-        val userId = jwtAuthenticationProvider.getCurrentUser()
+        val userId = jwtAuthenticationProvider.getCurrentUserId()
 
         return services
             .filter { service -> permissionsManager.hasPermission(userId, service.id, PermissionType.VIEW) }

@@ -12,6 +12,7 @@ import org.hibernate.search.exception.EmptyQueryException
 import org.hibernate.search.jpa.Search
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.PageRequest
+import java.util.*
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
@@ -33,9 +34,9 @@ class ServiceDatabase constructor(
         }
     }
 
-    override fun findAll(pageNumber: Int, pageSize: Int, username: String): ResultPage<Service> {
+    override fun findAll(pageNumber: Int, pageSize: Int, userId: UUID): ResultPage<Service> {
         val pageable = PageRequest.of(pageNumber, pageSize)
-        val page = serviceRepository.findAllUsersWithPagination(pageable, username).map { spec -> serviceEntityMapper.toDomain(spec) }
+        val page = serviceRepository.findAllUsersWithPagination(pageable, userId).map { spec -> serviceEntityMapper.toDomain(spec) }
         return ResultPage(page.content, page.isLast)
     }
 

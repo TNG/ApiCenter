@@ -18,6 +18,7 @@ import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/service")
@@ -64,9 +65,10 @@ class ServiceController @Autowired constructor(
                                     @RequestParam(value = "edit", defaultValue = "false") edit: String
     ) {
         val id = ServiceId(serviceId)
-        serviceHandler.changePermission(id, userId, view.toBoolean(), PermissionType.VIEW)
-        serviceHandler.changePermission(id, userId, viewPrereleases.toBoolean(), PermissionType.VIEWPRERELEASE)
-        serviceHandler.changePermission(id, userId, edit.toBoolean(), PermissionType.EDIT)
+        val uuid = UUID.fromString(userId)
+        serviceHandler.changePermission(id, uuid, view.toBoolean(), PermissionType.VIEW)
+        serviceHandler.changePermission(id, uuid, viewPrereleases.toBoolean(), PermissionType.VIEWPRERELEASE)
+        serviceHandler.changePermission(id, uuid, edit.toBoolean(), PermissionType.EDIT)
     }
 
     @GetMapping("/{serviceId}/permissions/{userId}")
@@ -74,7 +76,8 @@ class ServiceController @Autowired constructor(
                                  @PathVariable userId: String
     ): PermissionsDto {
         val id = ServiceId(serviceId)
-        val permissions = serviceHandler.getPermissions(id, userId)
+        val uuid = UUID.fromString(userId)
+        val permissions = serviceHandler.getPermissions(id, uuid)
         return PermissionsDto(permissions.view, permissions.viewPrereleases, permissions.edit)
     }
 

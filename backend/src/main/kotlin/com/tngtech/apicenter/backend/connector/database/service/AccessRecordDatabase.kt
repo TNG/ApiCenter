@@ -8,13 +8,14 @@ import com.tngtech.apicenter.backend.connector.database.repository.ServiceReposi
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.service.PermissionsManager
+import java.util.*
 
 @org.springframework.stereotype.Service
 class AccessRecordDatabase constructor(
         private val accessRecordRepository: AccessRecordRepository,
         private val serviceRepository: ServiceRepository
 ): PermissionsManager {
-    override fun addPermission(userId: String, serviceId: ServiceId, permission: PermissionType) {
+    override fun addPermission(userId: UUID, serviceId: ServiceId, permission: PermissionType) {
         val key = AccessRecordId(serviceId.id, userId)
         val service = serviceRepository.findById(serviceId.id)
         service.ifPresent { serviceEntity ->
@@ -33,7 +34,7 @@ class AccessRecordDatabase constructor(
         }
     }
 
-    override fun removePermission(userId: String, serviceId: ServiceId, permission: PermissionType) {
+    override fun removePermission(userId: UUID, serviceId: ServiceId, permission: PermissionType) {
         val key = AccessRecordId(serviceId.id, userId)
         val record = accessRecordRepository.findById(key)
 
@@ -45,7 +46,7 @@ class AccessRecordDatabase constructor(
         }
     }
 
-    override fun hasPermission(userId: String, serviceId: ServiceId, permission: PermissionType): Boolean {
+    override fun hasPermission(userId: UUID, serviceId: ServiceId, permission: PermissionType): Boolean {
         val key = AccessRecordId(serviceId.id, userId)
         val record = accessRecordRepository.findById(key)
         return record.map { entity ->
@@ -57,7 +58,7 @@ class AccessRecordDatabase constructor(
         }.orElse(false)
     }
 
-    override fun clearPermissions(userId: String, serviceId: ServiceId) {
+    override fun clearPermissions(userId: UUID, serviceId: ServiceId) {
         val key = AccessRecordId(serviceId.id, userId)
         accessRecordRepository.deleteById(key)
     }

@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class JwtAuthenticationProvider : AuthenticationProvider {
@@ -17,27 +18,20 @@ class JwtAuthenticationProvider : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication? {
         val token = (authentication as JwtAuthenticationToken).token
 
-        val user = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
+        val userId = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
             .build()
             .verify(token)
             .subject
 
-        return if (user != null) JwtAuthenticationToken(user, token) else null
+        return if (userId != null) JwtAuthenticationToken(UUID.fromString(userId), token) else null
     }
 
-    fun extractUsername(authorizationHeader: String): String {
-        return JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
-                .build()
-                .verify(authorizationHeader.replace("Bearer ", ""))
-                .subject
-    }
-
-    fun getCurrentUser() =
+    fun getCurrentUserId(): UUID =
             try {
                 (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
             } catch (exception: ClassCastException) {
                 // Thrown when running integration tests
-                "user"
+                UUID.randomUUID()
             }
 
     override fun supports(authentication: Class<*>?) = true

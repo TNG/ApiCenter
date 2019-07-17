@@ -18,7 +18,7 @@ class ServiceDtoConverter constructor(
 ) : CustomConverter<Service, ServiceDto>() {
 
     override fun convert(source: Service, destinationType: Type<out ServiceDto>?, mappingContext: MappingContext?): ServiceDto {
-        val userId = jwtAuthenticationProvider.getCurrentUser()
+        val userId = jwtAuthenticationProvider.getCurrentUserId()
         val canEdit = permissionsManager.hasPermission(userId, source.id, PermissionType.EDIT)
 
         return ServiceDto(

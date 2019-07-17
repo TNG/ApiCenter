@@ -17,6 +17,6 @@ interface ServiceRepository : PagingAndSortingRepository<ServiceEntity, String> 
     override fun existsById(id: String): Boolean
     override fun findById(id: String): Optional<ServiceEntity>
 
-    @Query("select s from ServiceEntity s inner join AccessRecordEntity a on a.accessRecordId.serviceId = s.id where a.accessRecordId.username = :username")
-    fun findAllUsersWithPagination(pageable: Pageable, @Param("username") username: String): Page<ServiceEntity>
+    @Query("select s from ServiceEntity s inner join AccessRecordEntity a on a.accessRecordId.serviceId = s.id where a.accessRecordId.userId = :userId")
+    fun findAllUsersWithPagination(pageable: Pageable, @Param("userId") userId: UUID): Page<ServiceEntity>
 }
