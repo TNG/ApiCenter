@@ -5,6 +5,8 @@ import com.tngtech.apicenter.backend.connector.database.repository.UserRepositor
 import com.tngtech.apicenter.backend.domain.entity.User
 import com.tngtech.apicenter.backend.domain.service.UserPersistor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Isolation
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserDatabase constructor(
@@ -19,5 +21,6 @@ class UserDatabase constructor(
     override fun findByOrigin(origin: String, externalId: String) =
         userRepository.findByOriginAndExternalId(origin, externalId)
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     override fun exists(origin: String, externalId: String) = userRepository.checkExistenceByOrigin(origin, externalId)
 }

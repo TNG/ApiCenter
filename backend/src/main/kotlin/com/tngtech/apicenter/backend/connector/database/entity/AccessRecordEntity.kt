@@ -11,6 +11,10 @@ data class AccessRecordEntity(
         @OneToOne
         val serviceEntity: ServiceEntity,
 
+        @MapsId("userId")
+        @OneToOne
+        val userEntity: UserEntity,
+
         val view: Boolean,
         val viewPrereleases: Boolean,
         val edit: Boolean

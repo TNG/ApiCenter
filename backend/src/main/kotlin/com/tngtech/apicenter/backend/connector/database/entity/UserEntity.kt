@@ -7,7 +7,7 @@ import javax.persistence.Id
 
 @Entity
 data class UserEntity(
-    @Id @GeneratedValue val id: UUID,
+    @Id val id: UUID,
     val username: String,
     val email: String,
     val origin: String,
