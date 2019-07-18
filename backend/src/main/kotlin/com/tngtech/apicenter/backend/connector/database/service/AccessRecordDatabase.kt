@@ -8,6 +8,7 @@ import com.tngtech.apicenter.backend.connector.database.repository.ServiceReposi
 import com.tngtech.apicenter.backend.connector.database.repository.UserRepository
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.exceptions.NotEnoughEditorsException
 import com.tngtech.apicenter.backend.domain.service.PermissionsManager
 
 @org.springframework.stereotype.Service
@@ -49,6 +50,10 @@ class AccessRecordDatabase constructor(
             val view = if (permission == PermissionType.VIEW) false else entity.view
             val viewPrereleases = if (permission == PermissionType.VIEWPRERELEASE) false else entity.viewPrereleases
             val edit = if (permission == PermissionType.EDIT) false else entity.edit
+
+            if (edit && !accessRecordRepository.otherEditorsExist(serviceId.id, username)) {
+                throw NotEnoughEditorsException(serviceId.id)
+            }
             accessRecordRepository.save(AccessRecordEntity(key, entity.serviceEntity, entity.userEntity, view, viewPrereleases, edit))
         }
     }
