@@ -12,7 +12,9 @@ INSERT INTO SPECIFICATION_ENTITY VALUES('2.0.0', '{"info": {"title": "Spec2",  "
 INSERT INTO SPECIFICATION_ENTITY VALUES('1.0.0','{"info": {"title": "Spec3",  "version": "1.0.0", "description": "Description"}}', '2018-01-01 11:00:00.000', 'Description', '', '0', '0', 'Spec3', 'af0502a2-7410-40e4-90fd-3504f67de1ee');
 INSERT INTO SPECIFICATION_ENTITY VALUES('1.1.0','{"info": {"title": "Spec3",  "version": "1.1.0", "description": "Description"}}', '2018-01-01 10:00:00.000', 'Description', '', '0', '0', 'Spec3', 'af0502a2-7410-40e4-90fd-3504f67de1ee');
 
-INSERT INTO ACCESS_RECORD_ENTITY VALUES('user', TRUE, TRUE, TRUE, 'b6b06513-d259-4faf-b34b-a216b3daad6a');
-INSERT INTO ACCESS_RECORD_ENTITY VALUES('user', TRUE, TRUE, TRUE, 'f67cb0a6-c31b-424b-bfbb-ab0e163955ca');
-INSERT INTO ACCESS_RECORD_ENTITY VALUES('user', TRUE, TRUE, TRUE, 'af0502a2-7410-40e4-90fd-3504f67de1ee');
-INSERT INTO ACCESS_RECORD_ENTITY VALUES('user', TRUE, TRUE, TRUE, 'unique-identifier'                   );
+INSERT INTO USER_ENTITY VALUES ('user', 'hello@me.com');
+
+INSERT INTO ACCESS_RECORD_ENTITY VALUES(TRUE, TRUE, TRUE, 'b6b06513-d259-4faf-b34b-a216b3daad6a', 'user');
+INSERT INTO ACCESS_RECORD_ENTITY VALUES(TRUE, TRUE, TRUE, 'f67cb0a6-c31b-424b-bfbb-ab0e163955ca', 'user');
+INSERT INTO ACCESS_RECORD_ENTITY VALUES(TRUE, TRUE, TRUE, 'af0502a2-7410-40e4-90fd-3504f67de1ee', 'user');
+INSERT INTO ACCESS_RECORD_ENTITY VALUES(TRUE, TRUE, TRUE, 'unique-identifier'                   , 'user');
