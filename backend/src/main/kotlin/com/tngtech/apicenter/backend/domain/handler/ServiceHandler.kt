@@ -102,23 +102,23 @@ class ServiceHandler @Autowired constructor(
 
     fun search(searchString: String): List<Service> = this.filterByViewPermission(servicePersistor.search(searchString))
 
-    fun changePermission(serviceId: ServiceId, userId: UUID, addingPermission: Boolean, permission: PermissionType) {
+    fun changePermission(serviceId: ServiceId, username: String, addingPermission: Boolean, permission: PermissionType) {
         if (canEdit(serviceId)) {
             if (addingPermission) {
-                permissionsManager.addPermission(userId, serviceId, permission)
+                permissionsManager.addPermission(username, serviceId, permission)
             } else {
-                permissionsManager.removePermission(userId, serviceId, permission)
+                permissionsManager.removePermission(username, serviceId, permission)
             }
         } else {
             PermissionDeniedException(serviceId.id)
         }
     }
 
-    fun getPermissions(serviceId: ServiceId, userId: UUID): Permissions =
+    fun getPermissions(serviceId: ServiceId, username: String): Permissions =
         if (canEdit(serviceId)) {
-            val view = permissionsManager.hasPermission(userId, serviceId, PermissionType.VIEW)
-            val viewPrereleases = permissionsManager.hasPermission(userId, serviceId, PermissionType.VIEWPRERELEASE)
-            val edit = permissionsManager.hasPermission(userId, serviceId, PermissionType.EDIT)
+            val view = permissionsManager.hasPermission(username, serviceId, PermissionType.VIEW)
+            val viewPrereleases = permissionsManager.hasPermission(username, serviceId, PermissionType.VIEWPRERELEASE)
+            val edit = permissionsManager.hasPermission(username, serviceId, PermissionType.EDIT)
             Permissions(view, viewPrereleases, edit)
         } else {
             Permissions(false, false, false)

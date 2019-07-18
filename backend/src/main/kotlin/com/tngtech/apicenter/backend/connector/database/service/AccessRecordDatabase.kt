@@ -9,7 +9,6 @@ import com.tngtech.apicenter.backend.connector.database.repository.UserRepositor
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.service.PermissionsManager
-import java.util.*
 
 @org.springframework.stereotype.Service
 class AccessRecordDatabase constructor(
@@ -17,10 +16,10 @@ class AccessRecordDatabase constructor(
         private val serviceRepository: ServiceRepository,
         private val userRepository: UserRepository
 ): PermissionsManager {
-    override fun addPermission(userId: UUID, serviceId: ServiceId, permission: PermissionType) {
-        val key = AccessRecordId(serviceId.id, userId)
+    override fun addPermission(username: String, serviceId: ServiceId, permission: PermissionType) {
+        val key = AccessRecordId(serviceId.id, username)
         val service = serviceRepository.findById(serviceId.id)
-        val user = userRepository.findById(userId)
+        val user = userRepository.findById(username)
 
         service.ifPresent { serviceEntity ->
 
@@ -42,8 +41,8 @@ class AccessRecordDatabase constructor(
         }
     }
 
-    override fun removePermission(userId: UUID, serviceId: ServiceId, permission: PermissionType) {
-        val key = AccessRecordId(serviceId.id, userId)
+    override fun removePermission(username: String, serviceId: ServiceId, permission: PermissionType) {
+        val key = AccessRecordId(serviceId.id, username)
         val record = accessRecordRepository.findById(key)
 
         record.ifPresent { entity ->
@@ -54,8 +53,8 @@ class AccessRecordDatabase constructor(
         }
     }
 
-    override fun hasPermission(userId: UUID, serviceId: ServiceId, permission: PermissionType): Boolean {
-        val key = AccessRecordId(serviceId.id, userId)
+    override fun hasPermission(username: String, serviceId: ServiceId, permission: PermissionType): Boolean {
+        val key = AccessRecordId(serviceId.id, username)
         val record = accessRecordRepository.findById(key)
         return record.map { entity ->
             when (permission) {
@@ -66,8 +65,8 @@ class AccessRecordDatabase constructor(
         }.orElse(false)
     }
 
-    override fun clearPermissions(userId: UUID, serviceId: ServiceId) {
-        val key = AccessRecordId(serviceId.id, userId)
+    override fun clearPermissions(username: String, serviceId: ServiceId) {
+        val key = AccessRecordId(serviceId.id, username)
         accessRecordRepository.deleteById(key)
     }
 }

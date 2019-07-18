@@ -10,6 +10,6 @@ data class AccessRecordId(
         @Column(nullable = false, name = "service_id")
         val serviceId: String,
 
-        @Column(nullable = false, name = "user_id")
-        val userId: UUID
+        @Column(nullable = false, name = "username")
+        val username: String
 ) : Serializable

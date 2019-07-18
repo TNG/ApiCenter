@@ -7,8 +7,6 @@ import javax.persistence.Id
 
 @Entity
 data class UserEntity(
-    @Id val id: UUID,
-    val username: String,
-    val email: String,
-    val origin: String,
-    val externalId: String)
+    @Id val username: String,
+    val email: String
+)

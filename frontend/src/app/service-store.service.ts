@@ -54,7 +54,7 @@ export class ServiceStore {
   }
 
   public changePermissionsForService(serviceId: string,
-                                     userId: string,
+                                     username: string,
                                      permissions: Permissions
   ): Observable<Service> {
     const params = new HttpParams()
@@ -62,14 +62,14 @@ export class ServiceStore {
       .set('viewPrereleases', String(permissions.viewPrereleases))
       .set('edit', String(permissions.edit));
 
-    return this.http.put<Service>(this.urlRoot + '/' + serviceId + '/permissions/' + userId, {}, {params})
+    return this.http.put<Service>(this.urlRoot + '/' + serviceId + '/permissions/' + username, {}, {params})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
   public getPermissionsForService(serviceId: string,
-                                  userId: string,
+                                  username: string,
   ): Observable<Permissions> {
-    return this.http.get<Permissions>(this.urlRoot + '/' + serviceId + '/permissions/' + userId)
+    return this.http.get<Permissions>(this.urlRoot + '/' + serviceId + '/permissions/' + username)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 }

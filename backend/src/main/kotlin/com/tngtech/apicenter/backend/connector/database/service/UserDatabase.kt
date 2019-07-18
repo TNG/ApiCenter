@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.database.service
 
+import com.tngtech.apicenter.backend.connector.database.entity.UserEntity
 import com.tngtech.apicenter.backend.connector.database.mapper.UserEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.UserRepository
 import com.tngtech.apicenter.backend.domain.entity.User
@@ -18,9 +19,9 @@ class UserDatabase constructor(
         userRepository.save(userEntityMapper.fromDomain(user))
     }
 
-    override fun findByOrigin(origin: String, externalId: String) =
-        userRepository.findByOriginAndExternalId(origin, externalId)
+    override fun findById(username: String): User? =
+            userRepository.findById(username).orElse(null)?.let { spec -> userEntityMapper.toDomain(spec) }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    override fun exists(origin: String, externalId: String) = userRepository.checkExistenceByOrigin(origin, externalId)
+    override fun existsById(username: String) = userRepository.existsByUsername(username)
 }

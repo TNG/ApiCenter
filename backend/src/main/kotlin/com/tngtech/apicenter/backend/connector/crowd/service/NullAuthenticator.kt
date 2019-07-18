@@ -11,5 +11,5 @@ import java.util.UUID
 class NullAuthenticator : ExternalAuthenticator {
 
     override fun authenticate(username: String, password: String): User =
-            User(UUID.randomUUID(), username, "hello@me.com", "nullAuth", username)
+            User(username, "hello@me.com")
 }

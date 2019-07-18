@@ -26,13 +26,13 @@ class JwtAuthorizationFilter(authManager: AuthenticationManager, private val jwt
         }
 
         try {
-            val userId = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
+            val username = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
                     .build()
                     .verify(header.replace("Bearer ", ""))
                     .subject
 
             SecurityContextHolder.getContext().authentication =
-                    if (userId != null) JwtAuthenticationToken(UUID.fromString(userId), header) else null
+                    if (username != null) JwtAuthenticationToken(username, header) else null
         } catch (exception: SignatureVerificationException) {
             // Token's signature invalid when verified using server-side secret and HMAC512"
         }

@@ -8,11 +8,11 @@ data class AccessRecordEntity(
         @EmbeddedId @IndexedEmbedded val accessRecordId: AccessRecordId,
 
         @MapsId("serviceId")
-        @OneToOne
+        @ManyToOne
         val serviceEntity: ServiceEntity,
 
-        @MapsId("userId")
-        @OneToOne
+        @MapsId("username")
+        @ManyToOne
         val userEntity: UserEntity,
 
         val view: Boolean,

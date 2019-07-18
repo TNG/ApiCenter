@@ -23,7 +23,7 @@ export class AuthenticationService {
 
     try {
       const decoded = jwt_decode(token);
-      return decoded.username === this.getUsername();
+      return decoded.sub === this.getUsername();
     } catch (exception) {
       // jwt-decode throws InvalidTokenError if token incorrectly formatted
       return false;

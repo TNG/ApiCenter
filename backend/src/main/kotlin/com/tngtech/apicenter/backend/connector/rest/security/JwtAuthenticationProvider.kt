@@ -18,20 +18,20 @@ class JwtAuthenticationProvider : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication? {
         val token = (authentication as JwtAuthenticationToken).token
 
-        val userId = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
+        val username = JWT.require(Algorithm.HMAC512(jwtSecuritySecret.toByteArray()))
             .build()
             .verify(token)
             .subject
 
-        return if (userId != null) JwtAuthenticationToken(UUID.fromString(userId), token) else null
+        return if (username != null) JwtAuthenticationToken(username, token) else null
     }
 
-    fun getCurrentUserId(): UUID =
+    fun getCurrentUserId(): String =
             try {
-                (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).userId
+                (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).username
             } catch (exception: ClassCastException) {
                 // Thrown when running integration tests
-                UUID.randomUUID()
+                "user"
             }
 
     override fun supports(authentication: Class<*>?) = true

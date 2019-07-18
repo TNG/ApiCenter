@@ -5,8 +5,8 @@ import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import java.util.*
 
 interface PermissionsManager {
-    fun addPermission(userId: UUID, serviceId: ServiceId, permission: PermissionType)
-    fun removePermission(userId: UUID, serviceId: ServiceId, permission: PermissionType)
-    fun hasPermission(userId: UUID, serviceId: ServiceId, permission: PermissionType): Boolean
-    fun clearPermissions(userId: UUID, serviceId: ServiceId)
+    fun addPermission(username: String, serviceId: ServiceId, permission: PermissionType)
+    fun removePermission(username: String, serviceId: ServiceId, permission: PermissionType)
+    fun hasPermission(username: String, serviceId: ServiceId, permission: PermissionType): Boolean
+    fun clearPermissions(username: String, serviceId: ServiceId)
 }

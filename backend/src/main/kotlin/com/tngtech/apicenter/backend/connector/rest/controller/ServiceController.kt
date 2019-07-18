@@ -57,27 +57,25 @@ class ServiceController @Autowired constructor(
         return specificationFileDtoMapper.fromDomain(specification)
     }
 
-    @PutMapping("/{serviceId}/permissions/{userId}")
+    @PutMapping("/{serviceId}/permissions/{username}")
     fun changePermissionsForService(@PathVariable serviceId: String,
-                                    @PathVariable userId: String,
+                                    @PathVariable username: String,
                                     @RequestParam(value = "view", defaultValue = "false") view: String,
                                     @RequestParam(value = "viewPrereleases", defaultValue = "false") viewPrereleases: String,
                                     @RequestParam(value = "edit", defaultValue = "false") edit: String
     ) {
         val id = ServiceId(serviceId)
-        val uuid = UUID.fromString(userId)
-        serviceHandler.changePermission(id, uuid, view.toBoolean(), PermissionType.VIEW)
-        serviceHandler.changePermission(id, uuid, viewPrereleases.toBoolean(), PermissionType.VIEWPRERELEASE)
-        serviceHandler.changePermission(id, uuid, edit.toBoolean(), PermissionType.EDIT)
+        serviceHandler.changePermission(id, username, view.toBoolean(), PermissionType.VIEW)
+        serviceHandler.changePermission(id, username, viewPrereleases.toBoolean(), PermissionType.VIEWPRERELEASE)
+        serviceHandler.changePermission(id, username, edit.toBoolean(), PermissionType.EDIT)
     }
 
-    @GetMapping("/{serviceId}/permissions/{userId}")
+    @GetMapping("/{serviceId}/permissions/{username}")
     fun getPermissionsForService(@PathVariable serviceId: String,
-                                 @PathVariable userId: String
+                                 @PathVariable username: String
     ): PermissionsDto {
         val id = ServiceId(serviceId)
-        val uuid = UUID.fromString(userId)
-        val permissions = serviceHandler.getPermissions(id, uuid)
+        val permissions = serviceHandler.getPermissions(id, username)
         return PermissionsDto(permissions.view, permissions.viewPrereleases, permissions.edit)
     }
 
