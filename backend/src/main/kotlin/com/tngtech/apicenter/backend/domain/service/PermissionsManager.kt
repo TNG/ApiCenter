@@ -8,5 +8,5 @@ interface PermissionsManager {
     fun addPermission(username: String, serviceId: ServiceId, permission: PermissionType)
     fun removePermission(username: String, serviceId: ServiceId, permission: PermissionType)
     fun hasPermission(username: String, serviceId: ServiceId, permission: PermissionType): Boolean
-    fun clearPermissions(username: String, serviceId: ServiceId)
+    fun clearPermissions(serviceId: ServiceId)
 }

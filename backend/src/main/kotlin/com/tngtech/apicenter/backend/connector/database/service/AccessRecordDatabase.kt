@@ -70,8 +70,7 @@ class AccessRecordDatabase constructor(
         }.orElse(false)
     }
 
-    override fun clearPermissions(username: String, serviceId: ServiceId) {
-        val key = AccessRecordId(serviceId.id, username)
-        accessRecordRepository.deleteById(key)
+    override fun clearPermissions(serviceId: ServiceId) {
+        accessRecordRepository.clearPermissions(serviceId.id)
     }
 }
