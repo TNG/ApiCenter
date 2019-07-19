@@ -6,14 +6,12 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import org.springframework.transaction.annotation.Transactional
 
 interface AccessRecordRepository: CrudRepository<AccessRecordEntity, AccessRecordId> {
     @Query("select count(a)>0 from AccessRecordEntity a where a.edit = TRUE and a.accessRecordId.serviceId = :serviceId and a.accessRecordId.username <> :username")
     fun otherEditorsExist(@Param("serviceId") serviceId: String,
                           @Param("username") userToDowngrade: String): Boolean
 
-    @Transactional
     @Modifying
     @Query("delete from AccessRecordEntity a where a.accessRecordId.serviceId = :serviceId")
     fun clearPermissions(@Param("serviceId") serviceId: String)

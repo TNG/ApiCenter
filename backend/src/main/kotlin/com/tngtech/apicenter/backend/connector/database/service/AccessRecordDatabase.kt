@@ -10,6 +10,7 @@ import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.exceptions.NotEnoughEditorsException
 import com.tngtech.apicenter.backend.domain.service.PermissionsManager
+import org.springframework.transaction.annotation.Transactional
 
 @org.springframework.stereotype.Service
 class AccessRecordDatabase constructor(
@@ -70,6 +71,7 @@ class AccessRecordDatabase constructor(
         }.orElse(false)
     }
 
+    @Transactional
     override fun clearPermissions(serviceId: ServiceId) {
         accessRecordRepository.clearPermissions(serviceId.id)
     }
