@@ -12,11 +12,11 @@ import org.junit.Test
 
 internal class SpecificationControllerUnitTest {
 
-    private val specificationPersistor: SpecificationPersistor = mock()
+    private val specificationHandler: com.tngtech.apicenter.backend.domain.handler.SpecificationHandler = mock()
 
     private val specificationFileDtoMapper: SpecificationFileDtoMapper = mock()
 
-    private val specificationController = SpecificationController(specificationPersistor, specificationFileDtoMapper)
+    private val specificationController = SpecificationController(specificationHandler, specificationFileDtoMapper)
 
     private val serviceId = "7de07d27-eedb-4290-881a-6a402a81dd0f"
 
@@ -28,7 +28,7 @@ internal class SpecificationControllerUnitTest {
 
     @Test
     fun findOne_shouldReturnSpecificationDto() {
-        given(specificationPersistor.findOne(ServiceId(serviceId), "1.0")).willReturn(specification)
+        given(specificationHandler.findOne(ServiceId(serviceId), "1.0")).willReturn(specification)
         given(specificationFileDtoMapper.fromDomain(specification)).willReturn(specificationDto)
 
         assertThat(specificationController.findSpecification(serviceId, "1.0")).isEqualTo(specificationDto)
@@ -38,7 +38,7 @@ internal class SpecificationControllerUnitTest {
     fun delete_shouldDeleteSpecification() {
         specificationController.deleteSpecification(serviceId, "1.0")
 
-        verify(specificationPersistor).delete(ServiceId(serviceId), "1.0")
+        verify(specificationHandler).delete(ServiceId(serviceId), "1.0")
     }
 
 }
