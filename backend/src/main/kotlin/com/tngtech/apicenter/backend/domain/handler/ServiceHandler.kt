@@ -134,11 +134,10 @@ class ServiceHandler @Autowired constructor(
 
     private fun filterByViewPermission(services: List<Service>): List<Service> {
         val userId = jwtAuthenticationProvider.getCurrentUserId()
-
+        // The paged query result only retrieves Services for which the user has at least VIEW permission
         return services
-            .filter { service -> permissionsManager.hasPermission(userId, service.id, PermissionType.VIEW) }
             .map { service ->
-                if (permissionsManager.hasPermission(userId, service.id, PermissionType.VIEWPRERELEASE)) {
+                if (!permissionsManager.hasPermission(userId, service.id, PermissionType.VIEWPRERELEASE)) {
                     service.removePrereleases()
                 } else {
                     service
