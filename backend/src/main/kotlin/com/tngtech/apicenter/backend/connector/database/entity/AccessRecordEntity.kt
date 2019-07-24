@@ -4,7 +4,7 @@ import org.hibernate.search.annotations.IndexedEmbedded
 import javax.persistence.*
 
 @Entity
-data class AccessRecordEntity(
+class AccessRecordEntity(
         @EmbeddedId @IndexedEmbedded val accessRecordId: AccessRecordId,
 
         @ManyToOne
@@ -20,4 +20,9 @@ data class AccessRecordEntity(
         val view: Boolean,
         val viewPrereleases: Boolean,
         val edit: Boolean
-)
+) {
+        override fun hashCode(): Int {
+            // Prevent the recursive calls on the ServiceEntity <-> AccessRecordEntity relationship from causing a stack overflow
+                return 0
+        }
+}
