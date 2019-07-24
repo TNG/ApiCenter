@@ -13,7 +13,6 @@ import com.tngtech.apicenter.backend.domain.service.PermissionsManager
 import com.tngtech.apicenter.backend.domain.service.ServicePersistor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
 class ServiceHandler @Autowired constructor(
@@ -36,7 +35,7 @@ class ServiceHandler @Autowired constructor(
         } else if (canEdit(serviceId)) {
             updateExistingService(service, specification)
         } else {
-            PermissionDeniedException(serviceId.id)
+            throw PermissionDeniedException(serviceId.id)
         }
     }
 
@@ -92,11 +91,8 @@ class ServiceHandler @Autowired constructor(
     fun delete(serviceId: ServiceId) {
         if (canEdit(serviceId)) {
             servicePersistor.delete(serviceId)
-
-            val userId = jwtAuthenticationProvider.getCurrentUserId()
-            permissionsManager.clearPermissions(userId, serviceId)
         } else {
-            PermissionDeniedException(serviceId.id)
+            throw PermissionDeniedException(serviceId.id)
         }
     }
 
@@ -110,7 +106,7 @@ class ServiceHandler @Autowired constructor(
                 permissionsManager.removePermission(username, serviceId, permission)
             }
         } else {
-            PermissionDeniedException(serviceId.id)
+            throw PermissionDeniedException(serviceId.id)
         }
     }
 
@@ -132,7 +128,7 @@ class ServiceHandler @Autowired constructor(
                 this.addNewSpecification(newSpecification, service.id, service.remoteAddress)
             }
         } else {
-            PermissionDeniedException(serviceId.id)
+            throw PermissionDeniedException(serviceId.id)
         }
     }
 

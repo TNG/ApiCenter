@@ -15,5 +15,8 @@ data class ServiceEntity(
         mappedBy = "service",
         cascade = [CascadeType.ALL]
     ) @OrderBy("created DESC") val specifications: List<SpecificationEntity>,
-        val remoteAddress: String?
+        val remoteAddress: String?,
+
+        @OneToMany(mappedBy = "serviceEntity", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+        val accessRecords: Set<AccessRecordEntity>
 )

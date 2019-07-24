@@ -7,12 +7,14 @@ import javax.persistence.*
 data class AccessRecordEntity(
         @EmbeddedId @IndexedEmbedded val accessRecordId: AccessRecordId,
 
-        @MapsId("serviceId")
         @ManyToOne
+        @MapsId("serviceId")
+        @JoinColumn(name = "id")
         val serviceEntity: ServiceEntity,
 
-        @MapsId("username")
         @ManyToOne
+        @MapsId(value = "username")
+        @JoinColumn(name = "username")
         val userEntity: UserEntity,
 
         val view: Boolean,
