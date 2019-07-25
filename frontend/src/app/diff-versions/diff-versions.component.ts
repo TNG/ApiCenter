@@ -43,7 +43,15 @@ export class DiffVersionsComponent implements OnInit {
   private async getService(serviceId: string) {
     this.serviceStore.getService(serviceId).subscribe(
      (element: Service) => {
-       this.service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress, element.canEdit);
+       this.service = new Service(
+         element.id,
+         element.title,
+         element.description,
+         element.specifications,
+         element.remoteAddress,
+         element.canEdit
+       );
+
        this.service.sortVersionsSemantically();
        this.searchComplete = true;
      },
