@@ -15,5 +15,6 @@ data class SpecificationFileDto @JsonCreator constructor(
         val fileContent: String?,
         val fileUrl: String? = "",
         val metadata: SpecificationFileMetadata? = null,
-        val id: String? = null
+        val id: String? = null,
+        val isPublic: Boolean
 )

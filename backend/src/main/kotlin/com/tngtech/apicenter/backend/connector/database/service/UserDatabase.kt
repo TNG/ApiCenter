@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.database.service
 
+import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.connector.database.entity.UserEntity
 import com.tngtech.apicenter.backend.connector.database.mapper.UserEntityMapper
 import com.tngtech.apicenter.backend.connector.database.repository.UserRepository
@@ -12,8 +13,13 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserDatabase constructor(
     private val userRepository: UserRepository,
-    private val userEntityMapper: UserEntityMapper
+    private val userEntityMapper: UserEntityMapper,
+    private val apiCenterProperties: ApiCenterProperties
 ) : UserPersistor {
+
+    init {
+        userRepository.save(UserEntity(apiCenterProperties.getAnonymousUsername(), ""))
+    }
 
     override fun save(user: User) {
         userRepository.save(userEntityMapper.fromDomain(user))

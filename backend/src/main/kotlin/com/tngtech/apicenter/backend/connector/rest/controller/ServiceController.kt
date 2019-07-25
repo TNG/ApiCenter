@@ -34,7 +34,7 @@ class ServiceController @Autowired constructor(
     fun uploadSpecifications(@RequestBody specificationFileDtos: List<SpecificationFileDto>): List<Specification> {
         return specificationFileDtos.map { dto ->
             val specification = specificationFileDtoMapper.toDomain(dto)
-            serviceHandler.addNewSpecification(specification, specification.metadata.id, dto.fileUrl)
+            serviceHandler.addNewSpecification(specification, specification.metadata.id, dto.fileUrl, dto.isPublic)
             specification
         }
     }
@@ -48,11 +48,12 @@ class ServiceController @Autowired constructor(
                 specificationFileDto.fileContent,
                 specificationFileDto.fileUrl,
                 specificationFileDto.metadata,
-                specificationId
+                specificationId,
+                specificationFileDto.isPublic
             )
         )
 
-        serviceHandler.addNewSpecification(specification, ServiceId(specificationId), specificationFileDto.fileUrl)
+        serviceHandler.addNewSpecification(specification, ServiceId(specificationId), specificationFileDto.fileUrl, specificationFileDto.isPublic)
 
         return specificationFileDtoMapper.fromDomain(specification)
     }

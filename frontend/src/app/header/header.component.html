@@ -18,5 +18,8 @@
         <button class="dropdown-item" type="button" (click)="logout()">Logout</button>
       </div>
     </div>
+    <div *ngIf="!username">
+      <button type="button" class="btn btn-secondary" routerLink="/login">Login</button>
+    </div>
   </div>
 </nav>

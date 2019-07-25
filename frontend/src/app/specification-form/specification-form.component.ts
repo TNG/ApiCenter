@@ -42,6 +42,7 @@ export class SpecificationFormComponent implements OnInit {
   remoteFileUrl: string;
   additionalFields = {title: '', version: '', description: '', endpointUrl: ''};
   id?: string;
+  isPublic: boolean;
   showAdditionalMetadataFields = false;
   objectKeys = Object.keys;
 
@@ -130,7 +131,7 @@ export class SpecificationFormComponent implements OnInit {
         const metadata: SpecificationFileMetadata = me.showAdditionalMetadataFields ?
           {...me.additionalFields, language: ApiLanguage.GraphQL}
           : null;
-        const file = new SpecificationFile(fileContent, null, me.id, metadata);
+        const file = new SpecificationFile(fileContent, null, me.isPublic, me.id, metadata);
         me.createSpecifications([file]);
       };
 
@@ -140,7 +141,7 @@ export class SpecificationFormComponent implements OnInit {
 
   private handleRemoteFile() {
     this.createSpecifications([
-      new SpecificationFile(null, this.remoteFileUrl, this.id, null)
+      new SpecificationFile(null, this.remoteFileUrl, this.isPublic, this.id)
     ]);
   }
 
@@ -165,7 +166,7 @@ export class SpecificationFormComponent implements OnInit {
 
         temporaryFileReader.onload = () => {
           const text = temporaryFileReader.result.toString();
-          const dto = new SpecificationFile(text, null, this.id, null);
+          const dto = new SpecificationFile(text, null, this.isPublic, this.id);
           resolve(dto);
         };
 

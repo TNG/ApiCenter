@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.domain.handler
 
+import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.domain.entity.ReleaseType
 import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
@@ -19,10 +20,11 @@ class ServiceHandler @Autowired constructor(
         private val servicePersistor: ServicePersistor,
         private val remoteServiceUpdater: RemoteServiceUpdater,
         private val jwtAuthenticationProvider: JwtAuthenticationProvider,
-        private val permissionsManager: PermissionsManager
+        private val permissionsManager: PermissionsManager,
+        private val apiCenterProperties: ApiCenterProperties
 ) {
 
-    fun addNewSpecification(specification: Specification, serviceId: ServiceId, fileUrl: String?) {
+    fun addNewSpecification(specification: Specification, serviceId: ServiceId, fileUrl: String?, isPublic: Boolean) {
         val service: Service? = servicePersistor.findOne(serviceId)
 
         if (service == null) {
@@ -36,6 +38,12 @@ class ServiceHandler @Autowired constructor(
             updateExistingService(service, specification)
         } else {
             throw PermissionDeniedException(serviceId.id)
+        }
+
+        if (isPublic) {
+            permissionsManager.addPermission(apiCenterProperties.getAnonymousUsername(), serviceId, PermissionType.VIEW)
+        } else {
+            permissionsManager.removePermission(apiCenterProperties.getAnonymousUsername(), serviceId, PermissionType.VIEW)
         }
     }
 
@@ -76,7 +84,7 @@ class ServiceHandler @Autowired constructor(
 
     fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
         val userId = jwtAuthenticationProvider.getCurrentUserId()
-        val page = servicePersistor.findAll(pageNumber, pageSize, userId)
+        val page = servicePersistor.findAll(pageNumber, pageSize, userId, apiCenterProperties.getAnonymousUsername())
         return ResultPage(this.filterByViewPermission(page.content), page.last)
     }
 
@@ -125,7 +133,8 @@ class ServiceHandler @Autowired constructor(
             this.findOne(serviceId)?.let {
                service ->
                 val newSpecification = remoteServiceUpdater.synchronize(service)
-                this.addNewSpecification(newSpecification, service.id, service.remoteAddress)
+                val isPublic = permissionsManager.hasPermission(apiCenterProperties.getAnonymousUsername(), serviceId, PermissionType.VIEW)
+                this.addNewSpecification(newSpecification, service.id, service.remoteAddress, isPublic)
             }
         } else {
             throw PermissionDeniedException(serviceId.id)

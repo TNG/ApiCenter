@@ -7,7 +7,7 @@ import java.util.*
 
 interface ServicePersistor {
     fun save(service: Service)
-    fun findAll(pageNumber: Int, pageSize: Int, username: String): ResultPage<Service>
+    fun findAll(pageNumber: Int, pageSize: Int, username: String, anonymousUsername: String): ResultPage<Service>
     fun findOne(id: ServiceId): Service?
     fun delete(id: ServiceId)
     fun exists(id: ServiceId): Boolean

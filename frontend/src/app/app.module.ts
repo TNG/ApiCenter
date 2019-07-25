@@ -29,14 +29,14 @@ import {DiffVersionsComponent} from './diff-versions/diff-versions.component';
 import {PermissionsFormComponent} from './permissions-form/permissions-form.component';
 
 const appRoutes: Routes = [
-  {path: '', component: SpecificationOverviewComponent, canActivate: [AuthenticationGuard]},
+  {path: '', component: SpecificationOverviewComponent},
   {path: 'specifications/:serviceId/:version', component: SpecificationViewComponent, canActivate: [AuthenticationGuard]},
   {path: 'diff/:serviceId', component: DiffVersionsComponent, canActivate: [AuthenticationGuard]},
   {path: 'edit-permissions/:serviceId', component: PermissionsFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-specifications', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
   {path: 'edit-specifications/:serviceId', component: SpecificationFormComponent, canActivate: [AuthenticationGuard]},
-  {path: 'search', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
-  {path: 'search/:searchString', component: SpecificationSearchDetailComponent, canActivate: [AuthenticationGuard]},
+  {path: 'search', component: SpecificationSearchDetailComponent},
+  {path: 'search/:searchString', component: SpecificationSearchDetailComponent},
   {path: 'login', component: LoginComponent}
 ];
 
