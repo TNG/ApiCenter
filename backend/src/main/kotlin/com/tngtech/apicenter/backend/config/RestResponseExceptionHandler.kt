@@ -76,5 +76,9 @@ class RestResponseExceptionHandler {
     @ExceptionHandler(NotEnoughEditorsException::class)
     fun handleNotEnoughEditors(exception: NotEnoughEditorsException) =
             makeResponseEntity("A service needs at least one associated user with edit permission", HttpStatus.FORBIDDEN)
+
+    @ExceptionHandler(UserDoesntExistException::class)
+    fun handleUserDoesntExist(exception: UserDoesntExistException) =
+            makeResponseEntity("User ${exception.username} doesn't exist", HttpStatus.BAD_REQUEST)
 }
 

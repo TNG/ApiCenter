@@ -11,3 +11,4 @@ class RemoteFileConnectionRefusedException(val location: String): RuntimeExcepti
 class BadUrlException(val location: String): RuntimeException()
 class PermissionDeniedException(val serviceId: String): RuntimeException()
 class NotEnoughEditorsException(val serviceId: String): RuntimeException()
+class UserDoesntExistException(val username: String): RuntimeException()

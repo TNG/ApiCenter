@@ -10,6 +10,7 @@ import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.domain.entity.Role
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.exceptions.NotEnoughEditorsException
+import com.tngtech.apicenter.backend.domain.exceptions.UserDoesntExistException
 import com.tngtech.apicenter.backend.domain.service.PermissionsManager
 import java.util.*
 
@@ -26,8 +27,7 @@ class AccessRecordDatabase constructor(
 
         service.ifPresent { serviceEntity ->
 
-            user.ifPresent { userEntity: UserEntity ->
-
+            if (user.isPresent) {
                 val record = accessRecordRepository.findById(key)
 
                 record.ifPresent { entity: AccessRecordEntity ->
@@ -38,7 +38,9 @@ class AccessRecordDatabase constructor(
                     }
                 }
 
-                accessRecordRepository.save(AccessRecordEntity(key, serviceEntity, userEntity, role))
+                accessRecordRepository.save(AccessRecordEntity(key, serviceEntity, user.get(), role))
+            } else {
+                throw UserDoesntExistException(username)
             }
         }
     }
