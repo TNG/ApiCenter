@@ -28,12 +28,12 @@ describe('ServiceStore', () => {
   ];
 
   const services = [
-    new Service('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', 'Description', specifications1, null),
-    new Service('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', 'Description', specifications2, 'http://address.com/test.json')
+    new Service('d2317ad4-b6b4-4bc5-a3cc-7eed72eeedb6', 'API 1', 'Description', specifications1, null, true),
+    new Service('14dcb74e-f275-42fa-8f95-b26b3a4702c8', 'API 2', 'Description', specifications2, 'http://address.com/test.json', true)
   ];
 
   const swagger_content = '{\'swagger\': \'2.0\', \'info\': {\'version\': \'1.0.0\',\'title\': \'Swagger Petstore\'}}';
-  const specificationFile = new SpecificationFile(swagger_content, null);
+  const specificationFile = new SpecificationFile(swagger_content, null, false);
 
   beforeEach(() => {
     serviceStore = new ServiceStore(httpClient);
