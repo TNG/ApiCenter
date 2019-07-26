@@ -44,7 +44,8 @@ internal class ServiceControllerUnitTest {
                 SWAGGER_SPECIFICATION,
                 null,
                 null,
-                UUID_STRING
+                UUID_STRING,
+                false
             )
 
         val specification = Specification(SWAGGER_SPECIFICATION, metadata)

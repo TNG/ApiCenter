@@ -6,7 +6,6 @@ import com.nhaarman.mockitokotlin2.verify
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
 import com.tngtech.apicenter.backend.domain.entity.*
-import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

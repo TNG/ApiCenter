@@ -5,7 +5,6 @@ import com.tngtech.apicenter.backend.connector.rest.service.SpecificationDataPar
 import com.tngtech.apicenter.backend.connector.rest.service.SpecificationFileDownloader
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
 import com.tngtech.apicenter.backend.domain.entity.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -41,7 +40,7 @@ class SpecificationFileDtoConverterTest {
 
     @Test
     fun convert_shouldReturnSpecification() {
-        val specificationFileDto = SpecificationFileDto(SWAGGER_SPECIFICATION, id = UUID_STRING)
+        val specificationFileDto = SpecificationFileDto(SWAGGER_SPECIFICATION, id = UUID_STRING, isPublic = false)
 
         given(specificationFileDownloader.getLocalOrRemoteFileContent(specificationFileDto)).willReturn(SWAGGER_SPECIFICATION)
         given(specificationDataParser.makeSpecificationMetadata(SWAGGER_SPECIFICATION, UUID_STRING)).willReturn(metadata)
@@ -58,7 +57,8 @@ class SpecificationFileDtoConverterTest {
     fun convert_shouldReturnRemoteSpecification() {
         val specificationFileDto = SpecificationFileDto(null,
             SWAGGER_REMOTE,
-            id = UUID_STRING
+            id = UUID_STRING,
+            isPublic = false
         )
 
         given(specificationFileDownloader.retrieveFile(SWAGGER_REMOTE)).willReturn(SWAGGER_SPECIFICATION)
