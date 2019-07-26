@@ -8,28 +8,20 @@
     <div class="col">
       <h4>Edit permissions</h4>
 
-      <input type="text" placeholder="Target user" [(ngModel)]="targetUser" (ngModelChange)="updateCheckboxes()"/>
+      <label for="username">Target user:</label>
+      <br>
+      <input type="text" id="username" [(ngModel)]="targetUser" (ngModelChange)="selectorOnChange()"/>
 
       <br>
       <br>
 
-      <div>
-        <input type="checkbox" id="view" name="view" [(ngModel)]="permissions.view">
-        &nbsp;
-        <label for="view">View</label>
-      </div>
-
-      <div>
-        <input type="checkbox" id="viewPrereleases" name="viewPrereleases" [(ngModel)]="permissions.viewPrereleases">
-        &nbsp;
-        <label for="viewPrereleases">View pre-releases</label>
-      </div>
-
-      <div>
-        <input type="checkbox" id="edit" name="edit" [(ngModel)]="permissions.edit">
-        &nbsp;
-        <label for="edit">Edit</label>
-      </div>
+      <label for="role">Role to assign:</label>
+      <br>
+      <select id="role" [(ngModel)]="role">
+        <option value="VIEWER">Viewer</option>
+        <option value="VIEWER_X">Viewer (including pre-release versions)</option>
+        <option value="EDITOR">Editor</option>
+      </select>
     </div>
   </div>
   <div class="row top-buffer">

@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {throwError} from 'rxjs';
-import {Permissions} from './models/permissions';
+import {Role} from './models/role';
 
 @Injectable()
 export class ServiceStore {
@@ -53,23 +53,20 @@ export class ServiceStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public changePermissionsForService(serviceId: string,
-                                     username: string,
-                                     permissions: Permissions
-  ): Observable<Service> {
-    const params = new HttpParams()
-      .set('view', String(permissions.view))
-      .set('viewPrereleases', String(permissions.viewPrereleases))
-      .set('edit', String(permissions.edit));
+  public assignRoleForService(serviceId: string,
+                              username: string,
+                              role: Role
+  ) {
+    const params = new HttpParams().set('role', String(role));
 
-    return this.http.put<Service>(this.urlRoot + '/' + serviceId + '/permissions/' + username, {}, {params})
+    return this.http.put(this.urlRoot + '/' + serviceId + '/permissions/' + username, {}, {params})
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public getPermissionsForService(serviceId: string,
-                                  username: string,
-  ): Observable<Permissions> {
-    return this.http.get<Permissions>(this.urlRoot + '/' + serviceId + '/permissions/' + username)
+  public getRoleForService(serviceId: string,
+                           username: string,
+  ): Observable<Role> {
+    return this.http.get<Role>(this.urlRoot + '/' + serviceId + '/permissions/' + username)
       .catch((error: any) => throwError(error || 'Server error'));
   }
 }

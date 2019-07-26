@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceStore} from '../service-store.service';
-import {Permissions} from '../models/permissions';
+import {Role} from '../models/role';
 
 @Component({
   selector: 'app-permissions-form',
@@ -12,11 +12,7 @@ export class PermissionsFormComponent implements OnInit {
   error: string;
   targetUser = '';
   serviceId: string;
-  permissions: Permissions = {
-    view: false,
-    viewPrereleases: false,
-    edit: false
-  };
+  role: Role;
 
   constructor(private router: Router,
               private serviceStore: ServiceStore,
@@ -30,7 +26,7 @@ export class PermissionsFormComponent implements OnInit {
   }
 
   public async changePermissionsForService() {
-    this.serviceStore.changePermissionsForService(this.serviceId, this.targetUser, this.permissions)
+    this.serviceStore.assignRoleForService(this.serviceId, this.targetUser, this.role)
       .subscribe(event => {
           this.router.navigateByUrl('/');
         },
@@ -38,11 +34,11 @@ export class PermissionsFormComponent implements OnInit {
       );
   }
 
-  public updateCheckboxes() {
+  public selectorOnChange() {
     if (this.serviceId) {
-      this.serviceStore.getPermissionsForService(this.serviceId, this.targetUser).subscribe(
-        (element: Permissions) => {
-          this.permissions = element;
+      this.serviceStore.getRoleForService(this.serviceId, this.targetUser).subscribe(
+        (element: Role) => {
+          this.role = element;
         },
         error => this.error = error.error.userMessage
       );
