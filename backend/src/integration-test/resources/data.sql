@@ -19,4 +19,4 @@ INSERT INTO ACCESS_RECORD_ENTITY VALUES('b6b06513-d259-4faf-b34b-a216b3daad6a', 
 INSERT INTO ACCESS_RECORD_ENTITY VALUES('f67cb0a6-c31b-424b-bfbb-ab0e163955ca', 'user', '2');
 INSERT INTO ACCESS_RECORD_ENTITY VALUES('af0502a2-7410-40e4-90fd-3504f67de1ee', 'user', '2');
 INSERT INTO ACCESS_RECORD_ENTITY VALUES('unique-identifier'                   , 'user', '2');
-INSERT INTO ACCESS_RECORD_ENTITY VALUES('unique-identifier-2'                   , 'user', '2');
+INSERT INTO ACCESS_RECORD_ENTITY VALUES('unique-identifier-2'                 , 'user', '2');

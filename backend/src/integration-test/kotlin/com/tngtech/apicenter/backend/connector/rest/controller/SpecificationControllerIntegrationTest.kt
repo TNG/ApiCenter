@@ -93,7 +93,7 @@ class SpecificationControllerIntegrationTest {
                 .andExpect(status().isNotFound)
 
         mockMvc.perform(
-                put("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/permissions/other?role=EDITOR")
+                put("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/permissions/other?role=VIEWER")
                         .with(userRequestPostProcessor)
                         .with(csrf())
         )
