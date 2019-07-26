@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 
 interface AccessRecordRepository: CrudRepository<AccessRecordEntity, AccessRecordId> {
-    @Query("select count(a)>0 from AccessRecordEntity a where a.edit = TRUE and a.accessRecordId.serviceId = :serviceId and a.accessRecordId.username <> :username")
+    @Query("select count(a)>0 from AccessRecordEntity a where a.role = 2 and a.accessRecordId.serviceId = :serviceId and a.accessRecordId.username <> :username")
     fun otherEditorsExist(@Param("serviceId") serviceId: String,
                           @Param("username") userToDowngrade: String): Boolean
 

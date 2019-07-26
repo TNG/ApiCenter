@@ -29,11 +29,8 @@ class ServiceHandler @Autowired constructor(
 
         if (service == null) {
             saveNewService(specification, serviceId, fileUrl)
-
             val userId = jwtAuthenticationProvider.getCurrentUserId()
-            permissionsManager.addPermission(userId, serviceId, PermissionType.VIEW)
-            permissionsManager.addPermission(userId, serviceId, PermissionType.VIEWPRERELEASE)
-            permissionsManager.addPermission(userId, serviceId, PermissionType.EDIT)
+            permissionsManager.assignRole(userId, serviceId, Role.EDITOR)
         } else if (canEdit(serviceId)) {
             updateExistingService(service, specification)
         } else {
@@ -41,9 +38,9 @@ class ServiceHandler @Autowired constructor(
         }
 
         if (isPublic) {
-            permissionsManager.addPermission(apiCenterProperties.getAnonymousUsername(), serviceId, PermissionType.VIEW)
+            permissionsManager.assignRole(apiCenterProperties.getAnonymousUsername(), serviceId, Role.VIEWER)
         } else {
-            permissionsManager.removePermission(apiCenterProperties.getAnonymousUsername(), serviceId, PermissionType.VIEW)
+            permissionsManager.removeRole(apiCenterProperties.getAnonymousUsername(), serviceId)
         }
     }
 
@@ -106,26 +103,19 @@ class ServiceHandler @Autowired constructor(
 
     fun search(searchString: String): List<Service> = this.filterByViewPermission(servicePersistor.search(searchString))
 
-    fun changePermission(serviceId: ServiceId, username: String, addingPermission: Boolean, permission: PermissionType) {
+    fun assignRole(serviceId: ServiceId, username: String, role: Role) {
         if (canEdit(serviceId)) {
-            if (addingPermission) {
-                permissionsManager.addPermission(username, serviceId, permission)
-            } else {
-                permissionsManager.removePermission(username, serviceId, permission)
-            }
+            permissionsManager.assignRole(username, serviceId, role)
         } else {
             throw PermissionDeniedException(serviceId.id)
         }
     }
 
-    fun getPermissions(serviceId: ServiceId, username: String): Permissions =
+    fun getRole(serviceId: ServiceId, username: String): Role? =
         if (canEdit(serviceId)) {
-            val view = permissionsManager.hasPermission(username, serviceId, PermissionType.VIEW)
-            val viewPrereleases = permissionsManager.hasPermission(username, serviceId, PermissionType.VIEWPRERELEASE)
-            val edit = permissionsManager.hasPermission(username, serviceId, PermissionType.EDIT)
-            Permissions(view, viewPrereleases, edit)
+            permissionsManager.getRole(username, serviceId)
         } else {
-            Permissions(false, false, false)
+            null
         }
 
     fun synchroniseRemoteService(serviceId: ServiceId) {

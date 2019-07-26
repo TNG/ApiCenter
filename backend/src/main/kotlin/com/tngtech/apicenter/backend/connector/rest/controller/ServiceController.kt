@@ -2,13 +2,12 @@ package com.tngtech.apicenter.backend.connector.rest.controller
 
 import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.connector.rest.dto.ResultPageDto
-import com.tngtech.apicenter.backend.connector.rest.dto.PermissionsDto
-import com.tngtech.apicenter.backend.domain.entity.PermissionType
 import com.tngtech.apicenter.backend.connector.rest.dto.ServiceDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.ServiceDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
+import com.tngtech.apicenter.backend.domain.entity.Role
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
@@ -18,7 +17,7 @@ import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.*
+import java.lang.IllegalArgumentException
 
 @RestController
 @RequestMapping("/api/v1/service")
@@ -59,25 +58,24 @@ class ServiceController @Autowired constructor(
     }
 
     @PutMapping("/{serviceId}/permissions/{username}")
-    fun changePermissionsForService(@PathVariable serviceId: String,
-                                    @PathVariable username: String,
-                                    @RequestParam(value = "view", defaultValue = "false") view: String,
-                                    @RequestParam(value = "viewPrereleases", defaultValue = "false") viewPrereleases: String,
-                                    @RequestParam(value = "edit", defaultValue = "false") edit: String
+    fun changeRoleForService(@PathVariable serviceId: String,
+                             @PathVariable username: String,
+                             @RequestParam(value = "role") role: String
     ) {
         val id = ServiceId(serviceId)
-        serviceHandler.changePermission(id, username, view.toBoolean(), PermissionType.VIEW)
-        serviceHandler.changePermission(id, username, viewPrereleases.toBoolean(), PermissionType.VIEWPRERELEASE)
-        serviceHandler.changePermission(id, username, edit.toBoolean(), PermissionType.EDIT)
+        try {
+            serviceHandler.assignRole(id, username, Role.valueOf(role))
+        } catch (exception: IllegalArgumentException) {
+            throw BadUrlException(role)
+        }
     }
 
     @GetMapping("/{serviceId}/permissions/{username}")
-    fun getPermissionsForService(@PathVariable serviceId: String,
-                                 @PathVariable username: String
-    ): PermissionsDto {
+    fun getRoleForService(@PathVariable serviceId: String,
+                          @PathVariable username: String
+    ): Role? {
         val id = ServiceId(serviceId)
-        val permissions = serviceHandler.getPermissions(id, username)
-        return PermissionsDto(permissions.view, permissions.viewPrereleases, permissions.edit)
+        return serviceHandler.getRole(id, username)
     }
 
     private fun getConsistentId(specificationFileDto: SpecificationFileDto, specificationIdFromPath: String): String {

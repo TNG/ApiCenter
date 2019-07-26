@@ -7,9 +7,11 @@ import com.tngtech.apicenter.backend.connector.database.repository.AccessRecordR
 import com.tngtech.apicenter.backend.connector.database.repository.ServiceRepository
 import com.tngtech.apicenter.backend.connector.database.repository.UserRepository
 import com.tngtech.apicenter.backend.domain.entity.PermissionType
+import com.tngtech.apicenter.backend.domain.entity.Role
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.exceptions.NotEnoughEditorsException
 import com.tngtech.apicenter.backend.domain.service.PermissionsManager
+import java.util.*
 
 @org.springframework.stereotype.Service
 class AccessRecordDatabase constructor(
@@ -17,7 +19,7 @@ class AccessRecordDatabase constructor(
         private val serviceRepository: ServiceRepository,
         private val userRepository: UserRepository
 ): PermissionsManager {
-    override fun addPermission(username: String, serviceId: ServiceId, permission: PermissionType) {
+    override fun assignRole(username: String, serviceId: ServiceId, role: Role) {
         val key = AccessRecordId(serviceId.id, username)
         val service = serviceRepository.findById(serviceId.id)
         val user = userRepository.findById(username)
@@ -28,33 +30,29 @@ class AccessRecordDatabase constructor(
 
                 val record = accessRecordRepository.findById(key)
 
-                val view: Boolean = (permission == PermissionType.VIEW) ||
-                        record.map { entity -> entity.view }.orElse(false)
+                record.ifPresent { entity: AccessRecordEntity ->
+                    val isEditor = entity.role == Role.EDITOR
+                    val willStayEditor = role == Role.EDITOR
+                    if (isEditor && !willStayEditor && !accessRecordRepository.otherEditorsExist(serviceId.id, username)) {
+                        throw NotEnoughEditorsException(serviceId.id)
+                    }
+                }
 
-                val viewPrereleases: Boolean = (permission == PermissionType.VIEWPRERELEASE) ||
-                        record.map { entity -> entity.viewPrereleases }.orElse(false)
-
-                val edit: Boolean = (permission == PermissionType.EDIT) ||
-                        record.map { entity -> entity.edit }.orElse(false)
-
-                accessRecordRepository.save(AccessRecordEntity(key, serviceEntity, userEntity, view, viewPrereleases, edit))
+                accessRecordRepository.save(AccessRecordEntity(key, serviceEntity, userEntity, role))
             }
         }
     }
 
-    override fun removePermission(username: String, serviceId: ServiceId, permission: PermissionType) {
+    override fun removeRole(username: String, serviceId: ServiceId) {
         val key = AccessRecordId(serviceId.id, username)
         val record = accessRecordRepository.findById(key)
 
         record.ifPresent { entity ->
-            val view = if (permission == PermissionType.VIEW) false else entity.view
-            val viewPrereleases = if (permission == PermissionType.VIEWPRERELEASE) false else entity.viewPrereleases
-            val edit = if (permission == PermissionType.EDIT) false else entity.edit
-
-            if (edit && !accessRecordRepository.otherEditorsExist(serviceId.id, username)) {
+            val isEditor = entity.role == Role.EDITOR
+            if (isEditor && !accessRecordRepository.otherEditorsExist(serviceId.id, username)) {
                 throw NotEnoughEditorsException(serviceId.id)
             }
-            accessRecordRepository.save(AccessRecordEntity(key, entity.serviceEntity, entity.userEntity, view, viewPrereleases, edit))
+            accessRecordRepository.deleteById(entity.accessRecordId)
         }
     }
 
@@ -62,12 +60,25 @@ class AccessRecordDatabase constructor(
         val key = AccessRecordId(serviceId.id, username)
         val record = accessRecordRepository.findById(key)
         return record.map { entity ->
-            when (permission) {
-                PermissionType.VIEW -> entity.view
-                PermissionType.VIEWPRERELEASE -> entity.viewPrereleases
-                PermissionType.EDIT -> entity.edit
-            }
+            checkRole(permission, entity.role)
         }.orElse(false)
     }
 
+    override fun getRole(username: String, serviceId: ServiceId): Role? {
+        val key = AccessRecordId(serviceId.id, username)
+        val record = accessRecordRepository.findById(key)
+        return record.map { entity: AccessRecordEntity -> entity.role }.orElse(null)
+    }
+
+    private fun checkRole(permissionType: PermissionType, role: Role): Boolean {
+        val viewer = EnumSet.of(PermissionType.VIEW)
+        val viewerX = EnumSet.of(PermissionType.VIEW, PermissionType.VIEWPRERELEASE)
+        val editor = EnumSet.of(PermissionType.VIEW, PermissionType.VIEWPRERELEASE, PermissionType.EDIT)
+
+        return when (role) {
+            Role.VIEWER -> viewer.contains(permissionType)
+            Role.VIEWER_X -> viewerX.contains(permissionType)
+            Role.EDITOR -> editor.contains(permissionType)
+        }
+    }
 }
