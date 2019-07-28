@@ -77,14 +77,17 @@ class SpecificationControllerIntegrationTest {
     }
 
     @Test
-    fun addViewPermissionSucceeds() {
+    fun authenticatedViewSucceeds() {
         mockMvc.perform(
                 get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/version/1.0.0")
                         .with(userAuthentication)
                         .with(csrf())
         )
                 .andExpect(status().isOk)
+    }
 
+    @Test
+    fun nonAuthenticatedViewFails() {
         mockMvc.perform(
                 get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/version/1.0.0")
                         .with(otherUserAuthentication)
@@ -92,6 +95,21 @@ class SpecificationControllerIntegrationTest {
         )
                 .andExpect(status().isNotFound)
 
+    }
+
+    @Test
+    fun nonAuthenticatedEditFails() {
+        mockMvc.perform(
+                put("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/permissions/other?role=VIEWER")
+                        .with(otherUserAuthentication)
+                        .with(csrf())
+        )
+                .andExpect(status().isForbidden)
+
+    }
+
+    @Test
+    fun viewerRoleAssignmentSucceeds() {
         mockMvc.perform(
                 put("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/permissions/other?role=VIEWER")
                         .with(userAuthentication)
@@ -105,5 +123,29 @@ class SpecificationControllerIntegrationTest {
                         .with(csrf())
         )
                 .andExpect(status().isOk)
+    }
+
+    @Test
+    fun editorRoleAssignmentSucceeds() {
+        mockMvc.perform(
+                put("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/permissions/other?role=EDITOR")
+                        .with(userAuthentication)
+                        .with(csrf())
+        )
+                .andExpect(status().isOk)
+
+        mockMvc.perform(
+                delete("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/permissions/user")
+                        .with(otherUserAuthentication)
+                        .with(csrf())
+        )
+                .andExpect(status().isOk)
+
+        mockMvc.perform(
+                get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/version/1.0.0")
+                        .with(userAuthentication)
+                        .with(csrf())
+        )
+                .andExpect(status().isNotFound)
     }
 }

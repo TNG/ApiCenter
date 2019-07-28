@@ -70,6 +70,14 @@ class ServiceController @Autowired constructor(
         }
     }
 
+    @DeleteMapping("/{serviceId}/permissions/{username}")
+    fun deleteRoleForService(@PathVariable serviceId: String,
+                             @PathVariable username: String
+    ) {
+        val id = ServiceId(serviceId)
+        serviceHandler.removeRole(id, username)
+    }
+
     @GetMapping("/{serviceId}/permissions/{username}")
     fun getRoleForService(@PathVariable serviceId: String,
                           @PathVariable username: String

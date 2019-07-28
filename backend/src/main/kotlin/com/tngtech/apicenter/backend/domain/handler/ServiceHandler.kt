@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class ServiceHandler @Autowired constructor(
+class ServiceHandler(
         private val servicePersistor: ServicePersistor,
         private val remoteServiceUpdater: RemoteServiceUpdater,
         private val jwtAuthenticationProvider: JwtAuthenticationProvider,
@@ -109,6 +109,15 @@ class ServiceHandler @Autowired constructor(
         } else {
             throw PermissionDeniedException(serviceId.id)
         }
+    }
+
+    fun removeRole(serviceId: ServiceId, username: String) {
+        if (canEdit(serviceId)) {
+            permissionsManager.removeRole(username, serviceId)
+        } else {
+            throw PermissionDeniedException(serviceId.id)
+        }
+
     }
 
     fun getRole(serviceId: ServiceId, username: String): Role? =
