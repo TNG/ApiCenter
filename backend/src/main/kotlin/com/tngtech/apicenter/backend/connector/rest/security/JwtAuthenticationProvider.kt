@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class JwtAuthenticationProvider constructor(private val apiCenterProperties: ApiCenterProperties): AuthenticationProvider {
+class JwtAuthenticationProvider(private val apiCenterProperties: ApiCenterProperties): AuthenticationProvider {
 
     @Value("\${jwt.secret}")
     private lateinit var jwtSecuritySecret: String;

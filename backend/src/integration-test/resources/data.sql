@@ -12,8 +12,8 @@ INSERT INTO SPECIFICATION_ENTITY VALUES('2.0.0', '{"info": {"title": "Spec2",  "
 INSERT INTO SPECIFICATION_ENTITY VALUES('1.0.0','{"info": {"title": "Spec3",  "version": "1.0.0", "description": "Description"}}', '2018-01-01 11:00:00.000', 'Description', '', '0', '0', 'Spec3', 'af0502a2-7410-40e4-90fd-3504f67de1ee');
 INSERT INTO SPECIFICATION_ENTITY VALUES('1.1.0','{"info": {"title": "Spec3",  "version": "1.1.0", "description": "Description"}}', '2018-01-01 10:00:00.000', 'Description', '', '0', '0', 'Spec3', 'af0502a2-7410-40e4-90fd-3504f67de1ee');
 
-INSERT INTO USER_ENTITY VALUES ('user', 'hello@me.com');
-INSERT INTO USER_ENTITY VALUES ('other', 'hello@me.com');
+INSERT INTO USER_ENTITY VALUES ('user', 'user@example.com');
+INSERT INTO USER_ENTITY VALUES ('other', 'other@example.com');
 
 INSERT INTO ACCESS_RECORD_ENTITY VALUES('b6b06513-d259-4faf-b34b-a216b3daad6a', 'user', '2');
 INSERT INTO ACCESS_RECORD_ENTITY VALUES('f67cb0a6-c31b-424b-bfbb-ab0e163955ca', 'user', '2');

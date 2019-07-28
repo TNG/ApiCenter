@@ -5,7 +5,7 @@ import org.hibernate.search.annotations.IndexedEmbedded
 import javax.persistence.*
 
 @Entity
-class AccessRecordEntity(
+data class AccessRecordEntity(
         @EmbeddedId @IndexedEmbedded val accessRecordId: AccessRecordId,
 
         @ManyToOne

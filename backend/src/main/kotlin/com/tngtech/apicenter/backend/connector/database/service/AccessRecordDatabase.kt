@@ -25,7 +25,7 @@ class AccessRecordDatabase constructor(
         val service = serviceRepository.findById(serviceId.id)
         val user = userRepository.findById(username)
 
-        service.ifPresent { serviceEntity ->
+        if (service.isPresent) {
 
             if (user.isPresent) {
                 val record = accessRecordRepository.findById(key)
@@ -38,7 +38,7 @@ class AccessRecordDatabase constructor(
                     }
                 }
 
-                accessRecordRepository.save(AccessRecordEntity(key, serviceEntity, user.get(), role))
+                accessRecordRepository.save(AccessRecordEntity(key, service.get(), user.get(), role))
             } else {
                 throw UserDoesntExistException(username)
             }

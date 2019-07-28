@@ -6,7 +6,7 @@ import com.tngtech.apicenter.backend.domain.service.UserPersistor
 import org.springframework.stereotype.Component
 
 @Component
-class SessionHandler constructor(
+class SessionHandler(
         private val userPersistor: UserPersistor,
         private val externalAuthenticator: ExternalAuthenticator
 ) {

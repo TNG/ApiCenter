@@ -23,13 +23,13 @@ class SpecificationControllerIntegrationTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    private val userRequestPostProcessor = authentication(JwtAuthenticationToken("user", "irrelevant"))
-    private val otherRequestPostProcessor = authentication(JwtAuthenticationToken("other", "irrelevant"))
+    private val userAuthentication = authentication(JwtAuthenticationToken("user", "irrelevant"))
+    private val otherUserAuthentication = authentication(JwtAuthenticationToken("other", "irrelevant"))
 
     @Test
     fun findOneSpecification_shouldReturnSpecification() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/1.0.0")
-            .with(userRequestPostProcessor)
+            .with(userAuthentication)
             .with(csrf()))
             .andExpect(jsonPath("$.metadata.version", equalTo("1.0.0")))
     }
@@ -45,7 +45,7 @@ class SpecificationControllerIntegrationTest {
     fun findOneSpecification_shouldReturnJson() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/1.0.0")
                 .header("Accept", "application/json")
-                .with(userRequestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf()))
                 .andExpect(jsonPath("$.content", equalTo("{\"info\": {\"title\": \"Spec1\",  \"version\": \"1.0.0\", \"description\": \"Description\"}}")))
     }
@@ -54,7 +54,7 @@ class SpecificationControllerIntegrationTest {
     fun findOneSpecification_shouldReturnYaml() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/1.0.0")
                 .header("Accept", "application/yml")
-                .with(userRequestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf()))
                 .andExpect(jsonPath("$.content", equalTo("---\ninfo:\n  title: \"Spec1\"\n  version: \"1.0.0\"\n  description: \"Description\"\n")))
     }
@@ -62,7 +62,7 @@ class SpecificationControllerIntegrationTest {
     @Test
     fun findOneSpecification_shouldGracefullyFail() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a/version/42")
-                .with(userRequestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf()))
                 .andExpect(status().isNotFound)
     }
@@ -71,7 +71,7 @@ class SpecificationControllerIntegrationTest {
     @Test
     fun deleteSpecification_shouldDeleteSpecification() {
         mockMvc.perform(delete("/api/v1/service/f67cb0a6-c31b-424b-bfbb-ab0e163955ca/version/2.0.0")
-            .with(userRequestPostProcessor)
+            .with(userAuthentication)
             .with(csrf()))
             .andExpect(status().isOk)
     }
@@ -80,28 +80,28 @@ class SpecificationControllerIntegrationTest {
     fun addViewPermissionSucceeds() {
         mockMvc.perform(
                 get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/version/1.0.0")
-                        .with(userRequestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
         )
                 .andExpect(status().isOk)
 
         mockMvc.perform(
                 get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/version/1.0.0")
-                        .with(otherRequestPostProcessor)
+                        .with(otherUserAuthentication)
                         .with(csrf())
         )
                 .andExpect(status().isNotFound)
 
         mockMvc.perform(
                 put("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/permissions/other?role=VIEWER")
-                        .with(userRequestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
         )
                 .andExpect(status().isOk)
 
         mockMvc.perform(
                 get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee/version/1.0.0")
-                        .with(otherRequestPostProcessor)
+                        .with(otherUserAuthentication)
                         .with(csrf())
         )
                 .andExpect(status().isOk)

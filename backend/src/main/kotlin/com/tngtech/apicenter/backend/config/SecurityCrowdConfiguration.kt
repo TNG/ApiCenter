@@ -20,7 +20,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher
 
 @Configuration
 @ConditionalOnProperty(name = ["auth.service"], havingValue = "crowd")
-class SecurityCrowdConfiguration constructor(private val apiCenterProperties: ApiCenterProperties): WebSecurityConfigurerAdapter() {
+class SecurityCrowdConfiguration(private val apiCenterProperties: ApiCenterProperties): WebSecurityConfigurerAdapter() {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.authenticationProvider(jwtAuthenticationProvider())

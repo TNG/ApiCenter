@@ -23,11 +23,11 @@ internal class ServiceControllerIntegrationTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    private val requestPostProcessor = authentication(JwtAuthenticationToken("user", "irrelevant"))
+    private val userAuthentication = authentication(JwtAuthenticationToken("user", "irrelevant"))
 
     @Test
     fun findAllServices_shouldReturnAllServices() {
-        mockMvc.perform(get("/api/v1/service?page=0").with(requestPostProcessor))
+        mockMvc.perform(get("/api/v1/service?page=0").with(userAuthentication))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(jsonPath("$.content[0].title", equalTo("Spec1")))
@@ -42,7 +42,7 @@ internal class ServiceControllerIntegrationTest {
 
     @Test
     fun findOneService_shouldGetOne() {
-        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a").with(requestPostProcessor))
+        mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a").with(userAuthentication))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("title", equalTo("Spec1")))
@@ -50,7 +50,7 @@ internal class ServiceControllerIntegrationTest {
 
     @Test
     fun findOneService_shouldGracefullyFail() {
-        mockMvc.perform(get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ef").with(requestPostProcessor))
+        mockMvc.perform(get("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ef").with(userAuthentication))
                 .andExpect(status().isNotFound)
     }
 
@@ -58,7 +58,7 @@ internal class ServiceControllerIntegrationTest {
     fun uploadSpecification_shouldCreateService() {
         mockMvc.perform(
             post("/api/v1/service")
-                .with(requestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf())
                 .contentType("application/json")
                 .content(
@@ -78,7 +78,7 @@ internal class ServiceControllerIntegrationTest {
     fun uploadSpecification_shouldCreateSpecificationWithMetadata() {
         mockMvc.perform(
                 post("/api/v1/service")
-                        .with(requestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
                         .contentType("application/json")
                         .content("""
@@ -95,7 +95,7 @@ internal class ServiceControllerIntegrationTest {
     fun uploadSpecification_shouldDetectVersionClash_identicalContent() {
         mockMvc.perform(
                 post("/api/v1/service")
-                        .with(requestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
                         .contentType("application/json")
                         .content(
@@ -114,7 +114,7 @@ internal class ServiceControllerIntegrationTest {
     fun uploadSpecification_shouldDetectVersionClash_differentContent() {
         mockMvc.perform(
                 post("/api/v1/service")
-                        .with(requestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
                         .contentType("application/json")
                         .content(
@@ -133,7 +133,7 @@ internal class ServiceControllerIntegrationTest {
     fun uploadSpecification_shouldDetectVersionClash_overwriteSnapshot() {
         mockMvc.perform(
                 post("/api/v1/service")
-                        .with(requestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
                         .contentType("application/json")
                         .content(
@@ -153,7 +153,7 @@ internal class ServiceControllerIntegrationTest {
     fun uploadSpecification_shouldCreateSpecificationFromYaml() {
         mockMvc.perform(
             post("/api/v1/service")
-                .with(requestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf())
                 .contentType("application/json")
                 .content(
@@ -173,7 +173,7 @@ internal class ServiceControllerIntegrationTest {
     fun uploadSpecification_shouldCreateNewSpecification() {
         mockMvc.perform(
             post("/api/v1/service")
-                .with(requestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf())
                 .contentType("application/json")
                 .content(
@@ -190,7 +190,7 @@ internal class ServiceControllerIntegrationTest {
 
         mockMvc.perform(
             get("/api/v1/service/unique-identifier")
-                .with(requestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf())
         )
             .andExpect(jsonPath("$.title", equalTo("Spec1")))
@@ -204,7 +204,7 @@ internal class ServiceControllerIntegrationTest {
     fun updateSpecification_shouldUpdateSpecification() {
         mockMvc.perform(
             put("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a")
-                .with(requestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf())
                 .contentType("application/json")
                 .content(
@@ -231,7 +231,7 @@ internal class ServiceControllerIntegrationTest {
     fun updateSpecification_shouldRejectIdMismatchInXApiId() {
         mockMvc.perform(
                 put("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a")
-                        .with(requestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
                         .contentType("application/json")
                         .content(
@@ -249,7 +249,7 @@ internal class ServiceControllerIntegrationTest {
     fun updateSpecification_shouldRejectIdMismatchInDto() {
         mockMvc.perform(
                 put("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a")
-                        .with(requestPostProcessor)
+                        .with(userAuthentication)
                         .with(csrf())
                         .contentType("application/json")
                         .content(
@@ -268,7 +268,7 @@ internal class ServiceControllerIntegrationTest {
     fun deleteService_shouldDeleteService() {
         mockMvc.perform(
             delete("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee")
-                .with(requestPostProcessor)
+                .with(userAuthentication)
                 .with(csrf())
         )
             .andExpect(status().isOk)
