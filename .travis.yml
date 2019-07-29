@@ -1,17 +1,16 @@
 matrix:
   include:
     - language: java
-      jdk: oraclejdk8
+      jdk: openjdk8
       script:
         - ./gradlew clean spotlessCheck test integrationTest check
 
     - language: node_js
       node_js: "10"
       sudo: required
-      before_install:
-        - export CHROME_BIN=chromium-browser
-        - export DISPLAY=:99.0
-        - sh -e /etc/init.d/xvfb start
+      dist: xenial
+      services:
+        - xvfb
       before_script:
         - npm install -g @angular/cli@6.1.4
         - cd frontend
