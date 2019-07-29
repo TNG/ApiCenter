@@ -11,8 +11,4 @@ interface AccessRecordRepository: CrudRepository<AccessRecordEntity, AccessRecor
     @Query("select count(a)>0 from AccessRecordEntity a where a.role = 2 and a.accessRecordId.serviceId = :serviceId and a.accessRecordId.username <> :username")
     fun otherEditorsExist(@Param("serviceId") serviceId: String,
                           @Param("username") userToDowngrade: String): Boolean
-
-    @Modifying
-    @Query("delete from AccessRecordEntity a where a.accessRecordId.serviceId = :serviceId")
-    fun clearPermissions(@Param("serviceId") serviceId: String)
 }

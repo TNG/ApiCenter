@@ -12,7 +12,6 @@ import com.tngtech.apicenter.backend.domain.exceptions.SpecificationConflictExce
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationDuplicationException
 import com.tngtech.apicenter.backend.domain.service.PermissionsManager
 import com.tngtech.apicenter.backend.domain.service.ServicePersistor
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
@@ -29,8 +28,8 @@ class ServiceHandler(
 
         if (service == null) {
             saveNewService(specification, serviceId, fileUrl)
-            val userId = jwtAuthenticationProvider.getCurrentUserId()
-            permissionsManager.assignRole(userId, serviceId, Role.EDITOR)
+            val username = jwtAuthenticationProvider.getCurrentUsername()
+            permissionsManager.assignRole(username, serviceId, Role.EDITOR)
         } else if (canEdit(serviceId)) {
             updateExistingService(service, specification)
         } else {
@@ -80,18 +79,18 @@ class ServiceHandler(
     }
 
     fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
-        val userId = jwtAuthenticationProvider.getCurrentUserId()
-        val page = servicePersistor.findAll(pageNumber, pageSize, userId, apiCenterProperties.getAnonymousUsername())
-        return ResultPage(this.filterByViewPermission(page.content), page.last)
+        val username = jwtAuthenticationProvider.getCurrentUsername()
+        val page = servicePersistor.findAll(pageNumber, pageSize, username, apiCenterProperties.getAnonymousUsername())
+        return ResultPage(this.filterPrereleases(page.content), page.last)
     }
 
     fun findOne(serviceId: ServiceId): Service? =
-        this.filterByViewPermission(listOfNotNull(servicePersistor.findOne(serviceId))).firstOrNull()
+        this.filterPrereleases(listOfNotNull(servicePersistor.findOne(serviceId))).firstOrNull()
 
     fun exists(serviceId: ServiceId): Boolean = this.findOne(serviceId) != null
 
     private fun canEdit(serviceId: ServiceId) =
-            permissionsManager.hasPermission(jwtAuthenticationProvider.getCurrentUserId(), serviceId, PermissionType.EDIT)
+            permissionsManager.hasPermission(jwtAuthenticationProvider.getCurrentUsername(), serviceId, PermissionType.EDIT)
 
     fun delete(serviceId: ServiceId) {
         if (canEdit(serviceId)) {
@@ -101,7 +100,7 @@ class ServiceHandler(
         }
     }
 
-    fun search(searchString: String): List<Service> = this.filterByViewPermission(servicePersistor.search(searchString))
+    fun search(searchString: String): List<Service> = this.filterPrereleases(servicePersistor.search(searchString))
 
     fun assignRole(serviceId: ServiceId, username: String, role: Role) {
         if (canEdit(serviceId)) {
@@ -140,12 +139,12 @@ class ServiceHandler(
         }
     }
 
-    private fun filterByViewPermission(services: List<Service>): List<Service> {
-        val userId = jwtAuthenticationProvider.getCurrentUserId()
+    private fun filterPrereleases(services: List<Service>): List<Service> {
+        val username = jwtAuthenticationProvider.getCurrentUsername()
         // The paged query result only retrieves Services for which the user has at least VIEW permission
         return services
             .map { service ->
-                if (!permissionsManager.hasPermission(userId, service.id, PermissionType.VIEWPRERELEASE)) {
+                if (!permissionsManager.hasPermission(username, service.id, PermissionType.VIEWPRERELEASE)) {
                     service.removePrereleases()
                 } else {
                     service

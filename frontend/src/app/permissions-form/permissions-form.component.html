@@ -8,14 +8,14 @@
     <div class="col">
       <h4>Edit permissions</h4>
 
-      <label for="username">Target user:</label>
+      <label for="username">User:</label>
       <br>
       <input type="text" id="username" [(ngModel)]="targetUser" (ngModelChange)="selectorOnChange()"/>
 
       <br>
       <br>
 
-      <label for="role">Role to assign:</label>
+      <label for="role">New role:</label>
       <br>
       <select id="role" [(ngModel)]="role">
         <option value="VIEWER">Viewer</option>

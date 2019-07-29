@@ -6,12 +6,13 @@ import com.nhaarman.mockitokotlin2.verify
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
 import com.tngtech.apicenter.backend.domain.entity.*
+import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 internal class SpecificationControllerUnitTest {
 
-    private val specificationHandler: com.tngtech.apicenter.backend.domain.handler.SpecificationHandler = mock()
+    private val specificationHandler: SpecificationHandler = mock()
 
     private val specificationFileDtoMapper: SpecificationFileDtoMapper = mock()
 

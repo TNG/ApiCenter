@@ -72,15 +72,6 @@ class AccessRecordDatabase constructor(
         return record.map { entity: AccessRecordEntity -> entity.role }.orElse(null)
     }
 
-    private fun checkRole(permissionType: PermissionType, role: Role): Boolean {
-        val viewer = EnumSet.of(PermissionType.VIEW)
-        val viewerX = EnumSet.of(PermissionType.VIEW, PermissionType.VIEWPRERELEASE)
-        val editor = EnumSet.of(PermissionType.VIEW, PermissionType.VIEWPRERELEASE, PermissionType.EDIT)
-
-        return when (role) {
-            Role.VIEWER -> viewer.contains(permissionType)
-            Role.VIEWER_X -> viewerX.contains(permissionType)
-            Role.EDITOR -> editor.contains(permissionType)
-        }
-    }
+    private fun checkRole(permissionType: PermissionType, role: Role): Boolean =
+            role.permissions().contains(permissionType)
 }

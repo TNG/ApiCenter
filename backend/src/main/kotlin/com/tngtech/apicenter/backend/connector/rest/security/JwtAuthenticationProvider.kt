@@ -27,7 +27,7 @@ class JwtAuthenticationProvider(private val apiCenterProperties: ApiCenterProper
         return if (username != null) JwtAuthenticationToken(username, token) else null
     }
 
-    fun getCurrentUserId(): String =
+    fun getCurrentUsername(): String =
             try {
                 (SecurityContextHolder.getContext().authentication as JwtAuthenticationToken).username
             } catch (exception: ClassCastException) {

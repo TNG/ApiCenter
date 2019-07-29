@@ -3,7 +3,6 @@ package com.tngtech.apicenter.backend.domain.service
 import com.tngtech.apicenter.backend.domain.entity.ResultPage
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Service
-import java.util.*
 
 interface ServicePersistor {
     fun save(service: Service)

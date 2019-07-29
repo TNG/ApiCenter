@@ -12,9 +12,9 @@ data class ServiceEntity(
         @Field val title: String,
         @Field @Column(columnDefinition = "TEXT") val description: String?,
         @IndexedEmbedded @OneToMany(
-        mappedBy = "service",
-        cascade = [CascadeType.ALL]
-    ) @OrderBy("created DESC") val specifications: List<SpecificationEntity>,
+                mappedBy = "service",
+                cascade = [CascadeType.ALL]
+        ) @OrderBy("created DESC") val specifications: List<SpecificationEntity>,
         val remoteAddress: String?,
 
         @OneToMany(mappedBy = "serviceEntity", cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)

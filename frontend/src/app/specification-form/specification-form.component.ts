@@ -44,7 +44,6 @@ export class SpecificationFormComponent implements OnInit {
   id?: string;
   isPublic: boolean;
   showAdditionalMetadataFields = false;
-  objectKeys = Object.keys;
 
   constructor(private router: Router,
               private serviceStore: ServiceStore,

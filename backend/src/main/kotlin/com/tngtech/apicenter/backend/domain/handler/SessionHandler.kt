@@ -13,10 +13,8 @@ class SessionHandler(
 
     fun authenticate(username: String, password: String): User? {
         val searchUser = externalAuthenticator.authenticate(username, password) ?: return null
-        // A new uuid is assigned on every authentication
 
         return if (userPersistor.existsById(searchUser.username)) {
-            // A consistent uuid is returned, ie. first one generated on first external authentication
             userPersistor.findById(searchUser.username)
         } else {
             userPersistor.save(searchUser)
