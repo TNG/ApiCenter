@@ -33,21 +33,12 @@ export class PermissionsFormComponent implements OnInit {
       return
     }
 
-    if (this.allRoles[this.role] !== Role.NONE) {
-      this.serviceStore.assignRoleForService(this.serviceId, this.targetUser, this.role)
-        .subscribe(event => {
-            this.router.navigateByUrl('/');
-          },
-          error => this.error = error.error.userMessage
-        );
-    } else {
-      this.serviceStore.removeRoleForService(this.serviceId, this.targetUser)
-        .subscribe(event => {
-            this.router.navigateByUrl('/');
-          },
-          error => this.error = error.error.userMessage
-        );
-    }
+    this.serviceStore.changeRoleForService(this.serviceId, this.targetUser, this.role)
+      .subscribe(event => {
+          this.router.navigateByUrl('/');
+        },
+        error => this.error = error.error.userMessage
+      );
   }
 
   public selectorOnChange() {

@@ -53,20 +53,18 @@ export class ServiceStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
-  public assignRoleForService(serviceId: string,
+  public changeRoleForService(serviceId: string,
                               username: string,
                               role: Role
   ) {
-    const params = new HttpParams().set('role', String(role));
-
-    return this.http.put(this.urlRoot + '/' + serviceId + '/permissions/' + username, {}, {params})
-      .catch((error: any) => throwError(error || 'Server error'));
-  }
-
-  public removeRoleForService(serviceId: string,
-                              username: string) {
-    return this.http.delete(this.urlRoot + '/' + serviceId + '/permissions/' + username)
-      .catch((error: any) => throwError(error || 'Server error'));
+    if (Role[role] !== Role.NONE) {
+      const params = new HttpParams().set('role', String(role));
+      return this.http.put(this.urlRoot + '/' + serviceId + '/permissions/' + username, {}, {params})
+        .catch((error: any) => throwError(error || 'Server error'));
+    } else {
+      return this.http.delete(this.urlRoot + '/' + serviceId + '/permissions/' + username)
+        .catch((error: any) => throwError(error || 'Server error'));
+    }
   }
 
   public getRoleForService(serviceId: string,
