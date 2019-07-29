@@ -13,6 +13,8 @@ export class PermissionsFormComponent implements OnInit {
   targetUser = '';
   serviceId: string;
   role: Role;
+  keys = Object.keys;
+  allRoles = Role;
 
   constructor(private router: Router,
               private serviceStore: ServiceStore,
@@ -26,12 +28,26 @@ export class PermissionsFormComponent implements OnInit {
   }
 
   public async changePermissionsForService() {
-    this.serviceStore.assignRoleForService(this.serviceId, this.targetUser, this.role)
-      .subscribe(event => {
-          this.router.navigateByUrl('/');
-        },
-        error => this.error = error.error.userMessage
-      );
+    if (this.targetUser === '') {
+      this.error = "Enter a username";
+      return
+    }
+
+    if (this.allRoles[this.role] !== Role.NONE) {
+      this.serviceStore.assignRoleForService(this.serviceId, this.targetUser, this.role)
+        .subscribe(event => {
+            this.router.navigateByUrl('/');
+          },
+          error => this.error = error.error.userMessage
+        );
+    } else {
+      this.serviceStore.removeRoleForService(this.serviceId, this.targetUser)
+        .subscribe(event => {
+            this.router.navigateByUrl('/');
+          },
+          error => this.error = error.error.userMessage
+        );
+    }
   }
 
   public selectorOnChange() {

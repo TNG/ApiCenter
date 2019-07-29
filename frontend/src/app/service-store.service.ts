@@ -63,6 +63,12 @@ export class ServiceStore {
       .catch((error: any) => throwError(error || 'Server error'));
   }
 
+  public removeRoleForService(serviceId: string,
+                              username: string) {
+    return this.http.delete(this.urlRoot + '/' + serviceId + '/permissions/' + username)
+      .catch((error: any) => throwError(error || 'Server error'));
+  }
+
   public getRoleForService(serviceId: string,
                            username: string,
   ): Observable<Role> {

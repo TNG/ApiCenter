@@ -1,3 +1,6 @@
 export enum Role {
-  VIEWER, VIEWER_X, EDITOR
+  VIEWER = "Viewer",
+  VIEWER_X = "Viewer X",
+  EDITOR = "Editor",
+  NONE = "None"
 }

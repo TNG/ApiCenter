@@ -18,9 +18,9 @@
       <label for="role">New role:</label>
       <br>
       <select id="role" [(ngModel)]="role">
-        <option value="VIEWER">Viewer</option>
-        <option value="VIEWER_X">Viewer (including pre-release versions)</option>
-        <option value="EDITOR">Editor</option>
+        <option *ngFor="let role of keys(allRoles)" [ngValue]="role">
+          {{allRoles[role]}}
+        </option>
       </select>
     </div>
   </div>
