@@ -106,14 +106,21 @@
           </ngb-tab>
         </ngb-tabset>
       </div>
-      <div *ngIf="!this.validRangeSelected">
-        <p>
-          Choose two different versions from the table on the left using the radio buttons
-        </p>
+      <div *ngIf="searchComplete ? this.service.specifications.length >= 2 : false">
+        <div *ngIf="!this.validRangeSelected">
+          <p>
+            Choose two different versions from the table on the left using the radio buttons
+          </p>
+        </div>
+        <div *ngIf="this.validRangeSelected && this.noEndpointChanges">
+          <p>
+            No endpoint changes to show for the selected range
+          </p>
+        </div>
       </div>
-      <div *ngIf="this.validRangeSelected && this.noEndpointChanges">
+      <div *ngIf="searchComplete ? this.service.specifications.length < 2 : false">
         <p>
-          No endpoint changes to show for the selected range
+          At least two specifications for this service need to be available to compute differences
         </p>
       </div>
     </div>
