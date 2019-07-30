@@ -15,6 +15,6 @@ interface ServiceRepository : PagingAndSortingRepository<ServiceEntity, String> 
     override fun existsById(id: String): Boolean
     override fun findById(id: String): Optional<ServiceEntity>
 
-    @Query("select s from ServiceEntity s, AccessRecordEntity a where a.accessRecordId.serviceId = s.id and (a.accessRecordId.username = :username or a.accessRecordId.username = :anonymousUsername)")
+    @Query("select distinct s from ServiceEntity s, AccessRecordEntity a where a.accessRecordId.serviceId = s.id and (a.accessRecordId.username = :username or a.accessRecordId.username = :anonymousUsername)")
     fun findAllUsersWithPagination(pageable: Pageable, @Param("username") username: String, @Param("anonymousUsername") anonymousUsername: String): Page<ServiceEntity>
 }
