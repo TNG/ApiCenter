@@ -29,8 +29,8 @@ export class PermissionsFormComponent implements OnInit {
 
   public async changePermissionsForService() {
     if (this.targetUser === '') {
-      this.error = "Enter a username";
-      return
+      this.error = 'Enter a username';
+      return;
     }
 
     this.serviceStore.changeRoleForService(this.serviceId, this.targetUser, this.role)
