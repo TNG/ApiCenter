@@ -6,12 +6,10 @@ import ma.glasnost.orika.MapperFacade
 import org.springframework.stereotype.Component
 
 @Component
-class SpecificationEntityMapper constructor(private val mapperFacade: MapperFacade) {
+class SpecificationEntityMapper(private val mapperFacade: MapperFacade) {
 
-    fun toDomain(specificationEntity: SpecificationEntity): Specification =
-        mapperFacade.map(specificationEntity, Specification::class.java)
+    fun toDomain(specificationEntity: SpecificationEntity): Specification = mapperFacade.map(specificationEntity, Specification::class.java)
 
-    fun fromDomain(specification: Specification): SpecificationEntity =
-        mapperFacade.map(specification, SpecificationEntity::class.java)
+    fun fromDomain(specification: Specification): SpecificationEntity = mapperFacade.map(specification, SpecificationEntity::class.java)
 
 }

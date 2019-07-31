@@ -8,7 +8,7 @@ import net.rakugakibox.spring.boot.orika.OrikaMapperFactoryConfigurer
 import org.springframework.stereotype.Component
 
 @Component
-class ServiceDtoMappingConfigurer constructor(private val serviceDtoConverter: ServiceDtoConverter): OrikaMapperFactoryConfigurer {
+class ServiceDtoMappingConfigurer(private val serviceDtoConverter: ServiceDtoConverter): OrikaMapperFactoryConfigurer {
 
     override fun configure(orikaMapperFactory: MapperFactory) {
         orikaMapperFactory.converterFactory.registerConverter(serviceDtoConverter)

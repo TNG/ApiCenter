@@ -12,7 +12,7 @@ import ma.glasnost.orika.metadata.Type
 import org.springframework.stereotype.Component
 
 @Component
-class ServiceDtoConverter constructor(
+class ServiceDtoConverter(
         private val permissionsManager: PermissionsManager,
         private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) : CustomConverter<Service, ServiceDto>() {

@@ -8,7 +8,9 @@ import net.rakugakibox.spring.boot.orika.OrikaMapperFactoryConfigurer
 import org.springframework.stereotype.Component
 
 @Component
-class SpecificationFileDtoMappingConfigurer constructor(private val specificationFileDtoConverter: SpecificationFileDtoConverter): OrikaMapperFactoryConfigurer {
+class SpecificationFileDtoMappingConfigurer(
+        private val specificationFileDtoConverter: SpecificationFileDtoConverter
+): OrikaMapperFactoryConfigurer {
 
     override fun configure(orikaMapperFactory: MapperFactory) {
         orikaMapperFactory.converterFactory.registerConverter(specificationFileDtoConverter)

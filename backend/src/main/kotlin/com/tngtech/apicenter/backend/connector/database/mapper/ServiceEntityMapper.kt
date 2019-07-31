@@ -6,7 +6,7 @@ import ma.glasnost.orika.MapperFacade
 import org.springframework.stereotype.Component
 
 @Component
-class ServiceEntityMapper constructor(private val mapperFacade: MapperFacade) {
+class ServiceEntityMapper(private val mapperFacade: MapperFacade) {
 
     fun toDomain(serviceEntity: ServiceEntity): Service =
         mapperFacade.map(serviceEntity, Service::class.java)

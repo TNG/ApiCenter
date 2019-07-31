@@ -4,7 +4,7 @@ import com.tngtech.apicenter.backend.domain.entity.Service
 import com.tngtech.apicenter.backend.domain.entity.Specification
 
 @org.springframework.stereotype.Service
-class RemoteServiceUpdater constructor(
+class RemoteServiceUpdater(
         private val specificationFileDownloader: SpecificationFileDownloader,
         private val specificationDataParser: SpecificationDataParser
 ) {

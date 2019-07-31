@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserDatabase constructor(
+class UserDatabase(
     private val userRepository: UserRepository,
     private val userEntityMapper: UserEntityMapper,
-    private val apiCenterProperties: ApiCenterProperties
+    apiCenterProperties: ApiCenterProperties
 ) : UserPersistor {
 
     init {

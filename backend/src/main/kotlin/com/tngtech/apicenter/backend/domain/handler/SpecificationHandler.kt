@@ -11,7 +11,7 @@ import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.springframework.stereotype.Component
 
 @Component
-class SpecificationHandler constructor(
+class SpecificationHandler(
         private val specificationPersistor: SpecificationPersistor,
         private val jwtAuthenticationProvider: JwtAuthenticationProvider,
         private val permissionsManager: PermissionsManager

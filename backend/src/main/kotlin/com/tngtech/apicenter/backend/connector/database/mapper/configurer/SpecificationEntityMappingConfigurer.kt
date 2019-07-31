@@ -6,8 +6,9 @@ import net.rakugakibox.spring.boot.orika.OrikaMapperFactoryConfigurer
 import org.springframework.stereotype.Component
 
 @Component
-class SpecificationEntityMappingConfigurer constructor(private val specificationEntityConverter: SpecificationEntityConverter) :
-    OrikaMapperFactoryConfigurer {
+class SpecificationEntityMappingConfigurer(
+        private val specificationEntityConverter: SpecificationEntityConverter
+) : OrikaMapperFactoryConfigurer {
 
     override fun configure(orikaMapperFactory: MapperFactory) {
         orikaMapperFactory.converterFactory.registerConverter(specificationEntityConverter)

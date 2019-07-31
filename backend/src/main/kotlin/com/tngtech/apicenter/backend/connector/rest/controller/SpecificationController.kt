@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController
 private const val MEDIA_TYPE_YAML = "application/yml"
 
 @RestController
-class SpecificationController constructor(private val specificationHandler: SpecificationHandler,
-                                          private val specificationFileDtoMapper: SpecificationFileDtoMapper) {
+class SpecificationController(
+        private val specificationHandler: SpecificationHandler,
+                                          private val specificationFileDtoMapper: SpecificationFileDtoMapper
+) {
 
     @GetMapping(
             "/api/v1/service/{serviceId}/version/{version}",

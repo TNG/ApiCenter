@@ -3,7 +3,7 @@ package com.tngtech.apicenter.backend.connector.rest.dto
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
 
-data class SpecificationFileMetadata constructor(
+data class SpecificationFileMetadata(
     val title: String,
     val version: String,
     val description: String?,

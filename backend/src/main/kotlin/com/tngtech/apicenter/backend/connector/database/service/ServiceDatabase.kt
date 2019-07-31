@@ -16,7 +16,7 @@ import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
 @org.springframework.stereotype.Service
-class ServiceDatabase constructor(
+class ServiceDatabase(
         private val serviceRepository: ServiceRepository,
         private val entityManager: EntityManager,
         private val serviceEntityMapper: ServiceEntityMapper

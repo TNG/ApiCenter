@@ -15,7 +15,7 @@ import com.tngtech.apicenter.backend.domain.service.PermissionsManager
 import java.util.*
 
 @org.springframework.stereotype.Service
-class AccessRecordDatabase constructor(
+class AccessRecordDatabase(
         private val accessRecordRepository: AccessRecordRepository,
         private val serviceRepository: ServiceRepository,
         private val userRepository: UserRepository

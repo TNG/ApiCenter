@@ -27,7 +27,7 @@ enum class ReleaseType {
     abstract fun requiredPermission(): PermissionType
 }
 
-data class SpecificationMetadata constructor(
+data class SpecificationMetadata(
     val id: ServiceId,
     val title: String,
     val version: String,
