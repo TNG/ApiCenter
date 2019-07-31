@@ -6,7 +6,7 @@ import com.tngtech.apicenter.backend.domain.service.UserPersistor
 import org.springframework.stereotype.Component
 
 @Component
-class SessionHandler constructor(
+class SessionHandler(
         private val userPersistor: UserPersistor,
         private val externalAuthenticator: ExternalAuthenticator
 ) {
@@ -14,22 +14,11 @@ class SessionHandler constructor(
     fun authenticate(username: String, password: String): User? {
         val searchUser = externalAuthenticator.authenticate(username, password) ?: return null
 
-        val storedUser = if (userPersistor.exists(searchUser.origin, searchUser.externalId)) {
-            userPersistor.findByOrigin(searchUser.origin, searchUser.externalId)
+        return if (userPersistor.existsById(searchUser.username)) {
+            userPersistor.findById(searchUser.username)
         } else {
+            userPersistor.save(searchUser)
             searchUser
         }
-
-        val userToStore = if (storedUser.email != searchUser.email || storedUser.username != searchUser.username) {
-            User(storedUser.id, searchUser.email, searchUser.username, "crowd", searchUser.externalId)
-        } else {
-            storedUser
-        }
-
-        if (userPersistor.exists(searchUser.origin, searchUser.externalId)) {
-            userPersistor.save(userToStore)
-        }
-
-        return userToStore
     }
 }

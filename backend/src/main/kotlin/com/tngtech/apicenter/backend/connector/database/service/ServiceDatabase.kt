@@ -16,7 +16,7 @@ import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
 @org.springframework.stereotype.Service
-class ServiceDatabase constructor(
+class ServiceDatabase(
         private val serviceRepository: ServiceRepository,
         private val entityManager: EntityManager,
         private val serviceEntityMapper: ServiceEntityMapper
@@ -33,9 +33,9 @@ class ServiceDatabase constructor(
         }
     }
 
-    override fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
+    override fun findAllOrderByTitle(pageNumber: Int, pageSize: Int, username: String, anonymousUsername: String): ResultPage<Service> {
         val pageable = PageRequest.of(pageNumber, pageSize)
-        val page = serviceRepository.findAll(pageable).map { spec -> serviceEntityMapper.toDomain(spec) }
+        val page = serviceRepository.findAllUsersWithPagination(pageable, username, anonymousUsername).map { spec -> serviceEntityMapper.toDomain(spec) }
         return ResultPage(page.content, page.isLast)
     }
 

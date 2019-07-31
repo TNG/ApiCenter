@@ -20,7 +20,7 @@ describe('SpecificationSearchDetailComponent', () => {
     releaseType: ReleaseType.Release,
     endpointUrl: null,
   })];
-  const services = [new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null)];
+  const services = [new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null, false)];
 
   beforeEach(() => {
     specificationSearchDetailComponent = new SpecificationSearchDetailComponent(specificationService, activatedRoute);

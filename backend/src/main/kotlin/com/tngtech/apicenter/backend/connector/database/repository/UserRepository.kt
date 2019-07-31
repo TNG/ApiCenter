@@ -6,13 +6,10 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import java.util.UUID
+import java.util.*
 
 @Repository
-interface UserRepository : CrudRepository<UserEntity, UUID> {
+interface UserRepository : CrudRepository<UserEntity, String> {
 
-    @Query("select count(u)>0 from UserEntity u where u.origin = :origin and u.externalId = :externalId")
-    fun checkExistenceByOrigin(@Param("origin") origin: String, @Param("externalId") externalId: String): Boolean
-
-    fun findByOriginAndExternalId(origin: String, externalId: String): User
+    fun existsByUsername(username: String): Boolean
 }

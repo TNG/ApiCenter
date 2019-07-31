@@ -8,7 +8,6 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.ServiceDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
-import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
 import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.assertj.core.api.Assertions.assertThat
@@ -26,8 +25,6 @@ internal class ServiceControllerUnitTest {
 
     private val serviceHandler: ServiceHandler = mock()
 
-    private val remoteServiceUpdater: RemoteServiceUpdater = mock()
-
     private val specificationFileDtoMapper: SpecificationFileDtoMapper = mock()
 
     private val serviceDtoMapper: ServiceDtoMapper = mock()
@@ -36,7 +33,6 @@ internal class ServiceControllerUnitTest {
         ServiceController(
             ApiCenterProperties(),
             serviceHandler,
-            remoteServiceUpdater,
             specificationFileDtoMapper,
             serviceDtoMapper
         )
@@ -48,7 +44,8 @@ internal class ServiceControllerUnitTest {
                 SWAGGER_SPECIFICATION,
                 null,
                 null,
-                UUID_STRING
+                UUID_STRING,
+                false
             )
 
         val specification = Specification(SWAGGER_SPECIFICATION, metadata)
@@ -80,7 +77,8 @@ internal class ServiceControllerUnitTest {
             "Test",
             "Description",
             listOf(SpecificationDto(SWAGGER_SPECIFICATION, metadata)),
-            "http://swaggerpetstore.com/docs"
+            "http://swaggerpetstore.com/docs",
+            false
         )
 
         given(serviceHandler.findAll(0, 10)).willReturn(ResultPage(listOf(service), true))
@@ -91,7 +89,8 @@ internal class ServiceControllerUnitTest {
                 uuid, "Test",
                 "Description",
                 listOf(SpecificationDto(SWAGGER_SPECIFICATION, metadata)),
-                "http://swaggerpetstore.com/docs"
+                "http://swaggerpetstore.com/docs",
+                false
             )
         )
     }

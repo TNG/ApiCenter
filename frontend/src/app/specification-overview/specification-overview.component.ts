@@ -220,7 +220,15 @@ export class SpecificationOverviewComponent implements OnInit {
 
         const services: Service[] = data.content.map((element: Service) => {
           // An explicit constructor is required to use the Service class methods
-          const service = new Service(element.id, element.title, element.description, element.specifications, element.remoteAddress);
+          const service = new Service(
+            element.id,
+            element.title,
+            element.description,
+            element.specifications,
+            element.remoteAddress,
+            element.canEdit
+          );
+
           service.sortVersionsSemantically();
           return service;
         });

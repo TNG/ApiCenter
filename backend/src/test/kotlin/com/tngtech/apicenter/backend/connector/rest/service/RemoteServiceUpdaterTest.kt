@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
 import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class RemoteServiceUpdaterTest {
@@ -17,7 +18,7 @@ class RemoteServiceUpdaterTest {
     private val specificationDataParser: SpecificationDataParser = mock()
 
     private val remoteServiceUpdater =
-        RemoteServiceUpdater(serviceHandler, specificationFileDownloader, specificationDataParser)
+        RemoteServiceUpdater(specificationFileDownloader, specificationDataParser)
 
     companion object {
         const val SPECIFICATION_ID = "ff9da045-05f7-4f3d-9801-da609086935c"
@@ -52,11 +53,9 @@ class RemoteServiceUpdaterTest {
                 idFromPath = SPECIFICATION_ID
         )).willReturn(metadata)
 
-        remoteServiceUpdater.synchronize(ServiceId(SPECIFICATION_ID))
+        val specification = remoteServiceUpdater.synchronize(service)
 
-        verify(serviceHandler).addNewSpecification(
-                Specification(UPDATED_SWAGGER_SPECIFICATION, metadata),
-                id,
-                REMOTE_ADDRESS)
+        assertThat(specification.content).isEqualTo(UPDATED_SWAGGER_SPECIFICATION)
+        assertThat(specification.metadata).isEqualTo(metadata)
     }
 }

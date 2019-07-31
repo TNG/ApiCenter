@@ -10,7 +10,7 @@ import ma.glasnost.orika.metadata.Type
 import org.springframework.stereotype.Component
 
 @Component
-class SpecificationFileDtoConverter constructor(
+class SpecificationFileDtoConverter(
         private val specificationFileDownloader: SpecificationFileDownloader,
         private val specificationDataParser: SpecificationDataParser
 ) :

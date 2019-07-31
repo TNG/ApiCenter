@@ -5,5 +5,6 @@ data class ServiceDto(
         val title: String,
         val description: String?,
         val specifications: List<SpecificationDto>,
-        val remoteAddress: String?
+        val remoteAddress: String?,
+        val canEdit: Boolean
 )

@@ -2,21 +2,23 @@ package com.tngtech.apicenter.backend.connector.rest.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
-import com.github.zafarkhaja.semver.Version as SemVer
 import com.github.zafarkhaja.semver.UnexpectedCharacterException
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.PathNotFoundException
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
-import com.tngtech.apicenter.backend.domain.entity.*
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ReleaseType
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
-import java.util.*
+import java.util.UUID
+import com.github.zafarkhaja.semver.Version as SemVer
 
 @Service
-class SpecificationDataParser @Autowired constructor(
+class SpecificationDataParser(
     private val objectMapper: ObjectMapper,
     private val yamlMapper: YAMLMapper
 ) {

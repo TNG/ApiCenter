@@ -1,28 +1,45 @@
 package com.tngtech.apicenter.backend.domain.handler
 
+import com.tngtech.apicenter.backend.config.ApiCenterProperties
 import com.tngtech.apicenter.backend.domain.entity.ReleaseType
 import com.tngtech.apicenter.backend.domain.entity.ResultPage
-import com.tngtech.apicenter.backend.domain.entity.ServiceId
-import com.tngtech.apicenter.backend.domain.entity.Service
-import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.entity.PermissionType
+import com.tngtech.apicenter.backend.connector.rest.security.JwtAuthenticationProvider
+import com.tngtech.apicenter.backend.connector.rest.service.RemoteServiceUpdater
+import com.tngtech.apicenter.backend.domain.entity.*
+import com.tngtech.apicenter.backend.domain.exceptions.PermissionDeniedException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationConflictException
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationDuplicationException
+import com.tngtech.apicenter.backend.domain.service.PermissionsManager
 import com.tngtech.apicenter.backend.domain.service.ServicePersistor
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class ServiceHandler @Autowired constructor(
-        private val servicePersistor: ServicePersistor
+class ServiceHandler(
+        private val servicePersistor: ServicePersistor,
+        private val remoteServiceUpdater: RemoteServiceUpdater,
+        private val jwtAuthenticationProvider: JwtAuthenticationProvider,
+        private val permissionsManager: PermissionsManager,
+        private val apiCenterProperties: ApiCenterProperties
 ) {
 
-    fun addNewSpecification(specification: Specification, serviceId: ServiceId, fileUrl: String?) {
+    fun addNewSpecification(specification: Specification, serviceId: ServiceId, fileUrl: String?, isPublic: Boolean) {
         val service: Service? = servicePersistor.findOne(serviceId)
 
         if (service == null) {
             saveNewService(specification, serviceId, fileUrl)
-        } else {
+            val username = jwtAuthenticationProvider.getCurrentUsername()
+            permissionsManager.assignRole(username, serviceId, Role.EDITOR)
+        } else if (canEdit(serviceId)) {
             updateExistingService(service, specification)
+        } else {
+            throw PermissionDeniedException(serviceId.id)
+        }
+
+        if (isPublic) {
+            permissionsManager.assignRole(apiCenterProperties.getAnonymousUsername(), serviceId, Role.VIEWER)
+        } else {
+            permissionsManager.removeRole(apiCenterProperties.getAnonymousUsername(), serviceId)
         }
     }
 
@@ -61,14 +78,77 @@ class ServiceHandler @Autowired constructor(
 
     }
 
-    fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> =
-            servicePersistor.findAll(pageNumber, pageSize)
+    fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
+        val username = jwtAuthenticationProvider.getCurrentUsername()
+        val page = servicePersistor.findAllOrderByTitle(pageNumber, pageSize, username, apiCenterProperties.getAnonymousUsername())
+        return ResultPage(this.filterPrereleases(page.content), page.last)
+    }
 
-    fun findOne(id: ServiceId): Service? = servicePersistor.findOne(id)
+    fun findOne(serviceId: ServiceId): Service? =
+        this.filterPrereleases(listOfNotNull(servicePersistor.findOne(serviceId))).firstOrNull()
 
-    fun delete(id: ServiceId) = servicePersistor.delete(id)
+    fun exists(serviceId: ServiceId): Boolean = this.findOne(serviceId) != null
 
-    fun exists(id: ServiceId): Boolean = servicePersistor.exists(id)
+    private fun canEdit(serviceId: ServiceId) =
+            permissionsManager.hasPermission(jwtAuthenticationProvider.getCurrentUsername(), serviceId, PermissionType.EDIT)
 
-    fun search(searchString: String): List<Service> = servicePersistor.search(searchString)
+    fun delete(serviceId: ServiceId) {
+        if (canEdit(serviceId)) {
+            servicePersistor.delete(serviceId)
+        } else {
+            throw PermissionDeniedException(serviceId.id)
+        }
+    }
+
+    fun search(searchString: String): List<Service> = this.filterPrereleases(servicePersistor.search(searchString))
+
+    fun assignRole(serviceId: ServiceId, username: String, role: Role) {
+        if (canEdit(serviceId)) {
+            permissionsManager.assignRole(username, serviceId, role)
+        } else {
+            throw PermissionDeniedException(serviceId.id)
+        }
+    }
+
+    fun removeRole(serviceId: ServiceId, username: String) {
+        if (canEdit(serviceId)) {
+            permissionsManager.removeRole(username, serviceId)
+        } else {
+            throw PermissionDeniedException(serviceId.id)
+        }
+
+    }
+
+    fun getRole(serviceId: ServiceId, username: String): Role? =
+        if (canEdit(serviceId)) {
+            permissionsManager.getRole(username, serviceId)
+        } else {
+            null
+        }
+
+    fun synchroniseRemoteService(serviceId: ServiceId) {
+        if (canEdit(serviceId)) {
+            this.findOne(serviceId)?.let {
+               service ->
+                val newSpecification = remoteServiceUpdater.synchronize(service)
+                val isPublic = permissionsManager.hasPermission(apiCenterProperties.getAnonymousUsername(), serviceId, PermissionType.VIEW)
+                this.addNewSpecification(newSpecification, service.id, service.remoteAddress, isPublic)
+            }
+        } else {
+            throw PermissionDeniedException(serviceId.id)
+        }
+    }
+
+    private fun filterPrereleases(services: List<Service>): List<Service> {
+        val username = jwtAuthenticationProvider.getCurrentUsername()
+        // The paged query result only retrieves Services for which the user has at least VIEW permission
+        return services
+            .map { service ->
+                if (!permissionsManager.hasPermission(username, service.id, PermissionType.VIEWPRERELEASE)) {
+                    service.removePrereleases()
+                } else {
+                    service
+                }
+            }
+    }
 }

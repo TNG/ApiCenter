@@ -10,49 +10,57 @@
       </button>
     </div>
     <div class="modal-body">
-       <div class="alert alert-danger" role="alert" *ngIf="error">
-         {{ error }}
-       </div>
+      <div class="alert alert-danger" role="alert" *ngIf="error">
+        {{ error }}
+      </div>
 
-       <label for="files">Upload a specification</label>
-       <br>
-       <input multiple type="file" id="files" accept=".yml,.json,.yaml,.graphql" ngModel
-         (change)="onLocalFileChange($event)">
+      <label for="files">Upload a specification</label>
+      <br>
+      <input multiple type="file" id="files" accept=".yml,.json,.yaml,.graphql" ngModel
+        (change)="onLocalFileChange($event)">
 
-       <div *ngIf="showAdditionalMetadataFields" [@displayFields]>
-         <hr>
-         <p>
-           For a non-OpenAPI specification, ApiCenter needs additional metadata:
-         </p>
+      <br>
+      <br>
+      <input type="checkbox" id="isPublic" [(ngModel)]="isPublic">
+      &nbsp;
+      <label for="isPublic">Publicly visible?</label>
+      <br>
+      <span>Tick this box to make the service visible to any user, logged in or not. Otherwise permissions must be manually assigned to individuals</span>
 
-         <label for="title-field">Title</label>
-         <input type="text"
-                id="title-field"
-                [(ngModel)]="additionalFields.title"/>
+      <div *ngIf="showAdditionalMetadataFields" [@displayFields]>
+        <hr>
+        <p>
+          For a non-OpenAPI specification, ApiCenter needs additional metadata:
+        </p>
 
-         <hr>
-         <label for="version-field">Version</label>
-         <input type="text"
-                id="version-field"
-                placeholder="Semver formatted, eg. 2.0.5-RELEASE"
-                [(ngModel)]="additionalFields.version"/>
+        <label for="title-field">Title</label>
+        <input type="text"
+               id="title-field"
+               [(ngModel)]="additionalFields.title"/>
 
-         <hr>
-         <label for="description-field">
-           Description of service (optional)
-         </label>
-         <textarea id="description-field"
-                   [(ngModel)]="additionalFields.description">
-         </textarea>
+        <hr>
+        <label for="version-field">Version</label>
+        <input type="text"
+               id="version-field"
+               placeholder="Semver formatted, eg. 2.0.5-RELEASE"
+               [(ngModel)]="additionalFields.version"/>
 
-         <hr>
-         <label for="endpoint-url-field">Test API endpoint (optional)</label>
-         <input type="text"
-                id="endpoint-url-field"
-                placeholder="ie. where sample requests from ApiCenter users can be sent"
-                [(ngModel)]="additionalFields.endpointUrl"/>
+        <hr>
+        <label for="description-field">
+          Description of service (optional)
+        </label>
+        <textarea id="description-field"
+                  [(ngModel)]="additionalFields.description">
+        </textarea>
 
-       </div>
+        <hr>
+        <label for="endpoint-url-field">Test API endpoint (optional)</label>
+        <input type="text"
+               id="endpoint-url-field"
+               placeholder="ie. where sample requests from ApiCenter users can be sent"
+               [(ngModel)]="additionalFields.endpointUrl"/>
+
+      </div>
     </div>
 
     <div class="modal-footer">

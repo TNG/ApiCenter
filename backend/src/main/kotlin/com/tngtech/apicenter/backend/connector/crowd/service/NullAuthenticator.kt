@@ -10,11 +10,6 @@ import java.util.UUID
 @ConditionalOnProperty(name = ["auth.service"], havingValue = "none", matchIfMissing=true)
 class NullAuthenticator : ExternalAuthenticator {
 
-    override fun authenticate(username: String, password: String): User? {
-        try {
-            return User(UUID.randomUUID(), username, "", "null", "null")
-        } catch (exception: Exception) {
-            return null
-        }
-    }
+    override fun authenticate(username: String, password: String): User =
+            User(username, "user@example.com")
 }

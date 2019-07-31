@@ -17,7 +17,7 @@ describe('SpecificationFormComponent', () => {
   const modal = instance(mock(NgbModal));
   const activatedRoute = instance(mockedActivatedRoute);
   const swagger_content = '{\'swagger\': \'2.0\', \'info\': {\'version\': \'1.0.0\',\'title\': \'Swagger Petstore\'}}';
-  const specificationFile = new SpecificationFile(swagger_content, null);
+  const specificationFile = new SpecificationFile(swagger_content, null, false);
 
   beforeEach(() => {
     specificationFormComponent = new SpecificationFormComponent(router, serviceStore, activatedRoute, modal);

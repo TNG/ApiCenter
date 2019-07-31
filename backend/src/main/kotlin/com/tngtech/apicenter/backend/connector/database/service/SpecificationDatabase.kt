@@ -9,7 +9,7 @@ import com.tngtech.apicenter.backend.domain.service.SpecificationPersistor
 import org.springframework.stereotype.Service
 
 @Service
-class SpecificationDatabase constructor(
+class SpecificationDatabase(
         private val specificationRepository: SpecificationRepository,
         private val specificationEntityMapper: SpecificationEntityMapper
 ) : SpecificationPersistor {

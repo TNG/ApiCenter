@@ -21,12 +21,14 @@ export class SpecificationFile {
   metadata?: SpecificationFileMetadata;
   fileContent: string;
   fileUrl: string;
+  isPublic: boolean;
   id?: string;
 
-  constructor(fileContent: string, fileUrl: string, id?: string, metadata?: SpecificationFileMetadata) {
+  constructor(fileContent: string, fileUrl: string, isPublic: boolean, id?: string, metadata?: SpecificationFileMetadata) {
     this.fileContent = fileContent;
     this.fileUrl = fileUrl;
     this.id = id;
     this.metadata = metadata;
+    this.isPublic = isPublic;
   }
 }

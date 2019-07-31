@@ -7,7 +7,7 @@ import ma.glasnost.orika.MapperFacade
 import org.springframework.stereotype.Component
 
 @Component
-class SpecificationFileDtoMapper constructor(private val mapperFacade: MapperFacade) {
+class SpecificationFileDtoMapper(private val mapperFacade: MapperFacade) {
 
     fun toDomain(specificationFileDto: SpecificationFileDto): Specification =
         mapperFacade.map(specificationFileDto, Specification::class.java)

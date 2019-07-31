@@ -23,7 +23,7 @@ describe('SpecificationOverviewComponent', () => {
     releaseType: ReleaseType.Release,
     endpointUrl: null,
   })];
-  const service = new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null);
+  const service = new Service('b0fb472d-bee2-47b6-8ecf-ee5e1e76e990', 'Test', 'Description', specifications, null, false);
 
   beforeEach(() => {
     specificationOverviewComponent = new SpecificationOverviewComponent(serviceStore, specificationStore, title);

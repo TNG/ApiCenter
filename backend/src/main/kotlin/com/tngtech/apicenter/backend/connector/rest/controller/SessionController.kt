@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.tngtech.apicenter.backend.connector.rest.dto.LoginDto
 import com.tngtech.apicenter.backend.connector.rest.dto.SessionDto
 import com.tngtech.apicenter.backend.domain.handler.SessionHandler
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/sessions")
-class SessionController @Autowired constructor(private val sessionHandler: SessionHandler) {
+class SessionController(private val sessionHandler: SessionHandler) {
 
     @Value("\${jwt.secret}")
     private lateinit var jwtSecuritySecret: String

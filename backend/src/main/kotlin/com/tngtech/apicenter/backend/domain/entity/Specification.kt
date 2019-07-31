@@ -3,7 +3,17 @@ package com.tngtech.apicenter.backend.domain.entity
 import java.util.regex.Pattern
 
 enum class ReleaseType {
-    RELEASE, PRERELEASE, SNAPSHOT;
+    RELEASE {
+        override fun requiredPermission(): PermissionType = PermissionType.VIEW
+    },
+
+    PRERELEASE {
+        override fun requiredPermission(): PermissionType = PermissionType.VIEWPRERELEASE
+    },
+
+    SNAPSHOT {
+        override fun requiredPermission(): PermissionType = PermissionType.VIEWPRERELEASE
+    };
 
     companion object {
         fun fromVersionString(version: String): ReleaseType {
@@ -14,9 +24,10 @@ enum class ReleaseType {
             }
         }
     }
+    abstract fun requiredPermission(): PermissionType
 }
 
-data class SpecificationMetadata constructor(
+data class SpecificationMetadata(
     val id: ServiceId,
     val title: String,
     val version: String,
