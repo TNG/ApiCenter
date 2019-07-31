@@ -33,7 +33,7 @@ class ServiceDatabase constructor(
         }
     }
 
-    override fun findAll(pageNumber: Int, pageSize: Int, username: String, anonymousUsername: String): ResultPage<Service> {
+    override fun findAllOrderByTitle(pageNumber: Int, pageSize: Int, username: String, anonymousUsername: String): ResultPage<Service> {
         val pageable = PageRequest.of(pageNumber, pageSize)
         val page = serviceRepository.findAllUsersWithPagination(pageable, username, anonymousUsername).map { spec -> serviceEntityMapper.toDomain(spec) }
         return ResultPage(page.content, page.isLast)

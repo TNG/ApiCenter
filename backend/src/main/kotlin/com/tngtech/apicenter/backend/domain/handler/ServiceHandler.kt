@@ -80,7 +80,7 @@ class ServiceHandler(
 
     fun findAll(pageNumber: Int, pageSize: Int): ResultPage<Service> {
         val username = jwtAuthenticationProvider.getCurrentUsername()
-        val page = servicePersistor.findAll(pageNumber, pageSize, username, apiCenterProperties.getAnonymousUsername())
+        val page = servicePersistor.findAllOrderByTitle(pageNumber, pageSize, username, apiCenterProperties.getAnonymousUsername())
         return ResultPage(this.filterPrereleases(page.content), page.last)
     }
 

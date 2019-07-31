@@ -8,20 +8,27 @@ import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.ServiceDtoMapper
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
 import com.tngtech.apicenter.backend.domain.entity.Role
-import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.exceptions.BadUrlException
 import com.tngtech.apicenter.backend.domain.exceptions.MismatchedServiceIdException
+import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
-import java.lang.IllegalArgumentException
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/service")
-class ServiceController @Autowired constructor(
+class ServiceController(
         private val apiCenterProperties: ApiCenterProperties,
         private val serviceHandler: ServiceHandler,
         private val specificationFileDtoMapper: SpecificationFileDtoMapper,
@@ -30,7 +37,9 @@ class ServiceController @Autowired constructor(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun uploadSpecifications(@RequestBody specificationFileDtos: List<SpecificationFileDto>): List<Specification> {
+    fun uploadSpecifications(
+            @RequestBody specificationFileDtos: List<SpecificationFileDto>
+    ): List<Specification> {
         return specificationFileDtos.map { dto ->
             val specification = specificationFileDtoMapper.toDomain(dto)
             serviceHandler.addNewSpecification(specification, specification.metadata.id, dto.fileUrl, dto.isPublic)
@@ -39,17 +48,20 @@ class ServiceController @Autowired constructor(
     }
 
     @PutMapping("/{serviceIdFromPath}")
-    fun updateSpecification(@RequestBody specificationFileDto: SpecificationFileDto, @PathVariable serviceIdFromPath: String): SpecificationDto {
+    fun updateSpecification(
+            @RequestBody specificationFileDto: SpecificationFileDto,
+            @PathVariable serviceIdFromPath: String
+    ): SpecificationDto {
         val specificationId = getConsistentId(specificationFileDto, serviceIdFromPath)
 
         val specification = specificationFileDtoMapper.toDomain(
-            SpecificationFileDto(
-                specificationFileDto.fileContent,
-                specificationFileDto.fileUrl,
-                specificationFileDto.metadata,
-                specificationId,
-                specificationFileDto.isPublic
-            )
+                SpecificationFileDto(
+                        specificationFileDto.fileContent,
+                        specificationFileDto.fileUrl,
+                        specificationFileDto.metadata,
+                        specificationId,
+                        specificationFileDto.isPublic
+                )
         )
 
         serviceHandler.addNewSpecification(specification, ServiceId(specificationId), specificationFileDto.fileUrl, specificationFileDto.isPublic)
@@ -58,9 +70,10 @@ class ServiceController @Autowired constructor(
     }
 
     @PutMapping("/{serviceId}/permissions/{username}")
-    fun changeRoleForService(@PathVariable serviceId: String,
-                             @PathVariable username: String,
-                             @RequestParam(value = "role") role: String
+    fun changeRoleForService(
+            @PathVariable serviceId: String,
+            @PathVariable username: String,
+            @RequestParam(value = "role") role: String
     ) {
         val id = ServiceId(serviceId)
         try {
@@ -71,58 +84,72 @@ class ServiceController @Autowired constructor(
     }
 
     @DeleteMapping("/{serviceId}/permissions/{username}")
-    fun deleteRoleForService(@PathVariable serviceId: String,
-                             @PathVariable username: String
+    fun deleteRoleForService(
+            @PathVariable serviceId: String,
+            @PathVariable username: String
     ) {
         val id = ServiceId(serviceId)
         serviceHandler.removeRole(id, username)
     }
 
     @GetMapping("/{serviceId}/permissions/{username}")
-    fun getRoleForService(@PathVariable serviceId: String,
-                          @PathVariable username: String
+    fun getRoleForService(
+            @PathVariable serviceId: String,
+            @PathVariable username: String
     ): Role? {
         val id = ServiceId(serviceId)
         return serviceHandler.getRole(id, username)
     }
 
-    private fun getConsistentId(specificationFileDto: SpecificationFileDto, specificationIdFromPath: String): String {
-        specificationFileDto.id?.let {
-            idFromFile -> if (idFromFile != specificationIdFromPath)
+    private fun getConsistentId(
+            specificationFileDto: SpecificationFileDto,
+            specificationIdFromPath: String
+    ): String {
+        specificationFileDto.id?.let { idFromFile ->
+            if (idFromFile != specificationIdFromPath)
                 throw MismatchedServiceIdException(idFromFile, specificationIdFromPath)
         }
         return specificationIdFromPath
     }
 
     @GetMapping(params = ["page"])
-    fun findAllServices(@RequestParam(value = "page") page: String): ResultPageDto<ServiceDto> =
-        try {
-            val resultPage = serviceHandler.findAll(page.toInt(), apiCenterProperties.getPageSize()).map { service -> serviceDtoMapper.fromDomain(service) }
-            ResultPageDto(resultPage.content, resultPage.last)
-        } catch (exception: NumberFormatException) {
-            throw BadUrlException(page)
-        }
+    fun findAllServices(
+            @RequestParam(value = "page") page: String
+    ): ResultPageDto<ServiceDto> =
+            try {
+                val resultPage = serviceHandler.findAll(page.toInt(), apiCenterProperties.getPageSize()).map { service -> serviceDtoMapper.fromDomain(service) }
+                ResultPageDto(resultPage.content, resultPage.last)
+            } catch (exception: NumberFormatException) {
+                throw BadUrlException(page)
+            }
 
     @GetMapping("/{serviceId}")
-    fun findService(@PathVariable serviceId: String): ServiceDto {
+    fun findService(
+            @PathVariable serviceId: String
+    ): ServiceDto {
         val specification = serviceHandler.findOne(ServiceId(serviceId))
-        return specification?.let { serviceDtoMapper.fromDomain(it) } ?:
-            throw SpecificationNotFoundException(serviceId)
+        return specification?.let { serviceDtoMapper.fromDomain(it) } ?: throw SpecificationNotFoundException(serviceId)
     }
 
     @DeleteMapping("/{serviceId}")
-    fun deleteService(@PathVariable serviceId: String) {
+    fun deleteService(
+            @PathVariable serviceId: String
+    ) {
         serviceHandler.delete(ServiceId(serviceId))
     }
 
     @PostMapping("/{serviceId}/synchronize")
-    fun synchronizeService(@PathVariable serviceId: String) {
+    fun synchronizeService(
+            @PathVariable serviceId: String
+    ) {
         serviceHandler.synchroniseRemoteService(ServiceId(serviceId))
     }
 
     @GetMapping("/search/{searchString}")
-    fun searchForServices(@PathVariable searchString: String): List<ServiceDto> =
-        serviceHandler.search(searchString).map { spec -> serviceDtoMapper.fromDomain(spec) }
+    fun searchForServices(
+            @PathVariable searchString: String
+    ): List<ServiceDto> =
+            serviceHandler.search(searchString).map { spec -> serviceDtoMapper.fromDomain(spec) }
 
     @GetMapping("/search/")
     fun searchWithBlank(): List<ServiceDto> = listOf()

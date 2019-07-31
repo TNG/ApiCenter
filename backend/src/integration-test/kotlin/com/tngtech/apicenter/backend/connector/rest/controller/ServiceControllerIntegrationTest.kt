@@ -7,12 +7,19 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -28,16 +35,16 @@ internal class ServiceControllerIntegrationTest {
     @Test
     fun findAllServices_shouldReturnAllServices() {
         mockMvc.perform(get("/api/v1/service?page=0").with(userAuthentication))
-            .andExpect(status().isOk)
-            .andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$.content[0].title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.content[0].specifications[0].metadata.version", equalTo("1.0.0")))
-            .andExpect(jsonPath("$.content[1].title", equalTo("Spec2")))
-            .andExpect(jsonPath("$.content[1].specifications[0].metadata.version", equalTo("1.0.0")))
-            .andExpect(jsonPath("$.content[1].specifications[1].metadata.version", equalTo("2.0.0")))
-            .andExpect(jsonPath("$.content[2].title", equalTo("Spec3")))
-            .andExpect(jsonPath("$.content[2].specifications[0].metadata.version", equalTo("1.0.0")))
-            .andExpect(jsonPath("$.content[2].specifications[1].metadata.version", equalTo("1.1.0")))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.content[0].title", equalTo("Spec3")))
+                .andExpect(jsonPath("$.content[0].specifications[0].metadata.version", equalTo("1.0.0")))
+                .andExpect(jsonPath("$.content[0].specifications[1].metadata.version", equalTo("1.1.0")))
+                .andExpect(jsonPath("$.content[1].title", equalTo("Spec1")))
+                .andExpect(jsonPath("$.content[1].specifications[0].metadata.version", equalTo("1.0.0")))
+                .andExpect(jsonPath("$.content[2].title", equalTo("Spec2")))
+                .andExpect(jsonPath("$.content[2].specifications[0].metadata.version", equalTo("1.0.0")))
+                .andExpect(jsonPath("$.content[2].specifications[1].metadata.version", equalTo("2.0.0")))
     }
 
     @Test
@@ -57,21 +64,21 @@ internal class ServiceControllerIntegrationTest {
     @Test
     fun uploadSpecification_shouldCreateService() {
         mockMvc.perform(
-            post("/api/v1/service")
-                .with(userAuthentication)
-                .with(csrf())
-                .contentType("application/json")
-                .content(
-                    """
+                post("/api/v1/service")
+                        .with(userAuthentication)
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
                             | [{
                             |   "fileContent": "{\"info\": {\"title\": \"Spec\",\"version\": \"1.0.0\"}}"
                             | }]
                             """.trimMargin()
-                )
+                        )
         )
-            .andExpect(status().isCreated)
-            .andExpect(jsonPath("$[0].metadata.title", equalTo("Spec")))
-            .andExpect(jsonPath("$[0].metadata.version", equalTo("1.0.0")))
+                .andExpect(status().isCreated)
+                .andExpect(jsonPath("$[0].metadata.title", equalTo("Spec")))
+                .andExpect(jsonPath("$[0].metadata.version", equalTo("1.0.0")))
     }
 
     @Test
@@ -152,79 +159,79 @@ internal class ServiceControllerIntegrationTest {
     @Test
     fun uploadSpecification_shouldCreateSpecificationFromYaml() {
         mockMvc.perform(
-            post("/api/v1/service")
-                .with(userAuthentication)
-                .with(csrf())
-                .contentType("application/json")
-                .content(
-                    """
+                post("/api/v1/service")
+                        .with(userAuthentication)
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
                             | [{
                             |   "fileContent": "openapi: \"3.0.0\"\r\ninfo:\r\n  version: \"1.0.0\"\r\n  title: YamlSpec"
                             | }]
                             """.trimMargin()
-                )
+                        )
         )
-            .andExpect(status().isCreated)
-            .andExpect(jsonPath("$[0].metadata.title", equalTo("YamlSpec")))
-            .andExpect(jsonPath("$[0].metadata.version", equalTo("1.0.0")))
+                .andExpect(status().isCreated)
+                .andExpect(jsonPath("$[0].metadata.title", equalTo("YamlSpec")))
+                .andExpect(jsonPath("$[0].metadata.version", equalTo("1.0.0")))
     }
 
     @Test
     fun uploadSpecification_shouldCreateNewSpecification() {
         mockMvc.perform(
-            post("/api/v1/service")
-                .with(userAuthentication)
-                .with(csrf())
-                .contentType("application/json")
-                .content(
-                    """
+                post("/api/v1/service")
+                        .with(userAuthentication)
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
                         | [{
                         |   "fileContent": "{\"info\": {\"title\": \"Spec1\",\"version\": \"2.0.0\",\"x-api-id\": \"unique-identifier\"}}"
                         | }]
                     """.trimMargin()
-                )
+                        )
         )
-            .andExpect(status().isCreated)
-            .andExpect(jsonPath("$[0].metadata.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$[0].metadata.version", equalTo("2.0.0")))
+                .andExpect(status().isCreated)
+                .andExpect(jsonPath("$[0].metadata.title", equalTo("Spec1")))
+                .andExpect(jsonPath("$[0].metadata.version", equalTo("2.0.0")))
 
         mockMvc.perform(
-            get("/api/v1/service/unique-identifier")
-                .with(userAuthentication)
-                .with(csrf())
+                get("/api/v1/service/unique-identifier")
+                        .with(userAuthentication)
+                        .with(csrf())
         )
-            .andExpect(jsonPath("$.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.specifications[0].metadata.version", equalTo("2.0.0")))
-            .andExpect(jsonPath("$.specifications[0].metadata.title", equalTo("Spec1")))
-            .andExpect(jsonPath("$.specifications[1].metadata.version", equalTo("1.0.0")))
-            .andExpect(jsonPath("$.specifications[1].metadata.title", equalTo("Spec4")))
+                .andExpect(jsonPath("$.title", equalTo("Spec1")))
+                .andExpect(jsonPath("$.specifications[0].metadata.version", equalTo("2.0.0")))
+                .andExpect(jsonPath("$.specifications[0].metadata.title", equalTo("Spec1")))
+                .andExpect(jsonPath("$.specifications[1].metadata.version", equalTo("1.0.0")))
+                .andExpect(jsonPath("$.specifications[1].metadata.title", equalTo("Spec4")))
     }
 
     @Test
     fun updateSpecification_shouldUpdateSpecification() {
         mockMvc.perform(
-            put("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a")
-                .with(userAuthentication)
-                .with(csrf())
-                .contentType("application/json")
-                .content(
-                    """
+                put("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a")
+                        .with(userAuthentication)
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(
+                                """
                             | {
                             |   "id": "b6b06513-d259-4faf-b34b-a216b3daad6a",
                             |   "fileContent": "{\"info\": {\"title\": \"NewSpec\",\"version\": \"1.0.1\"}}"
                             | }
                             """.trimMargin()
-                )
+                        )
         )
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.metadata.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.metadata.version", equalTo("1.0.1")))
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.metadata.title", equalTo("NewSpec")))
+                .andExpect(jsonPath("$.metadata.version", equalTo("1.0.1")))
 
         mockMvc.perform(
-            get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user"))
+                get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a").with(user("user"))
         )
-            .andExpect(jsonPath("$.title", equalTo("NewSpec")))
-            .andExpect(jsonPath("$.specifications[0].metadata.version", equalTo("1.0.1")))
+                .andExpect(jsonPath("$.title", equalTo("NewSpec")))
+                .andExpect(jsonPath("$.specifications[0].metadata.version", equalTo("1.0.1")))
     }
 
     @Test
@@ -267,10 +274,10 @@ internal class ServiceControllerIntegrationTest {
     @Test
     fun deleteService_shouldDeleteService() {
         mockMvc.perform(
-            delete("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee")
-                .with(userAuthentication)
-                .with(csrf())
+                delete("/api/v1/service/af0502a2-7410-40e4-90fd-3504f67de1ee")
+                        .with(userAuthentication)
+                        .with(csrf())
         )
-            .andExpect(status().isOk)
+                .andExpect(status().isOk)
     }
 }

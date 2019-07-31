@@ -6,12 +6,16 @@ import com.qdesrame.openapi.diff.OpenApiCompare
 import com.qdesrame.openapi.diff.model.ChangedOpenApi
 import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationDto
 import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoMapper
-import org.springframework.web.bind.annotation.*
-import org.springframework.http.MediaType
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import com.tngtech.apicenter.backend.domain.entity.Specification
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationNotFoundException
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RestController
 
 private const val MEDIA_TYPE_YAML = "application/yml"
 
@@ -19,17 +23,16 @@ private const val MEDIA_TYPE_YAML = "application/yml"
 class SpecificationController constructor(private val specificationHandler: SpecificationHandler,
                                           private val specificationFileDtoMapper: SpecificationFileDtoMapper) {
 
-    @RequestMapping("/api/v1/service/{serviceId}/version/{version}",
-            produces = [MediaType.APPLICATION_JSON_VALUE,
-                        MEDIA_TYPE_YAML],
-            headers =  ["Accept=" + MediaType.APPLICATION_JSON_VALUE,
-                        "Accept=" + MEDIA_TYPE_YAML],
-            method =   [RequestMethod.GET])
-    fun findSpecification(@PathVariable serviceId: String,
-                          @PathVariable version: String,
-                          @RequestHeader(value = "Accept",
-                                   defaultValue = MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE): SpecificationDto {
-        // i.e. The integration test and unit test require the default specified in two different ways
+    @GetMapping(
+            "/api/v1/service/{serviceId}/version/{version}",
+            produces = [MediaType.APPLICATION_JSON_VALUE, MEDIA_TYPE_YAML],
+            headers = ["Accept=" + MediaType.APPLICATION_JSON_VALUE, "Accept=" + MEDIA_TYPE_YAML]
+    )
+    fun findSpecification(
+            @PathVariable serviceId: String,
+            @PathVariable version: String,
+            @RequestHeader(value = "Accept", defaultValue = MediaType.APPLICATION_JSON_VALUE) accept: String = MediaType.APPLICATION_JSON_VALUE
+    ): SpecificationDto {
         val specification = specificationHandler.findOne(ServiceId(serviceId), version)
                 ?: throw SpecificationNotFoundException(serviceId, version)
         return specificationFileDtoMapper.fromDomain(convertByMediaType(accept, specification))
