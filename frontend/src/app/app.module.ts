@@ -67,7 +67,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes
     ),
-    NgbModule.forRoot(),
+    NgbModule,
     MarkdownModule.forRoot(),
     BrowserAnimationsModule
   ],
