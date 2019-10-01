@@ -64,7 +64,7 @@ dependencies {
     compile "net.rakugakibox.spring.boot:orika-spring-boot-starter:1.8.0"
     compile "org.hibernate:hibernate-search-orm:5.11.2.Final"
     compile "com.atlassian.crowd:crowd-integration-springsecurity:3.0.1"
-    compile "com.auth0:java-jwt:3.8.1"
+    compile "com.auth0:java-jwt:3.8.3"
     compile "io.github.microutils:kotlin-logging:1.7.6"
     compile "com.github.zafarkhaja:java-semver:0.9.0"
     compile ("com.qdesrame:openapi-diff:1.2.0") {
