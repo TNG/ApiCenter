@@ -36,7 +36,7 @@ internal class ServiceControllerIntegrationTest {
     fun findAllServices_shouldReturnAllServices() {
         mockMvc.perform(get("/api/v1/service?page=0").with(userAuthentication))
                 .andExpect(status().isOk)
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.content[0].title", equalTo("Spec3")))
                 .andExpect(jsonPath("$.content[0].specifications[0].metadata.version", equalTo("1.0.0")))
                 .andExpect(jsonPath("$.content[0].specifications[1].metadata.version", equalTo("1.1.0")))
@@ -51,7 +51,7 @@ internal class ServiceControllerIntegrationTest {
     fun findOneService_shouldGetOne() {
         mockMvc.perform(get("/api/v1/service/b6b06513-d259-4faf-b34b-a216b3daad6a").with(userAuthentication))
                 .andExpect(status().isOk)
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("title", equalTo("Spec1")))
     }
 
