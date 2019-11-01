@@ -63,7 +63,7 @@ dependencies {
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jackson_version"
     // DB
     compile "org.postgresql:postgresql:42.2.8"
-    compile "com.h2database:h2:1.4.199"
+    compile "com.h2database:h2:1.4.200"
     compile "org.flywaydb:flyway-core:6.0.8"
     compile "org.hibernate:hibernate-search-orm:5.11.2.Final"
     // Helpers
