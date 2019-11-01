@@ -1,5 +1,6 @@
 package com.tngtech.apicenter.backend.connector.rest.service
 
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.nhaarman.mockitokotlin2.given
@@ -8,7 +9,6 @@ import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseExcepti
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
-import java.io.IOException
 
 class SpecificationDataParserTest {
 
@@ -77,7 +77,7 @@ class SpecificationDataParserTest {
 
     @Test
     fun isYaml_shouldReturnFalseWhenYamlCantBeParsed() {
-        given(yamlMapper.readTree(YAML_SPECIFICATION)).willThrow(IOException())
+        given(yamlMapper.readTree(YAML_SPECIFICATION)).willThrow(mock<JsonProcessingException>())
 
         assertThat(specificationDataParser.isYaml(YAML_SPECIFICATION)).isFalse()
     }
@@ -89,7 +89,7 @@ class SpecificationDataParserTest {
 
     @Test
     fun isJson_shouldReturnFalseWhenJsonCantBeParsed() {
-        given(objectMapper.readTree(SWAGGER_SPECIFICATION)).willThrow(IOException())
+        given(objectMapper.readTree(SWAGGER_SPECIFICATION)).willThrow(mock<JsonProcessingException>())
 
         assertThat(specificationDataParser.isJson(SWAGGER_SPECIFICATION)).isFalse()
     }
