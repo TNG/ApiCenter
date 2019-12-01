@@ -42,7 +42,7 @@
     "jquery": "^3.4.0",
     "jwt-decode": "^2.2.0",
     "ngx-markdown": "^8.1.1",
-    "npm": "^6.9.2",
+    "npm": "^6.13.1",
     "open-iconic": "^1.1.1",
     "popper.js": "^1.15.0",
     "process": "^0.11.10",
