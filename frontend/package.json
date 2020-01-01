@@ -41,7 +41,7 @@
     "invariant": "^2.2.4",
     "jquery": "^3.4.0",
     "jwt-decode": "^2.2.0",
-    "ngx-markdown": "^8.1.1",
+    "ngx-markdown": "^8.2.1",
     "npm": "^6.13.4",
     "open-iconic": "^1.1.1",
     "popper.js": "^1.15.0",
