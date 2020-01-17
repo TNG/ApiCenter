@@ -1,0 +1,18 @@
+# IntelliJ IDEA
+.idea/
+out/
+
+# NPM
+node_modules/
+.npm/
+
+# Temporary folders
+tmp/
+temp/
+
+# Gradle
+.gradle
+build/
+
+# Angular
+static/
