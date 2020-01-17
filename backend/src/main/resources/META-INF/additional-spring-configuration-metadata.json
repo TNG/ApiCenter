@@ -1,8 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "apicenter.pageSize",
-      "type": "java.lang.Integer",
-      "description": "Number of services to be fetched per page in specification overview."
-  }
-] }
