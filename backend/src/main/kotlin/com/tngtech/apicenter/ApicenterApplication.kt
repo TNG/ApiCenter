@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ApicenterApplication
 
 fun main(args: Array<String>) {
-	runApplication<ApicenterApplication>(*args)
+    runApplication<ApicenterApplication>(*args)
 }
