@@ -20,6 +20,8 @@ class ApplicationController(private val applicationService: ApplicationService) 
     @GetMapping
     fun getApplications() = applicationService.getApplications()
 
+    // TODO /api/applications/{applicationId}
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createApplication(@RequestBody applicationDto: ApplicationDto) = applicationService.createApplication(applicationDto)

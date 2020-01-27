@@ -10,7 +10,6 @@ plugins {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -19,15 +18,13 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    testImplementation("com.tngtech.archunit:archunit-junit5-api:0.9.3")
-    testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.9.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation(kotlin("script-runtime"))
+
+    runtimeOnly("com.h2database:h2:1.4.200")
 }
 
 tasks.withType<KotlinCompile> {
