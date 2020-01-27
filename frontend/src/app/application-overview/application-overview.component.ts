@@ -16,17 +16,17 @@ export class ApplicationOverviewComponent implements OnInit {
     {name: 'WFE', description: 'Workflow engine processing orders of customers', contact: 'Bernd das Brot'},
   ];
 
-  displayedColumns: string[] = ['name', 'description', 'contact'];
-  dataSource = new MatTableDataSource(this.applications);
+  displayedColumns = ['name', 'description', 'contact'];
+  applicationsTableData = new MatTableDataSource<Application>(this.applications);
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    this.applicationsTableData.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.applicationsTableData.filter = filterValue.trim().toLowerCase();
   }
 
 }
