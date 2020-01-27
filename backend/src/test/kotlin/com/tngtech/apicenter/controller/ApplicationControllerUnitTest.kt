@@ -26,8 +26,8 @@ class ApplicationControllerUnitTest {
 
     @Test
     fun `should return applications`() {
-        val firstApplication = ApplicationDto("firstApplication", "myFirstApplication", "myContact")
-        val secondApplication = ApplicationDto("secondApplication", "mySecondApplication", "otherContact")
+        val firstApplication = ApplicationDto(null, "firstApplication", "myFirstApplication", "myContact")
+        val secondApplication = ApplicationDto(null, "secondApplication", "mySecondApplication", "otherContact")
 
         given(applicationService.getApplications()).willReturn(listOf(firstApplication, secondApplication))
 
@@ -47,7 +47,7 @@ class ApplicationControllerUnitTest {
 
     @Test
     fun `should create application`() {
-        val applicationToCreate = ApplicationDto("applicationToCreate", "thisIsTheApplicationToBeCreated", "myContact")
+        val applicationToCreate = ApplicationDto(null, "applicationToCreate", "thisIsTheApplicationToBeCreated", "myContact")
 
         given(applicationService.createApplication(applicationToCreate)).willReturn(applicationToCreate)
 
@@ -75,7 +75,7 @@ class ApplicationControllerUnitTest {
     fun `should update application`() {
         val applicationIdToUpdate = "applicationIdToUpdate"
 
-        val applicationUpdate = ApplicationDto("applicationNameAfter", "applicationDescriptionAfter", "contactAfter")
+        val applicationUpdate = ApplicationDto(null, "applicationNameAfter", "applicationDescriptionAfter", "contactAfter")
 
         given(applicationService.updateApplication(applicationIdToUpdate, applicationUpdate)).willReturn(applicationUpdate)
 
