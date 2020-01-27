@@ -1,7 +1,6 @@
 package com.tngtech.apicenter.service
 
 import com.tngtech.apicenter.dto.ApplicationDto
-import com.tngtech.apicenter.entity.ApplicationEntity
 import com.tngtech.apicenter.mapper.ApplicationMapper
 import com.tngtech.apicenter.repository.ApplicationRepository
 import org.springframework.stereotype.Service

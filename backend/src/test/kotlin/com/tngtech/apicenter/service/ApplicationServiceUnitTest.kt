@@ -42,10 +42,9 @@ class ApplicationServiceUnitTest {
         verify(applicationMapper).toDto(createdApplicationEntity)
         verify(applicationRepository).save(mappedApplicationEntity)
 
-        assertThat(createdApplication.id).isEqualTo("newApplicationId");
-        assertThat(createdApplication.name).isEqualTo("newApplicationName");
-        assertThat(createdApplication.description).isEqualTo("newApplicationDescription");
-        assertThat(createdApplication.contact).isEqualTo("newApplicationContact");
+        assertThat(createdApplication.id).isEqualTo("newApplicationId")
+        assertThat(createdApplication.name).isEqualTo("newApplicationName")
+        assertThat(createdApplication.description).isEqualTo("newApplicationDescription")
+        assertThat(createdApplication.contact).isEqualTo("newApplicationContact")
     }
-
 }

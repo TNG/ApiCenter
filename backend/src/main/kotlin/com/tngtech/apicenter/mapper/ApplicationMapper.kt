@@ -10,5 +10,4 @@ class ApplicationMapper {
     fun toDto(applicationEntity: ApplicationEntity) = ApplicationDto("", "", "", "")
 
     fun toEntity(applicationDto: ApplicationDto) = ApplicationEntity("", "", "", "")
-
 }
