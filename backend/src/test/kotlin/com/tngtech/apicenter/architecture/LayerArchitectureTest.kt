@@ -3,6 +3,7 @@ import com.tngtech.archunit.core.importer.ImportOption.*
 import com.tngtech.archunit.junit.AnalyzeClasses
 import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.lang.ArchRule
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 
 
@@ -11,10 +12,12 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 class LayerArchitectureTest {
 
     @ArchTest
-    val enforceClientBusinessLayering: ArchRule? = noClasses().that().resideInAnyPackage("....", "..business..")
+    val enforceDtoShouldNotDependOnRepositoryOrEntity: ArchRule? = noClasses().that().resideInAnyPackage("..repository..", "..entity..")
             .should()
             .dependOnClassesThat()
             .resideInAPackage("..dto..")
+
+
 
     @ArchTest
     val ensureUtilsAreIndependent: ArchRule = noClasses().that().resideInAPackage("..util..")
