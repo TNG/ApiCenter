@@ -16,7 +16,6 @@ class ApplicationService(private val applicationMapper: ApplicationMapper, priva
 
         val createdApplication = applicationRepository.save(applicationEntity)
         return applicationMapper.toDto(createdApplication)
-        applicationRepository.findAllByName()
     }
 
     fun updateApplication(applicationId: String, applicationDto: ApplicationDto) = ApplicationDto("", "", "", "")
