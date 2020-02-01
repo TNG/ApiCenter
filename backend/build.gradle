@@ -65,11 +65,11 @@ dependencies {
     compile "org.postgresql:postgresql:42.2.8"
     compile "com.h2database:h2:1.4.200"
     compile "org.flywaydb:flyway-core:6.2.1"
-    compile "org.hibernate:hibernate-search-orm:5.11.2.Final"
+    compile "org.hibernate:hibernate-search-orm:5.11.4.Final"
     // Helpers
     compile "com.jayway.jsonpath:json-path:2.4.0"
     compile "org.apache.commons:commons-io:1.3.2"
-    compile "net.rakugakibox.spring.boot:orika-spring-boot-starter:1.8.0"
+    compile "net.rakugakibox.spring.boot:orika-spring-boot-starter:1.9.0"
     compile "io.github.microutils:kotlin-logging:1.7.8"
     compile "com.github.zafarkhaja:java-semver:0.9.0"
     compile ("com.qdesrame:openapi-diff:1.2.0") {
