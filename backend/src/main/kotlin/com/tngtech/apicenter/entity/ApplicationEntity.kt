@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 data class ApplicationEntity(
-        @Id val applicationId: String?,
-        @NotBlank val name: String,
-        @NotBlank val description: String,
-        @NotBlank val contact: String
+    @Id val applicationId: String?,
+    @NotBlank val name: String,
+    @NotBlank val description: String,
+    @NotBlank val contact: String
 )
