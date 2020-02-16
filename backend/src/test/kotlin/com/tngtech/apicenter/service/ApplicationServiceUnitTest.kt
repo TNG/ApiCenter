@@ -67,4 +67,40 @@ class ApplicationServiceUnitTest {
 
         assertThat(applications).containsOnly(applicationDtoA, applicationDtoB)
     }
+
+    @Test
+    fun `when updating an application it should update the application`() {
+        val applicationDto = ApplicationDto("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val applicationEntity = ApplicationEntity("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
+
+        given(applicationRepository.save(applicationEntity)).willReturn(applicationEntity)
+        given(applicationMapper.toDto(applicationEntity)).willReturn(applicationDto)
+        given(applicationMapper.toEntity(applicationDto)).willReturn(applicationEntity)
+
+        val updatedApplication = applicationService.updateApplication("applicationId", applicationDto)
+
+        verify(applicationRepository).save(applicationEntity)
+        verify(applicationMapper).toDto(applicationEntity)
+        verify(applicationMapper).toEntity(applicationDto)
+
+        assertThat(updatedApplication).isEqualTo(applicationDto)
+    }
+
+    @Test
+    fun `when updating an application without existing id it should set the id and update the application`() {
+        val applicationDto = ApplicationDto("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val applicationEntity = ApplicationEntity("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
+
+        given(applicationRepository.save(applicationEntity)).willReturn(applicationEntity)
+        given(applicationMapper.toDto(applicationEntity)).willReturn(applicationDto)
+        given(applicationMapper.toEntity(applicationDto)).willReturn(applicationEntity)
+
+        val updatedApplication = applicationService.updateApplication("applicationId", ApplicationDto(null, "newApplicationName", "newApplicationDescription", "newApplicationContact"))
+
+        verify(applicationRepository).save(ApplicationEntity("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact"))
+        verify(applicationMapper).toDto(applicationEntity)
+        verify(applicationMapper).toEntity(applicationDto)
+
+        assertThat(updatedApplication).isEqualTo(applicationDto)
+    }
 }

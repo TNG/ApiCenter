@@ -17,7 +17,17 @@ class ApplicationService(private val applicationMapper: ApplicationMapper, priva
         return applicationMapper.toDto(createdApplication)
     }
 
-    fun updateApplication(applicationId: String, applicationDto: ApplicationDto) = ApplicationDto("", "", "", "")
+    fun updateApplication(applicationId: String, applicationDto: ApplicationDto): ApplicationDto {
+        val applicationDtoToStore = if (applicationDto.id.isNullOrBlank()) {
+            ApplicationDto(applicationId, applicationDto.name, applicationDto.description, applicationDto.contact)
+        } else {
+            applicationDto
+        }
+
+        val updatedApplicationEntity = applicationRepository.save(applicationMapper.toEntity(applicationDtoToStore))
+
+        return applicationMapper.toDto(updatedApplicationEntity)
+    }
 
     fun deleteApplication(applicationId: String) = ApplicationDto("", "", "", "")
 }
