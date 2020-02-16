@@ -2,6 +2,7 @@ package com.tngtech.apicenter.controller
 
 import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.service.ApplicationService
+import javax.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,7 +25,7 @@ class ApplicationController(private val applicationService: ApplicationService) 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createApplication(@RequestBody applicationDto: ApplicationDto) = applicationService.createApplication(applicationDto)
+    fun createApplication(@Valid @RequestBody applicationDto: ApplicationDto) = applicationService.createApplication(applicationDto)
 
     @PutMapping("/{applicationId}")
     fun updateApplication(@PathVariable applicationId: String, @RequestBody applicationDto: ApplicationDto) = applicationService.updateApplication(applicationId, applicationDto)
