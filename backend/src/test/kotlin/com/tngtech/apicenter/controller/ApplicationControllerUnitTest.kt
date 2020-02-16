@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
+import java.util.*
 
 @WebMvcTest(ApplicationController::class)
 class ApplicationControllerUnitTest {
@@ -73,13 +74,13 @@ class ApplicationControllerUnitTest {
 
     @Test
     fun `should update application`() {
-        val applicationIdToUpdate = "applicationIdToUpdate"
+        val applicationIdToUpdate = UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673")
 
         val applicationUpdate = ApplicationDto(null, "applicationNameAfter", "applicationDescriptionAfter", "contactAfter")
 
         given(applicationService.updateApplication(applicationIdToUpdate, applicationUpdate)).willReturn(applicationUpdate)
 
-        mockMvc.put("/api/applications/applicationIdToUpdate") {
+        mockMvc.put("/api/applications/7da9b86a-9322-425a-b2db-1bcf692ab673") {
             contentType = MediaType.APPLICATION_JSON
             content = """
                 {

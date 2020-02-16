@@ -4,6 +4,7 @@ import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.mapper.ApplicationMapper
 import com.tngtech.apicenter.repository.ApplicationRepository
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class ApplicationService(private val applicationMapper: ApplicationMapper, private val applicationRepository: ApplicationRepository) {
@@ -17,8 +18,8 @@ class ApplicationService(private val applicationMapper: ApplicationMapper, priva
         return applicationMapper.toDto(createdApplication)
     }
 
-    fun updateApplication(applicationId: String, applicationDto: ApplicationDto): ApplicationDto {
-        val applicationDtoToStore = if (applicationDto.id.isNullOrBlank()) {
+    fun updateApplication(applicationId: UUID, applicationDto: ApplicationDto): ApplicationDto {
+        val applicationDtoToStore = if (applicationDto.id === null) {
             ApplicationDto(applicationId, applicationDto.name, applicationDto.description, applicationDto.contact)
         } else {
             applicationDto
@@ -29,5 +30,5 @@ class ApplicationService(private val applicationMapper: ApplicationMapper, priva
         return applicationMapper.toDto(updatedApplicationEntity)
     }
 
-    fun deleteApplication(applicationId: String) = ApplicationDto("", "", "", "")
+    fun deleteApplication(applicationId: String) = ApplicationDto(UUID.randomUUID(), "", "", "")
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping("/api/applications")
@@ -28,7 +29,7 @@ class ApplicationController(private val applicationService: ApplicationService) 
     fun createApplication(@Valid @RequestBody applicationDto: ApplicationDto) = applicationService.createApplication(applicationDto)
 
     @PutMapping("/{applicationId}")
-    fun updateApplication(@PathVariable applicationId: String, @RequestBody applicationDto: ApplicationDto) = applicationService.updateApplication(applicationId, applicationDto)
+    fun updateApplication(@PathVariable applicationId: String, @RequestBody applicationDto: ApplicationDto) = applicationService.updateApplication(UUID.fromString(applicationId), applicationDto)
 
     @DeleteMapping("/{applicationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
