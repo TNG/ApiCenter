@@ -5,14 +5,11 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.validation.constraints.NotBlank
 import org.hibernate.annotations.GenericGenerator
+import java.util.*
 
 @Entity
 data class ApplicationEntity(
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    val id: String?,
-
+    @Id @GeneratedValue val id: UUID?,
     @NotBlank val name: String,
     @NotBlank val description: String,
     @NotBlank val contact: String

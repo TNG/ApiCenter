@@ -12,6 +12,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
+import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class ApplicationServiceUnitTest {
@@ -29,8 +30,8 @@ class ApplicationServiceUnitTest {
     fun `when creating an application it should create application and return created application`() {
         val newApplicationDto = ApplicationDto(null, "newApplicationName", "newApplicationDescription", "newApplicationContact")
         val mappedApplicationEntity = ApplicationEntity(null, "newApplicationName", "newApplicationDescription", "newApplicationContact")
-        val createdApplicationEntity = ApplicationEntity("newApplicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
-        val createdApplicationDto = ApplicationDto("newApplicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val createdApplicationEntity = ApplicationEntity(UUID.fromString("caa7f982-ff3d-40b5-95ff-b3743f53e795"), "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val createdApplicationDto = ApplicationDto(UUID.fromString("caa7f982-ff3d-40b5-95ff-b3743f53e795"), "newApplicationName", "newApplicationDescription", "newApplicationContact")
 
         given(applicationMapper.toEntity(newApplicationDto)).willReturn(mappedApplicationEntity)
         given(applicationMapper.toDto(createdApplicationEntity)).willReturn(createdApplicationDto)
@@ -42,7 +43,7 @@ class ApplicationServiceUnitTest {
         verify(applicationMapper).toDto(createdApplicationEntity)
         verify(applicationRepository).save(mappedApplicationEntity)
 
-        assertThat(createdApplication.id).isEqualTo("newApplicationId")
+        assertThat(createdApplication.id).isEqualTo(UUID.fromString("caa7f982-ff3d-40b5-95ff-b3743f53e795"))
         assertThat(createdApplication.name).isEqualTo("newApplicationName")
         assertThat(createdApplication.description).isEqualTo("newApplicationDescription")
         assertThat(createdApplication.contact).isEqualTo("newApplicationContact")
@@ -50,10 +51,10 @@ class ApplicationServiceUnitTest {
 
     @Test
     fun `when requested all applications it should return all applications`() {
-        val applicationEntityA = ApplicationEntity("id1", "applicationA", "descriptionA", "contactA")
-        val applicationEntityB = ApplicationEntity("id2", "applicationB", "descriptionB", "contactB")
-        val applicationDtoA = ApplicationDto("id1", "applicationA", "descriptionA", "contactA")
-        val applicationDtoB = ApplicationDto("id2", "applicationB", "descriptionB", "contactB")
+        val applicationEntityA = ApplicationEntity(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), "applicationA", "descriptionA", "contactA")
+        val applicationEntityB = ApplicationEntity(UUID.fromString("caa7f982-ff3d-40b5-95ff-b3743f53e795"), "applicationB", "descriptionB", "contactB")
+        val applicationDtoA = ApplicationDto(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), "applicationA", "descriptionA", "contactA")
+        val applicationDtoB = ApplicationDto(UUID.fromString("caa7f982-ff3d-40b5-95ff-b3743f53e795"), "applicationB", "descriptionB", "contactB")
 
         given(applicationRepository.findAll()).willReturn(listOf(applicationEntityA, applicationEntityB))
         given(applicationMapper.toDto(applicationEntityA)).willReturn(applicationDtoA)
@@ -70,14 +71,14 @@ class ApplicationServiceUnitTest {
 
     @Test
     fun `when updating an application it should update the application`() {
-        val applicationDto = ApplicationDto("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
-        val applicationEntity = ApplicationEntity("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val applicationDto = ApplicationDto(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val applicationEntity = ApplicationEntity(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), "newApplicationName", "newApplicationDescription", "newApplicationContact")
 
         given(applicationRepository.save(applicationEntity)).willReturn(applicationEntity)
         given(applicationMapper.toDto(applicationEntity)).willReturn(applicationDto)
         given(applicationMapper.toEntity(applicationDto)).willReturn(applicationEntity)
 
-        val updatedApplication = applicationService.updateApplication("applicationId", applicationDto)
+        val updatedApplication = applicationService.updateApplication(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), applicationDto)
 
         verify(applicationRepository).save(applicationEntity)
         verify(applicationMapper).toDto(applicationEntity)
@@ -88,16 +89,16 @@ class ApplicationServiceUnitTest {
 
     @Test
     fun `when updating an application without existing id it should set the id and update the application`() {
-        val applicationDto = ApplicationDto("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
-        val applicationEntity = ApplicationEntity("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val applicationDto = ApplicationDto(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), "newApplicationName", "newApplicationDescription", "newApplicationContact")
+        val applicationEntity = ApplicationEntity(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), "newApplicationName", "newApplicationDescription", "newApplicationContact")
 
         given(applicationRepository.save(applicationEntity)).willReturn(applicationEntity)
         given(applicationMapper.toDto(applicationEntity)).willReturn(applicationDto)
         given(applicationMapper.toEntity(applicationDto)).willReturn(applicationEntity)
 
-        val updatedApplication = applicationService.updateApplication("applicationId", ApplicationDto(null, "newApplicationName", "newApplicationDescription", "newApplicationContact"))
+        val updatedApplication = applicationService.updateApplication(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), ApplicationDto(null, "newApplicationName", "newApplicationDescription", "newApplicationContact"))
 
-        verify(applicationRepository).save(ApplicationEntity("applicationId", "newApplicationName", "newApplicationDescription", "newApplicationContact"))
+        verify(applicationRepository).save(ApplicationEntity(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"), "newApplicationName", "newApplicationDescription", "newApplicationContact"))
         verify(applicationMapper).toDto(applicationEntity)
         verify(applicationMapper).toEntity(applicationDto)
 
