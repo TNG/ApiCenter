@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class ApplicationService(private val applicationMapper: ApplicationMapper, private val applicationRepository: ApplicationRepository) {
 
-    fun getApplications(): List<ApplicationDto> = emptyList()
+    fun getApplications(): List<ApplicationDto> = applicationRepository.findAll().map { application -> applicationMapper.toDto(application) }
 
     fun createApplication(applicationDto: ApplicationDto): ApplicationDto {
         val applicationEntity = applicationMapper.toEntity(applicationDto)

@@ -47,4 +47,24 @@ class ApplicationServiceUnitTest {
         assertThat(createdApplication.description).isEqualTo("newApplicationDescription")
         assertThat(createdApplication.contact).isEqualTo("newApplicationContact")
     }
+
+    @Test
+    fun `when requested all applications it should return all applications`() {
+        val applicationEntityA = ApplicationEntity("id1", "applicationA", "descriptionA", "contactA")
+        val applicationEntityB = ApplicationEntity("id2", "applicationB", "descriptionB", "contactB")
+        val applicationDtoA = ApplicationDto("id1", "applicationA", "descriptionA", "contactA")
+        val applicationDtoB = ApplicationDto("id2", "applicationB", "descriptionB", "contactB")
+
+        given(applicationRepository.findAll()).willReturn(listOf(applicationEntityA, applicationEntityB))
+        given(applicationMapper.toDto(applicationEntityA)).willReturn(applicationDtoA)
+        given(applicationMapper.toDto(applicationEntityB)).willReturn(applicationDtoB)
+
+        val applications = applicationService.getApplications()
+
+        verify(applicationRepository).findAll()
+        verify(applicationMapper).toDto(applicationEntityA)
+        verify(applicationMapper).toDto(applicationEntityB)
+
+        assertThat(applications).containsOnly(applicationDtoA, applicationDtoB)
+    }
 }
