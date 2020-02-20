@@ -4,6 +4,7 @@ import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.entity.ApplicationEntity
 import com.tngtech.apicenter.mapper.ApplicationMapper
 import com.tngtech.apicenter.repository.ApplicationRepository
+import java.util.UUID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -12,7 +13,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
-import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class ApplicationServiceUnitTest {
