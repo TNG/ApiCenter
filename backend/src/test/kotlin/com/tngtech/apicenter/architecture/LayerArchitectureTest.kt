@@ -32,10 +32,4 @@ class LayerArchitectureTest {
             .should()
             .accessClassesThat()
             .resideInAnyPackage("..service..", "controller")
-
-    @ArchTest
-    val ensureUtilsAreIndependent: ArchRule = noClasses().that().resideInAPackage("..util..")
-            .should()
-            .dependOnClassesThat()
-            .resideInAnyPackage("..manager..", "..business..", "..client..")
 }
