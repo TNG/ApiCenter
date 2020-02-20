@@ -22,7 +22,8 @@ class ApplicationController(private val applicationService: ApplicationService) 
     @GetMapping
     fun getApplications() = applicationService.getApplications()
 
-    // TODO /api/applications/{applicationId}
+    @GetMapping("/{applicationId}")
+    fun getApplication(@PathVariable applicationId: UUID) = applicationService.getApplication(applicationId)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -33,5 +34,5 @@ class ApplicationController(private val applicationService: ApplicationService) 
 
     @DeleteMapping("/{applicationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteApplication(@PathVariable applicationId: String) = applicationService.deleteApplication(applicationId)
+    fun deleteApplication(@PathVariable applicationId: String) = applicationService.deleteApplication(UUID.fromString(applicationId))
 }

@@ -3,8 +3,10 @@ package com.tngtech.apicenter.service
 import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.mapper.ApplicationMapper
 import com.tngtech.apicenter.repository.ApplicationRepository
+import org.springframework.data.repository.findByIdOrNull
 import java.util.UUID
 import org.springframework.stereotype.Service
+import javax.persistence.EntityNotFoundException
 
 @Service
 class ApplicationService(private val applicationMapper: ApplicationMapper, private val applicationRepository: ApplicationRepository) {
@@ -30,5 +32,11 @@ class ApplicationService(private val applicationMapper: ApplicationMapper, priva
         return applicationMapper.toDto(updatedApplicationEntity)
     }
 
-    fun deleteApplication(applicationId: String) = ApplicationDto(UUID.randomUUID(), "", "", "")
+    fun deleteApplication(applicationId: UUID) = applicationRepository.deleteById(applicationId)
+
+    fun getApplication(applicationId: UUID): ApplicationDto {
+        val application = applicationRepository.findByIdOrNull(applicationId) ?: throw EntityNotFoundException()
+
+        return applicationMapper.toDto(application)
+    }
 }

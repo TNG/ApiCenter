@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
+import javax.persistence.EntityNotFoundException
 
 @WebMvcTest(ApplicationController::class)
 class ApplicationControllerUnitTest {
@@ -102,9 +103,9 @@ class ApplicationControllerUnitTest {
 
     @Test
     fun `should delete application`() {
-        val applicationIdToDelete = "applicationIdToUpdate"
+        val applicationIdToDelete = UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673")
 
-        mockMvc.delete("/api/applications/applicationIdToUpdate").andExpect {
+        mockMvc.delete("/api/applications/7da9b86a-9322-425a-b2db-1bcf692ab673").andExpect {
             status { isNoContent }
         }
 
