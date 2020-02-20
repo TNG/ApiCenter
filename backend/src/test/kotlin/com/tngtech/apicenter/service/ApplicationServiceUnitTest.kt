@@ -104,4 +104,11 @@ class ApplicationServiceUnitTest {
 
         assertThat(updatedApplication).isEqualTo(applicationDto)
     }
+
+    @Test
+    fun `should delete application`() {
+        applicationService.deleteApplication(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"))
+
+        verify(applicationRepository).deleteById(UUID.fromString("7da9b86a-9322-425a-b2db-1bcf692ab673"))
+    }
 }
