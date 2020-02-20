@@ -18,18 +18,31 @@ class LayerArchitectureTest {
     @ArchTest
     val enforceRestControllerShouldNotAccessDatabaseLayer: ArchRule? = noClasses().that().resideInAnyPackage("..controller..", "..dto..")
             .should()
-            .accessClassesThat()
+            .dependOnClassesThat()
             .resideInAnyPackage("..entity..", "..repository..")
 
     @ArchTest
     val enforceServiceDoesNotAccessUpwards: ArchRule? = noClasses().that().resideInAnyPackage("..service..")
             .should()
-            .accessClassesThat()
+            .dependOnClassesThat()
             .resideInAnyPackage("..controller..")
 
     @ArchTest
     val enforceRepositoryDoesNotAccessUpwards: ArchRule? = noClasses().that().resideInAnyPackage("..repository..")
             .should()
-            .accessClassesThat()
-            .resideInAnyPackage("..service..", "controller")
+            .dependOnClassesThat()
+            .resideInAnyPackage("..service..", "..controller..")
+
+    @ArchTest
+    val enforceEntityDoesNotAccessUpwards: ArchRule? = noClasses().that().resideInAnyPackage("..entity..")
+            .should()
+            .dependOnClassesThat()
+            .resideInAnyPackage("..controller..")
+
+    @ArchTest
+    val enforceMapperShouldNotAccessUpOrDownwards: ArchRule? = noClasses().that().resideInAnyPackage("..mapper..")
+            .should()
+            .dependOnClassesThat()
+            .resideInAnyPackage("..controller..", "..repository..")
+
 }
