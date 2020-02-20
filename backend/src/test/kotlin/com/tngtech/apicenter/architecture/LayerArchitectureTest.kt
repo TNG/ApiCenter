@@ -4,10 +4,9 @@ import com.tngtech.archunit.core.importer.ImportOption
 import com.tngtech.archunit.junit.AnalyzeClasses
 import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.lang.ArchRule
-import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 
-@AnalyzeClasses(packages = arrayOf("com.tngtech.apicenter"), importOptions = [ImportOption.DontIncludeTests::class] )
+@AnalyzeClasses(packages = arrayOf("com.tngtech.apicenter"), importOptions = [ImportOption.DontIncludeTests::class])
 class LayerArchitectureTest {
 
     @ArchTest

@@ -2,6 +2,7 @@ package com.tngtech.apicenter.controller
 
 import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.service.ApplicationService
+import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
@@ -14,7 +15,6 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
-import java.util.*
 
 @WebMvcTest(ApplicationController::class)
 class ApplicationControllerUnitTest {

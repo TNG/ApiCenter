@@ -1,11 +1,10 @@
 package com.tngtech.apicenter.entity
 
+import java.util.UUID
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.validation.constraints.NotBlank
-import org.hibernate.annotations.GenericGenerator
-import java.util.*
 
 @Entity
 data class ApplicationEntity(

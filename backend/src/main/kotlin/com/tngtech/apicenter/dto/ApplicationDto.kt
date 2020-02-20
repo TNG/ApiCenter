@@ -1,6 +1,6 @@
 package com.tngtech.apicenter.dto
 
-import java.util.*
+import java.util.UUID
 import javax.validation.constraints.NotBlank
 
 data class ApplicationDto(

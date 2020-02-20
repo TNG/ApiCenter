@@ -2,9 +2,9 @@ package com.tngtech.apicenter.mapper
 
 import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.entity.ApplicationEntity
+import java.util.UUID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.util.*
 
 class ApplicationMapperUnitTest {
 

@@ -3,8 +3,8 @@ package com.tngtech.apicenter.service
 import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.mapper.ApplicationMapper
 import com.tngtech.apicenter.repository.ApplicationRepository
+import java.util.UUID
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class ApplicationService(private val applicationMapper: ApplicationMapper, private val applicationRepository: ApplicationRepository) {
