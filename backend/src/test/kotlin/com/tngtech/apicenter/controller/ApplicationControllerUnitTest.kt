@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
-import javax.persistence.EntityNotFoundException
 
 @WebMvcTest(ApplicationController::class)
 class ApplicationControllerUnitTest {

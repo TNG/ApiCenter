@@ -3,10 +3,10 @@ package com.tngtech.apicenter.service
 import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.mapper.ApplicationMapper
 import com.tngtech.apicenter.repository.ApplicationRepository
-import org.springframework.data.repository.findByIdOrNull
 import java.util.UUID
-import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
 
 @Service
 class ApplicationService(private val applicationMapper: ApplicationMapper, private val applicationRepository: ApplicationRepository) {
