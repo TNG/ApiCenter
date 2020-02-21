@@ -44,5 +44,4 @@ class LayerArchitectureTest {
             .should()
             .dependOnClassesThat()
             .resideInAnyPackage("..controller..", "..repository..")
-
 }
