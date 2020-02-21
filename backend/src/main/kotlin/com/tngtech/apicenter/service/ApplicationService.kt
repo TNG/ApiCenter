@@ -5,6 +5,7 @@ import com.tngtech.apicenter.mapper.ApplicationMapper
 import com.tngtech.apicenter.repository.ApplicationRepository
 import java.util.UUID
 import javax.persistence.EntityNotFoundException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -21,18 +22,20 @@ class ApplicationService(private val applicationMapper: ApplicationMapper, priva
     }
 
     fun updateApplication(applicationId: UUID, applicationDto: ApplicationDto): ApplicationDto {
-        val applicationDtoToStore = if (applicationDto.id === null) {
-            ApplicationDto(applicationId, applicationDto.name, applicationDto.description, applicationDto.contact)
-        } else {
-            applicationDto
-        }
+        val applicationDtoToStore = ApplicationDto(applicationId, applicationDto.name, applicationDto.description, applicationDto.contact)
 
         val updatedApplicationEntity = applicationRepository.save(applicationMapper.toEntity(applicationDtoToStore))
 
         return applicationMapper.toDto(updatedApplicationEntity)
     }
 
-    fun deleteApplication(applicationId: UUID) = applicationRepository.deleteById(applicationId)
+    fun deleteApplication(applicationId: UUID) {
+        try {
+            return applicationRepository.deleteById(applicationId)
+        } catch (exception: EmptyResultDataAccessException) {
+            throw EntityNotFoundException().initCause(exception)
+        }
+    }
 
     fun getApplication(applicationId: UUID): ApplicationDto {
         val application = applicationRepository.findByIdOrNull(applicationId) ?: throw EntityNotFoundException()
