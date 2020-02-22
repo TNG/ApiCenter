@@ -9,3 +9,7 @@ tasks.withType<Jar>() {
   from("dist/apicenter")
   into("static")
 }
+
+tasks.register("e2e", com.moowork.gradle.node.npm.NpmTask::class) {
+  setNpmCommand("run", "e2e")
+}
