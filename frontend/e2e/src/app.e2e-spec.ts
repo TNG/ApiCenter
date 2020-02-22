@@ -8,9 +8,9 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display ApiCenter in title', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('apicenter app is running!');
+    expect(page.getTitleText()).toEqual('ApiCenter');
   });
 
   afterEach(async () => {
