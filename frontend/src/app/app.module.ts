@@ -14,28 +14,35 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ApplicationFormComponent } from './application-form/application-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { ApplicationCreateComponent } from './application-create/application-create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     ApplicationOverviewComponent,
-    ApplicationFormComponent
+    ApplicationFormComponent,
+    ApplicationCreateComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MatTableModule,
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ApplicationFormComponent]
+  entryComponents: [ApplicationCreateComponent]
 })
 export class AppModule {}
