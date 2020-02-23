@@ -17,6 +17,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { ApplicationCreateComponent } from './application-create/application-create.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { ApplicationCreateComponent } from './application-create/application-cre
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     MatTableModule,
     MatSortModule,
     MatFormFieldModule,
@@ -39,7 +42,8 @@ import { ApplicationCreateComponent } from './application-create/application-cre
     MatIconModule,
     MatDialogModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
