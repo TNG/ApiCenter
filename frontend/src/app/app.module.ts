@@ -10,13 +10,17 @@ import { MatInputModule } from '@angular/material/input';
 import { AppComponent } from './app.component';
 import { ApplicationOverviewComponent } from './application-overview/application-overview.component';
 import { HeaderComponent } from './header/header.component';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ApplicationFormComponent } from './application-form/application-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ApplicationOverviewComponent
+    ApplicationOverviewComponent,
+    ApplicationFormComponent
   ],
   imports: [
     BrowserModule,
@@ -25,9 +29,13 @@ import { HeaderComponent } from './header/header.component';
     MatTableModule,
     MatSortModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ApplicationFormComponent]
 })
-export class AppModule { }
+export class AppModule {}
