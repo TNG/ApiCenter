@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Application } from '../models/application';
-import { ApplicationService } from '../application.service';
+import { Application } from '../../models/application';
+import { ApplicationService } from '../../services/application.service';
 
 @Component({
   selector: 'app-application-create',

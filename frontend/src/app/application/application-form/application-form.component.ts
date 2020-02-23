@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Application } from '../models/application';
+import { Application } from '../../models/application';
 
 @Component({
   selector: 'app-application-form',
