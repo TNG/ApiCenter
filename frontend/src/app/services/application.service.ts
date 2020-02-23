@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Application } from './models/application';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../environments/environment';
 import { catchError, take } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../environments/environment';
+import { Application } from '../models/application';
 
 @Injectable({
   providedIn: 'root'

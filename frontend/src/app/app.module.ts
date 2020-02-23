@@ -2,51 +2,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 
 import { AppComponent } from './app.component';
-import { ApplicationOverviewComponent } from './application-overview/application-overview.component';
 import { HeaderComponent } from './header/header.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { ApplicationFormComponent } from './application-form/application-form.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { ApplicationCreateComponent } from './application-create/application-create.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ApplicationModule } from './application/application.module';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    ApplicationOverviewComponent,
-    ApplicationFormComponent,
-    ApplicationCreateComponent
-  ],
+  declarations: [AppComponent, HeaderComponent],
   imports: [
-    BrowserModule,
+    ApplicationModule,
     AppRoutingModule,
+    BrowserModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
     HttpClientModule,
-    MatTableModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatInputModule,
-    MatCardModule,
-    MatSnackBarModule
+    MaterialModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [ApplicationCreateComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

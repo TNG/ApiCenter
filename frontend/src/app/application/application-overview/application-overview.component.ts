@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Application } from '../models/application';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationCreateComponent } from '../application-create/application-create.component';
+import { Application } from '../../models/application';
 
 @Component({
   selector: 'app-application-overview',
