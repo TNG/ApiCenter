@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Application } from '../models/application';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { ApplicationFormComponent } from '../application-form/application-form.component';
+import { ApplicationCreateComponent } from '../application-create/application-create.component';
 
 @Component({
   selector: 'app-application-overview',
@@ -47,9 +47,6 @@ export class ApplicationOverviewComponent implements OnInit {
   }
 
   openCreateApplicationDialog() {
-    this.dialog.open(ApplicationFormComponent, {
-      height: '400px',
-      width: '600px'
-    });
+    this.dialog.open(ApplicationCreateComponent);
   }
 }

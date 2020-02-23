@@ -1,1 +1,39 @@
-<p>application-form works!</p>
+<form
+  [formGroup]="applicationForm"
+  (ngSubmit)="onSubmit(applicationForm.value)"
+>
+  <mat-form-field *ngIf="applicationForm.get('name') as name">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required />
+    <mat-error *ngIf="!name.valid && name.errors.required"
+      >Name is required.</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="applicationForm.get('description') as description">
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description" required />
+    <mat-error *ngIf="!description.valid && description.errors.required"
+      >Description is required.</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="applicationForm.get('contact') as contact">
+    <mat-label>Contact</mat-label>
+    <input matInput formControlName="contact" required />
+    <mat-error *ngIf="!contact.valid && contact.errors.required"
+      >Contact is required.</mat-error
+    >
+  </mat-form-field>
+
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!applicationForm.valid"
+    >
+      Save
+    </button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+  </mat-card-actions>
+</form>
