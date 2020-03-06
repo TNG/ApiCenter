@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationCreateComponent } from '../application-create/application-create.component';
 import { Application } from '../../models/application';
+import { ApplicationService } from '../../services/application.service';
 
 @Component({
   selector: 'app-application-overview',
@@ -11,34 +12,23 @@ import { Application } from '../../models/application';
   styleUrls: ['application-overview.component.css']
 })
 export class ApplicationOverviewComponent implements OnInit {
-  applications: Application[] = [
-    {
-      name: 'CRM',
-      description: 'Customer management',
-      contact: 'Max Mustermann'
-    },
-    {
-      name: 'Webportal',
-      description: 'Online shop and self-service',
-      contact: 'Martina Musterfrau'
-    },
-    {
-      name: 'WFE',
-      description: 'Workflow engine processing orders of customers',
-      contact: 'Bernd das Brot'
-    }
-  ];
+  applications: Application[] = [];
+  applicationsTableData: MatTableDataSource<Application>;
 
   displayedColumns = ['name', 'description', 'contact'];
-  applicationsTableData = new MatTableDataSource<Application>(
-    this.applications
-  );
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private applicationService: ApplicationService,
+    private dialog: MatDialog
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.applications = await this.applicationService.getApplications();
+    this.applicationsTableData = new MatTableDataSource<Application>(
+      this.applications
+    );
     this.applicationsTableData.sort = this.sort;
   }
 
