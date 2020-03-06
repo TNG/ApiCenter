@@ -24,6 +24,20 @@ export class ApplicationService {
       .toPromise();
   }
 
+  public async getApplications() {
+    return (await this.httpClient
+      .get(environment.apiUrl + '/applications')
+      .pipe(
+        take(1),
+        catchError(
+          this.getErrorHandler(
+            'Error retrieving applications. Please try again.'
+          )
+        )
+      )
+      .toPromise()) as Promise<Application[]>;
+  }
+
   private getErrorHandler(errorMessage: string) {
     return (error: HttpErrorResponse) => {
       this.snackBar.open(errorMessage, 'close', { duration: 3000 });
