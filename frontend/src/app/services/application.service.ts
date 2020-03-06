@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, take } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment';
 import { Application } from '../models/application';
@@ -12,37 +10,14 @@ import { Application } from '../models/application';
 export class ApplicationService {
   constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {}
 
-  public async createApplication(application: Application) {
-    return await this.httpClient
-      .post(environment.apiUrl + '/applications', application)
-      .pipe(
-        take(1),
-        catchError(
-          this.getErrorHandler('Error creating application. Please try again.')
-        )
-      )
-      .toPromise();
+  public createApplication(application: Application) {
+    return this.httpClient.post(
+      environment.apiUrl + '/applications',
+      application
+    );
   }
 
-  public async getApplications() {
-    return (await this.httpClient
-      .get(environment.apiUrl + '/applications')
-      .pipe(
-        take(1),
-        catchError(
-          this.getErrorHandler(
-            'Error retrieving applications. Please try again.'
-          )
-        )
-      )
-      .toPromise()) as Promise<Application[]>;
-  }
-
-  private getErrorHandler(errorMessage: string) {
-    return (error: HttpErrorResponse) => {
-      this.snackBar.open(errorMessage, 'close', { duration: 3000 });
-
-      return throwError(error);
-    };
+  public getApplications() {
+    return this.httpClient.get(environment.apiUrl + '/applications');
   }
 }
