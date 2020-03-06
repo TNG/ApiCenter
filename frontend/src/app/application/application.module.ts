@@ -5,6 +5,8 @@ import { ApplicationOverviewComponent } from './application-overview/application
 import { ApplicationFormComponent } from './application-form/application-form.component';
 import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { applicationReducer } from './store/reducers/application.reducers';
 
 @NgModule({
   declarations: [
@@ -12,7 +14,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     ApplicationOverviewComponent,
     ApplicationFormComponent
   ],
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    StoreModule.forFeature('applicationState', applicationReducer)
+  ],
   entryComponents: [ApplicationCreateComponent],
   exports: [ApplicationOverviewComponent]
 })

@@ -1,7 +1,10 @@
 <button mat-fab (click)="openCreateApplicationDialog()">
   <mat-icon aria-label="Add application">add</mat-icon>
 </button>
-<mat-form-field *ngIf="applications.length > 0" class="filter">
+<mat-form-field
+  *ngIf="(applicationsTableData$ | async).data.length > 0"
+  class="filter"
+>
   <label>
     <!--suppress TypeScriptUnresolvedVariable -->
     <input
@@ -13,9 +16,9 @@
 </mat-form-field>
 
 <table
-  *ngIf="applications.length > 0"
+  *ngIf="(applicationsTableData$ | async).data.length > 0"
   mat-table
-  [dataSource]="applicationsTableData"
+  [dataSource]="applicationsTableData$ | async"
   matSort
   class="mat-elevation-z8"
 >
@@ -38,4 +41,6 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
 
-<p *ngIf="applications.length === 0">There are no applications available.</p>
+<p *ngIf="(applicationsTableData$ | async).data.length === 0">
+  There are no applications available.
+</p>
