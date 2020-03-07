@@ -9,12 +9,14 @@ import { StoreModule } from '@ngrx/store';
 import { applicationReducer } from './store/reducers/application.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from './store/effects/application.effects';
+import { ApplicationTableComponent } from './application-overview/application-table/application-table.component';
 
 @NgModule({
   declarations: [
     ApplicationCreateComponent,
     ApplicationOverviewComponent,
-    ApplicationFormComponent
+    ApplicationFormComponent,
+    ApplicationTableComponent
   ],
   imports: [
     CommonModule,
