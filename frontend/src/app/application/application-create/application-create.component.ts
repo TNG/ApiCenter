@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Application } from '../../models/application';
-import { ApplicationService } from '../../services/application.service';
+import { Store } from '@ngrx/store';
+import { createApplication } from '../store/actions/application.actions';
 
 @Component({
   selector: 'app-application-create',
@@ -11,7 +12,7 @@ import { ApplicationService } from '../../services/application.service';
 export class ApplicationCreateComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ApplicationCreateComponent>,
-    private applicationService: ApplicationService
+    private store: Store<Application>
   ) {}
 
   ngOnInit() {}
@@ -21,7 +22,7 @@ export class ApplicationCreateComponent implements OnInit {
   }
 
   async onSave(application: Application) {
-    await this.applicationService.createApplication(application);
+    this.store.dispatch(createApplication({ application }));
     this.dialogRef.close();
   }
 }
