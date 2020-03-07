@@ -11,13 +11,15 @@ export class ApplicationService {
   constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {}
 
   public createApplication(application: Application) {
-    return this.httpClient.post(
+    return this.httpClient.post<Application[]>(
       environment.apiUrl + '/applications',
       application
     );
   }
 
   public getApplications() {
-    return this.httpClient.get(environment.apiUrl + '/applications');
+    return this.httpClient.get<Application[]>(
+      environment.apiUrl + '/applications'
+    );
   }
 }

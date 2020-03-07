@@ -9,3 +9,14 @@ export const loadApplicationsSuccess = createAction(
 export const loadApplicationsFailure = createAction(
   'Load applications failure'
 );
+
+export const createApplication = createAction(
+  'Create application',
+  props<{ application: Application }>()
+);
+export const createApplicationSuccess = createAction(
+  'Create application success'
+);
+export const createApplicationFailure = createAction(
+  'Create application failure'
+);
