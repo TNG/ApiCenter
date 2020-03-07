@@ -16,10 +16,10 @@
 </mat-form-field>
 
 <table
-  *ngIf="(applicationsTableData$ | async).data.length > 0"
   mat-table
-  [dataSource]="applicationsTableData$ | async"
   matSort
+  *ngIf="(applicationsTableData$ | async).data.length > 0"
+  [dataSource]="applicationsTableData$ | async"
   class="mat-elevation-z8"
 >
   <ng-container matColumnDef="name">

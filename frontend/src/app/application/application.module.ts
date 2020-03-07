@@ -7,6 +7,8 @@ import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { applicationReducer } from './store/reducers/application.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { ApplicationEffects } from './store/effects/application.effects';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { applicationReducer } from './store/reducers/application.reducers';
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    StoreModule.forFeature('applicationState', applicationReducer)
+    StoreModule.forFeature('applicationState', applicationReducer),
+    EffectsModule.forFeature([ApplicationEffects])
   ],
   entryComponents: [ApplicationCreateComponent],
   exports: [ApplicationOverviewComponent]
