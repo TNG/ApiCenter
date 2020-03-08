@@ -20,3 +20,16 @@ export const createApplicationSuccess = createAction(
 export const createApplicationFailure = createAction(
   'Create application failure'
 );
+
+export const deleteApplication = createAction(
+  'Delete application',
+  props<{ application: Application }>()
+);
+
+export const deleteApplicationSuccess = createAction(
+  'Delete application success'
+);
+
+export const deleteApplicationFailure = createAction(
+  'Delete application failure'
+);
