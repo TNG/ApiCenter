@@ -17,6 +17,12 @@ export class ApplicationService {
     );
   }
 
+  public deleteApplication(application: Application) {
+    return this.httpClient.delete<Application>(
+      environment.apiUrl + '/applications/' + application.id
+    );
+  }
+
   public getApplications() {
     return this.httpClient.get<Application[]>(
       environment.apiUrl + '/applications'

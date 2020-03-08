@@ -7,6 +7,7 @@ import { selectApplications } from '../store/selector/application.selectors';
 import { Observable } from 'rxjs';
 import { loadApplications } from '../store/actions/application.actions';
 import { AppState } from '../../store/state/app.state';
+import { ApplicationDeleteComponent } from '../application-delete/application-delete.component';
 
 @Component({
   selector: 'app-application-overview',
@@ -26,5 +27,9 @@ export class ApplicationOverviewComponent implements OnInit {
 
   openCreateApplicationDialog() {
     this.dialog.open(ApplicationCreateComponent);
+  }
+
+  openConfirmDeleteApplicationDialog(application: Application) {
+    this.dialog.open(ApplicationDeleteComponent, { data: { application } });
   }
 }

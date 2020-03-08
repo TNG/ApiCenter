@@ -10,13 +10,15 @@ import { applicationReducer } from './store/reducers/application.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from './store/effects/application.effects';
 import { ApplicationTableComponent } from './application-overview/application-table/application-table.component';
+import { ApplicationDeleteComponent } from './application-delete/application-delete.component';
 
 @NgModule({
   declarations: [
     ApplicationCreateComponent,
     ApplicationOverviewComponent,
     ApplicationFormComponent,
-    ApplicationTableComponent
+    ApplicationTableComponent,
+    ApplicationDeleteComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,7 @@ import { ApplicationTableComponent } from './application-overview/application-ta
     StoreModule.forFeature('applicationState', applicationReducer),
     EffectsModule.forFeature([ApplicationEffects])
   ],
-  entryComponents: [ApplicationCreateComponent],
+  entryComponents: [ApplicationCreateComponent, ApplicationDeleteComponent],
   exports: [ApplicationOverviewComponent]
 })
 export class ApplicationModule {}

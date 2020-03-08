@@ -4,6 +4,9 @@ import {
   createApplication,
   createApplicationFailure,
   createApplicationSuccess,
+  deleteApplication,
+  deleteApplicationFailure,
+  deleteApplicationSuccess,
   loadApplications,
   loadApplicationsFailure,
   loadApplicationsSuccess
@@ -46,6 +49,25 @@ export class ApplicationEffects {
   createApplicationSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createApplicationSuccess),
+      mergeMap(() => of(loadApplications()))
+    )
+  );
+
+  deleteApplication$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteApplication),
+      mergeMap(({ application }) => {
+        return this.applicationService.deleteApplication(application).pipe(
+          map(() => deleteApplicationSuccess()),
+          catchError(() => of(deleteApplicationFailure()))
+        );
+      })
+    )
+  );
+
+  deleteApplicationSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteApplicationSuccess),
       mergeMap(() => of(loadApplications()))
     )
   );

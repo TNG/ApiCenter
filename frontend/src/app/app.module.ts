@@ -29,6 +29,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     })
   ],
   providers: [],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
