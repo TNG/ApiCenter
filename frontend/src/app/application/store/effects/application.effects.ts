@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   createApplication,
-  createApplicationFailure,
   createApplicationSuccess,
   deleteApplication,
-  deleteApplicationFailure,
   deleteApplicationSuccess,
   loadApplications,
-  loadApplicationsFailure,
   loadApplicationsSuccess
 } from '../actions/application.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ApplicationService } from '../../../services/application.service';
 import { of } from 'rxjs';
+import { setErrorMessage } from '../../../store/actions/error.actions';
 
 @Injectable()
 export class ApplicationEffects {
@@ -28,7 +26,13 @@ export class ApplicationEffects {
       mergeMap(() => {
         return this.applicationService.getApplications().pipe(
           map(applications => loadApplicationsSuccess({ applications })),
-          catchError(() => of(loadApplicationsFailure()))
+          catchError(() =>
+            of(
+              setErrorMessage({
+                errorMessage: 'Error loading applications. Please try again.'
+              })
+            )
+          )
         );
       })
     )
@@ -40,7 +44,13 @@ export class ApplicationEffects {
       mergeMap(({ application }) => {
         return this.applicationService.createApplication(application).pipe(
           map(() => createApplicationSuccess()),
-          catchError(() => of(createApplicationFailure()))
+          catchError(() =>
+            of(
+              setErrorMessage({
+                errorMessage: 'Error creating application. Please try again.'
+              })
+            )
+          )
         );
       })
     )
@@ -59,7 +69,13 @@ export class ApplicationEffects {
       mergeMap(({ application }) => {
         return this.applicationService.deleteApplication(application).pipe(
           map(() => deleteApplicationSuccess()),
-          catchError(() => of(deleteApplicationFailure()))
+          catchError(() =>
+            of(
+              setErrorMessage({
+                errorMessage: 'Error deleting application. Please try again.'
+              })
+            )
+          )
         );
       })
     )

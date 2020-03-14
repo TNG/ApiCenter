@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { errorReducer } from './store/reducers/error.reducers';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -22,10 +23,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot({ errorState: errorReducer }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
-      logOnly: environment.production // Restrict extension to log-only mode
+      logOnly: environment.production
     })
   ],
   providers: [],
