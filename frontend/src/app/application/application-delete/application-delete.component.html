@@ -1,0 +1,14 @@
+<p>
+  Are you sure you want to delete the application <b>{{ application.name }}</b
+  >?
+</p>
+<table>
+  <tr width="100%">
+    <td width="90%">
+      <button mat-raised-button mat-primary (click)="onCancel()">No</button>
+    </td>
+    <td>
+      <button mat-raised-button (click)="onConfirm()">Yes</button>
+    </td>
+  </tr>
+</table>
