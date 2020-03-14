@@ -9,9 +9,18 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Application } from '../../models/application';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { ApplicationEffects } from '../store/effects/application.effects';
 
 describe('ApplicationCreateComponent', () => {
-  const imports = [ReactiveFormsModule, MaterialModule, ApplicationModule];
+  const imports = [
+    ReactiveFormsModule,
+    MaterialModule,
+    ApplicationModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([ApplicationEffects])
+  ];
   const declarations = [ApplicationFormComponent];
 
   const matDialogRefMock = jasmine.createSpyObj('MatDialogRef', ['close']);
