@@ -1,11 +1,19 @@
 import { ApplicationOverviewComponent } from './application-overview.component';
 import { render } from '@testing-library/angular';
 import { MaterialModule } from '../../material/material.module';
-import { ApplicationModule } from '@angular/core';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Application } from '../../models/application';
 import { environment } from '../../../environments/environment';
+import { ApplicationCreateComponent } from '../application-create/application-create.component';
+import { ApplicationFormComponent } from '../application-form/application-form.component';
+import { ApplicationTableComponent } from './application-table/application-table.component';
+import { ApplicationDeleteComponent } from '../application-delete/application-delete.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { applicationReducer } from '../store/reducers/application.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { ApplicationEffects } from '../store/effects/application.effects';
 
 describe('ApplicationOverviewComponent', () => {
   const testApplications: Application[] = [
@@ -28,7 +36,18 @@ describe('ApplicationOverviewComponent', () => {
       id: '12345'
     }
   ];
-  const imports = [MaterialModule, ApplicationModule];
+  const imports = [
+    MaterialModule,
+    ReactiveFormsModule,
+    StoreModule.forRoot({ applicationState: applicationReducer }),
+    EffectsModule.forRoot([ApplicationEffects])
+  ];
+  const declarations = [
+    ApplicationCreateComponent,
+    ApplicationFormComponent,
+    ApplicationTableComponent,
+    ApplicationDeleteComponent
+  ];
 
   it('should a list of applications', async () => {
     // given
@@ -45,7 +64,8 @@ describe('ApplicationOverviewComponent', () => {
     // when
     const component = await render(ApplicationOverviewComponent, {
       imports,
-      providers
+      providers,
+      declarations
     });
     await component.fixture.whenStable();
     component.fixture.detectChanges();
@@ -83,7 +103,8 @@ describe('ApplicationOverviewComponent', () => {
     // when
     const component = await render(ApplicationOverviewComponent, {
       imports,
-      providers
+      providers,
+      declarations
     });
     await component.fixture.whenStable();
     component.fixture.detectChanges();
