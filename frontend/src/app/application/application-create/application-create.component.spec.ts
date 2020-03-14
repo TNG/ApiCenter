@@ -12,6 +12,7 @@ import { Application } from '../../models/application';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from '../store/effects/application.effects';
+import { ErrorEffects } from '../../store/effects/error.effects';
 
 describe('ApplicationCreateComponent', () => {
   const imports = [
@@ -19,7 +20,7 @@ describe('ApplicationCreateComponent', () => {
     MaterialModule,
     ApplicationModule,
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([ApplicationEffects])
+    EffectsModule.forRoot([ApplicationEffects, ErrorEffects])
   ];
   const declarations = [ApplicationFormComponent];
 
