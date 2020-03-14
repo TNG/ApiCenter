@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-export const setErrorMessage = createAction(
+export const showErrorMessage = createAction(
   'Set error message',
   props<{ errorMessage: string }>()
 );

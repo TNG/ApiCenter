@@ -12,7 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { errorReducer } from './store/reducers/error.reducers';
+import { ErrorEffects } from './store/effects/error.effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -23,8 +23,8 @@ import { errorReducer } from './store/reducers/error.reducers';
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
-    StoreModule.forRoot({ errorState: errorReducer }),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([ErrorEffects]),
     StoreDevtoolsModule.instrument({
       logOnly: environment.production
     })

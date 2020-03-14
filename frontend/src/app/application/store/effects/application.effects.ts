@@ -11,7 +11,7 @@ import {
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ApplicationService } from '../../../services/application.service';
 import { of } from 'rxjs';
-import { setErrorMessage } from '../../../store/actions/error.actions';
+import { showErrorMessage } from '../../../store/actions/error.actions';
 
 @Injectable()
 export class ApplicationEffects {
@@ -28,7 +28,7 @@ export class ApplicationEffects {
           map(applications => loadApplicationsSuccess({ applications })),
           catchError(() =>
             of(
-              setErrorMessage({
+              showErrorMessage({
                 errorMessage: 'Error loading applications. Please try again.'
               })
             )
@@ -46,7 +46,7 @@ export class ApplicationEffects {
           map(() => createApplicationSuccess()),
           catchError(() =>
             of(
-              setErrorMessage({
+              showErrorMessage({
                 errorMessage: 'Error creating application. Please try again.'
               })
             )
@@ -71,7 +71,7 @@ export class ApplicationEffects {
           map(() => deleteApplicationSuccess()),
           catchError(() =>
             of(
-              setErrorMessage({
+              showErrorMessage({
                 errorMessage: 'Error deleting application. Please try again.'
               })
             )
