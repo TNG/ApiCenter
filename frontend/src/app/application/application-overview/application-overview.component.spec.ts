@@ -14,6 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { applicationReducer } from '../store/reducers/application.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from '../store/effects/application.effects';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('ApplicationOverviewComponent', () => {
   const testApplications: Application[] = [
@@ -115,5 +116,36 @@ describe('ApplicationOverviewComponent', () => {
     ).toBeDefined();
     expect(component.queryByRole('grid')).toBeNull();
     expect(component.queryByPlaceholderText('Filter')).toBeNull();
+  });
+
+  it('should open a dialog to delete an application', async () => {
+    // given
+    const httpClientMock = jasmine.createSpyObj('HttpClient', {
+      get: of([testApplications[0]]),
+      delete: jasmine.createSpy()
+    });
+    const dialogMock = jasmine.createSpyObj('MatDialog', ['open']);
+    const providers = [
+      {
+        provide: HttpClient,
+        useValue: httpClientMock
+      },
+      { provide: MatDialog, useValue: dialogMock }
+    ];
+
+    const component = await render(ApplicationOverviewComponent, {
+      imports,
+      providers,
+      declarations
+    });
+
+    // when
+    const deleteButton = component.getByText('delete');
+    deleteButton.click();
+
+    // then
+    expect(dialogMock.open).toHaveBeenCalledWith(ApplicationDeleteComponent, {
+      data: { application: testApplications[0] }
+    });
   });
 });
