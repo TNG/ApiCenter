@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Application } from '../../models/application';
 
@@ -8,6 +8,7 @@ import { Application } from '../../models/application';
   styleUrls: ['./application-form.component.scss']
 })
 export class ApplicationFormComponent implements OnInit {
+  @Input() application: Application;
   @Output() save = new EventEmitter<Application>();
   @Output() cancel = new EventEmitter<void>();
 
@@ -16,10 +17,16 @@ export class ApplicationFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    if (!this.application) {
+      this.application = { name: '', description: '', contact: '' };
+    }
+
     this.applicationForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
-      contact: new FormControl('', [Validators.required])
+      name: new FormControl(this.application.name, [Validators.required]),
+      description: new FormControl(this.application.description, [
+        Validators.required
+      ]),
+      contact: new FormControl(this.application.contact, [Validators.required])
     });
   }
 
@@ -29,6 +36,7 @@ export class ApplicationFormComponent implements OnInit {
 
   onSubmit(formValue) {
     const application: Application = {
+      id: this.application.id,
       name: formValue.name,
       description: formValue.description,
       contact: formValue.contact
