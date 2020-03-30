@@ -17,6 +17,13 @@ export class ApplicationService {
     );
   }
 
+  public updateApplication(application: Application) {
+    return this.httpClient.put<Application[]>(
+      environment.apiUrl + '/applications/' + application.id,
+      application
+    );
+  }
+
   public deleteApplication(application: Application) {
     return this.httpClient.delete<Application>(
       environment.apiUrl + '/applications/' + application.id

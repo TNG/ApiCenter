@@ -15,6 +15,14 @@ export const createApplicationSuccess = createAction(
   'Create application success'
 );
 
+export const updateApplication = createAction(
+  'Update application',
+  props<{ application: Application }>()
+);
+export const updateApplicationSuccess = createAction(
+  'Update application success'
+);
+
 export const deleteApplication = createAction(
   'Delete application',
   props<{ application: Application }>()

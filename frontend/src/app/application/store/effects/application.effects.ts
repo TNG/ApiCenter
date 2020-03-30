@@ -6,7 +6,9 @@ import {
   deleteApplication,
   deleteApplicationSuccess,
   loadApplications,
-  loadApplicationsSuccess
+  loadApplicationsSuccess,
+  updateApplication,
+  updateApplicationSuccess
 } from '../actions/application.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { ApplicationService } from '../../../services/application.service';
@@ -59,6 +61,31 @@ export class ApplicationEffects {
   createApplicationSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createApplicationSuccess),
+      mergeMap(() => of(loadApplications()))
+    )
+  );
+
+  updateApplication$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateApplication),
+      mergeMap(({ application }) => {
+        return this.applicationService.updateApplication(application).pipe(
+          map(() => updateApplicationSuccess()),
+          catchError(() =>
+            of(
+              showErrorMessage({
+                errorMessage: 'Error updating application. Please try again.'
+              })
+            )
+          )
+        );
+      })
+    )
+  );
+
+  updateApplicationSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateApplicationSuccess),
       mergeMap(() => of(loadApplications()))
     )
   );

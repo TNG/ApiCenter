@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { loadApplications } from '../store/actions/application.actions';
 import { AppState } from '../../store/state/app.state';
 import { ApplicationDeleteComponent } from '../application-delete/application-delete.component';
+import { ApplicationUpdateComponent } from '../application-update/application-update.component';
 
 @Component({
   selector: 'app-application-overview',
@@ -31,5 +32,9 @@ export class ApplicationOverviewComponent implements OnInit {
 
   openConfirmDeleteApplicationDialog(application: Application) {
     this.dialog.open(ApplicationDeleteComponent, { data: { application } });
+  }
+
+  onUpdateApplication(application: Application) {
+    this.dialog.open(ApplicationUpdateComponent, { data: { application } });
   }
 }
