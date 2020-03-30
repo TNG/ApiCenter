@@ -20,13 +20,14 @@ export class ApplicationTableComponent implements OnChanges {
   @Output() openDeleteApplicationConfirmationDialog = new EventEmitter<
     Application
   >();
+  @Output() updateApplication = new EventEmitter<Application>();
 
   @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 
   dataSource: MatTableDataSource<Application>;
-  displayedColumns: string[] = ['name', 'description', 'contact', 'delete'];
+  displayedColumns: string[] = ['name', 'description', 'contact', 'modify'];
 
   ngOnChanges() {
     this.dataSource = new MatTableDataSource(this.applications);
@@ -39,5 +40,9 @@ export class ApplicationTableComponent implements OnChanges {
 
   onDeleteApplication(application: Application) {
     this.openDeleteApplicationConfirmationDialog.emit(application);
+  }
+
+  onUpdateApplication(applicaton: Application) {
+    this.updateApplication.emit(applicaton);
   }
 }
