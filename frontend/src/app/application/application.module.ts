@@ -11,6 +11,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from './store/effects/application.effects';
 import { ApplicationTableComponent } from './application-overview/application-table/application-table.component';
 import { ApplicationDeleteComponent } from './application-delete/application-delete.component';
+import { ApplicationUpdateComponent } from './application-update/application-update.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ApplicationDeleteComponent } from './application-delete/application-del
     ApplicationOverviewComponent,
     ApplicationFormComponent,
     ApplicationTableComponent,
-    ApplicationDeleteComponent
+    ApplicationDeleteComponent,
+    ApplicationUpdateComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,11 @@ import { ApplicationDeleteComponent } from './application-delete/application-del
     StoreModule.forFeature('applicationState', applicationReducer),
     EffectsModule.forFeature([ApplicationEffects])
   ],
-  entryComponents: [ApplicationCreateComponent, ApplicationDeleteComponent],
+  entryComponents: [
+    ApplicationCreateComponent,
+    ApplicationDeleteComponent,
+    ApplicationUpdateComponent
+  ],
   exports: [ApplicationOverviewComponent]
 })
 export class ApplicationModule {}
