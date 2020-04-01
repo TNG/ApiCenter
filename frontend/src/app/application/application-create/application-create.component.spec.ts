@@ -43,6 +43,7 @@ describe('ApplicationCreateComponent', () => {
     });
 
     const inputValues = {
+      id: undefined,
       name: 'My application',
       description: 'Application description',
       contact: 'My contact'
@@ -95,6 +96,7 @@ describe('ApplicationCreateComponent', () => {
     });
 
     const inputValues = {
+      id: undefined,
       name: 'My application',
       description: 'Application description',
       contact: 'My contact'
