@@ -52,7 +52,7 @@
     "rxjs-compat": "^6.5.4",
     "stream": "0.0.2",
     "swagger-ui": "^3.25.0",
-    "uuid": "^7.0.1",
+    "uuid": "^7.0.3",
     "webpack": "^4.41.5",
     "zone.js": "^0.8.29"
   },
