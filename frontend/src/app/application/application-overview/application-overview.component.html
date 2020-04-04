@@ -4,9 +4,5 @@
 <br />
 <app-application-table
   [applications]="applications$ | async"
-  (openDeleteApplicationConfirmationDialog)="
-    openConfirmDeleteApplicationDialog($event)
-  "
-  (updateApplication)="onUpdateApplication($event)"
   (clickApplication)="onClickApplication($event)"
 ></app-application-table>

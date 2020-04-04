@@ -9,6 +9,7 @@ import { EMPTY, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ApplicationEffects } from '../store/effects/application.effects';
+import { Router } from '@angular/router';
 
 describe('ApplicationDeleteComponent', () => {
   const testApplication: Application = {
@@ -23,6 +24,7 @@ describe('ApplicationDeleteComponent', () => {
     delete: of(EMPTY),
     get: of([])
   });
+  const routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
   const providers = [
     { provide: MatDialogRef, useValue: matDialogRefMock },
@@ -30,7 +32,8 @@ describe('ApplicationDeleteComponent', () => {
     {
       provide: MAT_DIALOG_DATA,
       useValue: { application: testApplication }
-    }
+    },
+    { provide: Router, useValue: routerMock }
   ];
 
   const imports = [
@@ -42,9 +45,10 @@ describe('ApplicationDeleteComponent', () => {
   afterEach(() => {
     matDialogRefMock.close.calls.reset();
     httpClientMock.delete.calls.reset();
+    routerMock.navigate.calls.reset();
   });
 
-  it('should delete an application when confirmed', async () => {
+  it('should delete an application when confirmed and route to home', async () => {
     // given
     const component = await render(ApplicationDeleteComponent, {
       imports,
@@ -60,6 +64,7 @@ describe('ApplicationDeleteComponent', () => {
       environment.apiUrl + '/applications/123'
     );
     expect(matDialogRefMock.close).toHaveBeenCalled();
+    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
   });
 
   it('should close dialog when deletion is canceled', async () => {

@@ -1,3 +1,22 @@
 <ng-container *ngIf="application$ | async as application">
-  <h2>{{ application.name }}</h2>
+  <div class="application-details-title-bar">
+    <h2>{{ application.name }}</h2>
+
+    <div class="application-menu">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="onUpdateApplication(application)"
+      >
+        Bearbeiten
+      </button>
+      <button
+        mat-flat-button
+        color="warn"
+        (click)="onDeleteApplication(application)"
+      >
+        Löschen
+      </button>
+    </div>
+  </div>
 </ng-container>

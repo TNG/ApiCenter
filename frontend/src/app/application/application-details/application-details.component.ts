@@ -7,6 +7,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
 import { selectApplication } from '../store/selector/application.selectors';
 import { loadApplication } from '../store/actions/application.actions';
+import { MatDialog } from '@angular/material/dialog';
+import { ApplicationUpdateComponent } from '../application-update/application-update.component';
+import { ApplicationDeleteComponent } from '../application-delete/application-delete.component';
 
 @Component({
   selector: 'app-application-details',
@@ -14,11 +17,12 @@ import { loadApplication } from '../store/actions/application.actions';
   styleUrls: ['./application-details.component.scss']
 })
 export class ApplicationDetailsComponent implements OnInit {
-  private application$: Observable<Application>;
+  application$: Observable<Application>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private matDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -30,5 +34,15 @@ export class ApplicationDetailsComponent implements OnInit {
         this.store.select(selectApplication, { id: params.get('id') })
       )
     );
+  }
+
+  onUpdateApplication(application: Application) {
+    this.matDialog.open(ApplicationUpdateComponent, { data: { application } });
+  }
+
+  async onDeleteApplication(application: Application) {
+    this.matDialog.open(ApplicationDeleteComponent, {
+      data: { application }
+    });
   }
 }
