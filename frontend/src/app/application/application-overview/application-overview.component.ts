@@ -44,6 +44,6 @@ export class ApplicationOverviewComponent implements OnInit {
   }
 
   onClickApplication(application: Application) {
-    this.router.navigate(['application', application.id]);
+    return this.router.navigate(['application', application.id]);
   }
 }
