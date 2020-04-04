@@ -9,6 +9,7 @@ import { loadApplications } from '../store/actions/application.actions';
 import { AppState } from '../../store/state/app.state';
 import { ApplicationDeleteComponent } from '../application-delete/application-delete.component';
 import { ApplicationUpdateComponent } from '../application-update/application-update.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-application-overview',
@@ -18,7 +19,11 @@ import { ApplicationUpdateComponent } from '../application-update/application-up
 export class ApplicationOverviewComponent implements OnInit {
   applications$: Observable<Application[]>;
 
-  constructor(private store: Store<AppState>, private dialog: MatDialog) {}
+  constructor(
+    private store: Store<AppState>,
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
 
   async ngOnInit() {
     this.store.dispatch(loadApplications());
@@ -36,5 +41,9 @@ export class ApplicationOverviewComponent implements OnInit {
 
   onUpdateApplication(application: Application) {
     this.dialog.open(ApplicationUpdateComponent, { data: { application } });
+  }
+
+  onClickApplication(application: Application) {
+    this.router.navigate(['application', application.id]);
   }
 }
