@@ -12,6 +12,7 @@ import { ApplicationEffects } from './store/effects/application.effects';
 import { ApplicationTableComponent } from './application-overview/application-table/application-table.component';
 import { ApplicationDeleteComponent } from './application-delete/application-delete.component';
 import { ApplicationUpdateComponent } from './application-update/application-update.component';
+import { ApplicationDetailsComponent } from './application-details/application-details.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ApplicationUpdateComponent } from './application-update/application-upd
     ApplicationFormComponent,
     ApplicationTableComponent,
     ApplicationDeleteComponent,
-    ApplicationUpdateComponent
+    ApplicationUpdateComponent,
+    ApplicationDetailsComponent
   ],
   imports: [
     CommonModule,
