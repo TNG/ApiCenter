@@ -5,8 +5,10 @@ import {
   createApplicationSuccess,
   deleteApplication,
   deleteApplicationSuccess,
+  loadApplication,
   loadApplications,
   loadApplicationsSuccess,
+  loadApplicationSuccess,
   updateApplication,
   updateApplicationSuccess
 } from '../actions/application.actions';
@@ -32,6 +34,24 @@ export class ApplicationEffects {
             of(
               showErrorMessage({
                 errorMessage: 'Error loading applications. Please try again.'
+              })
+            )
+          )
+        );
+      })
+    )
+  );
+
+  loadApplication$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadApplication),
+      mergeMap(({ id }) => {
+        return this.applicationService.getApplication(id).pipe(
+          map(application => loadApplicationSuccess({ application })),
+          catchError(() =>
+            of(
+              showErrorMessage({
+                errorMessage: 'Error loading application. Please try again.'
               })
             )
           )

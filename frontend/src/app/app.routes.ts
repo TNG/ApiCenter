@@ -4,7 +4,7 @@ import { ApplicationDetailsComponent } from './application/application-details/a
 
 const appRoutes: Routes = [
   { path: '', component: ApplicationOverviewComponent },
-  { path: 'application/:id', component: ApplicationDetailsComponent }
+  { path: 'applications/:id', component: ApplicationDetailsComponent }
 ];
 
 export default appRoutes;
