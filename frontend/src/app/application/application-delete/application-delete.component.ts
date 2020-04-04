@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Application } from '../../models/application';
 import { deleteApplication } from '../store/actions/application.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-application-delete',
@@ -15,7 +16,8 @@ export class ApplicationDeleteComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<ApplicationDeleteComponent>,
     private store: Store<Application>,
-    @Inject(MAT_DIALOG_DATA) data: { application: Application }
+    @Inject(MAT_DIALOG_DATA) data: { application: Application },
+    private router: Router
   ) {
     this.application = data.application;
   }
@@ -26,8 +28,10 @@ export class ApplicationDeleteComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  async onConfirm() {
+  onConfirm() {
     this.store.dispatch(deleteApplication({ application: this.application }));
     this.dialogRef.close();
+
+    return this.router.navigate(['']);
   }
 }

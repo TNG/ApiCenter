@@ -17,10 +17,6 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ApplicationTableComponent implements OnChanges {
   @Input() applications: Application[];
-  @Output() openDeleteApplicationConfirmationDialog = new EventEmitter<
-    Application
-  >();
-  @Output() updateApplication = new EventEmitter<Application>();
   @Output() clickApplication = new EventEmitter<Application>();
 
   @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
@@ -37,14 +33,6 @@ export class ApplicationTableComponent implements OnChanges {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  onDeleteApplication(application: Application) {
-    this.openDeleteApplicationConfirmationDialog.emit(application);
-  }
-
-  onUpdateApplication(applicaton: Application) {
-    this.updateApplication.emit(applicaton);
   }
 
   onClickRow(row: Application) {
