@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Application } from '../../models/application';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
 import { selectApplication } from '../store/selector/application.selectors';
+import { loadApplication } from '../store/actions/application.actions';
 
 @Component({
   selector: 'app-application-details',
@@ -22,6 +23,9 @@ export class ApplicationDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.application$ = this.activatedRoute.paramMap.pipe(
+      tap(params => {
+        this.store.dispatch(loadApplication({ id: params.get('id') }));
+      }),
       switchMap((params: ParamMap) =>
         this.store.select(selectApplication, { id: params.get('id') })
       )

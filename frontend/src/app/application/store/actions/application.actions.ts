@@ -7,6 +7,15 @@ export const loadApplicationsSuccess = createAction(
   props<{ applications: Application[] }>()
 );
 
+export const loadApplication = createAction(
+  'Load application',
+  props<{ id: string }>()
+);
+export const loadApplicationSuccess = createAction(
+  'Load application success',
+  props<{ application: Application }>()
+);
+
 export const createApplication = createAction(
   'Create application',
   props<{ application: Application }>()
