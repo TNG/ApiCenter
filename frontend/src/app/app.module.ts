@@ -13,6 +13,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ErrorEffects } from './store/effects/error.effects';
+import { RouterModule } from '@angular/router';
+import appRoutes from './app.routes';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -21,13 +23,14 @@ import { ErrorEffects } from './store/effects/error.effects';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    EffectsModule.forRoot([ErrorEffects]),
     HttpClientModule,
     MaterialModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([ErrorEffects]),
+    RouterModule.forRoot(appRoutes),
     StoreDevtoolsModule.instrument({
       logOnly: environment.production
-    })
+    }),
+    StoreModule.forRoot({})
   ],
   providers: [],
   exports: [],
