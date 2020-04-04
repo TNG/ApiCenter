@@ -28,7 +28,7 @@ export class ApplicationTableComponent implements OnChanges {
   }
 
   dataSource: MatTableDataSource<Application>;
-  displayedColumns: string[] = ['name', 'description', 'contact', 'modify'];
+  displayedColumns: string[] = ['name', 'description', 'contact'];
 
   ngOnChanges() {
     this.dataSource = new MatTableDataSource(this.applications);
