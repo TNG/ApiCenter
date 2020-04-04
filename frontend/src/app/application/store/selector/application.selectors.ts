@@ -6,11 +6,10 @@ const selectApplicationState = (state: AppState) => state.applicationState;
 
 export const selectApplications = createSelector(
   selectApplicationState,
-  (state: ApplicationState) => state.applications
+  (state: ApplicationState) => [...state.applications.values()]
 );
 
 export const selectApplication = createSelector(
   selectApplicationState,
-  (state: ApplicationState, { id }) =>
-    state.applications.find(application => application.id === id)
+  (state: ApplicationState, { id }) => state.applications.get(id)
 );
