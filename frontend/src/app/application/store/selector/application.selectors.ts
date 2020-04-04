@@ -8,3 +8,9 @@ export const selectApplications = createSelector(
   selectApplicationState,
   (state: ApplicationState) => state.applications
 );
+
+export const selectApplication = createSelector(
+  selectApplicationState,
+  (state: ApplicationState, { id }) =>
+    state.applications.find(application => application.id === id)
+);
