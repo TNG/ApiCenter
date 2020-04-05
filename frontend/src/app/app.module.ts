@@ -14,7 +14,7 @@ import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ErrorEffects } from './store/effects/error.effects';
 import { RouterModule } from '@angular/router';
-import appRoutes from './app.routes';
+import { appRoutes } from './app.routes';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
