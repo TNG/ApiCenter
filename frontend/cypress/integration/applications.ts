@@ -18,7 +18,7 @@ describe('Applications', () => {
       .contains('Save')
       .click();
 
-    // show
+    // show in table
     cy.get('table')
       .contains('td', 'New application title')
       .should('be.visible');
@@ -29,8 +29,21 @@ describe('Applications', () => {
       .contains('td', 'New application contact')
       .should('be.visible');
 
+    cy.get('table')
+      .contains('td', 'New application title')
+      .click();
+
+    // show in details page
+    cy.findByText('New application title').should('be.visible');
+    cy.get('table')
+      .contains('td', 'New application description')
+      .should('be.visible');
+    cy.get('table')
+      .contains('td', 'New application contact')
+      .should('be.visible');
+
     // update
-    cy.findByText('edit').click();
+    cy.findByText('Edit').click();
 
     cy.get('form')
       .findByLabelText(/name/i)
@@ -49,9 +62,7 @@ describe('Applications', () => {
       .click();
 
     // show
-    cy.get('table')
-      .contains('td', 'Changed application title')
-      .should('be.visible');
+    cy.findByText('Changed application title').should('be.visible');
     cy.get('table')
       .contains('td', 'Changed application description')
       .should('be.visible');
@@ -60,8 +71,10 @@ describe('Applications', () => {
       .should('be.visible');
 
     // delete
-    cy.findByText('delete').click();
     cy.findByText('Delete').click();
+    cy.get('mat-dialog-container')
+      .findByText('Delete')
+      .click();
 
     cy.findByText('There are no applications available.');
   });
