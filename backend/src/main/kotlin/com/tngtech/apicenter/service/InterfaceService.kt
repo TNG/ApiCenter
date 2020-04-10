@@ -1,7 +1,8 @@
 package com.tngtech.apicenter.service
 
 import com.tngtech.apicenter.dto.InterfaceDto
-import com.tngtech.apicenter.mapper.InterfaceMapper
+import com.tngtech.apicenter.mapper.toDto
+import com.tngtech.apicenter.mapper.toEntity
 import com.tngtech.apicenter.repository.InterfaceRepository
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.repository.findByIdOrNull
@@ -10,22 +11,22 @@ import java.util.UUID
 import javax.persistence.EntityNotFoundException
 
 @Service
-class InterfaceService(private val interfaceMapper: InterfaceMapper, private val interfaceRepository: InterfaceRepository) {
+class InterfaceService(private val interfaceRepository: InterfaceRepository) {
 
-    fun getInterfaces() = interfaceRepository.findAll().map { interfaceMapper.toDto(it) }
+    fun getInterfaces() = interfaceRepository.findAll().map { it.toDto() }
 
     fun createInterface(interfaceDto: InterfaceDto): InterfaceDto {
-        val interfaceEntity = interfaceMapper.toEntity(interfaceDto)
+        val interfaceEntity = interfaceDto.toEntity()
 
         val createdInterface = interfaceRepository.save(interfaceEntity)
-        return interfaceMapper.toDto(createdInterface)
+        return createdInterface.toDto()
     }
 
     fun updateInterface(interfaceId: UUID, interfaceDto: InterfaceDto): InterfaceDto {
         val interfaceDtoToStore = InterfaceDto(interfaceId, interfaceDto.name, interfaceDto.description, interfaceDto.type)
 
-        val interfaceEntity = interfaceMapper.toEntity(interfaceDtoToStore)
-        return interfaceMapper.toDto(interfaceEntity)
+        val interfaceEntity = interfaceDtoToStore.toEntity()
+        return interfaceEntity.toDto()
     }
 
     fun deleteInterface(interfaceId: UUID) {
@@ -37,9 +38,9 @@ class InterfaceService(private val interfaceMapper: InterfaceMapper, private val
     }
 
     fun getInterface(interfaceId: UUID): InterfaceDto {
-        val interfaceDto = interfaceRepository.findByIdOrNull(interfaceId) ?: throw EntityNotFoundException()
+        val interfaceEntity = interfaceRepository.findByIdOrNull(interfaceId) ?: throw EntityNotFoundException()
 
-        return interfaceMapper.toDto(interfaceDto)
+        return interfaceEntity.toDto()
     }
 
 }

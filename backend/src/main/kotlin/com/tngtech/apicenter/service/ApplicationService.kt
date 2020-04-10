@@ -1,32 +1,33 @@
 package com.tngtech.apicenter.service
 
 import com.tngtech.apicenter.dto.ApplicationDto
-import com.tngtech.apicenter.mapper.ApplicationMapper
+import com.tngtech.apicenter.mapper.toDto
+import com.tngtech.apicenter.mapper.toEntity
 import com.tngtech.apicenter.repository.ApplicationRepository
-import java.util.UUID
-import javax.persistence.EntityNotFoundException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.util.UUID
+import javax.persistence.EntityNotFoundException
 
 @Service
-class ApplicationService(private val applicationMapper: ApplicationMapper, private val applicationRepository: ApplicationRepository) {
+class ApplicationService(private val applicationRepository: ApplicationRepository) {
 
-    fun getApplications(): List<ApplicationDto> = applicationRepository.findAll().map { application -> applicationMapper.toDto(application) }
+    fun getApplications(): List<ApplicationDto> = applicationRepository.findAll().map { it.toDto() }
 
     fun createApplication(applicationDto: ApplicationDto): ApplicationDto {
-        val applicationEntity = applicationMapper.toEntity(applicationDto)
+        val applicationEntity = applicationDto.toEntity()
 
         val createdApplication = applicationRepository.save(applicationEntity)
-        return applicationMapper.toDto(createdApplication)
+        return createdApplication.toDto()
     }
 
     fun updateApplication(applicationId: UUID, applicationDto: ApplicationDto): ApplicationDto {
         val applicationDtoToStore = ApplicationDto(applicationId, applicationDto.name, applicationDto.description, applicationDto.contact)
 
-        val updatedApplicationEntity = applicationRepository.save(applicationMapper.toEntity(applicationDtoToStore))
+        val updatedApplicationEntity = applicationRepository.save(applicationDtoToStore.toEntity())
 
-        return applicationMapper.toDto(updatedApplicationEntity)
+        return updatedApplicationEntity.toDto()
     }
 
     fun deleteApplication(applicationId: UUID) {
@@ -40,6 +41,6 @@ class ApplicationService(private val applicationMapper: ApplicationMapper, priva
     fun getApplication(applicationId: UUID): ApplicationDto {
         val application = applicationRepository.findByIdOrNull(applicationId) ?: throw EntityNotFoundException()
 
-        return applicationMapper.toDto(application)
+        return application.toDto()
     }
 }
