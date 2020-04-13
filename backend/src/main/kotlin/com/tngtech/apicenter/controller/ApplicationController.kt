@@ -2,8 +2,7 @@ package com.tngtech.apicenter.controller
 
 import com.tngtech.apicenter.dto.ApplicationDto
 import com.tngtech.apicenter.service.ApplicationService
-import java.util.UUID
-import javax.validation.Valid
+import com.tngtech.apicenter.service.InterfaceService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/applications")
-class ApplicationController(private val applicationService: ApplicationService) {
+class ApplicationController(private val applicationService: ApplicationService, private val interfaceService: InterfaceService) {
 
     @GetMapping
     fun getApplications() = applicationService.getApplications()
@@ -34,5 +35,8 @@ class ApplicationController(private val applicationService: ApplicationService) 
 
     @DeleteMapping("/{applicationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteApplication(@PathVariable applicationId: String) = applicationService.deleteApplication(UUID.fromString(applicationId))
+    fun deleteApplication(@PathVariable applicationId: UUID) = applicationService.deleteApplication(applicationId)
+
+    @GetMapping("/{applicationId}/interfaces")
+    fun getInterfacesForApplication(@PathVariable applicationId: UUID) = interfaceService.getInterfacesForApplicationId(applicationId)
 }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface InterfaceRepository : CrudRepository<InterfaceEntity, UUID>
+interface InterfaceRepository : CrudRepository<InterfaceEntity, UUID> {
+    fun findByApplicationId(applicationId: UUID): List<InterfaceEntity>
+}
