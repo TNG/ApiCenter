@@ -31,7 +31,7 @@ class ApplicationController(private val applicationService: ApplicationService, 
     fun createApplication(@Valid @RequestBody applicationDto: ApplicationDto) = applicationService.createApplication(applicationDto)
 
     @PutMapping("/{applicationId}")
-    fun updateApplication(@PathVariable applicationId: String, @RequestBody applicationDto: ApplicationDto) = applicationService.updateApplication(UUID.fromString(applicationId), applicationDto)
+    fun updateApplication(@PathVariable applicationId: String, @Valid @RequestBody applicationDto: ApplicationDto) = applicationService.updateApplication(UUID.fromString(applicationId), applicationDto)
 
     @DeleteMapping("/{applicationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
