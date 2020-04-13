@@ -42,4 +42,7 @@ class InterfaceService(private val interfaceRepository: InterfaceRepository) {
 
         return interfaceEntity.toDto()
     }
+
+    fun getInterfacesForApplicationId(applicationId: UUID): List<InterfaceDto> =
+        interfaceRepository.findByApplicationId(applicationId).map { it.toDto() }
 }
