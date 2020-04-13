@@ -44,14 +44,6 @@ class ApplicationIntegrationTest {
 
         val applicationResult = objectMapper.readValue(result.response.contentAsString, ApplicationDto::class.java)
 
-        mockMvc.get("/api/applications").andExpect {
-            status { isOk }
-            content { contentType(MediaType.APPLICATION_JSON) }
-            jsonPath("$[0].name") { value("applicationToCreate") }
-            jsonPath("$[0].description") { value("thisIsTheApplicationToBeCreated") }
-            jsonPath("$[0].contact") { value("myContact") }
-        }
-
         mockMvc.get("/api/applications/${applicationResult.id}").andExpect {
             status { isOk }
             content { contentType(MediaType.APPLICATION_JSON) }

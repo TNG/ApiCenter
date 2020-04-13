@@ -10,9 +10,9 @@ import javax.validation.constraints.NotBlank
 @Entity
 data class ApplicationEntity(
     @Id @GeneratedValue val id: UUID?,
-    @NotBlank val name: String?,
-    @NotBlank val description: String?,
-    @NotBlank val contact: String?,
+    @field:NotBlank val name: String?,
+    @field:NotBlank val description: String?,
+    @field:NotBlank val contact: String?,
 
     @OneToMany(mappedBy = "application")
     val interfaces: List<InterfaceEntity>
