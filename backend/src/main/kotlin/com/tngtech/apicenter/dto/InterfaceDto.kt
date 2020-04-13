@@ -6,7 +6,9 @@ import javax.validation.constraints.NotEmpty
 
 data class InterfaceDto(
     val id: UUID?,
-    @NotBlank val name: String,
-    @NotBlank val description: String,
-    @NotEmpty val type: InterfaceTypeDto
+    @NotBlank val name: String?,
+    @NotBlank val description: String?,
+    @NotEmpty val type: InterfaceTypeDto?,
+
+    @NotBlank val applicationId: UUID?
 )

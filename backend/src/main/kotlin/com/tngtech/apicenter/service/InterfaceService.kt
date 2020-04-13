@@ -23,7 +23,7 @@ class InterfaceService(private val interfaceRepository: InterfaceRepository) {
     }
 
     fun updateInterface(interfaceId: UUID, interfaceDto: InterfaceDto): InterfaceDto {
-        val interfaceDtoToStore = InterfaceDto(interfaceId, interfaceDto.name, interfaceDto.description, interfaceDto.type)
+        val interfaceDtoToStore = InterfaceDto(interfaceId, interfaceDto.name, interfaceDto.description, interfaceDto.type, interfaceDto.applicationId)
 
         val interfaceEntity = interfaceDtoToStore.toEntity()
         return interfaceEntity.toDto()
@@ -42,5 +42,4 @@ class InterfaceService(private val interfaceRepository: InterfaceRepository) {
 
         return interfaceEntity.toDto()
     }
-
 }

@@ -23,7 +23,7 @@ class ApplicationService(private val applicationRepository: ApplicationRepositor
     }
 
     fun updateApplication(applicationId: UUID, applicationDto: ApplicationDto): ApplicationDto {
-        val applicationDtoToStore = ApplicationDto(applicationId, applicationDto.name, applicationDto.description, applicationDto.contact)
+        val applicationDtoToStore = ApplicationDto(applicationId, applicationDto.name, applicationDto.description, applicationDto.contact, applicationDto.interfaceIds)
 
         val updatedApplicationEntity = applicationRepository.save(applicationDtoToStore.toEntity())
 
