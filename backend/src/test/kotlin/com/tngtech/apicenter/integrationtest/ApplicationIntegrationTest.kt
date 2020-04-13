@@ -179,4 +179,21 @@ class ApplicationIntegrationTest {
             status { isNotFound }
         }
     }
+
+    @Test
+    fun `should retrieve applications`() {
+        mockMvc.get("/api/applications").andExpect {
+            status { isOk }
+            content { contentType(MediaType.APPLICATION_JSON) }
+            jsonPath("$[0].name") { value("applicationA") }
+            jsonPath("$[0].description") { value("applicationDescriptionA") }
+            jsonPath("$[0].contact") { value("contactA") }
+            jsonPath("$[1].name") { value("applicationB") }
+            jsonPath("$[1].description") { value("applicationDescriptionB") }
+            jsonPath("$[1].contact") { value("contactB") }
+            jsonPath("$[2].name") { value("applicationC") }
+            jsonPath("$[2].description") { value("applicationDescriptionC") }
+            jsonPath("$[2].contact") { value("contactC") }
+        }
+    }
 }
