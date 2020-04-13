@@ -30,7 +30,7 @@ class InterfaceController(private val interfaceService: InterfaceService) {
     fun createApplication(@Valid @RequestBody interfaceDto: InterfaceDto) = interfaceService.createInterface(interfaceDto)
 
     @PutMapping("/{interfaceId}")
-    fun updateApplication(@PathVariable interfaceId: UUID, @RequestBody interfaceDto: InterfaceDto) = interfaceService.updateInterface(interfaceId, interfaceDto)
+    fun updateApplication(@PathVariable interfaceId: UUID, @Valid @RequestBody interfaceDto: InterfaceDto) = interfaceService.updateInterface(interfaceId, interfaceDto)
 
     @DeleteMapping("/{interfaceId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

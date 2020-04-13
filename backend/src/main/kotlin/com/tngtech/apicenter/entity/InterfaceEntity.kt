@@ -7,14 +7,14 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 @Entity
 data class InterfaceEntity(
     @Id @GeneratedValue val id: UUID?,
-    @NotBlank val name: String?,
-    @NotBlank val description: String?,
-    @NotEmpty val type: InterfaceTypeEntity?,
+    @field:NotBlank val name: String?,
+    @field:NotBlank val description: String?,
+    @field:NotNull val type: InterfaceTypeEntity?,
 
     @ManyToOne
     @JoinColumn(name = "application_id")
