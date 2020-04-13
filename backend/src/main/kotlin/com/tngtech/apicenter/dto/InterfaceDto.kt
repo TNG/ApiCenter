@@ -2,13 +2,13 @@ package com.tngtech.apicenter.dto
 
 import java.util.UUID
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 data class InterfaceDto(
     val id: UUID?,
-    @NotBlank val name: String?,
-    @NotBlank val description: String?,
-    @NotEmpty val type: InterfaceTypeDto?,
+    @field:NotBlank val name: String?,
+    val description: String?,
+    @field:NotNull val type: InterfaceTypeDto?,
 
-    @NotBlank val applicationId: UUID?
+    @field:NotNull val applicationId: UUID?
 )
