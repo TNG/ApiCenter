@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Application } from '../../models/application';
 import { deleteApplication } from '../store/actions/application.actions';
 import { Router } from '@angular/router';
+import { AppState } from '../../store/state/app.state';
 
 @Component({
   selector: 'app-application-delete',
@@ -15,7 +16,7 @@ export class ApplicationDeleteComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<ApplicationDeleteComponent>,
-    private store: Store<Application>,
+    private store: Store<AppState>,
     @Inject(MAT_DIALOG_DATA) data: { application: Application },
     private router: Router
   ) {

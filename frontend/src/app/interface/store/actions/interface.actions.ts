@@ -27,3 +27,9 @@ export const updateInterface = createAction(
   props<{ interface: Interface }>()
 );
 export const updateInterfaceSuccess = createAction('Update interface success');
+
+export const deleteInterface = createAction(
+  'Delete interface',
+  props<{ interface: Interface }>()
+);
+export const deleteInterfaceSuccess = createAction('Delete interface success');

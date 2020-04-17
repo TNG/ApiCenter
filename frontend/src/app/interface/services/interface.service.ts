@@ -32,4 +32,10 @@ export class InterfaceService {
       myInterface
     );
   }
+
+  public deleteInterface(id: string) {
+    return this.httpClient.delete<Interface>(
+      environment.apiUrl + '/interfaces/' + id
+    );
+  }
 }
