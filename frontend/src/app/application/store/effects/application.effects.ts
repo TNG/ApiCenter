@@ -13,9 +13,9 @@ import {
   updateApplicationSuccess
 } from '../actions/application.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { ApplicationService } from '../../../services/application.service';
 import { of } from 'rxjs';
 import { showErrorMessage } from '../../../store/actions/error.actions';
+import { ApplicationService } from '../../services/application.service';
 
 @Injectable()
 export class ApplicationEffects {
