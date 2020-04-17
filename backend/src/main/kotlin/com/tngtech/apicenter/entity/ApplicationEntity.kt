@@ -1,6 +1,7 @@
 package com.tngtech.apicenter.entity
 
 import java.util.UUID
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -14,6 +15,6 @@ data class ApplicationEntity(
     @field:NotBlank val description: String?,
     @field:NotBlank val contact: String?,
 
-    @OneToMany(mappedBy = "application")
+    @OneToMany(mappedBy = "application", cascade = [CascadeType.REMOVE])
     val interfaces: List<InterfaceEntity>
 )
