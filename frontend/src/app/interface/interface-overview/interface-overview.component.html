@@ -1,3 +1,8 @@
+<button mat-fab color="primary" (click)="onCreateInterface()">
+  <mat-icon aria-label="Add interface">add</mat-icon>
+</button>
+<br />
 <app-interface-table
   [interfaces]="interfacesWithApplication$ | async"
+  (clickInterface)="onClickInterface($event)"
 ></app-interface-table>

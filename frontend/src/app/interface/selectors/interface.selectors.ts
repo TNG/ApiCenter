@@ -20,3 +20,8 @@ export const selectInterfacesWithApplications = createSelector(
       )
     }))
 );
+
+export const selectInterface = createSelector(
+  selectInterfaceState,
+  (state: InterfaceState, { id }) => state.interfaces.get(id)
+);

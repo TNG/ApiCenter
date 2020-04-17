@@ -1,0 +1,54 @@
+<ng-container *ngIf="interface$ | async as interface">
+  <div class="interface-details-title-bar">
+    <h2>{{ interface.name }}</h2>
+
+    <div class="interface-menu">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="onUpdateInterface(interface)"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        color="warn"
+        (click)="onDeleteInterface(interface)"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <mat-card>
+    <table>
+      <tr *ngIf="interface.description">
+        <td><b>Description</b></td>
+        <td>{{ interface.description }}</td>
+      </tr>
+      <tr>
+        <td><b>Type</b></td>
+        <td>{{ interface.type }}</td>
+      </tr>
+    </table>
+  </mat-card>
+  <br />
+
+  <mat-card *ngIf="application$ | async as application">
+    <h3>Application</h3>
+    <table>
+      <tr>
+        <td><b>Name</b></td>
+        <td>{{ application.name }}</td>
+      </tr>
+      <tr>
+        <td><b>Description</b></td>
+        <td>{{ application.description }}</td>
+      </tr>
+      <tr>
+        <td><b>Contact</b></td>
+        <td>{{ application.contact }}</td>
+      </tr>
+    </table>
+  </mat-card>
+</ng-container>

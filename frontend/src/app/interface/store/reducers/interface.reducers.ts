@@ -2,7 +2,10 @@ import { Action, createReducer, on } from '@ngrx/store';
 import { InterfaceState } from '../state/interface.state';
 import { Interface } from '../../../models/interface';
 import update from 'immutability-helper';
-import { loadInterfacesSuccess } from '../actions/interface.actions';
+import {
+  loadInterfacesSuccess,
+  loadInterfaceSuccess
+} from '../actions/interface.actions';
 
 const initialState: InterfaceState = {
   interfaces: new Map<string, Interface>()
@@ -15,6 +18,11 @@ const interfaceReducerCreator = createReducer(
       interfaces.map(myInterface => [myInterface.id, myInterface])
     );
     return update(state, { interfaces: { $set: interfaceMap } });
+  }),
+  on(loadInterfaceSuccess, (state, myInterface) => {
+    return update(state, {
+      interfaces: { $add: [[myInterface.interface.id, myInterface.interface]] }
+    });
   })
 );
 

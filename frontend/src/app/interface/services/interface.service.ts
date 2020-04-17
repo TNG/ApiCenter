@@ -12,4 +12,24 @@ export class InterfaceService {
   public getInterfaces() {
     return this.httpClient.get<Interface[]>(environment.apiUrl + '/interfaces');
   }
+
+  public createInterface(myInterface: Interface) {
+    return this.httpClient.post<Interface[]>(
+      environment.apiUrl + '/interfaces',
+      myInterface
+    );
+  }
+
+  public getInterface(id: string) {
+    return this.httpClient.get<Interface>(
+      environment.apiUrl + '/interfaces/' + id
+    );
+  }
+
+  public updateInterface(myInterface: Interface) {
+    return this.httpClient.put<Interface[]>(
+      environment.apiUrl + '/interfaces/' + myInterface.id,
+      myInterface
+    );
+  }
 }

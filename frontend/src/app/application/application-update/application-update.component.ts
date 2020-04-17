@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Application } from '../../models/application';
 import { updateApplication } from '../store/actions/application.actions';
+import { AppState } from '../../store/state/app.state';
 
 @Component({
   selector: 'app-application-update',
@@ -14,7 +15,7 @@ export class ApplicationUpdateComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<ApplicationUpdateComponent>,
-    private store: Store<Application>,
+    private store: Store<AppState>,
     @Inject(MAT_DIALOG_DATA) data: { application: Application }
   ) {
     this.application = data.application;
