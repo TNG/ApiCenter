@@ -48,7 +48,7 @@ describe('ApplicationDeleteComponent', () => {
     routerMock.navigate.calls.reset();
   });
 
-  it('should delete an application when confirmed and route to home', async () => {
+  it('should delete an application when confirmed and route to application overview', async () => {
     // given
     const component = await render(ApplicationDeleteComponent, {
       imports,
@@ -64,7 +64,7 @@ describe('ApplicationDeleteComponent', () => {
       environment.apiUrl + '/applications/123'
     );
     expect(matDialogRefMock.close).toHaveBeenCalled();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['applications']);
   });
 
   it('should close dialog when deletion is canceled', async () => {

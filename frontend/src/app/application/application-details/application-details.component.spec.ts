@@ -9,6 +9,8 @@ import { ApplicationEffects } from '../store/effects/application.effects';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ApplicationInterfaceOverviewComponent } from './application-interface-overview/application-interface-overview.component';
+import { ApplicationInterfaceTableComponent } from './application-interface-overview/application-interface-table/application-interface-table.component';
 
 describe('ApplicationDetailsComponent', () => {
   const application = {
@@ -42,11 +44,17 @@ describe('ApplicationDetailsComponent', () => {
     }
   ];
 
+  const declarations = [
+    ApplicationInterfaceOverviewComponent,
+    ApplicationInterfaceTableComponent
+  ];
+
   it('should show details of applications', async () => {
     // when
     const component = await render(ApplicationDetailsComponent, {
       imports,
-      providers
+      providers,
+      declarations
     });
 
     // then

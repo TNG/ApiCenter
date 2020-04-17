@@ -1,7 +1,7 @@
 <table
   mat-table
   matSort
-  *ngIf="interfaces.length > 0"
+  *ngIf="interfaces?.length > 0"
   [dataSource]="dataSource"
   class="mat-elevation-z8"
 >
@@ -23,7 +23,7 @@
   ></tr>
 </table>
 
-<div *ngIf="interfaces.length === 0">
+<div *ngIf="interfaces?.length === 0">
   <div style="text-align: center;">
     There are no interfaces associated with this application.
   </div>

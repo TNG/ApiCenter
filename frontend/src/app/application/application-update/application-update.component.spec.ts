@@ -20,7 +20,8 @@ describe('ApplicationUpdateComponent', () => {
     id: 'existingId',
     name: 'existingName',
     description: 'existingDescription',
-    contact: 'existingContact'
+    contact: 'existingContact',
+    interfaceIds: []
   };
 
   const imports = [
@@ -58,7 +59,8 @@ describe('ApplicationUpdateComponent', () => {
       id: 'existingId',
       name: 'My application',
       description: 'Application description',
-      contact: 'My contact'
+      contact: 'My contact',
+      interfaceIds: []
     };
 
     const name = component.getByLabelText(/name/i) as any;
