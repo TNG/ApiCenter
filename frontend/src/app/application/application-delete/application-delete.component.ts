@@ -33,6 +33,6 @@ export class ApplicationDeleteComponent implements OnInit {
     this.store.dispatch(deleteApplication({ application: this.application }));
     this.dialogRef.close();
 
-    return this.router.navigate(['']);
+    return this.router.navigate(['applications']);
   }
 }
