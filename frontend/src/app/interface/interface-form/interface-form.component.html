@@ -1,0 +1,49 @@
+<form [formGroup]="interfaceForm" (ngSubmit)="onSubmit(interfaceForm.value)">
+  <mat-form-field *ngIf="interfaceForm.get('applicationId') as applicationId">
+    <mat-label>Application</mat-label>
+    <mat-select formControlName="applicationId" required>
+      <mat-option
+        *ngFor="let application of applications"
+        [value]="application.id"
+        >{{ application.name }}</mat-option
+      >
+    </mat-select>
+    <mat-error *ngIf="!applicationId.valid && applicationId.errors.required"
+      >Application is required.</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="interfaceForm.get('name') as name">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required />
+    <mat-error *ngIf="!name.valid && name.errors.required"
+      >Name is required.</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="interfaceForm.get('description') as description">
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description" />
+  </mat-form-field>
+
+  <mat-form-field *ngIf="interfaceForm.get('type') as type">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="type" required>
+      <mat-option
+        *ngFor="let interfaceType of interfaceTypes"
+        [value]="interfaceType"
+        >{{ interfaceType }}</mat-option
+      >
+    </mat-select>
+    <mat-error *ngIf="!type.valid && type.errors.required"
+      >Type is required.</mat-error
+    >
+  </mat-form-field>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" [disabled]="!interfaceForm.valid">
+      Save
+    </button>
+    <button type="button" mat-raised-button (click)="onCancel()">Cancel</button>
+  </mat-card-actions>
+</form>

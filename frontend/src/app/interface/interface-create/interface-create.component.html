@@ -1,0 +1,5 @@
+<app-interface-form
+  [applications]="applications$ | async"
+  (save)="onSave($event)"
+  (cancel)="onCancel()"
+></app-interface-form>

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull
 data class InterfaceEntity(
     @Id @GeneratedValue val id: UUID?,
     @field:NotBlank val name: String?,
-    @field:NotBlank val description: String?,
+    val description: String?,
     @field:NotNull val type: InterfaceTypeEntity?,
 
     @ManyToOne

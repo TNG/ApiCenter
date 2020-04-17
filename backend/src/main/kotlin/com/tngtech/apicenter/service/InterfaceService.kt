@@ -26,7 +26,8 @@ class InterfaceService(private val interfaceRepository: InterfaceRepository) {
         val interfaceDtoToStore = InterfaceDto(interfaceId, interfaceDto.name, interfaceDto.description, interfaceDto.type, interfaceDto.applicationId)
 
         val interfaceEntity = interfaceDtoToStore.toEntity()
-        return interfaceEntity.toDto()
+        val updatedEntity = interfaceRepository.save(interfaceEntity)
+        return updatedEntity.toDto()
     }
 
     fun deleteInterface(interfaceId: UUID) {

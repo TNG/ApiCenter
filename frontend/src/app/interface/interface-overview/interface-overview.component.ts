@@ -6,6 +6,10 @@ import { Observable } from 'rxjs';
 import { selectInterfacesWithApplications } from '../selectors/interface.selectors';
 import { loadInterfaces } from '../store/actions/interface.actions';
 import { loadApplications } from '../../application/store/actions/application.actions';
+import { MatDialog } from '@angular/material/dialog';
+import { InterfaceCreateComponent } from '../interface-create/interface-create.component';
+import { Application } from '../../models/application';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-interface-overview',
@@ -14,10 +18,14 @@ import { loadApplications } from '../../application/store/actions/application.ac
 })
 export class InterfaceOverviewComponent implements OnInit {
   interfacesWithApplication$: Observable<
-    (Interface | { application: string })[]
+    (Interface | { application: Application })[]
   >;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(loadInterfaces());
@@ -26,5 +34,13 @@ export class InterfaceOverviewComponent implements OnInit {
     this.interfacesWithApplication$ = this.store.select(
       selectInterfacesWithApplications
     );
+  }
+
+  onCreateInterface() {
+    this.dialog.open(InterfaceCreateComponent);
+  }
+
+  onClickInterface(myInterface: Interface) {
+    return this.router.navigate(['interfaces', myInterface.id]);
   }
 }
