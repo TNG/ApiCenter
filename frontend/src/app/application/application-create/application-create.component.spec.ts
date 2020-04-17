@@ -46,7 +46,8 @@ describe('ApplicationCreateComponent', () => {
       id: undefined,
       name: 'My application',
       description: 'Application description',
-      contact: 'My contact'
+      contact: 'My contact',
+      interfaceIds: []
     };
 
     const save = component.getByText(/save/i);
