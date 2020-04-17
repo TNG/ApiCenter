@@ -1,6 +1,7 @@
 import { AppState } from '../../store/state/app.state';
 import { createSelector } from '@ngrx/store';
 import { InterfaceState } from '../store/state/interface.state';
+import { Interface } from '../../models/interface';
 
 const selectInterfaceState = (state: AppState) => state.interfaceState;
 const selectAppState = (state: AppState) => state;
@@ -24,4 +25,19 @@ export const selectInterfacesWithApplications = createSelector(
 export const selectInterface = createSelector(
   selectInterfaceState,
   (state: InterfaceState, { id }) => state.interfaces.get(id)
+);
+
+export const selectInterfacesById = createSelector(
+  selectInterfaceState,
+  (state: InterfaceState, { interfaceIds }) => {
+    const selectedInterfaces: Interface[] = [];
+
+    state.interfaces.forEach((value: Interface, key: string) => {
+      if (interfaceIds.includes(key)) {
+        selectedInterfaces.push(value);
+      }
+    });
+
+    return selectedInterfaces;
+  }
 );

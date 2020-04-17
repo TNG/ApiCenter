@@ -13,6 +13,8 @@ import { ApplicationTableComponent } from './application-overview/application-ta
 import { ApplicationDeleteComponent } from './application-delete/application-delete.component';
 import { ApplicationUpdateComponent } from './application-update/application-update.component';
 import { ApplicationDetailsComponent } from './application-details/application-details.component';
+import { ApplicationInterfaceOverviewComponent } from './application-details/application-interface-overview/application-interface-overview.component';
+import { ApplicationInterfaceTableComponent } from './application-details/application-interface-overview/application-interface-table/application-interface-table.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { ApplicationDetailsComponent } from './application-details/application-d
     ApplicationTableComponent,
     ApplicationDeleteComponent,
     ApplicationUpdateComponent,
-    ApplicationDetailsComponent
+    ApplicationDetailsComponent,
+    ApplicationInterfaceOverviewComponent,
+    ApplicationInterfaceTableComponent
   ],
   imports: [
     CommonModule,

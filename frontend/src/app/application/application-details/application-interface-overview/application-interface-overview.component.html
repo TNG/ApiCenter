@@ -1,0 +1,5 @@
+<h3>Interfaces</h3>
+<app-application-interface-table
+  [interfaces]="interfaces$ | async"
+  (clickInterface)="onClickInterface($event)"
+></app-application-interface-table>

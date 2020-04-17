@@ -18,7 +18,12 @@ export class ApplicationFormComponent implements OnInit {
 
   ngOnInit() {
     if (!this.application) {
-      this.application = { name: '', description: '', contact: '' };
+      this.application = {
+        name: '',
+        description: '',
+        contact: '',
+        interfaceIds: []
+      };
     }
 
     this.applicationForm = new FormGroup({
@@ -39,7 +44,8 @@ export class ApplicationFormComponent implements OnInit {
       id: this.application.id,
       name: formValue.name,
       description: formValue.description,
-      contact: formValue.contact
+      contact: formValue.contact,
+      interfaceIds: this.application.interfaceIds
     };
 
     this.save.emit(application);
