@@ -4,7 +4,7 @@ import { ApplicationDetailsComponent } from './application/application-details/a
 import { InterfaceOverviewComponent } from './interface/interface-overview/interface-overview.component';
 
 export const appRoutes: Routes = [
-  { path: '', component: ApplicationOverviewComponent },
+  { path: 'applications', component: ApplicationOverviewComponent },
   { path: 'applications/:id', component: ApplicationDetailsComponent },
   { path: 'interfaces', component: InterfaceOverviewComponent }
 ];
