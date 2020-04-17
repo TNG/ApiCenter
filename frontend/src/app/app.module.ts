@@ -15,6 +15,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ErrorEffects } from './store/effects/error.effects';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
+import { InterfaceModule } from './interface/interface.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -25,6 +26,7 @@ import { appRoutes } from './app.routes';
     BrowserAnimationsModule,
     EffectsModule.forRoot([ErrorEffects]),
     HttpClientModule,
+    InterfaceModule,
     MaterialModule,
     RouterModule.forRoot(appRoutes),
     StoreDevtoolsModule.instrument({

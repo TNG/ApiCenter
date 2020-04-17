@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Application } from '../../models/application';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
-import { selectApplication } from '../store/selector/application.selectors';
+import { selectApplication } from '../store/selectors/application.selectors';
 import { loadApplication } from '../store/actions/application.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationUpdateComponent } from '../application-update/application-update.component';
