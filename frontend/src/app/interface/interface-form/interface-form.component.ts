@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Application } from '../../models/application';
-import { InterfaceType } from '../../models/interfaceType';
 import { Interface } from '../../models/interface';
 
 @Component({
@@ -15,7 +14,7 @@ export class InterfaceFormComponent implements OnInit {
   @Output() save = new EventEmitter<Interface>();
   @Output() cancel = new EventEmitter<void>();
 
-  interfaceTypes = Object.values(InterfaceType);
+  interfaceTypes = ['REST', 'GRAPHQL'];
 
   interfaceForm: FormGroup;
 
