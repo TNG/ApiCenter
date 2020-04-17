@@ -7,6 +7,8 @@ import { InterfaceService } from '../../services/interface.service';
 import {
   createInterface,
   createInterfaceSuccess,
+  deleteInterface,
+  deleteInterfaceSuccess,
   loadInterface,
   loadInterfaces,
   loadInterfacesSuccess,
@@ -104,6 +106,31 @@ export class InterfaceEffects {
   updateInterfaceSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateInterfaceSuccess),
+      mergeMap(() => of(loadInterfaces()))
+    )
+  );
+
+  deleteApplication$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteInterface),
+      mergeMap(({ interface: myInterface }) => {
+        return this.interfaceService.deleteInterface(myInterface.id).pipe(
+          map(() => deleteInterfaceSuccess()),
+          catchError(() =>
+            of(
+              showErrorMessage({
+                errorMessage: 'Error deleting interface. Please try again.'
+              })
+            )
+          )
+        );
+      })
+    )
+  );
+
+  deleteInterfaceSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteInterfaceSuccess),
       mergeMap(() => of(loadInterfaces()))
     )
   );

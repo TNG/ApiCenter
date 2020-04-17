@@ -12,6 +12,7 @@ import { InterfaceFormComponent } from './interface-form/interface-form.componen
 import { ReactiveFormsModule } from '@angular/forms';
 import { InterfaceDetailsComponent } from './interface-details/interface-details.component';
 import { InterfaceUpdateComponent } from './interface-update/interface-update.component';
+import { InterfaceDeleteComponent } from './interface-delete/interface-delete.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { InterfaceUpdateComponent } from './interface-update/interface-update.co
     InterfaceCreateComponent,
     InterfaceFormComponent,
     InterfaceDetailsComponent,
-    InterfaceUpdateComponent
+    InterfaceUpdateComponent,
+    InterfaceDeleteComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,10 @@ import { InterfaceUpdateComponent } from './interface-update/interface-update.co
     EffectsModule.forFeature([InterfaceEffects]),
     ReactiveFormsModule
   ],
-  entryComponents: [InterfaceCreateComponent, InterfaceUpdateComponent]
+  entryComponents: [
+    InterfaceCreateComponent,
+    InterfaceUpdateComponent,
+    InterfaceDeleteComponent
+  ]
 })
 export class InterfaceModule {}

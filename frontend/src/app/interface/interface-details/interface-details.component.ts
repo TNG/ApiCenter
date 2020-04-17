@@ -12,6 +12,7 @@ import { selectInterface } from '../selectors/interface.selectors';
 import { Application } from '../../models/application';
 import { MatDialog } from '@angular/material/dialog';
 import { InterfaceUpdateComponent } from '../interface-update/interface-update.component';
+import { InterfaceDeleteComponent } from '../interface-delete/interface-delete.component';
 
 @Component({
   selector: 'app-interface-details',
@@ -54,5 +55,9 @@ export class InterfaceDetailsComponent implements OnInit {
     });
   }
 
-  onDeleteInterface(myInterface: Interface) {}
+  onDeleteInterface(myInterface: Interface) {
+    this.matDialog.open(InterfaceDeleteComponent, {
+      data: { interface: myInterface }
+    });
+  }
 }

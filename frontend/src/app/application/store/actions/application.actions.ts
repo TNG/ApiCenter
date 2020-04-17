@@ -36,7 +36,6 @@ export const deleteApplication = createAction(
   'Delete application',
   props<{ application: Application }>()
 );
-
 export const deleteApplicationSuccess = createAction(
   'Delete application success'
 );
