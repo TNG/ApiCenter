@@ -5,6 +5,7 @@ import { InterfaceOverviewComponent } from './interface/interface-overview/inter
 import { InterfaceDetailsComponent } from './interface/interface-details/interface-details.component';
 
 export const appRoutes: Routes = [
+  { path: '', component: ApplicationOverviewComponent },
   { path: 'applications', component: ApplicationOverviewComponent },
   { path: 'applications/:id', component: ApplicationDetailsComponent },
   { path: 'interfaces', component: InterfaceOverviewComponent },
