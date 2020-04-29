@@ -39,7 +39,7 @@
     "graphql-import": "^0.7.1",
     "graphql-tools": "^4.0.7",
     "invariant": "^2.2.4",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "jwt-decode": "^2.2.0",
     "ngx-markdown": "^8.2.2",
     "npm": "^6.13.4",
