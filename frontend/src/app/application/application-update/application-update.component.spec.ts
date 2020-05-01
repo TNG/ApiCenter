@@ -6,7 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from '../store/effects/application.effects';
 import { ErrorEffects } from '../../store/effects/error.effects';
 import { ApplicationFormComponent } from '../application-form/application-form.component';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +14,7 @@ import { render } from '@testing-library/angular';
 import { Application } from '../../models/application';
 import { ApplicationUpdateComponent } from './application-update.component';
 import { environment } from '../../../environments/environment';
+import { createMock } from '@testing-library/angular/jest-utils';
 
 describe('ApplicationUpdateComponent', () => {
   const existingApplication: Application = {
@@ -33,9 +34,9 @@ describe('ApplicationUpdateComponent', () => {
   ];
   const declarations = [ApplicationFormComponent];
 
-  const matDialogRefMock = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const httpClientMock = jasmine.createSpyObj('HttpClient', { put: of({}) });
-  const snackBarMock = jasmine.createSpyObj('MatSnackBar', ['open']);
+  const matDialogRefMock = createMock(MatDialogRef);
+  const httpClientMock = createMock(HttpClient);
+  const snackBarMock = createMock(MatSnackBar);
 
   const providers = [
     { provide: MatDialogRef, useValue: matDialogRefMock },
@@ -107,18 +108,12 @@ describe('ApplicationUpdateComponent', () => {
 
   it('should show snackbar if backend responds with error', async () => {
     // given
-    const testHttpClientMock = jasmine.createSpyObj('HttpClient', {
-      put: throwError(new HttpErrorResponse({}))
-    });
-    const testProviders = [
-      ...providers,
-      { provide: HttpClient, useValue: testHttpClientMock }
-    ];
+    httpClientMock.put.mockReturnValue(throwError(new HttpErrorResponse({})));
 
     const component = await render(ApplicationUpdateComponent, {
       imports,
       declarations,
-      providers: testProviders
+      providers
     });
 
     const save = component.getByText(/save/i);

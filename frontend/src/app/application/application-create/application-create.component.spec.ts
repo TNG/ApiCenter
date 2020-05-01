@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from '../store/effects/application.effects';
 import { ErrorEffects } from '../../store/effects/error.effects';
+import { createMock } from '@testing-library/angular/jest-utils';
 
 describe('ApplicationCreateComponent', () => {
   const imports = [
@@ -24,15 +25,20 @@ describe('ApplicationCreateComponent', () => {
   ];
   const declarations = [ApplicationFormComponent];
 
-  const matDialogRefMock = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const httpClientMock = jasmine.createSpyObj('HttpClient', { post: of({}) });
-  const snackBarMock = jasmine.createSpyObj('MatSnackBar', ['open']);
+  const matDialogRefMock = createMock(MatDialogRef);
+  const httpClientMock = createMock(HttpClient);
+  const snackBarMock = createMock(MatSnackBar);
 
   const providers = [
     { provide: MatDialogRef, useValue: matDialogRefMock },
     { provide: HttpClient, useValue: httpClientMock },
     { provide: MatSnackBar, useValue: snackBarMock }
   ];
+
+  beforeEach(() => {
+    httpClientMock.post.mockReturnValue(of({}));
+    httpClientMock.get.mockReturnValue(of([]));
+  });
 
   it('should save new application', async () => {
     // given
@@ -82,9 +88,10 @@ describe('ApplicationCreateComponent', () => {
 
   it('should show snackbar if backend responds with error', async () => {
     // given
-    const testHttpClientMock = jasmine.createSpyObj('HttpClient', {
-      post: throwError(new HttpErrorResponse({}))
-    });
+    const testHttpClientMock = createMock(HttpClient);
+    testHttpClientMock.post.mockReturnValue(
+      throwError(new HttpErrorResponse({}))
+    );
     const testProviders = [
       ...providers,
       { provide: HttpClient, useValue: testHttpClientMock }
