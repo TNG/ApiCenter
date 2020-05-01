@@ -35,7 +35,7 @@
     "core-js": "^2.6.10",
     "graphiql": "^0.17.5",
     "graphql": "^0.13.2",
-    "graphql-config": "^2.2.1",
+    "graphql-config": "^3.0.1",
     "graphql-import": "^0.7.1",
     "graphql-tools": "^4.0.7",
     "invariant": "^2.2.4",
