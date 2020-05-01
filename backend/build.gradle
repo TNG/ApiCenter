@@ -64,7 +64,7 @@ dependencies {
     // DB
     compile "org.postgresql:postgresql:42.2.12"
     compile "com.h2database:h2:1.4.200"
-    compile "org.flywaydb:flyway-core:6.3.2"
+    compile "org.flywaydb:flyway-core:6.4.1"
     compile "org.hibernate:hibernate-search-orm:5.11.5.Final"
     // Helpers
     compile "com.jayway.jsonpath:json-path:2.4.0"
