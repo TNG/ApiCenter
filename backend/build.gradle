@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlin_version = '1.3.72'
     ext.spring_boot_version = '2.2.6.RELEASE'
-    ext.jackson_version = '2.11.0'
+    ext.jackson_version = '2.10.3'
 
     repositories {
         jcenter()
@@ -15,8 +15,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
-        classpath "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0"
-        classpath "gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:5.1.0"
+        classpath "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
     }
 }
 
@@ -25,9 +24,14 @@ plugins {
     id "org.jetbrains.kotlin.plugin.spring" version "1.3.72"
     id "org.jetbrains.kotlin.plugin.jpa" version "1.3.72"
     id "org.springframework.boot" version "2.2.6.RELEASE"
+
     id "com.github.ben-manes.versions" version "0.28.0"
+    id 'se.patrikerdes.use-latest-versions' version '0.2.13'
+
     id "com.diffplug.gradle.spotless" version "3.28.1"
+
     id "info.solidsoft.pitest" version "1.4.6"
+
     id "com.moowork.node" version "1.3.1"
     id "com.moowork.gulp" version "1.3.0"
     id "com.bmuschko.docker-spring-boot-application" version "5.3.0"
@@ -84,7 +88,7 @@ dependencies {
 
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
-    testCompile "org.springframework.security:spring-security-test:5.2.2.RELEASE"
+    testCompile "org.springframework.security:spring-security-test:5.3.1.RELEASE"
     testCompile "org.assertj:assertj-core:3.15.0"
     testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testCompile "com.h2database:h2:1.4.199"
@@ -115,7 +119,6 @@ sourceSets {
 task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
-    outputs.upToDateWhen { false }
 }
 
 docker {
