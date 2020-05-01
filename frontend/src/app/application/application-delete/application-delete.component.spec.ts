@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ApplicationEffects } from '../store/effects/application.effects';
 import { Router } from '@angular/router';
+import { createMock } from '@testing-library/angular/jest-utils';
 
 describe('ApplicationDeleteComponent', () => {
   const testApplication: Application = {
@@ -19,12 +20,9 @@ describe('ApplicationDeleteComponent', () => {
     id: '123'
   };
 
-  const matDialogRefMock = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const httpClientMock = jasmine.createSpyObj('HttpClient', {
-    delete: of(EMPTY),
-    get: of([])
-  });
-  const routerMock = jasmine.createSpyObj('Router', ['navigate']);
+  const matDialogRefMock = createMock(MatDialogRef);
+  const httpClientMock = createMock(HttpClient);
+  const routerMock = createMock(Router);
 
   const providers = [
     { provide: MatDialogRef, useValue: matDialogRefMock },
@@ -42,10 +40,9 @@ describe('ApplicationDeleteComponent', () => {
     EffectsModule.forRoot([ApplicationEffects])
   ];
 
-  afterEach(() => {
-    matDialogRefMock.close.calls.reset();
-    httpClientMock.delete.calls.reset();
-    routerMock.navigate.calls.reset();
+  beforeEach(() => {
+    httpClientMock.delete.mockReset();
+    httpClientMock.delete.mockReturnValue(of(EMPTY));
   });
 
   it('should delete an application when confirmed and route to application overview', async () => {

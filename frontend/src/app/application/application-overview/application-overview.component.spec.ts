@@ -15,6 +15,7 @@ import { applicationReducer } from '../store/reducers/application.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from '../store/effects/application.effects';
 import { RouterTestingModule } from '@angular/router/testing';
+import { createMock } from '@testing-library/angular/jest-utils';
 
 describe('ApplicationOverviewComponent', () => {
   const testApplications: Application[] = [
@@ -53,9 +54,9 @@ describe('ApplicationOverviewComponent', () => {
 
   it('should a list of applications', async () => {
     // given
-    const httpClientMock = jasmine.createSpyObj('HttpClient', {
-      get: of(testApplications)
-    });
+    const httpClientMock = createMock(HttpClient);
+    httpClientMock.get.mockReturnValue(of(testApplications));
+
     const providers = [
       {
         provide: HttpClient,
@@ -94,7 +95,9 @@ describe('ApplicationOverviewComponent', () => {
 
   it('should display a hint when no applications are available', async () => {
     // given
-    const httpClientMock = jasmine.createSpyObj('HttpClient', { get: of([]) });
+    const httpClientMock = createMock(HttpClient);
+    httpClientMock.get.mockReturnValue(of([]));
+
     const providers = [
       {
         provide: HttpClient,

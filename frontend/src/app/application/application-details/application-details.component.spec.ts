@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { ApplicationInterfaceOverviewComponent } from './application-interface-overview/application-interface-overview.component';
 import { ApplicationInterfaceTableComponent } from './application-interface-overview/application-interface-table/application-interface-table.component';
+import { createMock } from '@testing-library/angular/jest-utils';
 
 describe('ApplicationDetailsComponent', () => {
   const application = {
@@ -20,9 +21,7 @@ describe('ApplicationDetailsComponent', () => {
     id: '123'
   };
 
-  const httpClientMock = jasmine.createSpyObj('HttpClient', {
-    get: of(application)
-  });
+  const httpClientMock = createMock(HttpClient);
 
   const imports = [
     MaterialModule,
@@ -48,6 +47,10 @@ describe('ApplicationDetailsComponent', () => {
     ApplicationInterfaceOverviewComponent,
     ApplicationInterfaceTableComponent
   ];
+
+  beforeEach(() => {
+    httpClientMock.get.mockReturnValue(of(application));
+  });
 
   it('should show details of applications', async () => {
     // when
