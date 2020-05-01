@@ -77,7 +77,7 @@ dependencies {
     }
     // Security & Auth
     compile "com.atlassian.crowd:crowd-integration-springsecurity:3.0.1"
-    compile ("com.auth0:java-jwt:3.10.0") {
+    compile ("com.auth0:java-jwt:3.10.3") {
         exclude group: "com.fasterxml.jackson.core", module: "jackson-core"
         exclude group: "com.fasterxml.jackson.core", module: "jackson-databind"
     }
