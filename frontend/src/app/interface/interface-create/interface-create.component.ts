@@ -7,6 +7,7 @@ import { selectApplications } from '../../application/store/selectors/applicatio
 import { Interface } from '../../models/interface';
 import { MatDialogRef } from '@angular/material/dialog';
 import { createInterface } from '../store/actions/interface.actions';
+import { loadApplications } from '../../application/store/actions/application.actions';
 
 @Component({
   selector: 'app-interface-create',
@@ -22,6 +23,8 @@ export class InterfaceCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.store.dispatch(loadApplications());
+
     this.applications$ = this.store.select(selectApplications);
   }
 

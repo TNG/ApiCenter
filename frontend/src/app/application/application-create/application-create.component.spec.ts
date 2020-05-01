@@ -88,19 +88,12 @@ describe('ApplicationCreateComponent', () => {
 
   it('should show snackbar if backend responds with error', async () => {
     // given
-    const testHttpClientMock = createMock(HttpClient);
-    testHttpClientMock.post.mockReturnValue(
-      throwError(new HttpErrorResponse({}))
-    );
-    const testProviders = [
-      ...providers,
-      { provide: HttpClient, useValue: testHttpClientMock }
-    ];
+    httpClientMock.post.mockReturnValue(throwError(new HttpErrorResponse({})));
 
     const component = await render(ApplicationCreateComponent, {
       imports,
       declarations,
-      providers: testProviders
+      providers
     });
 
     const inputValues = {
