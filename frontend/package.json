@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "protractor e2e/protractor.conf.js",
+    "e2e": "cypress run",
     "cypress:open": "cypress open"
   },
   "husky": {
