@@ -76,6 +76,8 @@ describe('Applications', () => {
       .findByText('Delete')
       .click();
 
-    cy.findByText('There are no applications available.');
+    cy.findByText('Changed application title').should('not.exist');
+    cy.findByText('Changed application description').should('not.exist');
+    cy.findByText('Changed application contact').should('not.exist');
   });
 });
