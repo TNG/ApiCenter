@@ -18,3 +18,6 @@ build/
 static/
 dist/
 coverage/
+
+# Cypress
+videos/
