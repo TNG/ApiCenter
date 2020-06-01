@@ -37,7 +37,7 @@
     "graphql": "^0.13.2",
     "graphql-config": "^3.0.1",
     "graphql-import": "^0.7.1",
-    "graphql-tools": "^4.0.7",
+    "graphql-tools": "^5.0.0",
     "invariant": "^2.2.4",
     "jquery": "^3.5.0",
     "jwt-decode": "^2.2.0",
