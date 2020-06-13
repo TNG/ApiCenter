@@ -4,11 +4,11 @@ import com.tngtech.apicenter.dto.InterfaceDto
 import com.tngtech.apicenter.mapper.toDto
 import com.tngtech.apicenter.mapper.toEntity
 import com.tngtech.apicenter.repository.InterfaceRepository
+import java.util.UUID
+import javax.persistence.EntityNotFoundException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.UUID
-import javax.persistence.EntityNotFoundException
 
 @Service
 class InterfaceService(private val interfaceRepository: InterfaceRepository) {
