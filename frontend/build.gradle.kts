@@ -14,6 +14,7 @@ tasks.register("e2e", com.moowork.gradle.node.npm.NpmTask::class) {
 }
 
 task("test", com.moowork.gradle.node.npm.NpmTask::class) {
+	dependsOn("npmInstall")
   setArgs(listOf("run-script", "test"))
 }
 
