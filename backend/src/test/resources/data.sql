@@ -1,3 +1,8 @@
+SET FOREIGN_KEY_CHECKS=0
+TRUNCATE TABLE application
+TRUNCATE TABLE interface
+SET FOREIGN_KEY_CHECKS=1
+
 INSERT INTO application (id, `name`, description, contact) VALUES('168a1a96337c41e6b3a61e8c43cdf863', 'applicationA', 'applicationDescriptionA', 'contactA')
 INSERT INTO application (id, `name`, description, contact) VALUES('46a9df3fc37a499ea40714c5158d2ac5', 'applicationB', 'applicationDescriptionB', 'contactB')
 INSERT INTO application (id, `name`, description, contact) VALUES('ad374016d15d47af8d8296fceb6d51fa', 'applicationC', 'applicationDescriptionC', 'contactC')
