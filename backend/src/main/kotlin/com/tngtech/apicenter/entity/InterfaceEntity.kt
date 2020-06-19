@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-@Entity
+@Entity(name="interface")
 data class InterfaceEntity(
     @Id @GeneratedValue val id: UUID?,
     @field:NotBlank val name: String?,
