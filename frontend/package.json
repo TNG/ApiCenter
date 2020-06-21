@@ -6,9 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "cypress run",
-    "cypress:open": "cypress open"
+    "lint": "ng lint"
   },
   "husky": {
     "hooks": {
