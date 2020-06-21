@@ -1,4 +1,5 @@
 plugins {
+  java
   id("com.moowork.node") version "1.3.1"
 }
 
@@ -13,7 +14,7 @@ tasks.register("e2e", com.moowork.gradle.node.npm.NpmTask::class) {
   setNpmCommand("run", "e2e")
 }
 
-task("test", com.moowork.gradle.node.npm.NpmTask::class) {
+tasks.register("npmTest", com.moowork.gradle.node.npm.NpmTask::class) {
 	dependsOn("npmInstall")
   setArgs(listOf("run-script", "test"))
 }
