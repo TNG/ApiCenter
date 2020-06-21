@@ -1,0 +1,14 @@
+{
+  "name": "cypress",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "e2e": "cypress run",
+    "cypress:open": "cypress open"
+  },
+  "devDependencies": {
+    "@testing-library/cypress": "^5.3.0",
+    "cypress": "^4.8.0",
+    "typescript": "~3.5.3"
+  }
+}
