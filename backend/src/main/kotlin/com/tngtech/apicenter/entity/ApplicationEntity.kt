@@ -6,10 +6,9 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.OneToMany
-import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 
-@Entity(name="application")
+@Entity(name = "application")
 data class ApplicationEntity(
     @Id @GeneratedValue val id: UUID?,
     @field:NotBlank val name: String?,

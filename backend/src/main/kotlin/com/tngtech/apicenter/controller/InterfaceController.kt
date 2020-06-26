@@ -2,6 +2,8 @@ package com.tngtech.apicenter.controller
 
 import com.tngtech.apicenter.dto.InterfaceDto
 import com.tngtech.apicenter.service.InterfaceService
+import java.util.UUID
+import javax.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/interfaces")

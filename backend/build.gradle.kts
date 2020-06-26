@@ -59,3 +59,7 @@ tasks.register("runWithFrontend") {
         runtimeOnly(project(":frontend"))
     }
 }
+
+tasks.register("lint") {
+    dependsOn("ktlintCheck")
+}
