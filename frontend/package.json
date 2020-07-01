@@ -48,7 +48,7 @@
     "process": "^0.11.10",
     "react": "^16.13.1",
     "react-dom": "^16.13.0",
-    "rxjs": "^6.5.4",
+    "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.5",
     "stream": "0.0.2",
     "swagger-ui": "^3.25.0",
