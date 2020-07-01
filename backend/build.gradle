@@ -28,7 +28,7 @@ plugins {
     id "com.github.ben-manes.versions" version "0.28.0"
     id 'se.patrikerdes.use-latest-versions' version '0.2.14'
 
-    id "com.diffplug.gradle.spotless" version "4.0.1"
+    id "com.diffplug.gradle.spotless" version "4.4.0"
 
     id "info.solidsoft.pitest" version "1.5.1"
 
