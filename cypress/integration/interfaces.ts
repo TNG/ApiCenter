@@ -3,14 +3,14 @@ describe("Interfaces", () => {
     cy.visit("/interfaces");
 
     // create
-    cy.contains("add").click();
+    cy.contains("add").click({ force: true });
 
     cy.get("form")
       .findByLabelText(/application/i)
-      .click();
+      .click({ force: true });
     cy.get("mat-option")
       .contains("Application C")
-      .click();
+      .click({ force: true });
 
     cy.get("form")
       .findByLabelText(/name/i)
@@ -21,14 +21,14 @@ describe("Interfaces", () => {
 
     cy.get("form")
       .findByLabelText(/type/i)
-      .click();
+      .click({ force: true });
     cy.get("mat-option")
       .contains("GRAPHQL")
-      .click();
+      .click({ force: true });
 
     cy.get("form")
       .contains("Save")
-      .click();
+      .click({ force: true });
 
     // check if shown in table
     cy.get("table")
@@ -41,7 +41,7 @@ describe("Interfaces", () => {
     // check if shown on details page
     cy.get("table")
       .contains("td", "New interface")
-      .click();
+      .click({ force: true });
 
     cy.get("table")
       .contains("td", "New interface")
@@ -67,10 +67,10 @@ describe("Interfaces", () => {
     // check if interface is shown in application details page
     cy.get("mat-toolbar")
       .contains("button", "Applications")
-      .click();
+      .click({ force: true });
     cy.get("table")
       .contains("td", "Application C")
-      .click();
+      .click({ force: true });
 
     cy.get("table")
       .contains("td", "New interface")
@@ -80,17 +80,17 @@ describe("Interfaces", () => {
       .should("be.visible");
     cy.get("table")
       .contains("td", "New interface")
-      .click();
+      .click({ force: true });
 
     // update interface
-    cy.findByText("Edit").click();
+    cy.findByText("Edit").click({ force: true });
 
     cy.get("form")
       .findByLabelText(/application/i)
-      .click();
+      .click({ force: true });
     cy.get("mat-option")
       .contains("Application B")
-      .click();
+      .click({ force: true });
 
     cy.get("form")
       .findByLabelText(/name/i)
@@ -103,14 +103,14 @@ describe("Interfaces", () => {
 
     cy.get("form")
       .findByLabelText(/type/i)
-      .click();
+      .click({ force: true });
     cy.get("mat-option")
       .contains("REST")
-      .click();
+      .click({ force: true });
 
     cy.get("form")
       .contains("Save")
-      .click();
+      .click({ force: true });
 
     cy.get("table")
       .contains("td", "Updated interface")
@@ -121,20 +121,20 @@ describe("Interfaces", () => {
 
     cy.get("mat-toolbar")
       .contains("button", "Applications")
-      .click();
+      .click({ force: true });
     cy.get("table")
       .contains("td", "Application B")
-      .click();
+      .click({ force: true });
 
     cy.get("table")
       .contains("td", "Updated interface")
-      .click();
+      .click({ force: true });
 
     // delete interface
-    cy.findByText("Delete").click();
+    cy.findByText("Delete").click({ force: true });
     cy.get("mat-dialog-container")
       .findByText("Delete")
-      .click();
+      .click({ force: true });
 
     cy.findByText("Updated interface").should("not.exist");
   });
