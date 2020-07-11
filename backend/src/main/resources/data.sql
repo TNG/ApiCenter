@@ -1,6 +1,7 @@
 SET FOREIGN_KEY_CHECKS=0
 TRUNCATE TABLE application
 TRUNCATE TABLE interface
+TRUNCATE TABLE version
 SET FOREIGN_KEY_CHECKS=1
 
 INSERT INTO application (id, `name`, description, contact) VALUES('168a1a96337c41e6b3a61e8c43cdf863', 'Application A', 'This is the first application.', 'John Doe, john.doe@company.com')
