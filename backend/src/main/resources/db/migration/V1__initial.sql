@@ -19,6 +19,7 @@ CREATE TABLE interface
 CREATE TABLE version
 (
     id           CHAR(36)     NOT NULL PRIMARY KEY,
+    title        VARCHAR(255) NOT NULL,
     version      VARCHAR(100) NOT NULL,
     description  VARCHAR(250),
     content      TEXT         NOT NULL,
