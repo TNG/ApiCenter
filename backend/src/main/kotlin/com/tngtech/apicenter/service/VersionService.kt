@@ -9,9 +9,9 @@ import com.tngtech.apicenter.entity.VersionEntity
 import com.tngtech.apicenter.mapper.toDto
 import com.tngtech.apicenter.mapper.toEntity
 import com.tngtech.apicenter.repository.VersionRepository
-import org.springframework.stereotype.Service
 import java.util.UUID
 import javax.validation.ValidationException
+import org.springframework.stereotype.Service
 
 @Service
 class VersionService(private val versionRepository: VersionRepository, private val interfaceService: InterfaceService) {
@@ -34,6 +34,8 @@ class VersionService(private val versionRepository: VersionRepository, private v
 
         return versionRepository.save(versionEntity).toDto()
     }
+
+    fun getVersions() = versionRepository.findAll().map { it.toDto() }
 
     private fun isJson(fileContent: String): Boolean {
         return try {
