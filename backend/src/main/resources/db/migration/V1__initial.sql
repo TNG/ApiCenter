@@ -15,3 +15,13 @@ CREATE TABLE interface
     application_id CHAR(36)     NOT NULL,
     FOREIGN KEY (application_id) REFERENCES application (id)
 );
+
+CREATE TABLE version
+(
+    id           CHAR(36)     NOT NULL PRIMARY KEY,
+    version      VARCHAR(100) NOT NULL,
+    description  VARCHAR(250),
+    content      TEXT         NOT NULL,
+    interface_id CHAR(36)     NOT NULL,
+    FOREIGN KEY (interface_id) REFERENCES interface (id)
+);
