@@ -3,11 +3,13 @@ import { ApplicationOverviewComponent } from './application/application-overview
 import { ApplicationDetailsComponent } from './application/application-details/application-details.component';
 import { InterfaceOverviewComponent } from './interface/interface-overview/interface-overview.component';
 import { InterfaceDetailsComponent } from './interface/interface-details/interface-details.component';
+import { VersionOverviewComponent } from './version/version-overview/version-overview.component';
 
 export const appRoutes: Routes = [
   { path: '', component: ApplicationOverviewComponent },
   { path: 'applications', component: ApplicationOverviewComponent },
   { path: 'applications/:id', component: ApplicationDetailsComponent },
   { path: 'interfaces', component: InterfaceOverviewComponent },
-  { path: 'interfaces/:id', component: InterfaceDetailsComponent }
+  { path: 'interfaces/:id', component: InterfaceDetailsComponent },
+  { path: 'versions', component: VersionOverviewComponent }
 ];

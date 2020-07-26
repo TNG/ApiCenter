@@ -16,6 +16,7 @@ import { ErrorEffects } from './store/effects/error.effects';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { InterfaceModule } from './interface/interface.module';
+import { VersionModule } from './version/version.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -32,7 +33,8 @@ import { InterfaceModule } from './interface/interface.module';
     StoreDevtoolsModule.instrument({
       logOnly: environment.production
     }),
-    StoreModule.forRoot({})
+    StoreModule.forRoot({}),
+    VersionModule
   ],
   providers: [],
   exports: [],
