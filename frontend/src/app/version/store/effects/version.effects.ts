@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { loadInterfacesSuccess } from '../../../interface/store/actions/interface.actions';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { showErrorMessage } from '../../../store/actions/error.actions';
 import { loadVersions, loadVersionsSuccess } from '../actions/version.actions';
