@@ -3,7 +3,7 @@ import { Interface } from '../../models/interface';
 import { AppState } from '../../store/state/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectInterfacesWithApplications } from '../selectors/interface.selectors';
+import { selectInterfacesWithApplications } from '../store/selectors/interface.selectors';
 import { loadInterfaces } from '../store/actions/interface.actions';
 import { loadApplications } from '../../application/store/actions/application.actions';
 import { MatDialog } from '@angular/material/dialog';

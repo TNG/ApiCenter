@@ -1,7 +1,7 @@
-import { AppState } from '../../store/state/app.state';
+import { AppState } from '../../../store/state/app.state';
 import { createSelector } from '@ngrx/store';
-import { InterfaceState } from '../store/state/interface.state';
-import { Interface } from '../../models/interface';
+import { InterfaceState } from '../state/interface.state';
+import { Interface } from '../../../models/interface';
 
 const selectInterfaceState = (state: AppState) => state.interfaceState;
 const selectAppState = (state: AppState) => state;
