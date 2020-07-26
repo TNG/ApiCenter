@@ -4,7 +4,7 @@ import { Interface } from '../../../models/interface';
 import { Observable } from 'rxjs';
 import { AppState } from '../../../store/state/app.state';
 import { Store } from '@ngrx/store';
-import { selectInterfacesById } from '../../../interface/selectors/interface.selectors';
+import { selectInterfacesById } from '../../../interface/store/selectors/interface.selectors';
 import { loadInterfaces } from '../../../interface/store/actions/interface.actions';
 import { Router } from '@angular/router';
 

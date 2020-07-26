@@ -8,7 +8,7 @@ import { selectApplication } from '../../application/store/selectors/application
 import { AppState } from '../../store/state/app.state';
 import { Store } from '@ngrx/store';
 import { loadInterface } from '../store/actions/interface.actions';
-import { selectInterface } from '../selectors/interface.selectors';
+import { selectInterface } from '../store/selectors/interface.selectors';
 import { Application } from '../../models/application';
 import { MatDialog } from '@angular/material/dialog';
 import { InterfaceUpdateComponent } from '../interface-update/interface-update.component';

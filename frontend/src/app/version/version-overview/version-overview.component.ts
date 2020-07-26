@@ -3,6 +3,12 @@ import { Observable } from 'rxjs';
 import { Version } from '../../models/version';
 import { Interface } from '../../models/interface';
 import { Application } from '../../models/application';
+import { loadInterfaces } from '../../interface/store/actions/interface.actions';
+import { loadApplications } from '../../application/store/actions/application.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/state/app.state';
+import { selectVersionsWithInterfaceAndApplication } from '../store/selectors/version.selectors';
+import { loadVersions } from '../store/actions/version.actions';
 
 @Component({
   selector: 'app-version-overview',
@@ -11,10 +17,18 @@ import { Application } from '../../models/application';
 })
 export class VersionOverviewComponent implements OnInit {
   versionsWithInterfaceAndApplication$: Observable<
-    Version | { interface: Interface } | { application: Application }
+    Version | { interface: Interface } | { application: Application }[]
   >;
 
-  constructor() {}
+  constructor(private store: Store<AppState>) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store.dispatch(loadInterfaces());
+    this.store.dispatch(loadApplications());
+    this.store.dispatch(loadVersions());
+
+    this.versionsWithInterfaceAndApplication$ = this.store.select(
+      selectVersionsWithInterfaceAndApplication
+    );
+  }
 }
