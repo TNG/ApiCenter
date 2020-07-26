@@ -30,10 +30,10 @@ import { VersionModule } from './version/version.module';
     InterfaceModule,
     MaterialModule,
     RouterModule.forRoot(appRoutes),
+    StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({
       logOnly: environment.production
     }),
-    StoreModule.forRoot({}),
     VersionModule
   ],
   providers: [],

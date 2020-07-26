@@ -32,7 +32,7 @@ export class VersionTableComponent implements OnChanges {
   dataSource: MatTableDataSource<
     Version | { interface: Interface } | { application: Application }
   >;
-  displayedColumns: string[] = ['application', 'interface', 'type', 'version'];
+  displayedColumns: string[] = ['application', 'name', 'type', 'version'];
 
   constructor() {}
 
