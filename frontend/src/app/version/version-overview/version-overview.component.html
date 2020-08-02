@@ -1,3 +1,4 @@
 <app-version-table
   [versions]="versionsWithInterfaceAndApplication$ | async"
+  (clickVersion)="onClickVersion($event)"
 ></app-version-table>

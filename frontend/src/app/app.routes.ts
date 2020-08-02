@@ -4,6 +4,7 @@ import { ApplicationDetailsComponent } from './application/application-details/a
 import { InterfaceOverviewComponent } from './interface/interface-overview/interface-overview.component';
 import { InterfaceDetailsComponent } from './interface/interface-details/interface-details.component';
 import { VersionOverviewComponent } from './version/version-overview/version-overview.component';
+import { VersionDetailsComponent } from './version/version-details/version-details.component';
 
 export const appRoutes: Routes = [
   { path: '', component: ApplicationOverviewComponent },
@@ -11,5 +12,6 @@ export const appRoutes: Routes = [
   { path: 'applications/:id', component: ApplicationDetailsComponent },
   { path: 'interfaces', component: InterfaceOverviewComponent },
   { path: 'interfaces/:id', component: InterfaceDetailsComponent },
-  { path: 'versions', component: VersionOverviewComponent }
+  { path: 'versions', component: VersionOverviewComponent },
+  { path: 'versions/:id', component: VersionDetailsComponent }
 ];

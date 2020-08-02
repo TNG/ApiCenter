@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
 import { selectVersionsWithInterfaceAndApplication } from '../store/selectors/version.selectors';
 import { loadVersions } from '../store/actions/version.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-version-overview',
@@ -17,10 +18,10 @@ import { loadVersions } from '../store/actions/version.actions';
 })
 export class VersionOverviewComponent implements OnInit {
   versionsWithInterfaceAndApplication$: Observable<
-    Version | { interface: Interface } | { application: Application }[]
+    (Version | { interface: Interface } | { application: Application })[]
   >;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit() {
     this.store.dispatch(loadInterfaces());
@@ -30,5 +31,9 @@ export class VersionOverviewComponent implements OnInit {
     this.versionsWithInterfaceAndApplication$ = this.store.select(
       selectVersionsWithInterfaceAndApplication
     );
+  }
+
+  onClickVersion(version: Version) {
+    return this.router.navigate(['versions', version.id]);
   }
 }
