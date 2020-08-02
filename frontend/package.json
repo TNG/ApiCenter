@@ -30,6 +30,7 @@
     "@ngrx/store-devtools": "^8.6.0",
     "immutability-helper": "^3.0.1",
     "rxjs": "~6.4.0",
+    "swagger-ui-dist": "^3.31.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

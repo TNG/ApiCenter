@@ -1,1 +1,3 @@
-<p>version-details works!</p>
+<ng-container *ngIf="spec$ | async as spec">
+  <app-openapi-ui [spec]="spec"></app-openapi-ui>
+</ng-container>

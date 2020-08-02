@@ -8,12 +8,14 @@ import { versionReducer } from './store/reducers/version.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { VersionEffects } from './store/effects/version.effects';
 import { VersionDetailsComponent } from './version-details/version-details.component';
+import { OpenapiUiComponent } from './version-details/openapi-ui/openapi-ui.component';
 
 @NgModule({
   declarations: [
     VersionOverviewComponent,
     VersionTableComponent,
-    VersionDetailsComponent
+    VersionDetailsComponent,
+    OpenapiUiComponent
   ],
   imports: [
     CommonModule,
