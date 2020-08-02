@@ -7,9 +7,14 @@ import { StoreModule } from '@ngrx/store';
 import { versionReducer } from './store/reducers/version.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { VersionEffects } from './store/effects/version.effects';
+import { VersionDetailsComponent } from './version-details/version-details.component';
 
 @NgModule({
-  declarations: [VersionOverviewComponent, VersionTableComponent],
+  declarations: [
+    VersionOverviewComponent,
+    VersionTableComponent,
+    VersionDetailsComponent
+  ],
   imports: [
     CommonModule,
     EffectsModule.forFeature([VersionEffects]),
