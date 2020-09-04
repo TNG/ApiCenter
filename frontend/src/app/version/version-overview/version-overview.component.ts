@@ -10,6 +10,8 @@ import { AppState } from '../../store/state/app.state';
 import { selectVersionsWithInterfaceAndApplication } from '../store/selectors/version.selectors';
 import { loadVersions } from '../store/actions/version.actions';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { VersionCreateComponent } from '../version-create/version-create.component';
 
 @Component({
   selector: 'app-version-overview',
@@ -21,7 +23,11 @@ export class VersionOverviewComponent implements OnInit {
     (Version | { interface: Interface } | { application: Application })[]
   >;
 
-  constructor(private store: Store<AppState>, private router: Router) {}
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(loadInterfaces());
@@ -35,5 +41,9 @@ export class VersionOverviewComponent implements OnInit {
 
   onClickVersion(version: Version) {
     return this.router.navigate(['versions', version.id]);
+  }
+
+  onCreateVersion() {
+    this.dialog.open(VersionCreateComponent);
   }
 }

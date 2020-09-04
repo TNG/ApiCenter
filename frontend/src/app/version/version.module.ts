@@ -9,19 +9,22 @@ import { EffectsModule } from '@ngrx/effects';
 import { VersionEffects } from './store/effects/version.effects';
 import { VersionDetailsComponent } from './version-details/version-details.component';
 import { OpenapiUiComponent } from './version-details/openapi-ui/openapi-ui.component';
+import { VersionCreateComponent } from './version-create/version-create.component';
 
 @NgModule({
   declarations: [
     VersionOverviewComponent,
     VersionTableComponent,
     VersionDetailsComponent,
-    OpenapiUiComponent
+    OpenapiUiComponent,
+    VersionCreateComponent
   ],
   imports: [
     CommonModule,
     EffectsModule.forFeature([VersionEffects]),
     MaterialModule,
     StoreModule.forFeature('versionState', versionReducer)
-  ]
+  ],
+  entryComponents: [VersionCreateComponent]
 })
 export class VersionModule {}
