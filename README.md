@@ -10,7 +10,7 @@ Gone are the days where specs might hide in some obscure folder in your source c
 ### From source
 
 - Clone the repository
-- In a terminal, run `./gradlew :runWithFrontend`
+- In a terminal, run `./gradlew :runAll`
 - In a browser, go to `localhost:8080`
 
 By default, user authentication is disabled. Login succeeds regardless of what password is entered.
