@@ -65,6 +65,13 @@ tasks.register("runWithFrontend") {
     }
 }
 
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
+    imageName = "tngtech/apicenter"
+    dependencies {
+        runtimeOnly(project(":frontend"))
+    }
+}
+
 tasks.register("lint") {
     dependsOn("ktlintCheck")
 }

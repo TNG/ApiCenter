@@ -15,6 +15,15 @@ Gone are the days where specs might hide in some obscure folder in your source c
 
 By default, user authentication is disabled. Login succeeds regardless of what password is entered.
 
+### With Docker
+
+We do not have an official Docker image yet. Until then, you can build your own by cloning the repository and executing the following steps:
+
+- `./gradlew bootBuildImage`
+- `docker run -p 8080:8080 tngtech/apicenter`
+
+This will start ApiCenter in a Docker container with an in-memory DB.
+
 ## Built with
 
 - [Gradle](https://gradle.org/)
