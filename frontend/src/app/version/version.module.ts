@@ -10,6 +10,7 @@ import { VersionEffects } from './store/effects/version.effects';
 import { VersionDetailsComponent } from './version-details/version-details.component';
 import { OpenapiUiComponent } from './version-details/openapi-ui/openapi-ui.component';
 import { VersionCreateComponent } from './version-create/version-create.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { VersionCreateComponent } from './version-create/version-create.componen
     CommonModule,
     EffectsModule.forFeature([VersionEffects]),
     MaterialModule,
-    StoreModule.forFeature('versionState', versionReducer)
+    StoreModule.forFeature('versionState', versionReducer),
+    ReactiveFormsModule
   ],
   entryComponents: [VersionCreateComponent]
 })
