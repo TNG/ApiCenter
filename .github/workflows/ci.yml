@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: 11
       - run: ./gradlew --stacktrace :backend:clean
       - run: ./gradlew --stacktrace :backend:test
       - run: ./gradlew --stacktrace :backend:lint
@@ -28,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 11
       - uses: cypress-io/github-action@v2
         with:
           working-directory: cypress

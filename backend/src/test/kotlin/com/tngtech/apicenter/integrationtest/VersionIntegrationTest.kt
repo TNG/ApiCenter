@@ -115,5 +115,4 @@ class VersionIntegrationTest {
             content { string("Validation error: Please provide a valid JSON or YAML file.") }
         }
     }
-
 }

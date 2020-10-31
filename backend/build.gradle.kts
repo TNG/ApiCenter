@@ -1,48 +1,47 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.3.1.RELEASE"
-    id("io.spring.dependency-management") version "1.0.9.RELEASE"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.3.72"
+    id("org.springframework.boot") version "2.3.4.RELEASE"
+    id("io.spring.dependency-management") version "1.0.10.RELEASE"
 
-    kotlin("jvm") version "1.3.61"
-    kotlin("plugin.spring") version "1.3.61"
+    kotlin("jvm") version "1.4.10"
+    kotlin("plugin.spring") version "1.4.10"
+    kotlin("plugin.jpa") version "1.4.10"
 
-    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
-    id("se.patrikerdes.use-latest-versions") version "0.2.14"
-    id("com.github.ben-manes.versions") version "0.28.0"
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.0"
+    id("se.patrikerdes.use-latest-versions") version "0.2.15"
+    id("com.github.ben-manes.versions") version "0.33.0"
 }
+
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.1")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.flywaydb:flyway-core")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    testImplementation("com.tngtech.archunit:archunit-junit5-api:0.14.1")
-    testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.14.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+    testImplementation("com.tngtech.archunit:archunit-junit5-api:0.14.1")
+    testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.14.1")
 
-    runtimeOnly("com.h2database:h2:1.4.200")
+    runtimeOnly("com.h2database:h2")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -61,6 +60,13 @@ tasks.register("buildWithFrontend") {
 tasks.register("runWithFrontend") {
     dependsOn("bootRun")
 
+    dependencies {
+        runtimeOnly(project(":frontend"))
+    }
+}
+
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
+    imageName = "tngtech/apicenter"
     dependencies {
         runtimeOnly(project(":frontend"))
     }
