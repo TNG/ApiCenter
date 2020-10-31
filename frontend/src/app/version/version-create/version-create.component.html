@@ -1,1 +1,35 @@
-<p>version-create works!</p>
+<form [formGroup]="versionForm" (ngSubmit)="onSubmit(versionForm.value)">
+  <mat-form-field *ngIf="versionForm.get('interfaceId') as interfaceId">
+    <mat-label>Interface</mat-label>
+    <mat-select formControlName="interfaceId" required>
+      <mat-option
+        *ngFor="let myInterface of interfaces$ | async"
+        [value]="myInterface.id"
+        >{{ myInterface.application.name }} - {{ myInterface.name }}</mat-option
+      >
+    </mat-select>
+    <mat-error *ngIf="!interfaceId.valid && interfaceId.errors.required"
+      >Interface is required.</mat-error
+    >
+  </mat-form-field>
+
+  <br />
+
+  <p>Add OpenAPI Specification:</p>
+  <input
+    formControlName="versionFile"
+    type="file"
+    accept=".yml,.json,.yaml"
+    (change)="onFileChange($event)"
+  />
+
+  <br />
+  <br />
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" [disabled]="!versionForm.valid">
+      Save
+    </button>
+    <button type="button" mat-raised-button (click)="onCancel()">Cancel</button>
+  </mat-card-actions>
+</form>
