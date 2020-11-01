@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlin_version = '1.4.10'
     ext.spring_boot_version = '2.3.4.RELEASE'
-    ext.jackson_version = '2.11.2'
+    ext.jackson_version = '2.11.3'
 
     repositories {
         jcenter()
