@@ -28,7 +28,7 @@
     "@ng-bootstrap/ng-bootstrap": "^4.2.2",
     "@ng-select/ng-select": "^3.0.0",
     "@stryker-mutator/core": "^4.1.0",
-    "@types/react": "^16.9.55",
+    "@types/react": "^17.0.0",
     "acorn": "^6.4.1",
     "bootstrap": "^4.5.0",
     "compare-versions": "^3.6.0",
