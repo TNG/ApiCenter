@@ -8,7 +8,7 @@ import com.tngtech.apicenter.backend.connector.rest.mapper.SpecificationFileDtoM
 import com.tngtech.apicenter.backend.domain.entity.*
 import com.tngtech.apicenter.backend.domain.handler.SpecificationHandler
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 internal class SpecificationControllerUnitTest {
 

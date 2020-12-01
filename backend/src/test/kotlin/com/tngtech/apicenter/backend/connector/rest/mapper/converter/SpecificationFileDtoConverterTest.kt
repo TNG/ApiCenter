@@ -7,8 +7,8 @@ import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.domain.entity.*
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class SpecificationFileDtoConverterTest {
 
@@ -30,7 +30,7 @@ class SpecificationFileDtoConverterTest {
             specificationDataParser
         )
 
-    @Before
+    @BeforeEach
     fun setup() {
         given(specificationDataParser.extractTitle(SWAGGER_SPECIFICATION)).willReturn("Swagger Petstore")
         given(specificationDataParser.extractVersion(SWAGGER_SPECIFICATION)).willReturn("1.0.0")
