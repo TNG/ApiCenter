@@ -30,7 +30,7 @@
     "@stryker-mutator/core": "^4.1.0",
     "@types/react": "^17.0.0",
     "acorn": "^6.4.1",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.5.3",
     "compare-versions": "^3.6.0",
     "core-js": "^2.6.10",
     "graphiql": "^1.0.6",
