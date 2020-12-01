@@ -49,7 +49,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.13.1",
     "rxjs": "^6.6.3",
-    "rxjs-compat": "^6.6.2",
+    "rxjs-compat": "^6.6.3",
     "stream": "0.0.2",
     "swagger-ui": "^3.36.1",
     "uuid": "^8.3.0",
