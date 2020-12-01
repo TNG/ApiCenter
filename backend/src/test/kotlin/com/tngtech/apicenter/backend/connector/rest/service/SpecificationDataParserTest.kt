@@ -8,7 +8,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.tngtech.apicenter.backend.domain.exceptions.SpecificationParseException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class SpecificationDataParserTest {
 

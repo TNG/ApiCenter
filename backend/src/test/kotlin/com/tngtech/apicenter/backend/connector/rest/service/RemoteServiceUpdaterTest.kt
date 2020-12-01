@@ -2,12 +2,15 @@ package com.tngtech.apicenter.backend.connector.rest.service
 
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.tngtech.apicenter.backend.connector.rest.dto.SpecificationFileMetadata
-import com.tngtech.apicenter.backend.domain.entity.*
+import com.tngtech.apicenter.backend.domain.entity.ApiLanguage
+import com.tngtech.apicenter.backend.domain.entity.ReleaseType
+import com.tngtech.apicenter.backend.domain.entity.Service
+import com.tngtech.apicenter.backend.domain.entity.ServiceId
+import com.tngtech.apicenter.backend.domain.entity.Specification
+import com.tngtech.apicenter.backend.domain.entity.SpecificationMetadata
 import com.tngtech.apicenter.backend.domain.handler.ServiceHandler
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class RemoteServiceUpdaterTest {
 

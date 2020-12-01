@@ -7,14 +7,11 @@ import com.tngtech.apicenter.backend.connector.database.repository.ServiceReposi
 import com.tngtech.apicenter.backend.connector.database.service.ServiceDatabase
 import com.tngtech.apicenter.backend.domain.entity.ServiceId
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
-import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 import javax.persistence.EntityManager
 
-@RunWith(MockitoJUnitRunner::class)
 internal class ServiceDatabaseUnitTest {
 
     private val serviceRepository: ServiceRepository = mock()
