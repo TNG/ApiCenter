@@ -1,9 +1,12 @@
 # ApiCenter
 
-ApiCenter is an API specification repository. It is the sole resting place of all your [OpenAPI](https://www.openapis.org/) (formerly known as [Swagger](https://swagger.io/)) and [GraphQL](https://graphql.org/) specifications, so you never have to go look for them anymore.
-You can upload your specs, search through them, test them with [SwaggerUI](https://swagger.io/tools/swagger-ui/) or [GraphiQL](https://github.com/graphql/graphiql) and download them.
+ApiCenter keeps track of all the services that run in your organization.
 
-Gone are the days where specs might hide in some obscure folder in your source code, or somewhere in some wiki. All specs in one place, with all the comfort you want.
+It is a API specification repository. You can upload all your [OpenAPI](https://www.openapis.org/) (formerly known as [Swagger](https://swagger.io/)) specifications, so you never have to go look for them anymore. Search through them, test them with [SwaggerUI](https://swagger.io/tools/swagger-ui/) and download them. All in one central place.
+
+It is an interface repository. Some services have more than one interface, or they maintain two versions of the same interface, or something else. ApiCenter can manage them all.
+
+It is, finally, a service repository. If you ever wanted to know which services depend on yours, ApiCenter can help you with the answer. It can also tell you which version they use, to make your changes easier. And, if you want to consume a new service, ApiCenter is also there for you, showing you their interfaces and specs and maybe letting you know about a new version (in the future).
 
 ## How to run
 
@@ -12,8 +15,6 @@ Gone are the days where specs might hide in some obscure folder in your source c
 - Clone the repository
 - In a terminal, run `./gradlew :runAll`
 - In a browser, go to `localhost:8080`
-
-By default, user authentication is disabled. Login succeeds regardless of what password is entered.
 
 ### With Docker
 
