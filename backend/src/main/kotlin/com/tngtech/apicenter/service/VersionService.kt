@@ -10,10 +10,10 @@ import com.tngtech.apicenter.mapper.toDto
 import com.tngtech.apicenter.mapper.toEntity
 import com.tngtech.apicenter.repository.VersionRepository
 import org.springframework.dao.EmptyResultDataAccessException
-import java.util.UUID
-import javax.validation.ValidationException
 import org.springframework.stereotype.Service
+import java.util.UUID
 import javax.persistence.EntityNotFoundException
+import javax.validation.ValidationException
 
 @Service
 class VersionService(private val versionRepository: VersionRepository, private val interfaceService: InterfaceService) {

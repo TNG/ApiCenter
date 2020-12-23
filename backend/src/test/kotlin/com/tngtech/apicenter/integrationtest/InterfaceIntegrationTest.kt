@@ -78,14 +78,15 @@ class InterfaceIntegrationTest {
     fun `should create and retrieve interface`() {
         val result = mockMvc.post("/api/interfaces") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "interfaceToCreate",
                     "description": "thisIsTheInterfaceToBeCreated",
                     "type": "GRAPHQL",
                     "applicationId": "168a1a96-337c-41e6-b3a6-1e8c43cdf863"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isCreated }
             content { contentType(MediaType.APPLICATION_JSON) }
@@ -111,13 +112,14 @@ class InterfaceIntegrationTest {
     fun `should return error when no name is provided`() {
         mockMvc.post("/api/interfaces") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "description": "thisIsTheInterfaceToBeCreated",
                     "type": "GRAPHQL",
                     "applicationId": "168a1a96-337c-41e6-b3a6-1e8c43cdf863"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
         }
@@ -127,14 +129,15 @@ class InterfaceIntegrationTest {
     fun `should return error when a non-existing type is provided`() {
         mockMvc.post("/api/interfaces") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "interfaceToCreate",
                     "description": "thisIsTheInterfaceToBeCreated",
                     "type": "NON-EXISTING-TYPE",
                     "applicationId": "168a1a96-337c-41e6-b3a6-1e8c43cdf863"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
         }
@@ -144,14 +147,15 @@ class InterfaceIntegrationTest {
     fun `should update interface`() {
         mockMvc.put("/api/interfaces/1660d4df-25e3-4aed-8b14-83842c9f3f1f") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "interfaceX",
                     "description": "interfaceDescriptionE",
                     "type": "REST",
                     "applicationId": "46a9df3f-c37a-499e-a407-14c5158d2ac5"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isOk }
             content { contentType(MediaType.APPLICATION_JSON) }
@@ -166,13 +170,14 @@ class InterfaceIntegrationTest {
     fun `should throw error when no name is provided for update`() {
         mockMvc.put("/api/interfaces/1660d4df-25e3-4aed-8b14-83842c9f3f1f") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "description": "interfaceDescriptionE",
                     "type": "REST",
                     "applicationId": "46a9df3f-c37a-499e-a407-14c5158d2ac5"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
         }
