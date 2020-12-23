@@ -44,12 +44,13 @@ class VersionIntegrationTest {
     fun `should create and retrieve new version`() {
         mockMvc.post("/api/versions") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "interfaceId": "c071fa56-8143-477c-8efa-1cbcda42bd04",
                     "fileContent": "{\n  \"swagger\": \"2.0.0\",\n  \"info\": {\n    \"version\": \"1.2.3\",\n    \"title\": \"versionE\",\n \"description\": \"descriptionE\"\n  } \n}"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isCreated }
             content { contentType(MediaType.APPLICATION_JSON) }
@@ -72,12 +73,13 @@ class VersionIntegrationTest {
     fun `should fail if no title provided in file`() {
         mockMvc.post("/api/versions") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "interfaceId": "c071fa56-8143-477c-8efa-1cbcda42bd04",
                     "fileContent": "{\n  \"swagger\": \"2.0.0\",\n  \"info\": {\n    \"version\": \"1.2.3\",\n  \"description\": \"descriptionE\"\n  } \n}"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
             content { string("Validation error: Title may not be null in OpenAPI file") }
@@ -88,12 +90,13 @@ class VersionIntegrationTest {
     fun `should fail if no version provided in file`() {
         mockMvc.post("/api/versions") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "interfaceId": "c071fa56-8143-477c-8efa-1cbcda42bd04",
                     "fileContent": "{\n  \"swagger\": \"2.0.0\",\n  \"info\": {\n    \"title\": \"versionA\",\n  \"description\": \"descriptionE\"\n  } \n}"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
             content { string("Validation error: Version may not be null in OpenAPI file") }
@@ -104,12 +107,13 @@ class VersionIntegrationTest {
     fun `should fail if invalid JSON is sent`() {
         mockMvc.post("/api/versions") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "interfaceId": "c071fa56-8143-477c-8efa-1cbcda42bd04",
                     "fileContent": "{\n  \"swagger\": \"2.0.0\",\n  \"info\": {\n    \"title\": \"versionA\",\n  \"description\": \"descriptionE\"\n  }"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
             content { string("Validation error: Please provide a valid JSON or YAML file.") }
