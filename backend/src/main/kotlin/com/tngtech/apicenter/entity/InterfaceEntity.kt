@@ -22,6 +22,6 @@ data class InterfaceEntity(
     @JoinColumn(name = "application_id")
     val application: ApplicationEntity?,
 
-    @OneToMany(mappedBy = "version", cascade = [CascadeType.REMOVE])
+    @OneToMany(mappedBy = "interfaceEntity", cascade = [CascadeType.REMOVE])
     val versions: List<VersionEntity>
 )

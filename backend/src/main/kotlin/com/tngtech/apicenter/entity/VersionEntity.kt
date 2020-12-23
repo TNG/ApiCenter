@@ -17,6 +17,6 @@ data class VersionEntity(
     @field:NotBlank val content: String,
 
     @ManyToOne
-@JoinColumn(name = "interface_id")
-val interfaceEntity: InterfaceEntity
+    @JoinColumn(name = "interface_id")
+    val interfaceEntity: InterfaceEntity
 )
