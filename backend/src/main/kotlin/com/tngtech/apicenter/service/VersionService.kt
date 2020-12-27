@@ -9,9 +9,11 @@ import com.tngtech.apicenter.entity.VersionEntity
 import com.tngtech.apicenter.mapper.toDto
 import com.tngtech.apicenter.mapper.toEntity
 import com.tngtech.apicenter.repository.VersionRepository
+import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import javax.validation.ValidationException
 import org.springframework.stereotype.Service
+import javax.persistence.EntityNotFoundException
 
 @Service
 class VersionService(private val versionRepository: VersionRepository, private val interfaceService: InterfaceService) {
@@ -33,6 +35,14 @@ class VersionService(private val versionRepository: VersionRepository, private v
         }
 
         return versionRepository.save(versionEntity).toDto()
+    }
+
+    fun deleteVersion(versionId: UUID): Any {
+        try {
+            return versionRepository.deleteById(versionId)
+        } catch (exception: EmptyResultDataAccessException) {
+            throw EntityNotFoundException().initCause(exception)
+        }
     }
 
     fun getVersions() = versionRepository.findAll().map { it.toDto() }
