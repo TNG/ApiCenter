@@ -9,10 +9,10 @@ import com.tngtech.apicenter.entity.InterfaceTypeEntity
 fun InterfaceEntity.toDto() = InterfaceDto(this.id, this.name, this.description, InterfaceTypeDto.valueOf(this.type.toString()), this.application?.id)
 
 fun InterfaceDto.toEntity() = InterfaceEntity(
-        this.id,
-        this.name,
-        this.description,
-        InterfaceTypeEntity.valueOf(this.type.toString()),
-        ApplicationEntity(this.applicationId, null, null, null, emptyList()),
-        emptyList()
+    this.id,
+    this.name,
+    this.description,
+    InterfaceTypeEntity.valueOf(this.type.toString()),
+    ApplicationEntity(this.applicationId, null, null, null, emptyList()),
+    emptyList()
 )

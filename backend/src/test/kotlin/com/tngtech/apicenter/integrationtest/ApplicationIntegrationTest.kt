@@ -27,13 +27,14 @@ class ApplicationIntegrationTest {
     fun `should create and retrieve application`() {
         val result = mockMvc.post("/api/applications") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "applicationToCreate",
                     "description": "thisIsTheApplicationToBeCreated",
                     "contact": "myContact"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isCreated }
             content { contentType(MediaType.APPLICATION_JSON) }
@@ -57,13 +58,14 @@ class ApplicationIntegrationTest {
     fun `should create and update application`() {
         val result = mockMvc.post("/api/applications") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "applicationToCreate",
                     "description": "thisIsTheApplicationToBeCreated",
                     "contact": "myContact"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isCreated }
             content { contentType(MediaType.APPLICATION_JSON) }
@@ -76,13 +78,14 @@ class ApplicationIntegrationTest {
 
         mockMvc.put("/api/applications/${applicationResult.id}") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "newApplicationName",
                     "description": "newApplicationDescription",
                     "contact": "newApplicationContact"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isOk }
             content { contentType(MediaType.APPLICATION_JSON) }
@@ -104,13 +107,14 @@ class ApplicationIntegrationTest {
     fun `should create and delete application`() {
         val result = mockMvc.post("/api/applications") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "applicationToCreate",
                     "description": "thisIsTheApplicationToBeCreated",
                     "contact": "myContact"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isCreated }
             content { contentType(MediaType.APPLICATION_JSON) }
@@ -130,12 +134,13 @@ class ApplicationIntegrationTest {
     fun `should throw error when no name is submitted for application creation`() {
         mockMvc.post("/api/applications") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "description": "thisIsTheApplicationToBeCreated",
                     "contact": "myContact"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
         }
@@ -145,25 +150,27 @@ class ApplicationIntegrationTest {
     fun `should throw error when no name is submitted for application update`() {
         val result = mockMvc.post("/api/applications") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "name": "applicationName",
                     "description": "thisIsTheApplicationToBeCreated",
                     "contact": "myContact"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andReturn()
 
         val applicationResult = objectMapper.readValue(result.response.contentAsString, ApplicationDto::class.java)
 
         mockMvc.put("/api/applications/${applicationResult.id}") {
             contentType = MediaType.APPLICATION_JSON
-            content = """
+            content =
+                """
                 {
                     "description": "thisIsTheApplicationToBeCreated",
                     "contact": "myContact"
                 }
-            """.trimIndent()
+                """.trimIndent()
         }.andExpect {
             status { isBadRequest }
         }
