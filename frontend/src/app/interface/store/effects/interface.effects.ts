@@ -42,7 +42,7 @@ export class InterfaceEffects {
     )
   );
 
-  loadApplication$ = createEffect(() =>
+  loadInterface$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadInterface),
       mergeMap(({ id }) => {

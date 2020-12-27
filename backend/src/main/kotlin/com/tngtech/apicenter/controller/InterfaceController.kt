@@ -23,7 +23,7 @@ class InterfaceController(private val interfaceService: InterfaceService) {
     fun getInterfaces() = interfaceService.getInterfaces()
 
     @GetMapping("/{interfaceId}")
-    fun getApplication(@PathVariable interfaceId: UUID) = interfaceService.getInterface(interfaceId)
+    fun getInterface(@PathVariable interfaceId: UUID) = interfaceService.getInterface(interfaceId)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

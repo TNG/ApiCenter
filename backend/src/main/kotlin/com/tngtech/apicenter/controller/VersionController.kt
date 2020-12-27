@@ -24,6 +24,9 @@ class VersionController(private val versionService: VersionService) {
     @GetMapping
     fun getVersions() = versionService.getVersions()
 
+    @GetMapping("/{versionId}")
+    fun getVersion(@PathVariable versionId: UUID) = versionService.getVersion(versionId)
+
     @DeleteMapping("/{versionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteVersions(@PathVariable versionId: UUID) = versionService.deleteVersion(versionId)

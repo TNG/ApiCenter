@@ -10,6 +10,7 @@ import com.tngtech.apicenter.mapper.toDto
 import com.tngtech.apicenter.mapper.toEntity
 import com.tngtech.apicenter.repository.VersionRepository
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.UUID
 import javax.persistence.EntityNotFoundException
@@ -46,6 +47,12 @@ class VersionService(private val versionRepository: VersionRepository, private v
     }
 
     fun getVersions() = versionRepository.findAll().map { it.toDto() }
+
+    fun getVersion(versionId: UUID): VersionDto {
+        val versionEntity = versionRepository.findByIdOrNull(versionId) ?: throw EntityNotFoundException()
+
+        return versionEntity.toDto()
+    }
 
     private fun isJson(fileContent: String): Boolean {
         return try {

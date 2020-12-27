@@ -18,3 +18,12 @@ export const deleteVersion = createAction(
   props<{ version: Version }>()
 );
 export const deleteVersionSuccess = createAction('Delete version success');
+
+export const loadVersion = createAction(
+  'Load version',
+  props<{ id: string }>()
+);
+export const loadVersionSuccess = createAction(
+  'Load version success',
+  props<{ version: Version }>()
+);

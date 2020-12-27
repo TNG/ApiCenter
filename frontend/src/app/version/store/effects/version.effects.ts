@@ -8,8 +8,10 @@ import {
   createVersionSuccess,
   deleteVersion,
   deleteVersionSuccess,
+  loadVersion,
   loadVersions,
-  loadVersionsSuccess
+  loadVersionsSuccess,
+  loadVersionSuccess
 } from '../actions/version.actions';
 import { VersionService } from '../../services/version.service';
 
@@ -85,6 +87,24 @@ export class VersionEffects {
     this.actions$.pipe(
       ofType(deleteVersionSuccess),
       mergeMap(() => of(loadVersions()))
+    )
+  );
+
+  loadVersion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadVersion),
+      mergeMap(({ id }) => {
+        return this.versionService.getVersion(id).pipe(
+          map(version => loadVersionSuccess({ version })),
+          catchError(() =>
+            of(
+              showErrorMessage({
+                errorMessage: 'Error loading version. Please try again.'
+              })
+            )
+          )
+        );
+      })
     )
   );
 }
