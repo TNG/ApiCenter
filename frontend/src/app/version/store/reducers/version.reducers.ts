@@ -20,7 +20,6 @@ const versionReducerCreator = createReducer(
     return update(state, { versions: { $set: versionMap } });
   }),
   on(loadVersionSuccess, (state, { version }) => {
-    console.log('yo!', version);
     return update(state, {
       versions: { $add: [[version.id, version]] }
     });

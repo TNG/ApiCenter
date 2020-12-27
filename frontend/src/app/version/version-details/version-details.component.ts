@@ -9,6 +9,7 @@ import { Version } from '../../models/version';
 import { MatDialog } from '@angular/material/dialog';
 import { VersionDeleteComponent } from '../version-delete/version-delete.component';
 import { loadVersion } from '../store/actions/version.actions';
+import * as yaml from 'js-yaml';
 
 @Component({
   selector: 'app-version-details',
@@ -36,7 +37,7 @@ export class VersionDetailsComponent implements OnInit {
     );
     this.spec$ = this.version$.pipe(
       filter(version => !!version),
-      map(version => JSON.parse(version.content))
+      map(version => this.mapToJson(version.content))
     );
   }
 
@@ -44,5 +45,13 @@ export class VersionDetailsComponent implements OnInit {
     this.matDialog.open(VersionDeleteComponent, {
       data: { version }
     });
+  }
+
+  private mapToJson(content: string) {
+    try {
+      return JSON.parse(content);
+    } catch (e) {
+      return yaml.load(content);
+    }
   }
 }
