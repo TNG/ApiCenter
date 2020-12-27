@@ -11,6 +11,7 @@ import { VersionDetailsComponent } from './version-details/version-details.compo
 import { OpenapiUiComponent } from './version-details/openapi-ui/openapi-ui.component';
 import { VersionCreateComponent } from './version-create/version-create.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { VersionDeleteComponent } from './version-delete/version-delete.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     VersionTableComponent,
     VersionDetailsComponent,
     OpenapiUiComponent,
-    VersionCreateComponent
+    VersionCreateComponent,
+    VersionDeleteComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     StoreModule.forFeature('versionState', versionReducer),
     ReactiveFormsModule
   ],
-  entryComponents: [VersionCreateComponent]
+  entryComponents: [VersionCreateComponent, VersionDeleteComponent]
 })
 export class VersionModule {}

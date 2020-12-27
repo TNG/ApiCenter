@@ -19,18 +19,18 @@ import { Application } from '../../models/application';
 })
 export class VersionTableComponent implements OnChanges {
   @Input() versions: (
-    | Version
+    | Interface
     | { interface: Interface }
     | { application: Application }
   )[];
-  @Output() clickVersion = new EventEmitter<Version>();
+  @Output() clickVersion = new EventEmitter<Interface>();
 
   @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 
   dataSource: MatTableDataSource<
-    Version | { interface: Interface } | { application: Application }
+    Interface | { interface: Interface } | { application: Application }
   >;
   displayedColumns: string[] = ['application', 'name', 'type', 'version'];
 
@@ -45,7 +45,7 @@ export class VersionTableComponent implements OnChanges {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  onClickRow(row: Version) {
+  onClickRow(row: Interface) {
     this.clickVersion.emit(row);
   }
 }

@@ -20,7 +20,7 @@ import { VersionCreateComponent } from '../version-create/version-create.compone
 })
 export class VersionOverviewComponent implements OnInit {
   versionsWithInterfaceAndApplication$: Observable<
-    (Version | { interface: Interface } | { application: Application })[]
+    (Interface | { interface: Interface } | { application: Application })[]
   >;
 
   constructor(
@@ -39,7 +39,7 @@ export class VersionOverviewComponent implements OnInit {
     );
   }
 
-  onClickVersion(version: Version) {
+  onClickVersion(version: Interface) {
     return this.router.navigate(['versions', version.id]);
   }
 

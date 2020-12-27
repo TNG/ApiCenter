@@ -6,14 +6,12 @@ import { showErrorMessage } from '../../../store/actions/error.actions';
 import {
   createVersion,
   createVersionSuccess,
+  deleteVersion,
+  deleteVersionSuccess,
   loadVersions,
   loadVersionsSuccess
 } from '../actions/version.actions';
 import { VersionService } from '../../services/version.service';
-import {
-  createInterfaceSuccess,
-  loadInterfaces
-} from '../../../interface/store/actions/interface.actions';
 
 @Injectable()
 export class VersionEffects {
@@ -61,6 +59,31 @@ export class VersionEffects {
   createVersionSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createVersionSuccess),
+      mergeMap(() => of(loadVersions()))
+    )
+  );
+
+  deleteVersion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteVersion),
+      mergeMap(({ version }) => {
+        return this.versionService.deleteVersion(version.id).pipe(
+          map(() => deleteVersionSuccess()),
+          catchError(() =>
+            of(
+              showErrorMessage({
+                errorMessage: 'Error deleting version. Please try again.'
+              })
+            )
+          )
+        );
+      })
+    )
+  );
+
+  deleteVersionSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteVersionSuccess),
       mergeMap(() => of(loadVersions()))
     )
   );

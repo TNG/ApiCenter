@@ -6,6 +6,9 @@ import { AppState } from '../../store/state/app.state';
 import { Store } from '@ngrx/store';
 import { selectVersion } from '../store/selectors/version.selectors';
 import { Version } from '../../models/version';
+import { InterfaceDeleteComponent } from '../../interface/interface-delete/interface-delete.component';
+import { MatDialog } from '@angular/material/dialog';
+import { VersionDeleteComponent } from '../version-delete/version-delete.component';
 
 @Component({
   selector: 'app-version-details',
@@ -18,7 +21,8 @@ export class VersionDetailsComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private matDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -30,5 +34,11 @@ export class VersionDetailsComponent implements OnInit {
     this.spec$ = this.version$.pipe(
       map(version => JSON.parse(version.content))
     );
+  }
+
+  onClickDelete(version: Version) {
+    this.matDialog.open(VersionDeleteComponent, {
+      data: { version }
+    });
   }
 }

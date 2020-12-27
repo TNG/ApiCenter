@@ -110,7 +110,7 @@ export class InterfaceEffects {
     )
   );
 
-  deleteApplication$ = createEffect(() =>
+  deleteInterface$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteInterface),
       mergeMap(({ interface: myInterface }) => {

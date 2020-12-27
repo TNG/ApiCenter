@@ -1,3 +1,10 @@
 <ng-container *ngIf="spec$ | async as spec">
-  <app-openapi-ui [spec]="spec"></app-openapi-ui>
+  <ng-container *ngIf="version$ | async as version">
+    <div class="version-menu">
+      <button mat-flat-button color="warn" (click)="onClickDelete(version)">
+        Delete
+      </button>
+    </div>
+    <app-openapi-ui [spec]="spec"></app-openapi-ui>
+  </ng-container>
 </ng-container>

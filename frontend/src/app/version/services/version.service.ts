@@ -21,4 +21,10 @@ export class VersionService {
       versionFile
     );
   }
+
+  public deleteVersion(id: string) {
+    return this.httpClient.delete<Version>(
+      environment.apiUrl + '/versions/' + id
+    );
+  }
 }
