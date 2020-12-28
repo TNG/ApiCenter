@@ -13,7 +13,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.33.0"
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_12
 
 repositories {
     mavenCentral()
