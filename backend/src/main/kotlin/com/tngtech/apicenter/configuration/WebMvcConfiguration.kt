@@ -11,6 +11,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
         with(registry) {
             addViewController("/applications").setViewName("forward:/index.html")
             addViewController("/interfaces").setViewName("forward:/index.html")
+            addViewController("/versions").setViewName("forward:/index.html")
         }
     }
 }
