@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Version } from '../../models/version';
 import { Interface } from '../../models/interface';
 import { Application } from '../../models/application';
 import { loadInterfaces } from '../../interface/store/actions/interface.actions';
