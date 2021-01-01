@@ -23,18 +23,7 @@ class VersionService(private val versionRepository: VersionRepository, private v
     private val yamlObjectMapper = ObjectMapper(YAMLFactory())
 
     fun createVersion(versionDto: VersionFileDto): VersionDto {
-        val versionEntity = when {
-            isJson(versionDto.fileContent) -> {
-                mapNewFileToVersionEntity(versionDto, jsonObjectMapper)
-            }
-            isYaml(versionDto.fileContent) -> {
-                mapNewFileToVersionEntity(versionDto, yamlObjectMapper)
-            }
-            else -> {
-                throw ValidationException("Please provide a valid JSON or YAML file.")
-            }
-        }
-
+        val versionEntity = mapNewFileToVersionEntity(versionDto)
         return versionRepository.save(versionEntity).toDto()
     }
 
@@ -54,6 +43,32 @@ class VersionService(private val versionRepository: VersionRepository, private v
         return versionEntity.toDto()
     }
 
+    private fun mapNewFileToVersionEntity(versionDto: VersionFileDto): VersionEntity {
+        val objectMapper = findObjectMapper(versionDto)
+
+        val jsonNode = objectMapper.readTree(versionDto.fileContent).get("info")
+        val title = jsonNode.get("title")?.textValue()
+        val version = jsonNode.get("version")?.textValue()
+        val description = jsonNode.get("description")?.textValue()
+
+        val myInterface = interfaceService.getInterface(versionDto.interfaceId).toEntity()
+
+        if (title == null) {
+            throw ValidationException("Title may not be null in OpenAPI file")
+        }
+        if (version == null) {
+            throw ValidationException("Version may not be null in OpenAPI file")
+        }
+
+        return VersionEntity(UUID.randomUUID(), title, version, description, versionDto.fileContent, myInterface)
+    }
+
+    private fun findObjectMapper(versionDto: VersionFileDto) = when {
+        isJson(versionDto.fileContent) -> jsonObjectMapper
+        isYaml(versionDto.fileContent) -> yamlObjectMapper
+        else -> throw ValidationException("Please provide a valid JSON or YAML file.")
+    }
+
     private fun isJson(fileContent: String): Boolean {
         return try {
             jsonObjectMapper.readTree(fileContent)
@@ -70,23 +85,5 @@ class VersionService(private val versionRepository: VersionRepository, private v
         } catch (exception: JsonProcessingException) {
             false
         }
-    }
-
-    private fun mapNewFileToVersionEntity(versionDto: VersionFileDto, objectMapper: ObjectMapper): VersionEntity {
-        val jsonNode = objectMapper.readTree(versionDto.fileContent).get("info")
-        val title = jsonNode.get("title")?.textValue()
-        val version = jsonNode.get("version")?.textValue()
-        val description = jsonNode.get("description")?.textValue()
-
-        val myInterface = interfaceService.getInterface(versionDto.interfaceId).toEntity()
-
-        if (title == null) {
-            throw ValidationException("Title may not be null in OpenAPI file")
-        }
-        if (version == null) {
-            throw ValidationException("Version may not be null in OpenAPI file")
-        }
-
-        return VersionEntity(UUID.randomUUID(), title, version, description, versionDto.fileContent, myInterface)
     }
 }

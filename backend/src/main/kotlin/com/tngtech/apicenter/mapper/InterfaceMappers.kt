@@ -13,6 +13,6 @@ fun InterfaceDto.toEntity() = InterfaceEntity(
     this.name,
     this.description,
     InterfaceTypeEntity.valueOf(this.type.toString()),
-    ApplicationEntity(this.applicationId, null, null, null, emptyList()),
+    ApplicationEntity(id = this.applicationId),
     emptyList()
 )

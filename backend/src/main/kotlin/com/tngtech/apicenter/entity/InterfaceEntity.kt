@@ -14,14 +14,14 @@ import javax.validation.constraints.NotNull
 @Entity(name = "interface")
 data class InterfaceEntity(
     @Id @GeneratedValue val id: UUID?,
-    @field:NotBlank val name: String?,
-    val description: String?,
-    @field:NotNull val type: InterfaceTypeEntity?,
+    @field:NotBlank val name: String? = null,
+    val description: String? = null,
+    @field:NotNull val type: InterfaceTypeEntity? = null,
 
     @ManyToOne
     @JoinColumn(name = "application_id")
-    val application: ApplicationEntity?,
+    val application: ApplicationEntity? = null,
 
     @OneToMany(mappedBy = "interfaceEntity", cascade = [CascadeType.REMOVE])
-    val versions: List<VersionEntity>
+    val versions: List<VersionEntity> = listOf()
 )
