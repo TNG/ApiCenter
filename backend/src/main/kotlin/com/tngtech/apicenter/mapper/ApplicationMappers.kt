@@ -11,5 +11,5 @@ fun ApplicationDto.toEntity() = ApplicationEntity(
     this.name,
     this.description,
     this.contact,
-    this.interfaceIds?.map { InterfaceEntity(it, null, null, null, null, emptyList()) }.orEmpty()
+    this.interfaceIds?.map { InterfaceEntity(id = it) }.orEmpty()
 )
