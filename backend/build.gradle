@@ -89,7 +89,7 @@ dependencies {
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
     testCompile "org.springframework.security:spring-security-test:5.4.2"
-    testCompile "org.assertj:assertj-core:3.18.1"
+    testCompile "org.assertj:assertj-core:3.19.0"
     testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testCompile "com.h2database:h2:1.4.199"
 }
