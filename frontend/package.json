@@ -30,7 +30,7 @@
     "@ngrx/store-devtools": "^8.6.0",
     "@types/js-yaml": "^3.12.5",
     "immutability-helper": "^3.0.1",
-    "js-yaml": "^3.14.1",
+    "js-yaml": "^4.0.0",
     "rxjs": "~6.4.0",
     "swagger-ui-dist": "^3.31.1",
     "tslib": "^1.10.0",
