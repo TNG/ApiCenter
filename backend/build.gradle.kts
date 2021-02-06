@@ -4,9 +4,9 @@ plugins {
     id("org.springframework.boot") version "2.3.7.RELEASE"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.spring") version "1.4.21"
-    kotlin("plugin.jpa") version "1.4.21"
+    kotlin("jvm") version "1.4.30"
+    kotlin("plugin.spring") version "1.4.30"
+    kotlin("plugin.jpa") version "1.4.30"
 
     id("org.jlleitschuh.gradle.ktlint") version "9.4.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.15"
