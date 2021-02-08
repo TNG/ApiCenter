@@ -8,7 +8,7 @@ plugins {
     kotlin("plugin.spring") version "1.4.30"
     kotlin("plugin.jpa") version "1.4.30"
 
-    id("org.jlleitschuh.gradle.ktlint") version "9.4.0"
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     id("se.patrikerdes.use-latest-versions") version "0.2.15"
     id("com.github.ben-manes.versions") version "0.36.0"
 }
