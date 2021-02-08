@@ -51,7 +51,7 @@
     "codelyzer": "^5.0.0",
     "husky": "^4.2.3",
     "jasmine-core": "~3.4.0",
-    "jasmine-spec-reporter": "~4.2.1",
+    "jasmine-spec-reporter": "~6.0.0",
     "jest": "^25.5.3",
     "jest-when": "^2.7.1",
     "prettier": "2.2.1",
