@@ -26,7 +26,7 @@ class InterfaceIntegrationTest {
     @Test
     fun `should retrieve interfaces`() {
         mockMvc.get("/api/interfaces").andExpect {
-            status { isOk }
+            status { isOk() }
             jsonPath("$[0].name") { value("interfaceA") }
             jsonPath("$[0].description") { value("interfaceDescriptionA") }
             jsonPath("$[0].type") { value("REST") }
@@ -53,7 +53,7 @@ class InterfaceIntegrationTest {
     @Test
     fun `should retrieve interfaces for a specific application`() {
         mockMvc.get("/api/applications/168a1a96-337c-41e6-b3a6-1e8c43cdf863/interfaces").andExpect {
-            status { isOk }
+            status { isOk() }
             jsonPath("$[0].name") { value("interfaceA") }
             jsonPath("$[0].description") { value("interfaceDescriptionA") }
             jsonPath("$[0].type") { value("REST") }
@@ -69,7 +69,7 @@ class InterfaceIntegrationTest {
         }
 
         mockMvc.get("/api/applications/ad374016-d15d-47af-8d82-96fceb6d51fa/interfaces").andExpect {
-            status { isOk }
+            status { isOk() }
             content { string("[]") }
         }
     }
@@ -88,7 +88,7 @@ class InterfaceIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isCreated }
+            status { isCreated() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("interfaceToCreate") }
             jsonPath("$.description") { value("thisIsTheInterfaceToBeCreated") }
@@ -99,7 +99,7 @@ class InterfaceIntegrationTest {
         val interfaceResult = objectMapper.readValue(result.response.contentAsString, InterfaceDto::class.java)
 
         mockMvc.get("/api/interfaces/${interfaceResult.id}").andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("interfaceToCreate") }
             jsonPath("$.description") { value("thisIsTheInterfaceToBeCreated") }
@@ -121,7 +121,7 @@ class InterfaceIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
         }
     }
 
@@ -139,7 +139,7 @@ class InterfaceIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
         }
     }
 
@@ -157,7 +157,7 @@ class InterfaceIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("interfaceX") }
             jsonPath("$.description") { value("interfaceDescriptionE") }
@@ -179,14 +179,14 @@ class InterfaceIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
         }
     }
 
     @Test
     fun `should delete interface`() {
         mockMvc.delete("/api/interfaces/1660d4df-25e3-4aed-8b14-83842c9f3f1f").andExpect {
-            status { isNoContent }
+            status { isNoContent() }
         }
     }
 }
