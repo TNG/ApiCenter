@@ -19,7 +19,7 @@ class VersionIntegrationTest {
     @Test
     fun `should retrieve versions`() {
         mockMvc.get("/api/versions").andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$[0].title") { value("versionA") }
             jsonPath("$[0].version") { value("1.0.0") }
@@ -52,7 +52,7 @@ class VersionIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isCreated }
+            status { isCreated() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.title") { value("versionE") }
             jsonPath("$.version") { value("1.2.3") }
@@ -60,7 +60,7 @@ class VersionIntegrationTest {
         }
 
         mockMvc.get("/api/versions").andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$[4].title") { value("versionE") }
             jsonPath("$[4].version") { value("1.2.3") }
@@ -81,7 +81,7 @@ class VersionIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
             content { string("Validation error: Title may not be null in OpenAPI file") }
         }
     }
@@ -98,7 +98,7 @@ class VersionIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
             content { string("Validation error: Version may not be null in OpenAPI file") }
         }
     }
@@ -115,7 +115,7 @@ class VersionIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
             content { string("Validation error: Please provide a valid JSON or YAML file.") }
         }
     }

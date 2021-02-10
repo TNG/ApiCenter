@@ -36,7 +36,7 @@ class ApplicationIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isCreated }
+            status { isCreated() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("applicationToCreate") }
             jsonPath("$.description") { value("thisIsTheApplicationToBeCreated") }
@@ -46,7 +46,7 @@ class ApplicationIntegrationTest {
         val applicationResult = objectMapper.readValue(result.response.contentAsString, ApplicationDto::class.java)
 
         mockMvc.get("/api/applications/${applicationResult.id}").andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("applicationToCreate") }
             jsonPath("$.description") { value("thisIsTheApplicationToBeCreated") }
@@ -67,7 +67,7 @@ class ApplicationIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isCreated }
+            status { isCreated() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("applicationToCreate") }
             jsonPath("$.description") { value("thisIsTheApplicationToBeCreated") }
@@ -87,7 +87,7 @@ class ApplicationIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("newApplicationName") }
             jsonPath("$.description") { value("newApplicationDescription") }
@@ -95,7 +95,7 @@ class ApplicationIntegrationTest {
         }
 
         mockMvc.get("/api/applications/${applicationResult.id}").andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("newApplicationName") }
             jsonPath("$.description") { value("newApplicationDescription") }
@@ -116,7 +116,7 @@ class ApplicationIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isCreated }
+            status { isCreated() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$.name") { value("applicationToCreate") }
             jsonPath("$.description") { value("thisIsTheApplicationToBeCreated") }
@@ -126,7 +126,7 @@ class ApplicationIntegrationTest {
         val applicationResult = objectMapper.readValue(result.response.contentAsString, ApplicationDto::class.java)
 
         mockMvc.delete("/api/applications/${applicationResult.id}").andExpect {
-            status { isNoContent }
+            status { isNoContent() }
         }
     }
 
@@ -142,7 +142,7 @@ class ApplicationIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
         }
     }
 
@@ -172,25 +172,25 @@ class ApplicationIntegrationTest {
                 }
                 """.trimIndent()
         }.andExpect {
-            status { isBadRequest }
+            status { isBadRequest() }
         }
     }
 
     @Test
     fun `should throw error when non existing application is retrieved or deleted`() {
         mockMvc.get("/api/applications/777b882d-df3d-4ffe-b9cc-ffdb591896ec").andExpect {
-            status { isNotFound }
+            status { isNotFound() }
         }
 
         mockMvc.delete("/api/applications/777b882d-df3d-4ffe-b9cc-ffdb591896ec").andExpect {
-            status { isNotFound }
+            status { isNotFound() }
         }
     }
 
     @Test
     fun `should retrieve applications`() {
         mockMvc.get("/api/applications").andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
             jsonPath("$[0].name") { value("applicationA") }
             jsonPath("$[0].description") { value("applicationDescriptionA") }
