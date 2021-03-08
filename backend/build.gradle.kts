@@ -33,7 +33,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("com.tngtech.archunit:archunit-junit5-api:0.17.0")
-    testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.16.0")
+    testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.17.0")
 
     runtimeOnly("com.h2database:h2")
 }
