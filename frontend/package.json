@@ -32,7 +32,7 @@
     "immutability-helper": "^3.0.1",
     "js-yaml": "^4.0.0",
     "rxjs": "~6.6.6",
-    "swagger-ui-dist": "^3.44.0",
+    "swagger-ui-dist": "^3.45.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.9.1"
   },
