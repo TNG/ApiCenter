@@ -19,7 +19,7 @@ export class ApplicationTableComponent implements OnChanges {
   @Input() applications: Application[];
   @Output() clickApplication = new EventEmitter<Application>();
 
-  @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
+  @ViewChild(MatSort) set sort(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 
