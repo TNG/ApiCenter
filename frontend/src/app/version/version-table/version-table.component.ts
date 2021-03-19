@@ -25,7 +25,7 @@ export class VersionTableComponent implements OnChanges {
   )[];
   @Output() clickVersion = new EventEmitter<Interface>();
 
-  @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
+  @ViewChild(MatSort) set sort(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 

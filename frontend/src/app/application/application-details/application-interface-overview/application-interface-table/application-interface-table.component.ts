@@ -19,7 +19,7 @@ export class ApplicationInterfaceTableComponent implements OnChanges {
   @Input() interfaces: Interface[];
   @Output() clickInterface = new EventEmitter<Interface>();
 
-  @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
+  @ViewChild(MatSort) set sort(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 
