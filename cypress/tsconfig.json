@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": "../node_modules",
-    "target": "es5",
+    "target": "es2018",
     "lib": ["es5", "dom"],
     "types": ["cypress", "@types/testing-library__cypress"]
   },
