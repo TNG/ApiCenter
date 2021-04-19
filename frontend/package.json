@@ -31,7 +31,7 @@
     "@types/js-yaml": "^4.0.0",
     "immutability-helper": "^3.0.1",
     "js-yaml": "^4.0.0",
-    "rxjs": "~6.6.6",
+    "rxjs": "~6.6.7",
     "swagger-ui-dist": "^3.45.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.9.1"
