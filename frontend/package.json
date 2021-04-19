@@ -41,7 +41,7 @@
     "@angular-devkit/build-angular": "~0.803.29",
     "@angular/cli": "~8.3.23",
     "@angular/compiler-cli": "~8.2.14",
-    "@angular/language-service": "~8.2.14",
+    "@angular/language-service": "~11.2.10",
     "@testing-library/angular": "^8.2.0",
     "@testing-library/jest-dom": "^5.11.10",
     "@types/jasmine": "~3.6.9",
