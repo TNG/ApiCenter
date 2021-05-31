@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
     kotlin("jvm") version "1.5.0"
-    kotlin("plugin.spring") version "1.5.0"
+    kotlin("plugin.spring") version "1.5.10"
     kotlin("plugin.jpa") version "1.5.0"
 
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
@@ -32,7 +32,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation("com.tngtech.archunit:archunit-junit5-api:0.18.0")
+    testImplementation("com.tngtech.archunit:archunit-junit5-api:0.19.0")
     testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.18.0")
 
     runtimeOnly("com.h2database:h2")
