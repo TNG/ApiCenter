@@ -1,6 +1,14 @@
+import org.siouan.frontendgradleplugin.infrastructure.gradle.RunNpmYarn
+
 plugins {
-  java
-  id("com.moowork.node") version "1.3.1"
+  id("org.siouan.frontend-jdk11") version "5.2.0"
+}
+
+frontend {
+  nodeVersion.set("14.17.0")
+  installScript.set("install")
+  cleanScript.set("run clean")
+  assembleScript.set("run build")
 }
 
 tasks.withType<Jar> {
@@ -10,15 +18,12 @@ tasks.withType<Jar> {
   into("static")
 }
 
-tasks.register("e2e", com.moowork.gradle.node.npm.NpmTask::class) {
-  setNpmCommand("run", "e2e")
+tasks.register<RunNpmYarn>("test") {
+  dependsOn(tasks.getByName("installFrontend"))
+  script.set("run-script test")
 }
 
-tasks.register("npmTest", com.moowork.gradle.node.npm.NpmTask::class) {
-	dependsOn("npmInstall")
-  setArgs(listOf("run-script", "test"))
-}
-
-task("lint", com.moowork.gradle.node.npm.NpmTask::class) {
-  setArgs(listOf("run-script", "lint"))
+task<RunNpmYarn>("lint") {
+  dependsOn(tasks.getByName("installNode"))
+  script.set("run-script lint")
 }

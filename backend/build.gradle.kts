@@ -51,18 +51,14 @@ tasks.withType<Test> {
 
 tasks.register("buildWithFrontend") {
     dependsOn("build")
-
-    dependencies {
-        runtimeOnly(project(":frontend"))
-    }
+    dependsOn("copyFrontend")
+    mustRunAfter("copyFrontend")
 }
 
 tasks.register("runWithFrontend") {
     dependsOn("bootRun")
-
-    dependencies {
-        runtimeOnly(project(":frontend"))
-    }
+    dependsOn("copyFrontend")
+    mustRunAfter("copyFrontend")
 }
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
@@ -74,4 +70,11 @@ tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("boot
 
 tasks.register("lint") {
     dependsOn("ktlintCheck")
+}
+
+tasks.register<Copy>("copyFrontend") {
+    dependsOn(":frontend:assemble")
+    from("../frontend/dist/apicenter")
+    into("src/main/resources/public")
+    exclude("spotless*/**")
 }
