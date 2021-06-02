@@ -1,4 +1,35 @@
 describe("Interfaces", () => {
+  before(() => {
+    cy.visit("/");
+    cy.contains("add").click();
+    cy.get("form")
+    .findByLabelText(/name/i)
+    .type("Application C");
+    cy.get("form")
+    .findByLabelText(/description/i)
+    .type("This is the third application");
+    cy.get("form")
+    .findByLabelText(/contact/i)
+    .type("John Doe, john.doe@company.com");
+    cy.get("form")
+    .contains("Save")
+    .click();
+    cy.visit("/");
+    cy.contains("add").click();
+    cy.get("form")
+    .findByLabelText(/name/i)
+    .type("Application B");
+    cy.get("form")
+    .findByLabelText(/description/i)
+    .type("This is another application");
+    cy.get("form")
+    .findByLabelText(/contact/i)
+    .type("John Doe, john.doe@company.com");
+    cy.get("form")
+    .contains("Save")
+    .click();
+  })
+
   it("should create, show, update and delete an interface", () => {
     cy.visit("/interfaces");
 
