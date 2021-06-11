@@ -1,16 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.4.5"
+    id("org.springframework.boot") version "2.5.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 
-    kotlin("jvm") version "1.5.0"
-    kotlin("plugin.spring") version "1.5.0"
-    kotlin("plugin.jpa") version "1.5.0"
+    kotlin("jvm") version "1.5.10"
+    kotlin("plugin.spring") version "1.5.10"
+    kotlin("plugin.jpa") version "1.5.10"
 
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
-    id("se.patrikerdes.use-latest-versions") version "0.2.16"
-    id("com.github.ben-manes.versions") version "0.38.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
+    id("se.patrikerdes.use-latest-versions") version "0.2.17"
+    id("com.github.ben-manes.versions") version "0.39.0"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_12
@@ -33,7 +33,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("com.tngtech.archunit:archunit-junit5-api:0.19.0")
-    testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.18.0")
+    testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.19.0")
 
     runtimeOnly("com.h2database:h2")
 }
@@ -51,18 +51,14 @@ tasks.withType<Test> {
 
 tasks.register("buildWithFrontend") {
     dependsOn("build")
-
-    dependencies {
-        runtimeOnly(project(":frontend"))
-    }
+    dependsOn("copyFrontend")
+    mustRunAfter("copyFrontend")
 }
 
 tasks.register("runWithFrontend") {
     dependsOn("bootRun")
-
-    dependencies {
-        runtimeOnly(project(":frontend"))
-    }
+    dependsOn("copyFrontend")
+    mustRunAfter("copyFrontend")
 }
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
@@ -74,4 +70,11 @@ tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("boot
 
 tasks.register("lint") {
     dependsOn("ktlintCheck")
+}
+
+tasks.register<Copy>("copyFrontend") {
+    dependsOn(":frontend:assemble")
+    from("../frontend/dist/apicenter")
+    into("src/main/resources/public")
+    exclude("spotless*/**")
 }
