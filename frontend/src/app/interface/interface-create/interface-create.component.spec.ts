@@ -1,5 +1,5 @@
 import { InterfaceCreateComponent } from './interface-create.component';
-import { render, RenderResult, selectOptions } from '@testing-library/angular';
+import { render, RenderResult } from '@testing-library/angular';
 import { InterfaceFormComponent } from '../interface-form/interface-form.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
@@ -20,6 +20,7 @@ import { applicationReducer } from '../../application/store/reducers/application
 import { ApplicationEffects } from '../../application/store/effects/application.effects';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorEffects } from '../../store/effects/error.effects';
+import userEvent from "@testing-library/user-event";
 
 describe('InterfaceCreateComponent', () => {
   const applications: Application[] = [
@@ -149,12 +150,12 @@ describe('InterfaceCreateComponent', () => {
     const description = component.getByLabelText(/description/i);
     const type = component.getByLabelText(/type/i);
 
-    component.click(application);
-    await selectOptions(application, inputValues.applicationName);
-    await component.type(name, inputValues.name);
-    await component.type(description, inputValues.description);
-    component.click(type);
-    await selectOptions(type, inputValues.type);
-    component.click(type);
+    userEvent.click(application);
+    userEvent.selectOptions(application, inputValues.applicationName);
+    userEvent.type(name, inputValues.name);
+    userEvent.type(description, inputValues.description);
+    userEvent.click(type);
+    userEvent.selectOptions(type, inputValues.type);
+    userEvent.click(type);
   }
 });

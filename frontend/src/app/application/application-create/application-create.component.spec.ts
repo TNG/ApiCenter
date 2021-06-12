@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ApplicationEffects } from '../store/effects/application.effects';
 import { ErrorEffects } from '../../store/effects/error.effects';
 import { createMock } from '@testing-library/angular/jest-utils';
+import userEvent from "@testing-library/user-event";
 
 describe('ApplicationCreateComponent', () => {
   const imports = [
@@ -127,8 +128,8 @@ describe('ApplicationCreateComponent', () => {
     const description = component.getByLabelText(/description/i);
     const contact = component.getByLabelText(/contact/i);
 
-    await component.type(name, inputValues.name);
-    await component.type(description, inputValues.description);
-    await component.type(contact, inputValues.contact);
+    userEvent.type(name, inputValues.name);
+    userEvent.type(description, inputValues.description);
+    userEvent.type(contact, inputValues.contact);
   }
 });

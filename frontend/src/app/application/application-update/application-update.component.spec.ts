@@ -15,6 +15,7 @@ import { Application } from '../../models/application';
 import { ApplicationUpdateComponent } from './application-update.component';
 import { environment } from '../../../environments/environment';
 import { createMock } from '@testing-library/angular/jest-utils';
+import userEvent from "@testing-library/user-event";
 
 describe('ApplicationUpdateComponent', () => {
   const existingApplication: Application = {
@@ -76,9 +77,9 @@ describe('ApplicationUpdateComponent', () => {
     expect(contact.value).toBe('existingContact');
 
     // when
-    await component.type(name, inputValues.name);
-    await component.type(description, inputValues.description);
-    await component.type(contact, inputValues.contact);
+    userEvent.type(name, inputValues.name);
+    userEvent.type(description, inputValues.description);
+    userEvent.type(contact, inputValues.contact);
 
     save.click();
 

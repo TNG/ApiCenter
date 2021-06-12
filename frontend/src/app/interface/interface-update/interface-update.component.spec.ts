@@ -1,4 +1,4 @@
-import { render, selectOptions } from '@testing-library/angular';
+import {fireEvent, render} from '@testing-library/angular';
 import { environment } from '../../../environments/environment';
 import { InterfaceUpdateComponent } from './interface-update.component';
 import { Application } from '../../models/application';
@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Interface } from '../../models/interface';
 import { when } from 'jest-when';
 import { of, throwError } from 'rxjs';
+import userEvent from "@testing-library/user-event";
 
 describe('InterfaceUpdateComponent', () => {
   const applications: Application[] = [
@@ -108,14 +109,14 @@ describe('InterfaceUpdateComponent', () => {
     expect(description.value).toBe('existingDescription');
 
     // when
-    await component.type(name, inputValues.name);
-    await component.type(description, inputValues.description);
+    userEvent.type(name, inputValues.name);
+    userEvent.type(description, inputValues.description);
 
-    component.click(application);
-    await selectOptions(application, 'applicationA');
+    userEvent.click(application);
+    userEvent.selectOptions(application, 'applicationA');
 
-    component.click(type);
-    await selectOptions(type, 'REST');
+    userEvent.click(type);
+    userEvent.selectOptions(type, 'REST');
 
     save.click();
 
