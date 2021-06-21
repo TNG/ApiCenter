@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v2.1.5
         with:
           node-version: "14.x"
-      - run: ./gradlew --stacktrace :frontend:npmTest
+      - run: ./gradlew --stacktrace :frontend:test
       - run: ./gradlew --stacktrace :frontend:lint
 
   end-to-end:
