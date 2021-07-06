@@ -24,7 +24,7 @@
     "@ngrx/effects": "^8.6.0",
     "@ngrx/store": "^8.6.0",
     "@ngrx/store-devtools": "^8.6.0",
-    "immutability-helper": "^3.0.1",
+    "immutability-helper": "^3.1.1",
     "js-yaml": "^4.1.0",
     "rxjs": "~6.6.7",
     "swagger-ui-dist": "^3.49.0",
