@@ -32,7 +32,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation("com.tngtech.archunit:archunit-junit5-api:0.19.0")
+    testImplementation("com.tngtech.archunit:archunit-junit5-api:0.21.0")
     testImplementation("com.tngtech.archunit:archunit-junit5-engine:0.19.0")
 
     runtimeOnly("com.h2database:h2")
