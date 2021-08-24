@@ -6,7 +6,7 @@ plugins {
 
     kotlin("jvm") version "1.5.20"
     kotlin("plugin.spring") version "1.5.20"
-    kotlin("plugin.jpa") version "1.5.20"
+    kotlin("plugin.jpa") version "1.5.21"
 
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.17"
